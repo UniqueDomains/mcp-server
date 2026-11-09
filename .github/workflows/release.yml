@@ -1,0 +1,137 @@
+name: Release
+
+# A tag `v<version>` releases that version (plan section 2 and decision 22):
+#   1. npm: @uniquedomains/mcp-server through npm trusted publishing (a GitHub-hosted runner, Node 22, npm 11.5.1 or
+#      later, an OIDC token, no NODE_AUTH_TOKEN). The first version is published by hand; this job takes over once
+#      the package has a trusted-publishing configuration for this repository and this file, with direct publishing
+#      switched on. A new configuration expires when no publish succeeds within two days.
+#   2. ghcr.io/uniquedomains/mcp-server:<version> and :latest, built from the Dockerfile.
+#   3. The official MCP Registry: `mcp-publisher publish` of server.json under domains.unique/mcp-server, with DNS
+#      authentication. The secret MCP_REGISTRY_PRIVATE_KEY holds the Ed25519 private key (hex) whose public key is in
+#      the TXT record `v=MCPv1; k=ed25519; p=<public key>` on unique.domains.
+#
+# `build` installs and runs the package scripts without any publish right; only the publish jobs mint tokens.
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency: release-${{ github.ref }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # The tag, package.json and both versions of server.json must agree.
+      - name: Versions agree
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          node -e '
+            const v = process.argv[1];
+            const pkg = require("./package.json");
+            const server = require("./server.json");
+            const bad = [];
+            if (pkg.version !== v) bad.push(`package.json ${pkg.version}`);
+            if (server.version !== v) bad.push(`server.json ${server.version}`);
+            if (server.packages[0].version !== v) bad.push(`server.json package ${server.packages[0].version}`);
+            if (pkg.mcpName !== server.name) bad.push(`mcpName ${pkg.mcpName} is not ${server.name}`);
+            if (bad.length) { console.error(`Tag v${v} does not match: ${bad.join(", ")}`); process.exit(1); }
+          ' "$version"
+      - run: npm run check:text
+      - run: npm run typecheck
+      - run: npm run build
+      - run: npm run generate -- --check
+      - run: npm test
+      - run: npm run smoke
+      - run: npm pack
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package
+          if-no-files-found: error
+          path: uniquedomains-mcp-server-*.tgz
+
+  npm:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # the GitHub release
+      id-token: write # npm trusted publishing and provenance
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: package
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - run: npm install -g npm@^11.5.1
+      - name: Publish @uniquedomains/mcp-server
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          if npm view "@uniquedomains/mcp-server@${version}" version >/dev/null 2>&1; then
+            echo "@uniquedomains/mcp-server@${version} is already published."
+            exit 0
+          fi
+          # The registry's read side can lag a publish by hand made just before the tag: that refusal is a skip.
+          if ! output="$(npm publish uniquedomains-mcp-server-*.tgz --provenance --access public 2>&1)"; then
+            echo "$output"
+            grep -qi "cannot publish over the previously published versions" <<<"$output" && exit 0
+            exit 1
+          fi
+          echo "$output"
+      - name: GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes --verify-tag
+
+  image:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          image=ghcr.io/uniquedomains/mcp-server
+          docker build \
+            --label org.opencontainers.image.source=https://github.com/UniqueDomains/mcp-server \
+            --label org.opencontainers.image.licenses=MIT \
+            --label "org.opencontainers.image.version=${version}" \
+            -t "${image}:${version}" -t "${image}:latest" .
+          docker push "${image}:${version}"
+          docker push "${image}:latest"
+
+  registry:
+    # The registry checks that the npm package carries mcpName, so it runs once the package is on npm.
+    needs: npm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install mcp-publisher
+        run: |
+          curl -fsSL "https://github.com/modelcontextprotocol/registry/releases/download/v1.8.4/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
+          ./mcp-publisher --help >/dev/null
+      - name: Publish server.json
+        env:
+          MCP_REGISTRY_PRIVATE_KEY: ${{ secrets.MCP_REGISTRY_PRIVATE_KEY }}
+        run: |
+          ./mcp-publisher login dns --domain unique.domains --private-key "$MCP_REGISTRY_PRIVATE_KEY"
+          ./mcp-publisher publish

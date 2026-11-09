@@ -1,0 +1,54 @@
+name: Contract
+
+# Nightly: does the live API still match the tools, and do the website pages behind links.details still answer?
+#   - the latest @uniquedomains/sdk (within the range package.json allows) and the live document: when either changed,
+#     regenerate the tools and open (or refresh) one pull request "openapi: <date>" on the branch contract/openapi;
+#   - the live document against openapi/v1.json: a drift the SDK has not shipped yet fails the run, so it is seen;
+#   - one website page per links.details pattern must answer 200 (plan decision 3);
+#   - the Inspector smoke against the live API.
+
+on:
+  schedule:
+    - cron: '17 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm update @uniquedomains/sdk
+      - run: npm run build
+      - run: npm run generate
+      - name: Open or refresh the pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet; then
+            echo "The tools match the latest SDK."
+            exit 0
+          fi
+          day="$(date -u +%Y-%m-%d)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B contract/openapi
+          git commit -am "openapi: ${day}"
+          git push -f origin contract/openapi
+          if gh pr view contract/openapi --json state --jq .state 2>/dev/null | grep -q OPEN; then
+            gh pr edit contract/openapi --title "openapi: ${day}"
+          else
+            gh pr create --head contract/openapi --title "openapi: ${day}" --body "The nightly contract run regenerated the tools from the latest @uniquedomains/sdk. Review the tool changes in src/generated/tools.ts and the README's tool list."
+          fi
+      - run: npm run generate -- --live
+      - run: npm run build
+      - run: node scripts/check-details.mjs
+      - run: npm run smoke -- --live

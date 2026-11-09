@@ -1,0 +1,67 @@
+name: CI
+
+# Every push and pull request: the text rules, the types, the build, the generated tools up to date with the installed
+# SDK, the tests, the ChatGPT plugin package, the MCP Inspector smoke on both transports against the fixture API, and
+# the Docker image of the hosted connector.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check:text
+      - run: npm run typecheck
+      - run: npm run build
+      # Fails when src/generated/tools.ts, openapi/v1.json or the README's tool list differ from the installed SDK.
+      - run: npm run generate -- --check
+      - run: npm test
+      - run: npm run plugin
+      - run: npm run smoke
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chatgpt-plugin
+          path: |
+            dist/chatgpt-plugin.zip
+            dist/chatgpt-plugin-review.json
+
+  node-versions:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20, 24]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: docker build -t mcp-server:ci .
+      - name: The image answers /healthz and tools/list
+        run: |
+          docker run -d --name mcp -p 8080:8080 mcp-server:ci
+          for i in $(seq 1 20); do curl -fsS http://127.0.0.1:8080/healthz && break; sleep 1; done
+          curl -fsS -X POST http://127.0.0.1:8080/mcp \
+            -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' \
+            -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' | grep -q '"ud_get_name"'
+          docker rm -f mcp
