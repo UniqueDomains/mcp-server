@@ -86,7 +86,11 @@ export const prepareServer = async (config: ServerConfig, options: PrepareOption
     return { config, client, plan, tools: selectTools(TOOLS, config.profile, plan) };
 };
 
-/** The tool as `tools/list` shows it. */
+/**
+ * The tool as `tools/list` shows it. The two schema casts are the one boundary between the generated plain JSON
+ * (`JsonObject`, written by `scripts/generate.mjs`) and the MCP SDK's zod-derived `Tool` type, which describes the
+ * same JSON Schema objects with an open index.
+ */
 export const toListedTool = (tool: ToolDefinition, prepared: PreparedServer): Tool => ({
     name: tool.name,
     title: tool.title,
