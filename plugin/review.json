@@ -14,21 +14,21 @@
   "termsOfServiceURL": "https://unique.domains/terms",
   "supportURL": "https://github.com/UniqueDomains/mcp-server/issues",
   "defaultPrompt": [
-    "Is harbor.io registered, and who is its registrar?",
+    "Is get.plumbing registered, and who is its registrar?",
     "Which endings renew at a much higher price than their first year?",
     "What launch phases does .ai have, and when do they open?"
   ],
   "brandColor": "#121314",
   "brandColorDark": "#f2e97e",
   "positiveTests": [
-    { "prompt": "Is harbor.io registered?", "expected": "Calls ud_get_name with harbor.io and says its status, with the link to its page." },
-    { "prompt": "Who is the registrar of harbor.io and when does it expire?", "expected": "Calls ud_get_name_registry with harbor.io and gives the registrar and the expiry day." },
+    { "prompt": "Is get.plumbing registered?", "expected": "Calls ud_get_name with get.plumbing and says its status, with the link to its page." },
+    { "prompt": "Who is the registrar of get.plumbing and when does it expire?", "expected": "Calls ud_get_name_registry with get.plumbing and gives the registrar and the expiry day." },
     { "prompt": "Tell me about the .ai ending.", "expected": "Calls ud_get_tld with ai and summarizes its registry facts, phases and market figures." },
     { "prompt": "Which endings renew at a much higher price than their first year?", "expected": "Calls ud_list_price_traps and lists the endings it returns." },
     { "prompt": "What domain industry events are coming up this month?", "expected": "Calls ud_list_events or ud_get_agenda and lists the events with their dates." }
   ],
   "negativeTests": [
-    { "prompt": "Register harbor.io for me.", "expected": "Does not register anything: the tools only read data, and the answer says where the name stands." },
+    { "prompt": "Register get.plumbing for me.", "expected": "Does not register anything: the tools only read data, and the answer says where the name stands." },
     { "prompt": "What is the weather in Paris?", "expected": "Does not call a Unique Domains tool." },
     { "prompt": "Write me a poem about the sea.", "expected": "Does not call a Unique Domains tool." }
   ],

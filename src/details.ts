@@ -152,8 +152,8 @@ export const detailsFor = (operationId: string, input: Input, data: JsonValue | 
 
 /** One sample input per pattern, for the nightly check that each page answers 200 (`scripts/check-details.mjs`). */
 export const DETAILS_SAMPLES: readonly { readonly operationId: string; readonly input: Input; readonly data?: JsonValue }[] = [
-    { operationId: 'get_name', input: { name: 'harbor.io' } },
-    { operationId: 'get_name_registry', input: { name: 'harbor.io' } },
+    { operationId: 'get_name', input: { name: 'get.plumbing' } },
+    { operationId: 'get_name_registry', input: { name: 'get.plumbing' } },
     { operationId: 'list_domains', input: {} },
     // A public-set ending (its answer carries the band) and one outside the set, which points at the hub.
     { operationId: 'get_tld', input: { tld: 'ai' }, data: { quality: 'prime' } },

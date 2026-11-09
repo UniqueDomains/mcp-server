@@ -60,8 +60,8 @@ try {
     const stdio = ['-e', `UD_API_BASE=${apiBase}`, 'node', 'dist/stdio.js'];
     const stdioList = await inspector(stdio, 'tools/list', ['--strict']);
     expect(stdioList.tools.length === 56, `stdio tools/list answers 56 tools (${stdioList.tools.length})`);
-    const stdioCall = await inspector(stdio, 'tools/call', ['--tool-name', 'ud_get_name', '--tool-arg', 'name=harbor.io']);
-    expect(!stdioCall.isError && stdioCall.structuredContent.data.name === 'harbor.io', 'stdio ud_get_name answers harbor.io');
+    const stdioCall = await inspector(stdio, 'tools/call', ['--tool-name', 'ud_get_name', '--tool-arg', 'name=get.plumbing']);
+    expect(!stdioCall.isError && stdioCall.structuredContent.data.name === 'get.plumbing', 'stdio ud_get_name answers get.plumbing');
 
     /* ---------- HTTP, hosted profile ---------- */
     const port = await freePort();
@@ -77,9 +77,9 @@ try {
     const url = [`http://127.0.0.1:${port}/mcp`, '--transport', 'http'];
     const httpList = await inspector(url, 'tools/list', ['--strict']);
     expect(httpList.tools.length === 53, `http tools/list answers 53 tools (${httpList.tools.length})`);
-    const httpCall = await inspector(url, 'tools/call', ['--tool-name', 'ud_get_name', '--tool-arg', 'name=harbor.io']);
+    const httpCall = await inspector(url, 'tools/call', ['--tool-name', 'ud_get_name', '--tool-arg', 'name=get.plumbing']);
     const links = httpCall.structuredContent.links;
-    expect(!httpCall.isError && links.details === 'https://unique.domains/availability/harbor.io', 'http ud_get_name carries links.details');
+    expect(!httpCall.isError && links.details === 'https://unique.domains/availability/get.plumbing', 'http ud_get_name carries links.details');
     expect(!('register' in links) && !('product' in links), 'http answers carry no register or product link');
 } finally {
     http?.kill();

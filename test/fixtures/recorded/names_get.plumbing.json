@@ -1,0 +1,69 @@
+{
+  "path": "/names/get.plumbing",
+  "status": 200,
+  "recordedOn": "2026-11-09",
+  "body": {
+    "data": {
+      "id": "dom_4efccac7-d9df-4c96-a076-3e0cc64220ec",
+      "name": "get.plumbing",
+      "ending": "plumbing",
+      "tracked": true,
+      "status": "for_sale",
+      "lifecycle": "active",
+      "drop": {
+        "kind": "none"
+      },
+      "ownableNow": false,
+      "price": {
+        "kind": "aftermarket",
+        "firstYear": null,
+        "registrar": null,
+        "renewal": null,
+        "transfer": null,
+        "isPromo": null,
+        "renewalTrap": false
+      },
+      "registry": {
+        "createdAt": "2020-06-03T08:30:53.000Z",
+        "updatedAt": "2026-08-12T04:41:40.000Z",
+        "expiresAt": "2027-06-03T08:30:53.000Z",
+        "registryUpdatedAt": "2026-10-22T13:39:28.000Z",
+        "registrar": {
+          "name": "GoDaddy.com, LLC",
+          "ianaId": 146,
+          "url": null
+        }
+      },
+      "parking": "afternic",
+      "length": 3,
+      "format": null,
+      "shape": "single",
+      "word": {
+        "id": "wrd_23922",
+        "word": "get",
+        "slug": "get"
+      },
+      "rating": {
+        "band": "prime"
+      },
+      "comps": {
+        "tier": "same_word",
+        "count": 10,
+        "medianUsd": 2677,
+        "endingsSoldOn": 0
+      }
+    },
+    "meta": {
+      "asOf": null,
+      "cursor": null,
+      "limit": null
+    },
+    "links": {
+      "self": "https://api.unique.domains/v1/names/get.plumbing",
+      "next": null,
+      "register": null,
+      "product": "https://app.unique.domains/availability/get.plumbing",
+      "dataset": null
+    }
+  }
+}

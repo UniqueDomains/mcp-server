@@ -20,6 +20,8 @@ const BASE = 'https://api.unique.domains/v1';
 /** One request per pattern the tests read: a name, a list, an ending, a registrar, a venue, an edition, the market. */
 const REQUESTS = [
     '/names/harbor.io',
+    // The free sample name of the texts and the smoke: tracked, with real data.
+    '/names/get.plumbing',
     '/tlds?limit=3',
     '/tlds/ai',
     '/domains',

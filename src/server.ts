@@ -32,7 +32,7 @@ export const SERVER_VERSION: string = packageJson.version;
 export const INSTRUCTIONS = [
     'Unique Domains reads its own catalog of domain names, words, TLDs, registrar prices, the domain market, trends and the industry agenda.',
     'Answers are stored data as of their day, unless a tool says it reads live; `links.details` points at the public page about the subject when there is one.',
-    'Pass a full domain name such as harbor.io to the name tools, and an ending without its dot such as ai to the TLD tools.',
+    'Pass a full domain name such as get.plumbing to the name tools, and an ending without its dot such as ai to the TLD tools.',
 ].join(' ');
 
 export type Logger = (line: string) => void;
