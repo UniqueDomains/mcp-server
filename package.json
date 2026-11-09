@@ -1,0 +1,63 @@
+{
+  "name": "@uniquedomains/mcp-server",
+  "version": "0.1.0",
+  "description": "MCP server for the Unique Domains API: domain names, words, TLDs, registrar prices, the domain market, trends and the agenda.",
+  "license": "MIT",
+  "author": "Unique Domains (https://unique.domains)",
+  "homepage": "https://unique.domains/api",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UniqueDomains/mcp-server.git"
+  },
+  "bugs": "https://github.com/UniqueDomains/mcp-server/issues",
+  "mcpName": "domains.unique/mcp-server",
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "domain-names",
+    "domains",
+    "whois",
+    "tld",
+    "registrar",
+    "unique-domains"
+  ],
+  "type": "module",
+  "bin": {
+    "uniquedomains-mcp-server": "dist/stdio.js"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/*.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "generate": "node scripts/generate.mjs",
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test test/*.test.mjs",
+    "check:text": "node scripts/check-text.mjs",
+    "plugin": "node scripts/plugin-manifest.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "@uniquedomains/sdk": "^0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "tsup": "8.5.1",
+    "typescript": "5.9.3"
+  }
+}
