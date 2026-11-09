@@ -160,7 +160,40 @@ export const relaxSchema = (node, resolve) => {
         }
         out[key] = relaxSchema(value, resolve);
     }
-    return out;
+    return splitTypeArray(out);
+};
+
+/** Keywords that only constrain one JSON type, so they follow that type's branch when a type array is split. */
+const KEYWORDS_BY_TYPE = {
+    object: ['properties', 'additionalProperties'],
+    array: ['items', 'minItems', 'maxItems'],
+    string: ['minLength', 'maxLength'],
+    number: ['minimum', 'maximum'],
+    integer: ['minimum', 'maximum'],
+};
+
+const enumOfType = (values, type) =>
+    values.filter((value) => value !== null && (type === 'integer' || type === 'number' ? typeof value === 'number' : typeof value === type));
+
+/**
+ * `type: ["string", "null"]` becomes `anyOf: [{ type: "string" }, { type: "null" }]`. Both are legal JSON Schema; the
+ * MCP Inspector's `--strict` check (2.12.0) warns on the array form, since a client that maps tool schemas onto a
+ * single-`type` dialect drops or refuses it (726 warnings before this). Each branch keeps the keywords and the enum
+ * values of its own type; an `anyOf` the node already had moves under `allOf`, so both still apply.
+ */
+export const splitTypeArray = (node) => {
+    if (!Array.isArray(node.type) || node.type.length < 2) return node;
+    const { type: types, description, enum: values, anyOf, allOf, ...rest } = node;
+    const branches = types.map((type) => {
+        if (type === 'null') return { type: 'null' };
+        const branch = { type };
+        for (const key of KEYWORDS_BY_TYPE[type] ?? []) if (key in rest) branch[key] = rest[key];
+        const own = values ? enumOfType(values, type) : [];
+        if (own.length > 0) branch.enum = own;
+        return branch;
+    });
+    const all = [...(allOf ?? []), ...(anyOf ? [{ anyOf }] : [])];
+    return { ...(description ? { description } : {}), anyOf: branches, ...(all.length > 0 ? { allOf: all } : {}) };
 };
 
 /** The envelope's links as every profile may carry them: `details` added, every key optional. */
@@ -193,10 +226,11 @@ export const outputSchemaOf = (operationId, document) => {
     };
     const relaxed = relaxSchema(schema, resolve);
     const data = relaxed.properties?.data ?? {};
+    const links = relaxSchema(linksSchema(), resolve);
     const meta = relaxed.properties?.meta ?? { type: 'object' };
     return {
         type: 'object',
-        properties: { data, meta: { ...meta, description: 'The day of the answer, and the page cursor of a list.' }, links: linksSchema() },
+        properties: { data, meta: { ...meta, description: 'The day of the answer, and the page cursor of a list.' }, links },
     };
 };
 

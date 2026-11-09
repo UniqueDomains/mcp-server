@@ -43,11 +43,15 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "id": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "`dom_<uuid>`; null when `tracked` is false."
+                            "description": "`dom_<uuid>`; null when `tracked` is false.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "name": {
                             "type": "string"
@@ -79,9 +83,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "lifecycle": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "drop": {
@@ -106,57 +114,84 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "object",
                             "properties": {
                                 "kind": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "registry",
-                                        "premium",
-                                        "aftermarket",
-                                        "backorder",
-                                        null
+                                    "anyOf": [
+                                        {
+                                            "type": "string",
+                                            "enum": [
+                                                "registry",
+                                                "premium",
+                                                "aftermarket",
+                                                "backorder"
+                                            ]
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "firstYear": {
-                                    "type": [
-                                        "number",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "registrar": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "renewal": {
-                                    "type": [
-                                        "number",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "transfer": {
-                                    "type": [
-                                        "number",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "isPromo": {
-                                    "type": [
-                                        "boolean",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "boolean"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "renewalTrap": {
                                     "type": "boolean"
                                 },
                                 "regularPrice": {
-                                    "type": [
-                                        "number",
-                                        "null"
-                                    ],
-                                    "description": "Keyed."
+                                    "description": "Keyed.",
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
                                 }
                             }
                         },
@@ -164,224 +199,306 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "object",
                             "properties": {
                                 "createdAt": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "updatedAt": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "expiresAt": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "registryUpdatedAt": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "registrar": {
-                                    "type": [
-                                        "object",
-                                        "null"
-                                    ],
-                                    "properties": {
-                                        "name": {
-                                            "type": "string"
+                                    "anyOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "ianaId": {
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "integer"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
+                                                    ]
+                                                },
+                                                "url": {
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "string"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
+                                                    ]
+                                                }
+                                            }
                                         },
-                                        "ianaId": {
-                                            "type": [
-                                                "integer",
-                                                "null"
-                                            ]
-                                        },
-                                        "url": {
-                                            "type": [
-                                                "string",
-                                                "null"
-                                            ]
+                                        {
+                                            "type": "null"
                                         }
-                                    }
+                                    ]
                                 }
                             }
                         },
                         "parking": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The parking or sale venue id."
+                            "description": "The parking or sale venue id.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "length": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "format": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "enum": [
-                                "oneWord",
-                                "hack",
-                                null
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "oneWord",
+                                        "hack"
+                                    ]
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "shape": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "enum": [
-                                "single",
-                                "properNoun",
-                                "acronym",
-                                "twoWords",
-                                "phrase",
-                                null
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "single",
+                                        "properNoun",
+                                        "acronym",
+                                        "twoWords",
+                                        "phrase"
+                                    ]
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "word": {
-                            "type": [
-                                "object",
-                                "null"
-                            ],
-                            "properties": {
-                                "id": {
-                                    "type": "string"
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "word": {
+                                            "type": "string"
+                                        },
+                                        "slug": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ]
+                                        }
+                                    }
                                 },
-                                "word": {
-                                    "type": "string"
-                                },
-                                "slug": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ]
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "rating": {
                             "type": "object",
                             "properties": {
                                 "band": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "prime",
-                                        "strong",
-                                        "niche",
-                                        "thin",
-                                        null
+                                    "anyOf": [
+                                        {
+                                            "type": "string",
+                                            "enum": [
+                                                "prime",
+                                                "strong",
+                                                "niche",
+                                                "thin"
+                                            ]
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "score": {
-                                    "type": [
-                                        "integer",
-                                        "null"
-                                    ],
-                                    "minimum": 0,
-                                    "maximum": 100,
-                                    "description": "Keyed, on this endpoint only."
+                                    "description": "Keyed, on this endpoint only.",
+                                    "anyOf": [
+                                        {
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "maximum": 100
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
                                 }
                             }
                         },
                         "verdict": {
-                            "type": [
-                                "object",
-                                "null"
-                            ],
                             "description": "Keyed.",
-                            "properties": {
-                                "rating": {
-                                    "type": "string",
-                                    "enum": [
-                                        "strong",
-                                        "good",
-                                        "risky",
-                                        "unrated"
-                                    ]
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "rating": {
+                                            "type": "string",
+                                            "enum": [
+                                                "strong",
+                                                "good",
+                                                "risky",
+                                                "unrated"
+                                            ]
+                                        },
+                                        "confidence": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "high",
+                                                        "medium",
+                                                        "low"
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ]
+                                        }
+                                    }
                                 },
-                                "confidence": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "high",
-                                        "medium",
-                                        "low",
-                                        null
-                                    ]
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "value": {
-                            "type": [
-                                "object",
-                                "null"
-                            ],
                             "description": "Keyed.",
-                            "properties": {
-                                "value": {
-                                    "type": "integer"
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "value": {
+                                            "type": "integer"
+                                        },
+                                        "upsidePercent": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "number"
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ]
+                                        },
+                                        "liquidity": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "high",
+                                                        "medium",
+                                                        "low"
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ]
+                                        }
+                                    }
                                 },
-                                "upsidePercent": {
-                                    "type": [
-                                        "number",
-                                        "null"
-                                    ]
-                                },
-                                "liquidity": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "high",
-                                        "medium",
-                                        "low",
-                                        null
-                                    ]
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "comps": {
                             "type": "object",
                             "properties": {
                                 "tier": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "same_word",
-                                        "synonyms",
-                                        "related",
-                                        "market",
-                                        null,
-                                        "sold_before"
-                                    ],
-                                    "description": "`sold_before` (this exact name sold before) on keyed answers only."
+                                    "description": "`sold_before` (this exact name sold before) on keyed answers only.",
+                                    "anyOf": [
+                                        {
+                                            "type": "string",
+                                            "enum": [
+                                                "same_word",
+                                                "synonyms",
+                                                "related",
+                                                "market",
+                                                "sold_before"
+                                            ]
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
                                 },
                                 "count": {
                                     "type": "integer"
                                 },
                                 "medianUsd": {
-                                    "type": [
-                                        "number",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "endingsSoldOn": {
@@ -396,21 +513,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -426,39 +555,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -515,11 +664,15 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "object",
                                 "properties": {
                                     "id": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "description": "`dom_<uuid>`; null when `tracked` is false."
+                                        "description": "`dom_<uuid>`; null when `tracked` is false.",
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
+                                        ]
                                     },
                                     "name": {
                                         "type": "string"
@@ -551,9 +704,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         ]
                                     },
                                     "lifecycle": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "drop": {
@@ -578,57 +735,84 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "object",
                                         "properties": {
                                             "kind": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
-                                                ],
-                                                "enum": [
-                                                    "registry",
-                                                    "premium",
-                                                    "aftermarket",
-                                                    "backorder",
-                                                    null
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "registry",
+                                                            "premium",
+                                                            "aftermarket",
+                                                            "backorder"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "firstYear": {
-                                                "type": [
-                                                    "number",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "number"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "registrar": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "renewal": {
-                                                "type": [
-                                                    "number",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "number"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "transfer": {
-                                                "type": [
-                                                    "number",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "number"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "isPromo": {
-                                                "type": [
-                                                    "boolean",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "boolean"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "renewalTrap": {
                                                 "type": "boolean"
                                             },
                                             "regularPrice": {
-                                                "type": [
-                                                    "number",
-                                                    "null"
-                                                ],
-                                                "description": "Keyed."
+                                                "description": "Keyed.",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "number"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
+                                                ]
                                             }
                                         }
                                     },
@@ -636,224 +820,306 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "object",
                                         "properties": {
                                             "createdAt": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "updatedAt": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "expiresAt": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "registryUpdatedAt": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "registrar": {
-                                                "type": [
-                                                    "object",
-                                                    "null"
-                                                ],
-                                                "properties": {
-                                                    "name": {
-                                                        "type": "string"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "ianaId": {
+                                                                "anyOf": [
+                                                                    {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    {
+                                                                        "type": "null"
+                                                                    }
+                                                                ]
+                                                            },
+                                                            "url": {
+                                                                "anyOf": [
+                                                                    {
+                                                                        "type": "string"
+                                                                    },
+                                                                    {
+                                                                        "type": "null"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
                                                     },
-                                                    "ianaId": {
-                                                        "type": [
-                                                            "integer",
-                                                            "null"
-                                                        ]
-                                                    },
-                                                    "url": {
-                                                        "type": [
-                                                            "string",
-                                                            "null"
-                                                        ]
+                                                    {
+                                                        "type": "null"
                                                     }
-                                                }
+                                                ]
                                             }
                                         }
                                     },
                                     "parking": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "description": "The parking or sale venue id."
+                                        "description": "The parking or sale venue id.",
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
+                                        ]
                                     },
                                     "length": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "format": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "enum": [
-                                            "oneWord",
-                                            "hack",
-                                            null
+                                        "anyOf": [
+                                            {
+                                                "type": "string",
+                                                "enum": [
+                                                    "oneWord",
+                                                    "hack"
+                                                ]
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "shape": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "enum": [
-                                            "single",
-                                            "properNoun",
-                                            "acronym",
-                                            "twoWords",
-                                            "phrase",
-                                            null
+                                        "anyOf": [
+                                            {
+                                                "type": "string",
+                                                "enum": [
+                                                    "single",
+                                                    "properNoun",
+                                                    "acronym",
+                                                    "twoWords",
+                                                    "phrase"
+                                                ]
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "word": {
-                                        "type": [
-                                            "object",
-                                            "null"
-                                        ],
-                                        "properties": {
-                                            "id": {
-                                                "type": "string"
+                                        "anyOf": [
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "word": {
+                                                        "type": "string"
+                                                    },
+                                                    "slug": {
+                                                        "anyOf": [
+                                                            {
+                                                                "type": "string"
+                                                            },
+                                                            {
+                                                                "type": "null"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
                                             },
-                                            "word": {
-                                                "type": "string"
-                                            },
-                                            "slug": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
-                                                ]
+                                            {
+                                                "type": "null"
                                             }
-                                        }
+                                        ]
                                     },
                                     "rating": {
                                         "type": "object",
                                         "properties": {
                                             "band": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
-                                                ],
-                                                "enum": [
-                                                    "prime",
-                                                    "strong",
-                                                    "niche",
-                                                    "thin",
-                                                    null
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "prime",
+                                                            "strong",
+                                                            "niche",
+                                                            "thin"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "score": {
-                                                "type": [
-                                                    "integer",
-                                                    "null"
-                                                ],
-                                                "minimum": 0,
-                                                "maximum": 100,
-                                                "description": "Keyed, on this endpoint only."
+                                                "description": "Keyed, on this endpoint only.",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "integer",
+                                                        "minimum": 0,
+                                                        "maximum": 100
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
+                                                ]
                                             }
                                         }
                                     },
                                     "verdict": {
-                                        "type": [
-                                            "object",
-                                            "null"
-                                        ],
                                         "description": "Keyed.",
-                                        "properties": {
-                                            "rating": {
-                                                "type": "string",
-                                                "enum": [
-                                                    "strong",
-                                                    "good",
-                                                    "risky",
-                                                    "unrated"
-                                                ]
+                                        "anyOf": [
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "rating": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "strong",
+                                                            "good",
+                                                            "risky",
+                                                            "unrated"
+                                                        ]
+                                                    },
+                                                    "confidence": {
+                                                        "anyOf": [
+                                                            {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "high",
+                                                                    "medium",
+                                                                    "low"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "null"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
                                             },
-                                            "confidence": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
-                                                ],
-                                                "enum": [
-                                                    "high",
-                                                    "medium",
-                                                    "low",
-                                                    null
-                                                ]
+                                            {
+                                                "type": "null"
                                             }
-                                        }
+                                        ]
                                     },
                                     "value": {
-                                        "type": [
-                                            "object",
-                                            "null"
-                                        ],
                                         "description": "Keyed.",
-                                        "properties": {
-                                            "value": {
-                                                "type": "integer"
+                                        "anyOf": [
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "value": {
+                                                        "type": "integer"
+                                                    },
+                                                    "upsidePercent": {
+                                                        "anyOf": [
+                                                            {
+                                                                "type": "number"
+                                                            },
+                                                            {
+                                                                "type": "null"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "liquidity": {
+                                                        "anyOf": [
+                                                            {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "high",
+                                                                    "medium",
+                                                                    "low"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "null"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
                                             },
-                                            "upsidePercent": {
-                                                "type": [
-                                                    "number",
-                                                    "null"
-                                                ]
-                                            },
-                                            "liquidity": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
-                                                ],
-                                                "enum": [
-                                                    "high",
-                                                    "medium",
-                                                    "low",
-                                                    null
-                                                ]
+                                            {
+                                                "type": "null"
                                             }
-                                        }
+                                        ]
                                     },
                                     "comps": {
                                         "type": "object",
                                         "properties": {
                                             "tier": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
-                                                ],
-                                                "enum": [
-                                                    "same_word",
-                                                    "synonyms",
-                                                    "related",
-                                                    "market",
-                                                    null,
-                                                    "sold_before"
-                                                ],
-                                                "description": "`sold_before` (this exact name sold before) on keyed answers only."
+                                                "description": "`sold_before` (this exact name sold before) on keyed answers only.",
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "same_word",
+                                                            "synonyms",
+                                                            "related",
+                                                            "market",
+                                                            "sold_before"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
+                                                ]
                                             },
                                             "count": {
                                                 "type": "integer"
                                             },
                                             "medianUsd": {
-                                                "type": [
-                                                    "number",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "number"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "endingsSoldOn": {
@@ -897,21 +1163,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -927,39 +1205,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -1024,11 +1322,15 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "id": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "`dom_<uuid>`; null when `tracked` is false."
+                            "description": "`dom_<uuid>`; null when `tracked` is false.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "name": {
                             "type": "string"
@@ -1060,9 +1362,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "lifecycle": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "drop": {
@@ -1087,57 +1393,84 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "object",
                             "properties": {
                                 "kind": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "registry",
-                                        "premium",
-                                        "aftermarket",
-                                        "backorder",
-                                        null
+                                    "anyOf": [
+                                        {
+                                            "type": "string",
+                                            "enum": [
+                                                "registry",
+                                                "premium",
+                                                "aftermarket",
+                                                "backorder"
+                                            ]
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "firstYear": {
-                                    "type": [
-                                        "number",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "registrar": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "renewal": {
-                                    "type": [
-                                        "number",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "transfer": {
-                                    "type": [
-                                        "number",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "isPromo": {
-                                    "type": [
-                                        "boolean",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "boolean"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "renewalTrap": {
                                     "type": "boolean"
                                 },
                                 "regularPrice": {
-                                    "type": [
-                                        "number",
-                                        "null"
-                                    ],
-                                    "description": "Keyed."
+                                    "description": "Keyed.",
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
                                 }
                             }
                         },
@@ -1145,224 +1478,306 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "object",
                             "properties": {
                                 "createdAt": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "updatedAt": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "expiresAt": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "registryUpdatedAt": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "registrar": {
-                                    "type": [
-                                        "object",
-                                        "null"
-                                    ],
-                                    "properties": {
-                                        "name": {
-                                            "type": "string"
+                                    "anyOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "ianaId": {
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "integer"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
+                                                    ]
+                                                },
+                                                "url": {
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "string"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
+                                                    ]
+                                                }
+                                            }
                                         },
-                                        "ianaId": {
-                                            "type": [
-                                                "integer",
-                                                "null"
-                                            ]
-                                        },
-                                        "url": {
-                                            "type": [
-                                                "string",
-                                                "null"
-                                            ]
+                                        {
+                                            "type": "null"
                                         }
-                                    }
+                                    ]
                                 }
                             }
                         },
                         "parking": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The parking or sale venue id."
+                            "description": "The parking or sale venue id.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "length": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "format": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "enum": [
-                                "oneWord",
-                                "hack",
-                                null
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "oneWord",
+                                        "hack"
+                                    ]
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "shape": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "enum": [
-                                "single",
-                                "properNoun",
-                                "acronym",
-                                "twoWords",
-                                "phrase",
-                                null
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "single",
+                                        "properNoun",
+                                        "acronym",
+                                        "twoWords",
+                                        "phrase"
+                                    ]
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "word": {
-                            "type": [
-                                "object",
-                                "null"
-                            ],
-                            "properties": {
-                                "id": {
-                                    "type": "string"
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "word": {
+                                            "type": "string"
+                                        },
+                                        "slug": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ]
+                                        }
+                                    }
                                 },
-                                "word": {
-                                    "type": "string"
-                                },
-                                "slug": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ]
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "rating": {
                             "type": "object",
                             "properties": {
                                 "band": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "prime",
-                                        "strong",
-                                        "niche",
-                                        "thin",
-                                        null
+                                    "anyOf": [
+                                        {
+                                            "type": "string",
+                                            "enum": [
+                                                "prime",
+                                                "strong",
+                                                "niche",
+                                                "thin"
+                                            ]
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "score": {
-                                    "type": [
-                                        "integer",
-                                        "null"
-                                    ],
-                                    "minimum": 0,
-                                    "maximum": 100,
-                                    "description": "Keyed, on this endpoint only."
+                                    "description": "Keyed, on this endpoint only.",
+                                    "anyOf": [
+                                        {
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "maximum": 100
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
                                 }
                             }
                         },
                         "verdict": {
-                            "type": [
-                                "object",
-                                "null"
-                            ],
                             "description": "Keyed.",
-                            "properties": {
-                                "rating": {
-                                    "type": "string",
-                                    "enum": [
-                                        "strong",
-                                        "good",
-                                        "risky",
-                                        "unrated"
-                                    ]
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "rating": {
+                                            "type": "string",
+                                            "enum": [
+                                                "strong",
+                                                "good",
+                                                "risky",
+                                                "unrated"
+                                            ]
+                                        },
+                                        "confidence": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "high",
+                                                        "medium",
+                                                        "low"
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ]
+                                        }
+                                    }
                                 },
-                                "confidence": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "high",
-                                        "medium",
-                                        "low",
-                                        null
-                                    ]
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "value": {
-                            "type": [
-                                "object",
-                                "null"
-                            ],
                             "description": "Keyed.",
-                            "properties": {
-                                "value": {
-                                    "type": "integer"
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "value": {
+                                            "type": "integer"
+                                        },
+                                        "upsidePercent": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "number"
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ]
+                                        },
+                                        "liquidity": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "high",
+                                                        "medium",
+                                                        "low"
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ]
+                                        }
+                                    }
                                 },
-                                "upsidePercent": {
-                                    "type": [
-                                        "number",
-                                        "null"
-                                    ]
-                                },
-                                "liquidity": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "high",
-                                        "medium",
-                                        "low",
-                                        null
-                                    ]
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "comps": {
                             "type": "object",
                             "properties": {
                                 "tier": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "same_word",
-                                        "synonyms",
-                                        "related",
-                                        "market",
-                                        null,
-                                        "sold_before"
-                                    ],
-                                    "description": "`sold_before` (this exact name sold before) on keyed answers only."
+                                    "description": "`sold_before` (this exact name sold before) on keyed answers only.",
+                                    "anyOf": [
+                                        {
+                                            "type": "string",
+                                            "enum": [
+                                                "same_word",
+                                                "synonyms",
+                                                "related",
+                                                "market",
+                                                "sold_before"
+                                            ]
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
                                 },
                                 "count": {
                                     "type": "integer"
                                 },
                                 "medianUsd": {
-                                    "type": [
-                                        "number",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "endingsSoldOn": {
@@ -1381,21 +1796,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -1411,39 +1838,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -1502,51 +1949,78 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "firstYear": {
-                                        "type": [
-                                            "number",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "renewal": {
-                                        "type": [
-                                            "number",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "transfer": {
-                                        "type": [
-                                            "number",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "regularPrice": {
-                                        "type": [
-                                            "number",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "isPromo": {
-                                        "type": [
-                                            "boolean",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "boolean"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "currency": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "kind": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "enum": [
-                                            "registry",
-                                            "aftermarket",
-                                            "backorder",
-                                            null
+                                        "anyOf": [
+                                            {
+                                                "type": "string",
+                                                "enum": [
+                                                    "registry",
+                                                    "aftermarket",
+                                                    "backorder"
+                                                ]
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -1561,21 +2035,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -1591,39 +2077,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -1677,64 +2183,100 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "boolean"
                         },
                         "observedOn": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "observedAt": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Keyed."
+                            "description": "Keyed.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "createdAt": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "updatedAt": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "expiresAt": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "registryUpdatedAt": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "registrar": {
-                            "type": [
-                                "object",
-                                "null"
-                            ],
-                            "properties": {
-                                "name": {
-                                    "type": "string"
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "ianaId": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "integer"
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ]
+                                        },
+                                        "url": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ]
+                                        }
+                                    }
                                 },
-                                "ianaId": {
-                                    "type": [
-                                        "integer",
-                                        "null"
-                                    ]
-                                },
-                                "url": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ]
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "eppStatuses": {
                             "type": "array",
@@ -1742,9 +2284,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "object",
                                 "properties": {
                                     "id": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "raw": {
@@ -1760,24 +2306,36 @@ export const TOOLS: readonly ToolDefinition[] = [
                             }
                         },
                         "dnssec": {
-                            "type": [
-                                "boolean",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "holder": {
                             "type": "object",
                             "properties": {
                                 "holder": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "redactedBy": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "heldAtRegistrar": {
@@ -1786,14 +2344,17 @@ export const TOOLS: readonly ToolDefinition[] = [
                             }
                         },
                         "transport": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "enum": [
-                                "rdap",
-                                "whois",
-                                null
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "rdap",
+                                        "whois"
+                                    ]
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     }
@@ -1802,21 +2363,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -1832,39 +2405,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -1923,15 +2516,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "registrar": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "registered": {
-                                        "type": [
-                                            "boolean",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "boolean"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -1963,15 +2564,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "from": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "to": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -2000,21 +2609,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -2030,39 +2651,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -2154,15 +2795,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                             }
                         },
                         "hasWebsite": {
-                            "type": [
-                                "boolean",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "parking": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     }
@@ -2171,21 +2820,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -2201,39 +2862,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -2334,29 +3015,45 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         ]
                                     },
                                     "key": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
                             },
                             "before": {
-                                "type": [
-                                    "object",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "object"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "after": {
-                                "type": [
-                                    "object",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "object"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "expiresAt": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             }
                         }
@@ -2366,21 +3063,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -2396,39 +3105,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -2479,39 +3208,63 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "hadWebsite": {
-                            "type": [
-                                "boolean",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "firstCaptureYear": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "lastCaptureYear": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "captures": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "authorityBand": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "language": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     }
@@ -2520,21 +3273,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -2550,39 +3315,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -2633,18 +3418,22 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "current": {
-                            "type": [
-                                "object",
-                                "null"
-                            ],
-                            "properties": {
-                                "value": {
-                                    "type": "integer"
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "value": {
+                                            "type": "integer"
+                                        },
+                                        "asOf": {
+                                            "type": "string"
+                                        }
+                                    }
                                 },
-                                "asOf": {
-                                    "type": "string"
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "history": {
                             "type": "array",
@@ -2666,21 +3455,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -2696,39 +3497,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -2779,18 +3600,22 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "current": {
-                            "type": [
-                                "object",
-                                "null"
-                            ],
-                            "properties": {
-                                "value": {
-                                    "type": "integer"
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "value": {
+                                            "type": "integer"
+                                        },
+                                        "asOf": {
+                                            "type": "string"
+                                        }
+                                    }
                                 },
-                                "asOf": {
-                                    "type": "string"
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "history": {
                             "type": "array",
@@ -2812,21 +3637,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -2842,39 +3679,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -2925,27 +3782,34 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "tier": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "enum": [
-                                "same_word",
-                                "synonyms",
-                                "related",
-                                "market",
-                                null,
-                                "sold_before"
-                            ],
-                            "description": "`sold_before` (this exact name sold before) on keyed answers only."
+                            "description": "`sold_before` (this exact name sold before) on keyed answers only.",
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "same_word",
+                                        "synonyms",
+                                        "related",
+                                        "market",
+                                        "sold_before"
+                                    ]
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "count": {
                             "type": "integer"
                         },
                         "medianUsd": {
-                            "type": [
-                                "number",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "number"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "endingsSoldOn": {
@@ -2958,21 +3822,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -2988,39 +3864,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -3068,78 +3964,106 @@ export const TOOLS: readonly ToolDefinition[] = [
             "type": "object",
             "properties": {
                 "data": {
-                    "type": [
-                        "object",
-                        "null"
-                    ],
-                    "properties": {
-                        "venue": {
-                            "type": "string",
-                            "enum": [
-                                "godaddy",
-                                "dynadot",
-                                "namesilo",
-                                "namecheap",
-                                "snapnames",
-                                "parkio",
-                                "domainlore"
-                            ]
+                    "anyOf": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "venue": {
+                                    "type": "string",
+                                    "enum": [
+                                        "godaddy",
+                                        "dynadot",
+                                        "namesilo",
+                                        "namecheap",
+                                        "snapnames",
+                                        "parkio",
+                                        "domainlore"
+                                    ]
+                                },
+                                "venueLabel": {
+                                    "type": "string"
+                                },
+                                "endsAt": {
+                                    "type": "string"
+                                },
+                                "bid": {
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
+                                },
+                                "bidCount": {
+                                    "anyOf": [
+                                        {
+                                            "type": "integer"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
+                                },
+                                "currency": {
+                                    "type": "string",
+                                    "enum": [
+                                        "USD",
+                                        "GBP"
+                                    ]
+                                },
+                                "firstYear": {
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
+                                },
+                                "bidsJumped": {
+                                    "type": "boolean"
+                                }
+                            }
                         },
-                        "venueLabel": {
-                            "type": "string"
-                        },
-                        "endsAt": {
-                            "type": "string"
-                        },
-                        "bid": {
-                            "type": [
-                                "number",
-                                "null"
-                            ]
-                        },
-                        "bidCount": {
-                            "type": [
-                                "integer",
-                                "null"
-                            ]
-                        },
-                        "currency": {
-                            "type": "string",
-                            "enum": [
-                                "USD",
-                                "GBP"
-                            ]
-                        },
-                        "firstYear": {
-                            "type": [
-                                "number",
-                                "null"
-                            ]
-                        },
-                        "bidsJumped": {
-                            "type": "boolean"
+                        {
+                            "type": "null"
                         }
-                    }
+                    ]
                 },
                 "meta": {
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -3155,39 +4079,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -3245,26 +4189,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "description": "`wrd_<id>`."
                                 },
                                 "slug": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "word": {
                                     "type": "string"
                                 },
                                 "shape": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "single",
-                                        "properNoun",
-                                        "acronym",
-                                        "twoWords",
-                                        "phrase",
-                                        null
+                                    "anyOf": [
+                                        {
+                                            "type": "string",
+                                            "enum": [
+                                                "single",
+                                                "properNoun",
+                                                "acronym",
+                                                "twoWords",
+                                                "phrase"
+                                            ]
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "origin": {
@@ -3299,26 +4250,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "description": "`wrd_<id>`."
                                     },
                                     "slug": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "word": {
                                         "type": "string"
                                     },
                                     "shape": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "enum": [
-                                            "single",
-                                            "properNoun",
-                                            "acronym",
-                                            "twoWords",
-                                            "phrase",
-                                            null
+                                        "anyOf": [
+                                            {
+                                                "type": "string",
+                                                "enum": [
+                                                    "single",
+                                                    "properNoun",
+                                                    "acronym",
+                                                    "twoWords",
+                                                    "phrase"
+                                                ]
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "origin": {
@@ -3339,21 +4297,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -3369,39 +4339,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -3450,9 +4440,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "name": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             }
                         }
@@ -3462,21 +4456,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -3492,39 +4498,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -3588,89 +4614,127 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "slug": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "shape": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "enum": [
-                                            "single",
-                                            "properNoun",
-                                            "acronym",
-                                            "twoWords",
-                                            "phrase",
-                                            null
+                                        "anyOf": [
+                                            {
+                                                "type": "string",
+                                                "enum": [
+                                                    "single",
+                                                    "properNoun",
+                                                    "acronym",
+                                                    "twoWords",
+                                                    "phrase"
+                                                ]
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "pos": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "description": "Parts of speech as stored, comma-joined tags."
+                                        "description": "Parts of speech as stored, comma-joined tags.",
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
+                                        ]
                                     },
                                     "definition": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "inflected": {
-                                        "type": [
-                                            "boolean",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "boolean"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "size": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "popularity": {
-                                        "type": [
-                                            "integer",
-                                            "null"
-                                        ],
-                                        "minimum": 0,
-                                        "maximum": 100,
-                                        "description": "How widely the word is used; never sales or demand."
+                                        "description": "How widely the word is used; never sales or demand.",
+                                        "anyOf": [
+                                            {
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "maximum": 100
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
+                                        ]
                                     },
                                     "sentiment": {
-                                        "type": [
-                                            "integer",
-                                            "null"
-                                        ],
-                                        "minimum": 0,
-                                        "maximum": 100,
-                                        "description": "50 is neutral."
+                                        "description": "50 is neutral.",
+                                        "anyOf": [
+                                            {
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "maximum": 100
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
+                                        ]
                                     },
                                     "brandability": {
-                                        "type": [
-                                            "integer",
-                                            "null"
-                                        ],
-                                        "minimum": 0,
-                                        "maximum": 100
+                                        "anyOf": [
+                                            {
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "maximum": 100
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
+                                        ]
                                     },
                                     "style": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "enum": [
-                                            "modern",
-                                            "elegant",
-                                            "slab",
-                                            "handwritten",
-                                            "playful",
-                                            "futuristic",
-                                            null
+                                        "anyOf": [
+                                            {
+                                                "type": "string",
+                                                "enum": [
+                                                    "modern",
+                                                    "elegant",
+                                                    "slab",
+                                                    "handwritten",
+                                                    "playful",
+                                                    "futuristic"
+                                                ]
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "categories": {
@@ -3682,30 +4746,37 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                     "type": "string"
                                                 },
                                                 "name": {
-                                                    "type": [
-                                                        "string",
-                                                        "null"
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "string"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
                                                     ]
                                                 }
                                             }
                                         }
                                     },
                                     "denyClass": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "enum": [
-                                            "brand",
-                                            "trademark",
-                                            "person",
-                                            "harm",
-                                            "vice",
-                                            "politics",
-                                            "controversy",
-                                            null
-                                        ],
-                                        "description": "Why the word stays off public lists (ADR-0111); null when none."
+                                        "description": "Why the word stays off public lists (ADR-0111); null when none.",
+                                        "anyOf": [
+                                            {
+                                                "type": "string",
+                                                "enum": [
+                                                    "brand",
+                                                    "trademark",
+                                                    "person",
+                                                    "harm",
+                                                    "vice",
+                                                    "politics",
+                                                    "controversy"
+                                                ]
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
+                                        ]
                                     },
                                     "origin": {
                                         "type": "string",
@@ -3717,157 +4788,232 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         ]
                                     },
                                     "addedAt": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "description": "When the intake added it; null means the dictionary load."
+                                        "description": "When the intake added it; null means the dictionary load.",
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
+                                        ]
                                     },
                                     "linguistics": {
                                         "type": "object",
                                         "properties": {
                                             "lookalikeIsLookalike": {
-                                                "type": [
-                                                    "boolean",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "boolean"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "lookalikeNormalized": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "memorabilityFamiliarity": {
-                                                "type": [
-                                                    "integer",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "memorabilityLabel": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
-                                                ],
-                                                "enum": [
-                                                    "low",
-                                                    "medium",
-                                                    "high",
-                                                    null
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "low",
+                                                            "medium",
+                                                            "high"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "memorabilityNeighbors": {
-                                                "type": [
-                                                    "integer",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "memorabilityScore": {
-                                                "type": [
-                                                    "integer",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "pronounceabilityLabel": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
-                                                ],
-                                                "enum": [
-                                                    "easy",
-                                                    "medium",
-                                                    "hard",
-                                                    null
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "easy",
+                                                            "medium",
+                                                            "hard"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "pronounceabilityPhonotactic": {
-                                                "type": [
-                                                    "integer",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "pronounceabilityScore": {
-                                                "type": [
-                                                    "integer",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "pronunciationArpabet": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "pronunciationConfidence": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
-                                                ],
-                                                "enum": [
-                                                    "low",
-                                                    "medium",
-                                                    "high",
-                                                    null
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "low",
+                                                            "medium",
+                                                            "high"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "pronunciationIpa": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "pronunciationStressPattern": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "pronunciationSyllables": {
-                                                "type": [
-                                                    "integer",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "soundTextureLabel": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
-                                                ],
-                                                "enum": [
-                                                    "soft",
-                                                    "balanced",
-                                                    "sharp",
-                                                    null
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "soft",
+                                                            "balanced",
+                                                            "sharp"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "soundTextureSharpness": {
-                                                "type": [
-                                                    "integer",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "soundTextureSoftness": {
-                                                "type": [
-                                                    "integer",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "spellingHomophones": {
-                                                "type": [
-                                                    "integer",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "spellingLabel": {
-                                                "type": [
-                                                    "string",
-                                                    "null"
-                                                ],
-                                                "enum": [
-                                                    "low",
-                                                    "medium",
-                                                    "high",
-                                                    null
+                                                "anyOf": [
+                                                    {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "low",
+                                                            "medium",
+                                                            "high"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "spellingLikelyMisspellings": {
@@ -3877,15 +5023,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                 }
                                             },
                                             "spellingRisk": {
-                                                "type": [
-                                                    "integer",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "spellingSoundalikes": {
-                                                "type": [
-                                                    "integer",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             }
                                         }
@@ -3911,21 +5065,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -3941,39 +5107,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -4124,38 +5310,53 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "slug": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "word": {
                                 "type": "string"
                             },
                             "shape": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "enum": [
-                                    "single",
-                                    "properNoun",
-                                    "acronym",
-                                    "twoWords",
-                                    "phrase",
-                                    null
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "single",
+                                            "properNoun",
+                                            "acronym",
+                                            "twoWords",
+                                            "phrase"
+                                        ]
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "pos": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "size": {
-                                "type": [
-                                    "integer",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "origin": {
@@ -4174,21 +5375,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -4204,39 +5417,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -4294,89 +5527,127 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "string"
                         },
                         "slug": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "shape": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "enum": [
-                                "single",
-                                "properNoun",
-                                "acronym",
-                                "twoWords",
-                                "phrase",
-                                null
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "single",
+                                        "properNoun",
+                                        "acronym",
+                                        "twoWords",
+                                        "phrase"
+                                    ]
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "pos": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Parts of speech as stored, comma-joined tags."
+                            "description": "Parts of speech as stored, comma-joined tags.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "definition": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "inflected": {
-                            "type": [
-                                "boolean",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "size": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "popularity": {
-                            "type": [
-                                "integer",
-                                "null"
-                            ],
-                            "minimum": 0,
-                            "maximum": 100,
-                            "description": "How widely the word is used; never sales or demand."
+                            "description": "How widely the word is used; never sales or demand.",
+                            "anyOf": [
+                                {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 100
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "sentiment": {
-                            "type": [
-                                "integer",
-                                "null"
-                            ],
-                            "minimum": 0,
-                            "maximum": 100,
-                            "description": "50 is neutral."
+                            "description": "50 is neutral.",
+                            "anyOf": [
+                                {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 100
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "brandability": {
-                            "type": [
-                                "integer",
-                                "null"
-                            ],
-                            "minimum": 0,
-                            "maximum": 100
+                            "anyOf": [
+                                {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 100
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "style": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "enum": [
-                                "modern",
-                                "elegant",
-                                "slab",
-                                "handwritten",
-                                "playful",
-                                "futuristic",
-                                null
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "modern",
+                                        "elegant",
+                                        "slab",
+                                        "handwritten",
+                                        "playful",
+                                        "futuristic"
+                                    ]
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "categories": {
@@ -4388,30 +5659,37 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "name": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
                             }
                         },
                         "denyClass": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "enum": [
-                                "brand",
-                                "trademark",
-                                "person",
-                                "harm",
-                                "vice",
-                                "politics",
-                                "controversy",
-                                null
-                            ],
-                            "description": "Why the word stays off public lists (ADR-0111); null when none."
+                            "description": "Why the word stays off public lists (ADR-0111); null when none.",
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "brand",
+                                        "trademark",
+                                        "person",
+                                        "harm",
+                                        "vice",
+                                        "politics",
+                                        "controversy"
+                                    ]
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "origin": {
                             "type": "string",
@@ -4423,157 +5701,232 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "addedAt": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "When the intake added it; null means the dictionary load."
+                            "description": "When the intake added it; null means the dictionary load.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "linguistics": {
                             "type": "object",
                             "properties": {
                                 "lookalikeIsLookalike": {
-                                    "type": [
-                                        "boolean",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "boolean"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "lookalikeNormalized": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "memorabilityFamiliarity": {
-                                    "type": [
-                                        "integer",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "integer"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "memorabilityLabel": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "low",
-                                        "medium",
-                                        "high",
-                                        null
+                                    "anyOf": [
+                                        {
+                                            "type": "string",
+                                            "enum": [
+                                                "low",
+                                                "medium",
+                                                "high"
+                                            ]
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "memorabilityNeighbors": {
-                                    "type": [
-                                        "integer",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "integer"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "memorabilityScore": {
-                                    "type": [
-                                        "integer",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "integer"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "pronounceabilityLabel": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "easy",
-                                        "medium",
-                                        "hard",
-                                        null
+                                    "anyOf": [
+                                        {
+                                            "type": "string",
+                                            "enum": [
+                                                "easy",
+                                                "medium",
+                                                "hard"
+                                            ]
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "pronounceabilityPhonotactic": {
-                                    "type": [
-                                        "integer",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "integer"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "pronounceabilityScore": {
-                                    "type": [
-                                        "integer",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "integer"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "pronunciationArpabet": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "pronunciationConfidence": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "low",
-                                        "medium",
-                                        "high",
-                                        null
+                                    "anyOf": [
+                                        {
+                                            "type": "string",
+                                            "enum": [
+                                                "low",
+                                                "medium",
+                                                "high"
+                                            ]
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "pronunciationIpa": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "pronunciationStressPattern": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "pronunciationSyllables": {
-                                    "type": [
-                                        "integer",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "integer"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "soundTextureLabel": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "soft",
-                                        "balanced",
-                                        "sharp",
-                                        null
+                                    "anyOf": [
+                                        {
+                                            "type": "string",
+                                            "enum": [
+                                                "soft",
+                                                "balanced",
+                                                "sharp"
+                                            ]
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "soundTextureSharpness": {
-                                    "type": [
-                                        "integer",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "integer"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "soundTextureSoftness": {
-                                    "type": [
-                                        "integer",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "integer"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "spellingHomophones": {
-                                    "type": [
-                                        "integer",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "integer"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "spellingLabel": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "low",
-                                        "medium",
-                                        "high",
-                                        null
+                                    "anyOf": [
+                                        {
+                                            "type": "string",
+                                            "enum": [
+                                                "low",
+                                                "medium",
+                                                "high"
+                                            ]
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "spellingLikelyMisspellings": {
@@ -4583,15 +5936,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     }
                                 },
                                 "spellingRisk": {
-                                    "type": [
-                                        "integer",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "integer"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "spellingSoundalikes": {
-                                    "type": [
-                                        "integer",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "integer"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 }
                             }
@@ -4602,21 +5963,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -4632,39 +6005,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -4744,15 +6137,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "status": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "price": {
-                                        "type": [
-                                            "number",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -4770,15 +6171,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "Keyed `include=cheapest` only.",
                             "properties": {
                                 "ending": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "price": {
-                                    "type": [
-                                        "number",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 }
                             }
@@ -4789,21 +6198,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -4819,39 +6240,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -4928,51 +6369,83 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "price": {
-                                "type": [
-                                    "number",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "number"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "renewal": {
-                                "type": [
-                                    "number",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "number"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "registrar": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "expires": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "parking": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "lifecycle": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "dropsOn": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "created": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             }
                         }
@@ -4982,21 +6455,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -5012,39 +6497,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -5128,9 +6633,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "object",
                             "properties": {
                                 "liveCount": {
-                                    "type": [
-                                        "integer",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "integer"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "classes": {
@@ -5160,9 +6669,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "registration": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "status": {
@@ -5173,21 +6686,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         ]
                                     },
                                     "owner": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "filed": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "registered": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "niceClasses": {
@@ -5197,16 +6722,24 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         }
                                     },
                                     "goods": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "description": "At most 500 characters, live trademarks only."
+                                        "description": "At most 500 characters, live trademarks only.",
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
+                                        ]
                                     },
                                     "url": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -5218,21 +6751,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -5248,39 +6793,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -5331,33 +6896,53 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "wikipediaTitle": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "backlinks": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "languages": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "wikidataId": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "description": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     }
@@ -5366,21 +6951,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -5396,39 +6993,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -5485,11 +7102,15 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "integer"
                         },
                         "medianFromThree": {
-                            "type": [
-                                "integer",
-                                "null"
-                            ],
-                            "description": "USD, only from 3 sales."
+                            "description": "USD, only from 3 sales.",
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "endingsSoldOn": {
                             "type": "integer"
@@ -5507,21 +7128,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -5537,39 +7170,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -5632,9 +7285,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "slug": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "relation": {
@@ -5645,11 +7302,15 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 ]
                             },
                             "openNames": {
-                                "type": [
-                                    "integer",
-                                    "null"
-                                ],
-                                "description": "Open to register plus for sale; null: not counted yet."
+                                "description": "Open to register plus for sale; null: not counted yet.",
+                                "anyOf": [
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
                             }
                         }
                     }
@@ -5658,21 +7319,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -5688,39 +7361,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -5805,21 +7498,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -5835,39 +7540,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -5938,9 +7663,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "description": "`wrd_<id>`."
                                 },
                                 "slug": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "origin": {
@@ -5960,21 +7689,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -5990,39 +7731,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -6085,23 +7846,31 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "word": {
-                            "type": [
-                                "object",
-                                "null"
-                            ],
                             "description": "On `ready`; null when the catalog no longer serves the word.",
-                            "properties": {
-                                "id": {
-                                    "type": "string",
-                                    "description": "`wrd_<id>`."
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "description": "`wrd_<id>`."
+                                        },
+                                        "slug": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ]
+                                        }
+                                    }
                                 },
-                                "slug": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ]
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "scan": {
                             "type": "string",
@@ -6124,11 +7893,15 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "string"
                         },
                         "resolvedAt": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Null while queued."
+                            "description": "Null while queued.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 },
@@ -6136,21 +7909,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -6166,39 +7951,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -6345,129 +8150,168 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 ]
                             },
                             "price": {
-                                "type": [
-                                    "number",
-                                    "null"
-                                ],
-                                "description": "Price today, USD."
+                                "description": "Price today, USD.",
+                                "anyOf": [
+                                    {
+                                        "type": "number"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
                             },
                             "priceKind": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "enum": [
-                                    "registration",
-                                    "premium",
-                                    "marketplace",
-                                    "auction",
-                                    "backorder",
-                                    null
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "registration",
+                                            "premium",
+                                            "marketplace",
+                                            "auction",
+                                            "backorder"
+                                        ]
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "renewal": {
-                                "type": [
-                                    "number",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "number"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "ratingBand": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "enum": [
-                                    "prime",
-                                    "strong",
-                                    "niche",
-                                    "thin",
-                                    null
-                                ],
-                                "description": "A simple band; the score behind it is never served on a list."
+                                "description": "A simple band; the score behind it is never served on a list.",
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "prime",
+                                            "strong",
+                                            "niche",
+                                            "thin"
+                                        ]
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
                             },
                             "format": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "enum": [
-                                    "oneWord",
-                                    "hack",
-                                    null
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "oneWord",
+                                            "hack"
+                                        ]
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "shape": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "enum": [
-                                    "single",
-                                    "properNoun",
-                                    "acronym",
-                                    "twoWords",
-                                    "phrase",
-                                    null
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "single",
+                                            "properNoun",
+                                            "acronym",
+                                            "twoWords",
+                                            "phrase"
+                                        ]
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "length": {
-                                "type": [
-                                    "integer",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "coverage": {
-                                "type": [
-                                    "object",
-                                    "null"
-                                ],
                                 "description": "The same word on other endings: available, premium, for sale.",
-                                "properties": {
-                                    "available": {
-                                        "type": "integer"
+                                "anyOf": [
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "available": {
+                                                "type": "integer"
+                                            },
+                                            "premium": {
+                                                "type": "integer"
+                                            },
+                                            "forSale": {
+                                                "type": "integer"
+                                            },
+                                            "unavailable": {
+                                                "type": "integer"
+                                            }
+                                        }
                                     },
-                                    "premium": {
-                                        "type": "integer"
-                                    },
-                                    "forSale": {
-                                        "type": "integer"
-                                    },
-                                    "unavailable": {
-                                        "type": "integer"
+                                    {
+                                        "type": "null"
                                     }
-                                }
+                                ]
                             },
                             "value": {
-                                "type": [
-                                    "object",
-                                    "null"
-                                ],
                                 "description": "Keyed: the current estimate, USD.",
-                                "properties": {
-                                    "value": {
-                                        "type": "number"
+                                "anyOf": [
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "value": {
+                                                "type": "number"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "null"
                                     }
-                                }
+                                ]
                             },
                             "upsidePercent": {
-                                "type": [
-                                    "number",
-                                    "null"
-                                ],
-                                "description": "Keyed."
+                                "description": "Keyed.",
+                                "anyOf": [
+                                    {
+                                        "type": "number"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
                             },
                             "liquidity": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "enum": [
-                                    "high",
-                                    "medium",
-                                    "low",
-                                    null
-                                ],
-                                "description": "Keyed."
+                                "description": "Keyed.",
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "high",
+                                            "medium",
+                                            "low"
+                                        ]
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
                             },
                             "verdict": {
                                 "type": "object",
@@ -6483,15 +8327,18 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         ]
                                     },
                                     "confidence": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "enum": [
-                                            "high",
-                                            "medium",
-                                            "low",
-                                            null
+                                        "anyOf": [
+                                            {
+                                                "type": "string",
+                                                "enum": [
+                                                    "high",
+                                                    "medium",
+                                                    "low"
+                                                ]
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -6503,21 +8350,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -6533,39 +8392,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -6616,11 +8495,15 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "id": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "`dom_<uuid>`; null when `tracked` is false."
+                            "description": "`dom_<uuid>`; null when `tracked` is false.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "name": {
                             "type": "string"
@@ -6652,9 +8535,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "lifecycle": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "drop": {
@@ -6679,57 +8566,84 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "object",
                             "properties": {
                                 "kind": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "registry",
-                                        "premium",
-                                        "aftermarket",
-                                        "backorder",
-                                        null
+                                    "anyOf": [
+                                        {
+                                            "type": "string",
+                                            "enum": [
+                                                "registry",
+                                                "premium",
+                                                "aftermarket",
+                                                "backorder"
+                                            ]
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "firstYear": {
-                                    "type": [
-                                        "number",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "registrar": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "renewal": {
-                                    "type": [
-                                        "number",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "transfer": {
-                                    "type": [
-                                        "number",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "isPromo": {
-                                    "type": [
-                                        "boolean",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "boolean"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "renewalTrap": {
                                     "type": "boolean"
                                 },
                                 "regularPrice": {
-                                    "type": [
-                                        "number",
-                                        "null"
-                                    ],
-                                    "description": "Keyed."
+                                    "description": "Keyed.",
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
                                 }
                             }
                         },
@@ -6737,224 +8651,306 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "object",
                             "properties": {
                                 "createdAt": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "updatedAt": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "expiresAt": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "registryUpdatedAt": {
-                                    "type": [
-                                        "string",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "registrar": {
-                                    "type": [
-                                        "object",
-                                        "null"
-                                    ],
-                                    "properties": {
-                                        "name": {
-                                            "type": "string"
+                                    "anyOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "ianaId": {
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "integer"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
+                                                    ]
+                                                },
+                                                "url": {
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "string"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
+                                                    ]
+                                                }
+                                            }
                                         },
-                                        "ianaId": {
-                                            "type": [
-                                                "integer",
-                                                "null"
-                                            ]
-                                        },
-                                        "url": {
-                                            "type": [
-                                                "string",
-                                                "null"
-                                            ]
+                                        {
+                                            "type": "null"
                                         }
-                                    }
+                                    ]
                                 }
                             }
                         },
                         "parking": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The parking or sale venue id."
+                            "description": "The parking or sale venue id.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "length": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "format": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "enum": [
-                                "oneWord",
-                                "hack",
-                                null
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "oneWord",
+                                        "hack"
+                                    ]
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "shape": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "enum": [
-                                "single",
-                                "properNoun",
-                                "acronym",
-                                "twoWords",
-                                "phrase",
-                                null
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "single",
+                                        "properNoun",
+                                        "acronym",
+                                        "twoWords",
+                                        "phrase"
+                                    ]
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "word": {
-                            "type": [
-                                "object",
-                                "null"
-                            ],
-                            "properties": {
-                                "id": {
-                                    "type": "string"
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "word": {
+                                            "type": "string"
+                                        },
+                                        "slug": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ]
+                                        }
+                                    }
                                 },
-                                "word": {
-                                    "type": "string"
-                                },
-                                "slug": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ]
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "rating": {
                             "type": "object",
                             "properties": {
                                 "band": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "prime",
-                                        "strong",
-                                        "niche",
-                                        "thin",
-                                        null
+                                    "anyOf": [
+                                        {
+                                            "type": "string",
+                                            "enum": [
+                                                "prime",
+                                                "strong",
+                                                "niche",
+                                                "thin"
+                                            ]
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "score": {
-                                    "type": [
-                                        "integer",
-                                        "null"
-                                    ],
-                                    "minimum": 0,
-                                    "maximum": 100,
-                                    "description": "Keyed, on this endpoint only."
+                                    "description": "Keyed, on this endpoint only.",
+                                    "anyOf": [
+                                        {
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "maximum": 100
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
                                 }
                             }
                         },
                         "verdict": {
-                            "type": [
-                                "object",
-                                "null"
-                            ],
                             "description": "Keyed.",
-                            "properties": {
-                                "rating": {
-                                    "type": "string",
-                                    "enum": [
-                                        "strong",
-                                        "good",
-                                        "risky",
-                                        "unrated"
-                                    ]
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "rating": {
+                                            "type": "string",
+                                            "enum": [
+                                                "strong",
+                                                "good",
+                                                "risky",
+                                                "unrated"
+                                            ]
+                                        },
+                                        "confidence": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "high",
+                                                        "medium",
+                                                        "low"
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ]
+                                        }
+                                    }
                                 },
-                                "confidence": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "high",
-                                        "medium",
-                                        "low",
-                                        null
-                                    ]
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "value": {
-                            "type": [
-                                "object",
-                                "null"
-                            ],
                             "description": "Keyed.",
-                            "properties": {
-                                "value": {
-                                    "type": "integer"
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "value": {
+                                            "type": "integer"
+                                        },
+                                        "upsidePercent": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "number"
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ]
+                                        },
+                                        "liquidity": {
+                                            "anyOf": [
+                                                {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "high",
+                                                        "medium",
+                                                        "low"
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ]
+                                        }
+                                    }
                                 },
-                                "upsidePercent": {
-                                    "type": [
-                                        "number",
-                                        "null"
-                                    ]
-                                },
-                                "liquidity": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "high",
-                                        "medium",
-                                        "low",
-                                        null
-                                    ]
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "comps": {
                             "type": "object",
                             "properties": {
                                 "tier": {
-                                    "type": [
-                                        "string",
-                                        "null"
-                                    ],
-                                    "enum": [
-                                        "same_word",
-                                        "synonyms",
-                                        "related",
-                                        "market",
-                                        null,
-                                        "sold_before"
-                                    ],
-                                    "description": "`sold_before` (this exact name sold before) on keyed answers only."
+                                    "description": "`sold_before` (this exact name sold before) on keyed answers only.",
+                                    "anyOf": [
+                                        {
+                                            "type": "string",
+                                            "enum": [
+                                                "same_word",
+                                                "synonyms",
+                                                "related",
+                                                "market",
+                                                "sold_before"
+                                            ]
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
                                 },
                                 "count": {
                                     "type": "integer"
                                 },
                                 "medianUsd": {
-                                    "type": [
-                                        "number",
-                                        "null"
+                                    "anyOf": [
+                                        {
+                                            "type": "number"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
                                     ]
                                 },
                                 "endingsSoldOn": {
@@ -6969,21 +8965,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -6999,39 +9007,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -7119,21 +9147,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "dropsOn": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "registrar": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "price": {
-                                "type": [
-                                    "number",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "number"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             }
                         }
@@ -7143,21 +9183,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -7173,39 +9225,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -7343,21 +9415,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -7373,39 +9457,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -7544,129 +9648,168 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 ]
                             },
                             "price": {
-                                "type": [
-                                    "number",
-                                    "null"
-                                ],
-                                "description": "Price today, USD."
+                                "description": "Price today, USD.",
+                                "anyOf": [
+                                    {
+                                        "type": "number"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
                             },
                             "priceKind": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "enum": [
-                                    "registration",
-                                    "premium",
-                                    "marketplace",
-                                    "auction",
-                                    "backorder",
-                                    null
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "registration",
+                                            "premium",
+                                            "marketplace",
+                                            "auction",
+                                            "backorder"
+                                        ]
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "renewal": {
-                                "type": [
-                                    "number",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "number"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "ratingBand": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "enum": [
-                                    "prime",
-                                    "strong",
-                                    "niche",
-                                    "thin",
-                                    null
-                                ],
-                                "description": "A simple band; the score behind it is never served on a list."
+                                "description": "A simple band; the score behind it is never served on a list.",
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "prime",
+                                            "strong",
+                                            "niche",
+                                            "thin"
+                                        ]
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
                             },
                             "format": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "enum": [
-                                    "oneWord",
-                                    "hack",
-                                    null
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "oneWord",
+                                            "hack"
+                                        ]
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "shape": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "enum": [
-                                    "single",
-                                    "properNoun",
-                                    "acronym",
-                                    "twoWords",
-                                    "phrase",
-                                    null
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "single",
+                                            "properNoun",
+                                            "acronym",
+                                            "twoWords",
+                                            "phrase"
+                                        ]
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "length": {
-                                "type": [
-                                    "integer",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "coverage": {
-                                "type": [
-                                    "object",
-                                    "null"
-                                ],
                                 "description": "The same word on other endings: available, premium, for sale.",
-                                "properties": {
-                                    "available": {
-                                        "type": "integer"
+                                "anyOf": [
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "available": {
+                                                "type": "integer"
+                                            },
+                                            "premium": {
+                                                "type": "integer"
+                                            },
+                                            "forSale": {
+                                                "type": "integer"
+                                            },
+                                            "unavailable": {
+                                                "type": "integer"
+                                            }
+                                        }
                                     },
-                                    "premium": {
-                                        "type": "integer"
-                                    },
-                                    "forSale": {
-                                        "type": "integer"
-                                    },
-                                    "unavailable": {
-                                        "type": "integer"
+                                    {
+                                        "type": "null"
                                     }
-                                }
+                                ]
                             },
                             "value": {
-                                "type": [
-                                    "object",
-                                    "null"
-                                ],
                                 "description": "Keyed: the current estimate, USD.",
-                                "properties": {
-                                    "value": {
-                                        "type": "number"
+                                "anyOf": [
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "value": {
+                                                "type": "number"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "null"
                                     }
-                                }
+                                ]
                             },
                             "upsidePercent": {
-                                "type": [
-                                    "number",
-                                    "null"
-                                ],
-                                "description": "Keyed."
+                                "description": "Keyed.",
+                                "anyOf": [
+                                    {
+                                        "type": "number"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
                             },
                             "liquidity": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "enum": [
-                                    "high",
-                                    "medium",
-                                    "low",
-                                    null
-                                ],
-                                "description": "Keyed."
+                                "description": "Keyed.",
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "high",
+                                            "medium",
+                                            "low"
+                                        ]
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
                             },
                             "verdict": {
                                 "type": "object",
@@ -7682,15 +9825,18 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         ]
                                     },
                                     "confidence": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "enum": [
-                                            "high",
-                                            "medium",
-                                            "low",
-                                            null
+                                        "anyOf": [
+                                            {
+                                                "type": "string",
+                                                "enum": [
+                                                    "high",
+                                                    "medium",
+                                                    "low"
+                                                ]
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -7702,21 +9848,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -7732,39 +9890,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -7869,29 +10047,45 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         ]
                                     },
                                     "key": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
                             },
                             "before": {
-                                "type": [
-                                    "object",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "object"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "after": {
-                                "type": [
-                                    "object",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "object"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "expiresAt": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             }
                         }
@@ -7901,21 +10095,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -7931,39 +10137,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -8036,9 +10262,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                             }
                         },
                         "words": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "tlds": {
@@ -8050,21 +10280,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -8080,39 +10322,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -8478,21 +10740,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -8508,39 +10782,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -8592,21 +10886,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -8622,39 +10928,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -9060,21 +11386,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -9090,39 +11428,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -9538,21 +11896,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -9568,39 +11938,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -9703,21 +12093,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -9733,39 +12135,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -9859,21 +12281,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -9889,39 +12323,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -10003,21 +12457,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -10033,39 +12499,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -10340,21 +12826,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -10370,39 +12868,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -10513,21 +13031,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -10543,39 +13073,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -10843,21 +13393,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -10873,39 +13435,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -11020,21 +13602,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -11050,39 +13644,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -11228,21 +13842,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -11258,39 +13884,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -11411,21 +14057,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -11441,39 +14099,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -11572,21 +14250,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -11602,39 +14292,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -11780,21 +14490,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -11810,39 +14532,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -11991,21 +14733,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -12021,39 +14775,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -12188,21 +14962,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -12218,39 +15004,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -12353,21 +15159,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -12383,39 +15201,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -12541,21 +15379,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -12571,39 +15421,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -12760,21 +15630,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -12790,39 +15672,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -13004,21 +15906,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -13034,39 +15948,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -13164,21 +16098,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -13194,39 +16140,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -13309,21 +16275,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -13339,39 +16317,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -13451,15 +16449,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                 "type": "integer"
                                             },
                                             "medianUsd": {
-                                                "type": [
-                                                    "integer",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             },
                                             "prevMedianUsd": {
-                                                "type": [
-                                                    "integer",
-                                                    "null"
+                                                "anyOf": [
+                                                    {
+                                                        "type": "integer"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
                                                 ]
                                             }
                                         }
@@ -13523,21 +16529,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -13553,39 +16571,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -13649,15 +16687,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "integer"
                             },
                             "meanUsd": {
-                                "type": [
-                                    "integer",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "medianUsd": {
-                                "type": [
-                                    "integer",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "comCount": {
@@ -13673,21 +16719,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -13703,39 +16761,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -13787,18 +16865,26 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "integer"
                             },
                             "median12mUsd": {
-                                "type": [
-                                    "integer",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "prevCount12m": {
                                 "type": "integer"
                             },
                             "prevMedian12mUsd": {
-                                "type": [
-                                    "integer",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "trendWord": {
@@ -13814,9 +16900,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "integer"
                             },
                             "median30dUsd": {
-                                "type": [
-                                    "integer",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             }
                         }
@@ -13826,21 +16916,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -13856,39 +16958,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -13943,15 +17065,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "integer"
                                     },
                                     "median12mUsd": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "prevMedian12mUsd": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "trendWord": {
@@ -13967,9 +17097,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "integer"
                                     },
                                     "median30dUsd": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -13987,15 +17121,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "integer"
                                     },
                                     "median12mUsd": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "prevMedian12mUsd": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "trendWord": {
@@ -14011,9 +17153,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "integer"
                                     },
                                     "median30dUsd": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -14031,15 +17177,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "integer"
                                     },
                                     "median12mUsd": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "prevMedian12mUsd": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "trendWord": {
@@ -14055,9 +17209,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "integer"
                                     },
                                     "median30dUsd": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -14075,15 +17233,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "integer"
                                     },
                                     "median12mUsd": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "prevMedian12mUsd": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "trendWord": {
@@ -14099,9 +17265,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "integer"
                                     },
                                     "median30dUsd": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -14113,21 +17283,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -14143,39 +17325,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -14241,15 +17443,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "integer"
                             },
                             "median12mUsd": {
-                                "type": [
-                                    "integer",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "prevMedian12mUsd": {
-                                "type": [
-                                    "integer",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "endingsSoldOn": {
@@ -14265,21 +17475,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -14295,39 +17517,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -14391,20 +17633,28 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "integer"
                         },
                         "median12mUsd": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "endingsSoldOn": {
                             "type": "integer"
                         },
                         "lastSaleMonth": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "`YYYY-MM`."
+                            "description": "`YYYY-MM`.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 },
@@ -14412,21 +17662,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -14442,39 +17704,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -14518,21 +17800,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "day": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "closing": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "withBid": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "counts": {
@@ -14574,9 +17868,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "integer"
                                     },
                                     "medianBidUsd": {
-                                        "type": [
-                                            "number",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -14597,9 +17895,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "integer"
                                     },
                                     "medianBidUsd": {
-                                        "type": [
-                                            "number",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -14620,9 +17922,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "integer"
                                     },
                                     "medianBidUsd": {
-                                        "type": [
-                                            "number",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -14648,21 +17954,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -14678,39 +17996,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -14788,43 +18126,61 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 ]
                             },
                             "bid": {
-                                "type": [
-                                    "number",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "number"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "bidCount": {
-                                "type": [
-                                    "integer",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "verdict": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "enum": [
-                                    "Strong choice",
-                                    "Good",
-                                    "Risky",
-                                    null
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "Strong choice",
+                                            "Good",
+                                            "Risky"
+                                        ]
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "firstYear": {
-                                "type": [
-                                    "number",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "number"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "tag": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "enum": [
-                                    "jumped",
-                                    null
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "jumped"
+                                        ]
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             }
                         }
@@ -14834,21 +18190,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -14864,39 +18232,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -14976,91 +18364,115 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 }
                             },
                             "closeRule": {
-                                "type": [
-                                    "object",
-                                    "null"
-                                ],
-                                "properties": {
-                                    "value": {
-                                        "type": "string"
+                                "anyOf": [
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "value": {
+                                                "type": "string"
+                                            },
+                                            "verifiedOn": {
+                                                "type": "string"
+                                            }
+                                        }
                                     },
-                                    "verifiedOn": {
-                                        "type": "string"
+                                    {
+                                        "type": "null"
                                     }
-                                }
+                                ]
                             },
                             "paymentRule": {
-                                "type": [
-                                    "object",
-                                    "null"
-                                ],
-                                "properties": {
-                                    "value": {
-                                        "type": "string"
+                                "anyOf": [
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "value": {
+                                                "type": "string"
+                                            },
+                                            "verifiedOn": {
+                                                "type": "string"
+                                            }
+                                        }
                                     },
-                                    "verifiedOn": {
-                                        "type": "string"
+                                    {
+                                        "type": "null"
                                     }
-                                }
+                                ]
                             },
                             "bidderRule": {
-                                "type": [
-                                    "object",
-                                    "null"
-                                ],
-                                "properties": {
-                                    "value": {
-                                        "type": "string"
+                                "anyOf": [
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "value": {
+                                                "type": "string"
+                                            },
+                                            "verifiedOn": {
+                                                "type": "string"
+                                            }
+                                        }
                                     },
-                                    "verifiedOn": {
-                                        "type": "string"
+                                    {
+                                        "type": "null"
                                     }
-                                }
+                                ]
                             },
                             "firstYear": {
                                 "type": "object",
                                 "additionalProperties": {
-                                    "type": [
-                                        "object",
-                                        "null"
-                                    ],
-                                    "properties": {
-                                        "value": {
+                                    "anyOf": [
+                                        {
                                             "type": "object",
                                             "properties": {
-                                                "registrationIncluded": {
-                                                    "type": "boolean"
+                                                "value": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "registrationIncluded": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "flatFee": {
+                                                            "type": "number"
+                                                        }
+                                                    }
                                                 },
-                                                "flatFee": {
-                                                    "type": "number"
+                                                "verifiedOn": {
+                                                    "type": "string"
                                                 }
                                             }
                                         },
-                                        "verifiedOn": {
-                                            "type": "string"
+                                        {
+                                            "type": "null"
                                         }
-                                    }
+                                    ]
                                 }
                             },
                             "today": {
-                                "type": [
-                                    "object",
-                                    "null"
-                                ],
-                                "properties": {
-                                    "closing": {
-                                        "type": "integer"
+                                "anyOf": [
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "closing": {
+                                                "type": "integer"
+                                            },
+                                            "withBid": {
+                                                "type": "integer"
+                                            },
+                                            "medianBidUsd": {
+                                                "anyOf": [
+                                                    {
+                                                        "type": "number"
+                                                    },
+                                                    {
+                                                        "type": "null"
+                                                    }
+                                                ]
+                                            }
+                                        }
                                     },
-                                    "withBid": {
-                                        "type": "integer"
-                                    },
-                                    "medianBidUsd": {
-                                        "type": [
-                                            "number",
-                                            "null"
-                                        ]
+                                    {
+                                        "type": "null"
                                     }
-                                }
+                                ]
                             }
                         }
                     }
@@ -15069,21 +18481,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -15099,39 +18523,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -15230,9 +18674,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "integer"
                             },
                             "median": {
-                                "type": [
-                                    "number",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "number"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             }
                         }
@@ -15242,21 +18690,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -15272,39 +18732,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -15392,52 +18872,79 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "category": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "definition": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "volume": {
-                                "type": [
-                                    "integer",
-                                    "null"
-                                ],
-                                "description": "Monthly searches at the latest edition."
+                                "description": "Monthly searches at the latest edition.",
+                                "anyOf": [
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
                             },
                             "growth": {
-                                "type": [
-                                    "integer",
-                                    "null"
-                                ],
-                                "description": "Signed whole percentage at the latest edition."
+                                "description": "Signed whole percentage at the latest edition.",
+                                "anyOf": [
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
                             },
                             "lane": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "enum": [
-                                    "weekly",
-                                    "yearly",
-                                    null
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "weekly",
+                                            "yearly"
+                                        ]
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "headWord": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "whyNow": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "firstEditionOn": {
@@ -15456,21 +18963,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -15486,39 +19005,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -15575,52 +19114,79 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "string"
                         },
                         "category": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "definition": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "volume": {
-                            "type": [
-                                "integer",
-                                "null"
-                            ],
-                            "description": "Monthly searches at the latest edition."
+                            "description": "Monthly searches at the latest edition.",
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "growth": {
-                            "type": [
-                                "integer",
-                                "null"
-                            ],
-                            "description": "Signed whole percentage at the latest edition."
+                            "description": "Signed whole percentage at the latest edition.",
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "lane": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "enum": [
-                                "weekly",
-                                "yearly",
-                                null
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "weekly",
+                                        "yearly"
+                                    ]
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "headWord": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "whyNow": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "firstEditionOn": {
@@ -15654,15 +19220,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         ]
                                     },
                                     "searches": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "growth": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -15674,28 +19248,39 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "object",
                                 "properties": {
                                     "volume": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "growth": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "growthWindow": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "enum": [
-                                            "3m",
-                                            "6m",
-                                            "1y",
-                                            "5y",
-                                            null
+                                        "anyOf": [
+                                            {
+                                                "type": "string",
+                                                "enum": [
+                                                    "3m",
+                                                    "6m",
+                                                    "1y",
+                                                    "5y"
+                                                ]
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "observedAt": {
@@ -15710,21 +19295,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -15740,39 +19337,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -15830,21 +19447,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -15860,39 +19489,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -15952,9 +19601,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "definition": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "headWords": {
@@ -15970,15 +19623,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 }
                             },
                             "openNamesFounder": {
-                                "type": [
-                                    "integer",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "openNamesInvestor": {
-                                "type": [
-                                    "integer",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "observations": {
@@ -15987,28 +19648,39 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "type": "object",
                                     "properties": {
                                         "volume": {
-                                            "type": [
-                                                "integer",
-                                                "null"
+                                            "anyOf": [
+                                                {
+                                                    "type": "integer"
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
                                             ]
                                         },
                                         "growth": {
-                                            "type": [
-                                                "integer",
-                                                "null"
+                                            "anyOf": [
+                                                {
+                                                    "type": "integer"
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
                                             ]
                                         },
                                         "growthWindow": {
-                                            "type": [
-                                                "string",
-                                                "null"
-                                            ],
-                                            "enum": [
-                                                "3m",
-                                                "6m",
-                                                "1y",
-                                                "5y",
-                                                null
+                                            "anyOf": [
+                                                {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "3m",
+                                                        "6m",
+                                                        "1y",
+                                                        "5y"
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
                                             ]
                                         },
                                         "observedAt": {
@@ -16024,21 +19696,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -16054,39 +19738,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -16161,55 +19865,82 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "startsOn": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "endsOn": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "Inclusive last day; null for one day."
+                                "description": "Inclusive last day; null for one day.",
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
                             },
                             "category": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "enum": [
-                                    "domaining",
-                                    "dns_governance",
-                                    "brand_ip",
-                                    "hosting_cloud",
-                                    "security_privacy",
-                                    "other_tech",
-                                    null
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "enum": [
+                                            "domaining",
+                                            "dns_governance",
+                                            "brand_ip",
+                                            "hosting_cloud",
+                                            "security_privacy",
+                                            "other_tech"
+                                        ]
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "countryCode": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "city": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "lat": {
-                                "type": [
-                                    "number",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "number"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "lng": {
-                                "type": [
-                                    "number",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "number"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "kind": {
@@ -16225,21 +19956,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -16255,39 +19998,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -16347,73 +20110,112 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "string"
                         },
                         "startsOn": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "endsOn": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Inclusive last day; null for one day."
+                            "description": "Inclusive last day; null for one day.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "category": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "enum": [
-                                "domaining",
-                                "dns_governance",
-                                "brand_ip",
-                                "hosting_cloud",
-                                "security_privacy",
-                                "other_tech",
-                                null
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "domaining",
+                                        "dns_governance",
+                                        "brand_ip",
+                                        "hosting_cloud",
+                                        "security_privacy",
+                                        "other_tech"
+                                    ]
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "countryCode": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "city": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "lat": {
-                            "type": [
-                                "number",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "number"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "lng": {
-                            "type": [
-                                "number",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "number"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "organizer": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "location": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "description": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     }
@@ -16422,21 +20224,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -16452,39 +20266,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -16572,61 +20406,92 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "startsOn": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "endsOn": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "category": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "enum": [
-                                            "domaining",
-                                            "dns_governance",
-                                            "brand_ip",
-                                            "hosting_cloud",
-                                            "security_privacy",
-                                            "other_tech",
-                                            "launches",
-                                            null
+                                        "anyOf": [
+                                            {
+                                                "type": "string",
+                                                "enum": [
+                                                    "domaining",
+                                                    "dns_governance",
+                                                    "brand_ip",
+                                                    "hosting_cloud",
+                                                    "security_privacy",
+                                                    "other_tech",
+                                                    "launches"
+                                                ]
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "countryCode": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "city": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "lat": {
-                                        "type": [
-                                            "number",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "lng": {
-                                        "type": [
-                                            "number",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "tld": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -16652,61 +20517,92 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "startsOn": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "endsOn": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "category": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "enum": [
-                                            "domaining",
-                                            "dns_governance",
-                                            "brand_ip",
-                                            "hosting_cloud",
-                                            "security_privacy",
-                                            "other_tech",
-                                            "launches",
-                                            null
+                                        "anyOf": [
+                                            {
+                                                "type": "string",
+                                                "enum": [
+                                                    "domaining",
+                                                    "dns_governance",
+                                                    "brand_ip",
+                                                    "hosting_cloud",
+                                                    "security_privacy",
+                                                    "other_tech",
+                                                    "launches"
+                                                ]
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "countryCode": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "city": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "lat": {
-                                        "type": [
-                                            "number",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "lng": {
-                                        "type": [
-                                            "number",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "tld": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -16732,61 +20628,92 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "startsOn": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "endsOn": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "category": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "enum": [
-                                            "domaining",
-                                            "dns_governance",
-                                            "brand_ip",
-                                            "hosting_cloud",
-                                            "security_privacy",
-                                            "other_tech",
-                                            "launches",
-                                            null
+                                        "anyOf": [
+                                            {
+                                                "type": "string",
+                                                "enum": [
+                                                    "domaining",
+                                                    "dns_governance",
+                                                    "brand_ip",
+                                                    "hosting_cloud",
+                                                    "security_privacy",
+                                                    "other_tech",
+                                                    "launches"
+                                                ]
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "countryCode": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "city": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "lat": {
-                                        "type": [
-                                            "number",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "lng": {
-                                        "type": [
-                                            "number",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "tld": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -16798,21 +20725,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -16828,39 +20767,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -16938,15 +20897,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "maximum": 5
                         },
                         "previousDate": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "nextDate": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "trends": {
@@ -16961,58 +20928,89 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "category": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "definition": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "volume": {
-                                        "type": [
-                                            "integer",
-                                            "null"
-                                        ],
-                                        "description": "Searches a month."
+                                        "description": "Searches a month.",
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
+                                        ]
                                     },
                                     "growth": {
-                                        "type": [
-                                            "number",
-                                            "null"
-                                        ],
-                                        "description": "Growth, percent."
+                                        "description": "Growth, percent.",
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
+                                        ]
                                     },
                                     "lane": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "enum": [
-                                            "weekly",
-                                            "yearly",
-                                            null
+                                        "anyOf": [
+                                            {
+                                                "type": "string",
+                                                "enum": [
+                                                    "weekly",
+                                                    "yearly"
+                                                ]
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "headWord": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "whyNow": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "openNames": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "lockedCount": {
@@ -17041,9 +21039,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                     ]
                                                 },
                                                 "relation": {
-                                                    "type": [
-                                                        "string",
-                                                        "null"
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "string"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
                                                     ]
                                                 },
                                                 "status": {
@@ -17057,95 +21059,129 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                     ]
                                                 },
                                                 "price": {
-                                                    "type": [
-                                                        "number",
-                                                        "null"
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "number"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
                                                     ]
                                                 },
                                                 "priceKind": {
-                                                    "type": [
-                                                        "string",
-                                                        "null"
-                                                    ],
-                                                    "enum": [
-                                                        "registration",
-                                                        "premium",
-                                                        "marketplace",
-                                                        "auction",
-                                                        null
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "registration",
+                                                                "premium",
+                                                                "marketplace",
+                                                                "auction"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
                                                     ]
                                                 },
                                                 "quotedBy": {
-                                                    "type": [
-                                                        "string",
-                                                        "null"
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "string"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
                                                     ]
                                                 },
                                                 "renewal": {
-                                                    "type": [
-                                                        "number",
-                                                        "null"
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "number"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
                                                     ]
                                                 },
                                                 "fiveYearCost": {
-                                                    "type": [
-                                                        "number",
-                                                        "null"
-                                                    ],
-                                                    "description": "Founder page."
+                                                    "description": "Founder page.",
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "number"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
+                                                    ]
                                                 },
                                                 "value": {
-                                                    "type": [
-                                                        "number",
-                                                        "null"
-                                                    ],
-                                                    "description": "Investor page; null past the public cap on Est. profit."
+                                                    "description": "Investor page; null past the public cap on Est. profit.",
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "number"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
+                                                    ]
                                                 },
                                                 "upsidePercent": {
-                                                    "type": [
-                                                        "number",
-                                                        "null"
-                                                    ],
-                                                    "description": "Capped on the public page."
+                                                    "description": "Capped on the public page.",
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "number"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
+                                                    ]
                                                 },
                                                 "upsideCapped": {
                                                     "type": "boolean"
                                                 },
                                                 "liquidity": {
-                                                    "type": [
-                                                        "string",
-                                                        "null"
-                                                    ],
-                                                    "enum": [
-                                                        "high",
-                                                        "medium",
-                                                        "low",
-                                                        null
-                                                    ]
-                                                },
-                                                "verdict": {
-                                                    "type": [
-                                                        "object",
-                                                        "null"
-                                                    ],
-                                                    "properties": {
-                                                        "label": {
-                                                            "type": "string",
-                                                            "enum": [
-                                                                "strong",
-                                                                "good",
-                                                                "risky"
-                                                            ]
-                                                        },
-                                                        "confidence": {
+                                                    "anyOf": [
+                                                        {
                                                             "type": "string",
                                                             "enum": [
                                                                 "high",
                                                                 "medium",
                                                                 "low"
                                                             ]
+                                                        },
+                                                        {
+                                                            "type": "null"
                                                         }
-                                                    }
+                                                    ]
+                                                },
+                                                "verdict": {
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "label": {
+                                                                    "type": "string",
+                                                                    "enum": [
+                                                                        "strong",
+                                                                        "good",
+                                                                        "risky"
+                                                                    ]
+                                                                },
+                                                                "confidence": {
+                                                                    "type": "string",
+                                                                    "enum": [
+                                                                        "high",
+                                                                        "medium",
+                                                                        "low"
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
+                                                    ]
                                                 },
                                                 "rating": {
                                                     "type": "string",
@@ -17206,21 +21242,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -17236,39 +21284,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -17351,15 +21419,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "maximum": 5
                         },
                         "previousDate": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "nextDate": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "trends": {
@@ -17374,58 +21450,89 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "category": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "definition": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "volume": {
-                                        "type": [
-                                            "integer",
-                                            "null"
-                                        ],
-                                        "description": "Searches a month."
+                                        "description": "Searches a month.",
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
+                                        ]
                                     },
                                     "growth": {
-                                        "type": [
-                                            "number",
-                                            "null"
-                                        ],
-                                        "description": "Growth, percent."
+                                        "description": "Growth, percent.",
+                                        "anyOf": [
+                                            {
+                                                "type": "number"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
+                                        ]
                                     },
                                     "lane": {
-                                        "type": [
-                                            "string",
-                                            "null"
-                                        ],
-                                        "enum": [
-                                            "weekly",
-                                            "yearly",
-                                            null
+                                        "anyOf": [
+                                            {
+                                                "type": "string",
+                                                "enum": [
+                                                    "weekly",
+                                                    "yearly"
+                                                ]
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "headWord": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "whyNow": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "openNames": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "lockedCount": {
@@ -17454,9 +21561,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                     ]
                                                 },
                                                 "relation": {
-                                                    "type": [
-                                                        "string",
-                                                        "null"
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "string"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
                                                     ]
                                                 },
                                                 "status": {
@@ -17470,95 +21581,129 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                     ]
                                                 },
                                                 "price": {
-                                                    "type": [
-                                                        "number",
-                                                        "null"
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "number"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
                                                     ]
                                                 },
                                                 "priceKind": {
-                                                    "type": [
-                                                        "string",
-                                                        "null"
-                                                    ],
-                                                    "enum": [
-                                                        "registration",
-                                                        "premium",
-                                                        "marketplace",
-                                                        "auction",
-                                                        null
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "string",
+                                                            "enum": [
+                                                                "registration",
+                                                                "premium",
+                                                                "marketplace",
+                                                                "auction"
+                                                            ]
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
                                                     ]
                                                 },
                                                 "quotedBy": {
-                                                    "type": [
-                                                        "string",
-                                                        "null"
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "string"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
                                                     ]
                                                 },
                                                 "renewal": {
-                                                    "type": [
-                                                        "number",
-                                                        "null"
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "number"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
                                                     ]
                                                 },
                                                 "fiveYearCost": {
-                                                    "type": [
-                                                        "number",
-                                                        "null"
-                                                    ],
-                                                    "description": "Founder page."
+                                                    "description": "Founder page.",
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "number"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
+                                                    ]
                                                 },
                                                 "value": {
-                                                    "type": [
-                                                        "number",
-                                                        "null"
-                                                    ],
-                                                    "description": "Investor page; null past the public cap on Est. profit."
+                                                    "description": "Investor page; null past the public cap on Est. profit.",
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "number"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
+                                                    ]
                                                 },
                                                 "upsidePercent": {
-                                                    "type": [
-                                                        "number",
-                                                        "null"
-                                                    ],
-                                                    "description": "Capped on the public page."
+                                                    "description": "Capped on the public page.",
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "number"
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
+                                                    ]
                                                 },
                                                 "upsideCapped": {
                                                     "type": "boolean"
                                                 },
                                                 "liquidity": {
-                                                    "type": [
-                                                        "string",
-                                                        "null"
-                                                    ],
-                                                    "enum": [
-                                                        "high",
-                                                        "medium",
-                                                        "low",
-                                                        null
-                                                    ]
-                                                },
-                                                "verdict": {
-                                                    "type": [
-                                                        "object",
-                                                        "null"
-                                                    ],
-                                                    "properties": {
-                                                        "label": {
-                                                            "type": "string",
-                                                            "enum": [
-                                                                "strong",
-                                                                "good",
-                                                                "risky"
-                                                            ]
-                                                        },
-                                                        "confidence": {
+                                                    "anyOf": [
+                                                        {
                                                             "type": "string",
                                                             "enum": [
                                                                 "high",
                                                                 "medium",
                                                                 "low"
                                                             ]
+                                                        },
+                                                        {
+                                                            "type": "null"
                                                         }
-                                                    }
+                                                    ]
+                                                },
+                                                "verdict": {
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "label": {
+                                                                    "type": "string",
+                                                                    "enum": [
+                                                                        "strong",
+                                                                        "good",
+                                                                        "risky"
+                                                                    ]
+                                                                },
+                                                                "confidence": {
+                                                                    "type": "string",
+                                                                    "enum": [
+                                                                        "high",
+                                                                        "medium",
+                                                                        "low"
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "type": "null"
+                                                        }
+                                                    ]
                                                 },
                                                 "rating": {
                                                     "type": "string",
@@ -17619,21 +21764,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -17649,39 +21806,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -17846,21 +22023,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -17876,39 +22065,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -17952,9 +22161,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "scannedToday": {
@@ -17972,9 +22185,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "scanned": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "state": {
@@ -17993,21 +22210,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -18023,39 +22252,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -18110,15 +22359,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "endpoint": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             },
                             "updatedOn": {
-                                "type": [
-                                    "string",
-                                    "null"
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
                                 ]
                             }
                         }
@@ -18128,21 +22385,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -18158,39 +22427,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -18257,21 +22546,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -18287,39 +22588,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -18374,15 +22695,23 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "ianaId": {
-                                        "type": [
-                                            "integer",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "integer"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     },
                                     "homepageUrl": {
-                                        "type": [
-                                            "string",
-                                            "null"
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
                                         ]
                                     }
                                 }
@@ -18438,21 +22767,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -18468,39 +22809,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
@@ -18551,133 +22912,174 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "plan": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "enum": [
-                                "founder",
-                                "investor",
-                                null
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "founder",
+                                        "investor"
+                                    ]
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "keyPrefix": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "listing": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "enum": [
-                                "names",
-                                "words",
-                                "catalog",
-                                "tlds",
-                                "registrars",
-                                "market",
-                                "trends",
-                                "agenda",
-                                "availability",
-                                "whois",
-                                "appraisal",
-                                "expired",
-                                "auctions",
-                                "sales-history",
-                                "price-comparison",
-                                "trending-topics",
-                                null
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "names",
+                                        "words",
+                                        "catalog",
+                                        "tlds",
+                                        "registrars",
+                                        "market",
+                                        "trends",
+                                        "agenda",
+                                        "availability",
+                                        "whois",
+                                        "appraisal",
+                                        "expired",
+                                        "auctions",
+                                        "sales-history",
+                                        "price-comparison",
+                                        "trending-topics"
+                                    ]
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "subscription": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "enum": [
-                                "BASIC",
-                                "PRO",
-                                "ULTRA",
-                                "MEGA",
-                                "CUSTOM",
-                                null
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "enum": [
+                                        "BASIC",
+                                        "PRO",
+                                        "ULTRA",
+                                        "MEGA",
+                                        "CUSTOM"
+                                    ]
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "month": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "resetsOn": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "calls": {
-                            "type": [
-                                "object",
-                                "null"
-                            ],
-                            "properties": {
-                                "used": {
-                                    "type": "integer"
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "used": {
+                                            "type": "integer"
+                                        },
+                                        "allowance": {
+                                            "type": "integer"
+                                        }
+                                    }
                                 },
-                                "allowance": {
-                                    "type": "integer"
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "liveChecks": {
-                            "type": [
-                                "object",
-                                "null"
-                            ],
-                            "properties": {
-                                "used": {
-                                    "type": "integer"
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "used": {
+                                            "type": "integer"
+                                        },
+                                        "allowance": {
+                                            "type": "integer"
+                                        }
+                                    }
                                 },
-                                "allowance": {
-                                    "type": "integer"
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "appraisals": {
-                            "type": [
-                                "object",
-                                "null"
-                            ],
-                            "properties": {
-                                "used": {
-                                    "type": "integer"
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "used": {
+                                            "type": "integer"
+                                        },
+                                        "allowance": {
+                                            "type": "integer"
+                                        }
+                                    }
                                 },
-                                "allowance": {
-                                    "type": "integer"
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "intakes": {
-                            "type": [
-                                "object",
-                                "null"
-                            ],
-                            "properties": {
-                                "used": {
-                                    "type": "integer"
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "used": {
+                                            "type": "integer"
+                                        },
+                                        "allowance": {
+                                            "type": "integer"
+                                        }
+                                    }
                                 },
-                                "allowance": {
-                                    "type": "integer"
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "investorEndpoints": {
-                            "type": [
-                                "boolean",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     }
@@ -18686,21 +23088,33 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "asOf": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "cursor": {
-                            "type": [
-                                "string",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         },
                         "limit": {
-                            "type": [
-                                "integer",
-                                "null"
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "null"
+                                }
                             ]
                         }
                     },
@@ -18716,39 +23130,59 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "This answer on the API."
                         },
                         "next": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The next page on the API, when there is one."
+                            "description": "The next page on the API, when there is one.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "register": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "Where to register the name, when it can be registered."
+                            "description": "Where to register the name, when it can be registered.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "product": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The Unique Domains page that opens what a refusal named."
+                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "dataset": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The GitHub dataset holding the same rows."
+                            "description": "The GitHub dataset holding the same rows.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         },
                         "details": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "description": "The public Unique Domains page about the subject."
+                            "description": "The public Unique Domains page about the subject.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 }
