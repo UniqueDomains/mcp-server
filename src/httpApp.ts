@@ -20,7 +20,7 @@ import { createServer as createHttpServer, type IncomingMessage, type ServerResp
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 
 import { ConfigError, readConfig, type Environment } from './config';
-import { HTTP_BODY_LIMIT_BYTES } from './limits';
+import { DRAIN_LIMIT_BYTES, HTTP_BODY_LIMIT_BYTES } from './limits';
 import { createMcpServer, prepareServer, SERVER_VERSION, type PreparedServer } from './server';
 
 export type WellKnownFile = { readonly body: string; readonly contentType: string };
@@ -74,10 +74,17 @@ const sendJsonRpcError = (res: ServerResponse, status: number, code: number, mes
 
 class BodyTooLargeError extends Error {}
 
+/**
+ * Reads the body up to `limit` bytes. An oversized body is drained unread to its end before the refusal, so the 413
+ * reaches a client still sending (answering mid-upload reset the connection on the client's side, review finding 6);
+ * past `DRAIN_LIMIT_BYTES` the socket is cut, since a client that keeps sending gets no answer worth the wait.
+ */
 const readBody = (req: IncomingMessage, limit: number): Promise<string> =>
     new Promise((resolve, reject) => {
+        // A declared length over the drain limit is cut at once; under it, the body is drained like a chunked one.
         const declared = Number(req.headers['content-length']);
-        if (Number.isFinite(declared) && declared > limit) {
+        if (Number.isFinite(declared) && declared > DRAIN_LIMIT_BYTES) {
+            req.destroy();
             reject(new BodyTooLargeError());
             return;
         }
@@ -85,14 +92,15 @@ const readBody = (req: IncomingMessage, limit: number): Promise<string> =>
         let size = 0;
         req.on('data', (chunk: Buffer) => {
             size += chunk.length;
-            if (size > limit) {
-                reject(new BodyTooLargeError());
+            if (size > DRAIN_LIMIT_BYTES) {
                 req.destroy();
+                reject(new BodyTooLargeError());
                 return;
             }
-            chunks.push(chunk);
+            if (size > limit) chunks.length = 0;
+            else chunks.push(chunk);
         });
-        req.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+        req.on('end', () => (size > limit ? reject(new BodyTooLargeError()) : resolve(Buffer.concat(chunks).toString('utf8'))));
         req.on('error', reject);
     });
 
@@ -102,7 +110,7 @@ const handleMcpPost = async (prepared: PreparedServer, req: IncomingMessage, res
         const body = await readBody(req, HTTP_BODY_LIMIT_BYTES);
         parsed = JSON.parse(body);
     } catch (error) {
-        if (error instanceof BodyTooLargeError) sendJsonRpcError(res, 413, -32600, 'The request body is over 1 MB.');
+        if (error instanceof BodyTooLargeError) sendJsonRpcError(res, 413, -32600, 'The request body is over 1 MB.', { Connection: 'close' });
         else sendJsonRpcError(res, 400, -32700, 'The request body is not JSON.');
         return;
     }

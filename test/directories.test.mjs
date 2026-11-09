@@ -57,7 +57,12 @@ test('the README carries the Cursor install link with the hosted config in base6
 
 test('the ChatGPT plugin package builds, and a field over its limit fails the build', () => {
     const out = mkdtempSync(join(tmpdir(), 'ud-plugin-'));
-    execFileSync(process.execPath, [join(ROOT, 'scripts', 'plugin-manifest.mjs'), '--out', out], { cwd: ROOT, stdio: 'pipe' });
+    // The committed review sheet holds placeholder texts: a build without the flag fails, a test build passes.
+    assert.throws(
+        () => execFileSync(process.execPath, [join(ROOT, 'scripts', 'plugin-manifest.mjs'), '--out', out], { cwd: ROOT, stdio: 'pipe' }),
+        (error) => /placeholder texts/u.test(String(error.stderr)),
+    );
+    execFileSync(process.execPath, [join(ROOT, 'scripts', 'plugin-manifest.mjs'), '--out', out, '--allow-placeholder'], { cwd: ROOT, stdio: 'pipe' });
     const zip = readFileSync(join(out, 'chatgpt-plugin.zip'));
     for (const name of ['plugin.json', 'mcp.json', 'skills/unique-domains/SKILL.md', 'assets/logo.png', 'assets/composer-icon.png']) assert.ok(zip.includes(Buffer.from(name)), name);
     const sheet = JSON.parse(readFileSync(join(out, 'chatgpt-plugin-review.json'), 'utf8'));
@@ -69,7 +74,7 @@ test('the ChatGPT plugin package builds, and a field over its limit fails the bu
     const bad = join(out, 'review.json');
     writeFileSync(bad, JSON.stringify({ ...review, displayName: 'A display name of more than thirty characters', negativeTests: review.negativeTests.slice(0, 2) }));
     assert.throws(
-        () => execFileSync(process.execPath, [join(ROOT, 'scripts', 'plugin-manifest.mjs'), '--review', bad, '--out', out], { cwd: ROOT, stdio: 'pipe' }),
+        () => execFileSync(process.execPath, [join(ROOT, 'scripts', 'plugin-manifest.mjs'), '--review', bad, '--out', out, '--allow-placeholder'], { cwd: ROOT, stdio: 'pipe' }),
         (error) => /displayName/u.test(String(error.stderr)) && /negativeTests/u.test(String(error.stderr)),
     );
 });

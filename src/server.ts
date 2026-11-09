@@ -19,8 +19,9 @@ import { ApiProblemError, createClient, type UniqueDomainsClient } from '@unique
 import packageJson from '../package.json';
 import { runTool, type CallContext } from './call';
 import { ConfigError, type ServerConfig } from './config';
+import { KEY_BOOT_TIMEOUT_MS } from './limits';
 import { TOOLS } from './generated/tools';
-import { isObject, outputSchemaFor, selectTools, type KeyPlan } from './profile';
+import { inputSchemaFor, isKeyless, isObject, outputSchemaFor, selectTools, type KeyPlan } from './profile';
 import type { ToolDefinition } from './tool';
 
 export const SERVER_NAME = 'uniquedomains';
@@ -63,7 +64,8 @@ export const createApiClient = (config: ServerConfig, fetchImpl?: typeof fetch):
 /** The key's plan from `get_key`. A refused key stops the start; an API that does not answer leaves the free tools. */
 export const readKeyPlan = async (client: UniqueDomainsClient, log: Logger): Promise<KeyPlan> => {
     try {
-        const answer = await client.requestOperation('get_key');
+        // Bounded: on stdio this runs before the MCP handshake, so a hung API must not outlast the client's start timeout.
+        const answer = await client.requestOperation('get_key', { signal: AbortSignal.timeout(KEY_BOOT_TIMEOUT_MS) });
         if (answer.notModified || 'text' in answer) return 'none';
         const data = answer.data;
         if (!isObject(data)) return 'none';
@@ -95,7 +97,7 @@ export const toListedTool = (tool: ToolDefinition, prepared: PreparedServer): To
     name: tool.name,
     title: tool.title,
     description: tool.description,
-    inputSchema: tool.inputSchema as Tool['inputSchema'],
+    inputSchema: inputSchemaFor(tool, prepared.config.profile, prepared.plan) as Tool['inputSchema'],
     outputSchema: outputSchemaFor(tool, prepared.config.profile) as Tool['outputSchema'],
     annotations: { title: tool.title, ...tool.annotations },
 });
@@ -104,7 +106,7 @@ export const createMcpServer = (prepared: PreparedServer, overrides: Partial<Pic
     const server = new Server({ name: SERVER_NAME, title: 'Unique Domains', version: SERVER_VERSION }, { capabilities: { tools: { listChanged: false } }, instructions: INSTRUCTIONS });
     const byName = new Map(prepared.tools.map((tool) => [tool.name, tool]));
     const listed = prepared.tools.map((tool) => toListedTool(tool, prepared));
-    const context: CallContext = { client: prepared.client, profile: prepared.config.profile, ...overrides };
+    const context: CallContext = { client: prepared.client, profile: prepared.config.profile, keyless: isKeyless(prepared.config.profile, prepared.plan), ...overrides };
 
     server.setRequestHandler(ListToolsRequestSchema, () => ({ tools: listed }));
     server.setRequestHandler(CallToolRequestSchema, async (request) => {

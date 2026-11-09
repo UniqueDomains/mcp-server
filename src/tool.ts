@@ -35,6 +35,8 @@ export type ToolDefinition = {
     /** Whether the hosted connector registers it (free tools outside the one-a-day gates). */
     readonly hosted: boolean;
     readonly inputSchema: JsonSchema;
+    /** Inputs only a key may send (`x-tier: keyed` on the parameter); hidden and refused without a key. */
+    readonly keyedParameters: readonly string[];
     readonly outputSchema: JsonSchema;
     readonly annotations: ToolAnnotationsDefinition;
     /** One reason per annotation value, for the directories' reviews. */

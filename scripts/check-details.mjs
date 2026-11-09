@@ -16,7 +16,7 @@ const trends = await fetch('https://api.unique.domains/v1/trends?limit=1').then(
 const slug = trends?.data?.[0]?.slug;
 if (typeof slug === 'string') samples.push({ operationId: 'get_trend', input: { slug } });
 
-const urls = [...new Set(samples.map(({ operationId, input }) => detailsFor(operationId, input, null, undefined)).filter((url) => url !== null))];
+const urls = [...new Set(samples.map(({ operationId, input, data }) => detailsFor(operationId, input, data ?? null, undefined)).filter((url) => url !== null))];
 const failures = [];
 for (const url of urls) {
     const response = await fetch(url, { redirect: 'manual', headers: { 'User-Agent': 'uniquedomains-mcp-server-contract' } });

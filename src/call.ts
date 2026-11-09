@@ -24,6 +24,8 @@ import { InputError, splitInput } from './validate';
 export type CallContext = {
     readonly client: UniqueDomainsClient;
     readonly profile: Profile;
+    /** No key behind the calls (the hosted connector, or the npm server without a paid member key). */
+    readonly keyless: boolean;
     /** Waits before the one retry of a short 429 (tests pass a stub). */
     readonly sleep?: (milliseconds: number) => Promise<void>;
     readonly now?: () => Date;
@@ -37,11 +39,16 @@ const errorResult = (text: string): CallToolResult => ({ isError: true, content:
 
 const pad = (value: number): string => String(value).padStart(2, '0');
 
-/** "at 00:00 UTC (in about 7 hours)", from a wait in seconds. */
+/** "at 00:00 UTC (in about 7 hours)", from a wait in seconds; under a minute the wait is said in seconds. */
 export const resetPhrase = (seconds: number, now: Date): string => {
     const at = new Date(now.getTime() + seconds * 1000);
     const minutes = Math.ceil(seconds / 60);
-    const wait = minutes < 90 ? `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}` : `${Math.round(minutes / 60)} hours`;
+    const wait =
+        seconds < 60
+            ? `${Math.max(1, Math.round(seconds))} ${Math.round(seconds) === 1 ? 'second' : 'seconds'}`
+            : minutes < 90
+              ? `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}`
+              : `${Math.round(minutes / 60)} hours`;
     return `at ${pad(at.getUTCHours())}:${pad(at.getUTCMinutes())} UTC (in about ${wait})`;
 };
 
@@ -68,6 +75,8 @@ export const refusalText = (error: ApiProblemError, profile: Profile, now: Date)
             if (profile === 'hosted' || !error.product) return `${detail} This tool comes with the Investor plan.`;
             return `${detail} This tool comes with the Investor plan; move to Investor at ${error.product}.`;
         case 'keyed_only':
+            // The hosted connector carries no plan talk (decision 15): the API's own detail names the paid tiers.
+            if (profile === 'hosted') return 'This connector serves the free answers only, and that input or page is not one of them. Call the tool again without it.';
             return `${detail} This tool needs a member key or a RapidAPI plan.`;
         case 'quota_spent': {
             const resetsAt = error.quota?.resetsAt ?? (error.retryAfter !== null ? new Date(now.getTime() + error.retryAfter * 1000) : null);
@@ -96,6 +105,32 @@ export const refusalText = (error: ApiProblemError, profile: Profile, now: Date)
     }
 };
 
+/* ---------- Accepted answers ---------- */
+
+/**
+ * What to do after a 202, per operation (review finding 1). Calling a metered tool again is never the advice when it
+ * would spend another unit: `check_name` bills a Live unit whenever the registry was asked, so the stored resource is
+ * read with `ud_get_name`; a word request is followed with `ud_get_word_request`, since a new request counts against
+ * the day's intake. `appraise_name` bills nothing while another run holds the name, so it may be called again.
+ */
+export const acceptedLine = (operationId: string, wait: number, data: JsonValue): string => {
+    const seconds = `about ${Math.max(1, Math.round(wait))} seconds`;
+    if (operationId === 'check_name') return `Not ready yet: the scanner is still reading the name. Read it with ud_get_name in ${seconds}; calling ud_check_name again spends another live check.`;
+    if (operationId === 'request_word') {
+        const requestId = isObject(data) && typeof data.requestId === 'string' ? data.requestId : null;
+        const follow = requestId === null ? 'ud_get_word_request' : `ud_get_word_request with requestId ${requestId}`;
+        return `Queued: the word joins the catalog's intake. Follow it with ${follow} in ${seconds}.`;
+    }
+    return `Not ready yet: the scanner is still working on it. Call this tool again in ${seconds}.`;
+};
+
+/**
+ * A request that never reached the API: `fetch` rejects with a `TypeError` whose `cause` is the socket error. Any other
+ * `TypeError` is a refusal of the input (the SDK refuses a `..` path segment that way, review finding 7) and is
+ * rethrown rather than reported as an API outage.
+ */
+const isNetworkFailure = (error: unknown): boolean => error instanceof TypeError && (error.message === 'fetch failed' || error.cause !== undefined);
+
 /* ---------- The call ---------- */
 
 const callOnce = (context: CallContext, operationId: string, input: ReturnType<typeof splitInput>) => {
@@ -115,6 +150,14 @@ export const runTool = async (context: CallContext, tool: ToolDefinition, args: 
     const operation = isOperationId(tool.operationId) ? OPERATIONS[tool.operationId] : undefined;
     if (operation === undefined) return errorResult(`The tool ${tool.name} has no operation in this version of the server.`);
 
+    // Without a key, the inputs only a key may send are hidden from the schema and refused here before any call.
+    const keyedSent = context.keyless ? tool.keyedParameters.filter((name) => args?.[name] !== undefined && args[name] !== null) : [];
+    if (keyedSent.length > 0) {
+        const names = keyedSent.map((name) => `\`${name}\``).join(', ');
+        if (context.profile === 'hosted') return errorResult(`This connector does not take ${names}. Call the tool again without it.`);
+        return errorResult(`${names} needs a member key: set UD_API_KEY (Settings, Account, API in Unique Domains), or call the tool again without it.`);
+    }
+
     let input: ReturnType<typeof splitInput>;
     try {
         input = splitInput(operation, args);
@@ -128,15 +171,16 @@ export const runTool = async (context: CallContext, tool: ToolDefinition, args: 
         try {
             answer = await callOnce(context, tool.operationId, input);
         } catch (error) {
-            // One retry of a short 429 (the SDK already retried a one-second wait once); a longer wait is told instead.
+            // One retry of a short 429. A wait of one second or less was already retried once by the SDK, so it is not
+            // retried again here (review finding 4); a wait over RETRY_AFTER_MAX_SECONDS is told instead.
             if (!(error instanceof ApiProblemError) || error.status !== 429 || error.code !== 'rate_limited') throw error;
-            if (error.retryAfter === null || error.retryAfter > RETRY_AFTER_MAX_SECONDS) throw error;
+            if (error.retryAfter === null || error.retryAfter <= 1 || error.retryAfter > RETRY_AFTER_MAX_SECONDS) throw error;
             await (context.sleep ?? sleepFor)(Math.max(1, error.retryAfter) * 1000);
             answer = await callOnce(context, tool.operationId, input);
         }
     } catch (error) {
         if (error instanceof ApiProblemError) return errorResult(refusalText(error, context.profile, now()));
-        if (error instanceof TypeError) return errorResult('The Unique Domains API did not answer. Try again in a minute.');
+        if (isNetworkFailure(error)) return errorResult('The Unique Domains API did not answer. Try again in a minute.');
         throw error;
     }
 
@@ -151,10 +195,7 @@ export const runTool = async (context: CallContext, tool: ToolDefinition, args: 
     const echoed: Record<string, JsonValue | undefined> = { ...input.path, ...input.query };
     const structured = shapeAnswer(context.profile, tool.operationId, echoed, envelope);
     let line = textLine(tool.title, structured);
-    if (answer.status === 202) {
-        const wait = answer.retryAfter ?? 30;
-        line = `Not ready yet: the scanner is still working on it. Call this tool again in about ${wait} seconds. ${line}`;
-    }
+    if (answer.status === 202) line = `${acceptedLine(tool.operationId, answer.retryAfter ?? 30, structured.data)} ${line}`;
     return {
         structuredContent: structured,
         content: [

@@ -103,6 +103,10 @@ export const splitInput = (operation: OperationDefinition, args: Readonly<Record
             continue;
         }
         const value = readScalar(parameter.name, parameter, raw);
+        // A path segment of `.` or `..`, or one holding a slash, would move the request to another path.
+        if (parameter.in === 'path' && typeof value === 'string' && (value === '.' || value === '..' || value.includes('/'))) {
+            throw new InputError(`\`${parameter.name}\` must be one path segment; got ${JSON.stringify(raw)}.`);
+        }
         if (parameter.in === 'path') path[parameter.name] = typeof value === 'boolean' ? String(value) : value;
         else query[parameter.name] = value;
     }

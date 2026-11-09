@@ -112,6 +112,31 @@ export const inputSchemaOf = (operation) => {
     return { type: 'object', properties, ...(required.length > 0 ? { required } : {}), additionalProperties: false };
 };
 
+/**
+ * The parameters of a free operation that only a key may send (`x-tier: keyed` on the parameter: `sort`, `prefix`,
+ * `contains`, ...). The server hides them from a caller without a key (the hosted connector, the keyless npm server):
+ * the API refuses them there with `keyed_only`, so showing them would invite a call that always fails.
+ */
+export const keyedParametersOf = (operationId, document) => {
+    const operation = findOperation(operationId, document);
+    return (operation.parameters ?? []).filter(isKeyedParameter).map((parameter) => parameter.name);
+};
+
+/**
+ * `x-tier: keyed`, or a description that says the input is paid only where the document has no marker: `include` on
+ * `get_word_endings` reads "Comma-separated optional blocks: cheapest (paid)." and its one block is paid.
+ */
+const isKeyedParameter = (parameter) =>
+    parameter['x-tier'] === 'keyed' || /\(paid\)|paid subscriptions only/iu.test(parameter.description ?? parameter.schema?.description ?? '');
+
+const findOperation = (operationId, document) => {
+    const operation = Object.values(document.paths)
+        .flatMap((item) => Object.values(item))
+        .find((candidate) => candidate && candidate.operationId === operationId);
+    if (!operation) throw new Error(`${operationId}: not in the document`);
+    return operation;
+};
+
 /* ---------- Output schemas ---------- */
 
 /** Keywords an MCP client's JSON Schema validator understands; OpenAPI's own (`example`, `x-*`, `discriminator`) go. */
@@ -139,29 +164,41 @@ const KEPT_KEYWORDS = new Set([
  * answer legitimately lacks keys: `fields` keeps only the keys asked, the hosted profile strips two links, a 202 holds
  * the resource so far. The schema describes the shape; it does not gate it.
  */
-export const relaxSchema = (node, resolve) => {
-    if (Array.isArray(node)) return node.map((item) => relaxSchema(item, resolve));
+export const relaxSchema = (node, resolve, options = {}) => {
+    const again = (value) => relaxSchema(value, resolve, options);
+    if (Array.isArray(node)) return node.map(again);
     if (node === null || typeof node !== 'object') return node;
-    if (typeof node.$ref === 'string') return relaxSchema(resolve(node.$ref), resolve);
+    if (typeof node.$ref === 'string') return again(resolve(node.$ref));
     const out = {};
     for (const [key, value] of Object.entries(node)) {
         if (key === 'oneOf') {
-            out.anyOf = relaxSchema(value, resolve);
+            out.anyOf = again(value);
             continue;
         }
         if (!KEPT_KEYWORDS.has(key)) continue;
         if (key === 'additionalProperties') {
-            if (value !== false) out.additionalProperties = relaxSchema(value, resolve);
+            if (value !== false) out.additionalProperties = again(value);
             continue;
         }
         if (key === 'properties') {
-            out.properties = Object.fromEntries(Object.entries(value).map(([name, schema]) => [name, relaxSchema(schema, resolve)]));
+            const kept = Object.entries(value).filter(([, schema]) => !(options.dropKeyed && isKeyedOnly(schema)));
+            out.properties = Object.fromEntries(kept.map(([name, schema]) => [name, again(schema)]));
             continue;
         }
-        out[key] = relaxSchema(value, resolve);
+        // A description naming a score or a ranking is dropped, not reworded: the tool texts carry none (AGENTS.md,
+        // Minimum Data Exposure), and the field it describes stays typed.
+        if (key === 'description' && FORBIDDEN_WORDS.some((word) => word.test(value))) continue;
+        out[key] = again(value);
     }
     return splitTypeArray(out);
 };
+
+/**
+ * A field the document marks as keyed only ("Keyed, on this endpoint only.", "Keyed."): a free tool's output schema
+ * leaves it out, since the free grade never answers it and the hosted connector's `tools/list` would otherwise name a
+ * score. Relaxed schemas stay open, so a member key's answer with the field still validates.
+ */
+const isKeyedOnly = (schema) => schema !== null && typeof schema === 'object' && typeof schema.description === 'string' && /^Keyed\b/u.test(schema.description);
 
 /** Keywords that only constrain one JSON type, so they follow that type's branch when a type array is split. */
 const KEYWORDS_BY_TYPE = {
@@ -212,10 +249,7 @@ const linksSchema = () => ({
 
 /** The output schema of one operation, as the local profile answers it (the hosted profile drops two links at run time). */
 export const outputSchemaOf = (operationId, document) => {
-    const operation = Object.values(document.paths)
-        .flatMap((item) => Object.values(item))
-        .find((candidate) => candidate && candidate.operationId === operationId);
-    if (!operation) throw new Error(`${operationId}: not in the document`);
+    const operation = findOperation(operationId, document);
     const schema = operation.responses?.['200']?.content?.['application/json']?.schema;
     if (!schema) throw new Error(`${operationId}: no JSON 200 answer`);
     const resolve = (ref) => {
@@ -224,7 +258,7 @@ export const outputSchemaOf = (operationId, document) => {
         if (!target) throw new Error(`${operationId}: unresolved ${ref}`);
         return target;
     };
-    const relaxed = relaxSchema(schema, resolve);
+    const relaxed = relaxSchema(schema, resolve, { dropKeyed: operation['x-tier'] === 'free' });
     const data = relaxed.properties?.data ?? {};
     const links = relaxSchema(linksSchema(), resolve);
     const meta = relaxed.properties?.meta ?? { type: 'object' };
@@ -289,6 +323,7 @@ export const buildTools = (operations, document) => {
             metered: operation.metered,
             hosted: operation.tier === 'free' && !HOSTED_EXCLUDED_OPERATIONS.includes(operation.id),
             inputSchema: inputSchemaOf(operation),
+            keyedParameters: keyedParametersOf(operation.id, document),
             outputSchema: outputSchemaOf(operation.id, document),
             annotations: annotationsOf(operation),
             justification: justificationOf(operation),
@@ -303,4 +338,12 @@ export const textsOf = (tool) => [
     tool.description,
     ...Object.values(tool.inputSchema.properties).map((schema) => schema.description ?? ''),
     ...Object.values(tool.justification),
+    ...descriptionsIn(tool.outputSchema),
 ];
+
+/** Every `description` inside a schema. */
+const descriptionsIn = (node) => {
+    if (Array.isArray(node)) return node.flatMap(descriptionsIn);
+    if (node === null || typeof node !== 'object') return [];
+    return [...(typeof node.description === 'string' ? [node.description] : []), ...Object.values(node).flatMap(descriptionsIn)];
+};

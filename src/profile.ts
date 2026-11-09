@@ -32,7 +32,33 @@ export const selectTools = (tools: readonly ToolDefinition[], profile: Profile, 
     });
 };
 
+/** `Array.isArray` does not narrow a readonly array out of a union, hence the guard. */
+export const isObject = (value: JsonValue | undefined): value is JsonObject => value !== null && typeof value === 'object' && !Array.isArray(value);
+
 const STRIPPED_LINKS = ['register', 'product'];
+
+/** Whether the caller holds no key: the hosted connector always, the npm server without a paid member key. */
+export const isKeyless = (profile: Profile, plan: KeyPlan): boolean => profile === 'hosted' || plan === 'none';
+
+/** `limit`'s description for a caller without a key: the document's names the paid page size, which is plan talk here. */
+const KEYLESS_LIMIT_DESCRIPTION = 'Page size, 20 at most.';
+
+/**
+ * The input schema a caller sees: without a key, the inputs only a key may send are left out (review finding 2; the
+ * API would refuse them `keyed_only`, and the hosted connector carries no plan talk, decision 15), and `limit` reads
+ * its keyless bound.
+ */
+export const inputSchemaFor = (tool: ToolDefinition, profile: Profile, plan: KeyPlan): JsonSchema => {
+    if (!isKeyless(profile, plan)) return tool.inputSchema;
+    const properties = tool.inputSchema.properties;
+    if (!isObject(properties)) return tool.inputSchema;
+    const kept: Record<string, JsonValue> = {};
+    for (const [name, schema] of Object.entries(properties)) {
+        if (schema === undefined || tool.keyedParameters.includes(name)) continue;
+        kept[name] = name === 'limit' && isObject(schema) ? { ...schema, description: KEYLESS_LIMIT_DESCRIPTION } : schema;
+    }
+    return { ...tool.inputSchema, properties: kept };
+};
 
 /** The output schema a profile declares: the hosted one names no `register` or `product` link. */
 export const outputSchemaFor = (tool: ToolDefinition, profile: Profile): JsonSchema => {
@@ -46,9 +72,6 @@ export const outputSchemaFor = (tool: ToolDefinition, profile: Profile): JsonSch
     const kept = Object.fromEntries(Object.entries(linkProperties).filter(([name]) => !STRIPPED_LINKS.includes(name)));
     return { ...tool.outputSchema, properties: { ...properties, links: { ...links, properties: kept } } };
 };
-
-/** `Array.isArray` does not narrow a readonly array out of a union, hence the guard. */
-export const isObject = (value: JsonValue | undefined): value is JsonObject => value !== null && typeof value === 'object' && !Array.isArray(value);
 
 /** Removes `register` and `product` from every `links` object at any depth (rows may carry their own links). */
 const stripLinks = (value: JsonValue | undefined): JsonValue | undefined => {

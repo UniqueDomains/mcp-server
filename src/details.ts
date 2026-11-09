@@ -11,7 +11,7 @@
  * A word has no page on the website: its tools answer null.
  */
 
-import type { JsonValue } from '@uniquedomains/sdk';
+import type { JsonObject, JsonValue } from '@uniquedomains/sdk';
 
 export const WEBSITE = 'https://unique.domains';
 
@@ -42,9 +42,23 @@ const registrarPage: DetailsRule = (input) => {
     return value === null ? `${WEBSITE}/registrars` : `${WEBSITE}/registrars/${encodeURIComponent(registrarSlug(value))}`;
 };
 
+/**
+ * One ending: `/tld/<ending>` exists for the public set only (`/tld/aaa` answers 404, review finding 3), and only
+ * `get_tld`'s answer says whether the ending is in it (its `quality` band is set for the public set alone). The other
+ * ending tools answer no such flag, so they point at the `/tld` hub. A leading dot is stripped, as the API does.
+ */
+const tldPage: DetailsRule = (input, data) => {
+    const raw = typeof input.tld === 'string' ? input.tld.trim().replace(/^\./u, '') : '';
+    const publicSet = isRecord(data) && typeof data.quality === 'string' && data.quality !== '';
+    const tld = segment(raw);
+    return publicSet && tld !== null ? `${WEBSITE}/tld/${tld}` : `${WEBSITE}/tld`;
+};
+
+const isRecord = (value: JsonValue | undefined): value is JsonObject => value !== null && typeof value === 'object' && !Array.isArray(value);
+
 /** A domain read by name or id: the name from the answer when the caller passed an id. */
 const domainPage: DetailsRule = (input, data) => {
-    const fromData = data !== null && typeof data === 'object' && !Array.isArray(data) && 'name' in data ? segment(data.name) : null;
+    const fromData = isRecord(data) ? segment(data.name) : null;
     const name = fromData ?? (typeof input.nameOrId === 'string' && input.nameOrId.includes('.') ? segment(input.nameOrId) : null);
     return name === null ? `${WEBSITE}/domains` : `${WEBSITE}/availability/${name}`;
 };
@@ -83,11 +97,11 @@ export const DETAILS_RULES: Readonly<Record<string, DetailsRule>> = {
     // Endings.
     list_tlds: page('/tld'),
     get_meta_tlds: page('/tld'),
-    get_tld: pageOf('/tld', 'tld'),
-    get_tld_stats: pageOf('/tld', 'tld'),
-    list_tld_phases: pageOf('/tld', 'tld'),
-    list_tld_changes: pageOf('/tld', 'tld'),
-    list_tld_keywords: pageOf('/tld', 'tld'),
+    get_tld: tldPage,
+    get_tld_stats: page('/tld'),
+    list_tld_phases: page('/tld'),
+    list_tld_changes: page('/tld'),
+    list_tld_keywords: page('/tld'),
     list_tld_applications: page('/tld/applications'),
     list_tld_application_changes: page('/tld/applications'),
     get_tld_application_string: page('/tld/applications'),
@@ -138,11 +152,13 @@ export const detailsFor = (operationId: string, input: Input, data: JsonValue | 
 };
 
 /** One sample input per pattern, for the nightly check that each page answers 200 (`scripts/check-details.mjs`). */
-export const DETAILS_SAMPLES: readonly { readonly operationId: string; readonly input: Input }[] = [
+export const DETAILS_SAMPLES: readonly { readonly operationId: string; readonly input: Input; readonly data?: JsonValue }[] = [
     { operationId: 'get_name', input: { name: 'harbor.io' } },
     { operationId: 'get_name_registry', input: { name: 'harbor.io' } },
     { operationId: 'list_domains', input: {} },
-    { operationId: 'get_tld', input: { tld: 'ai' } },
+    // A public-set ending (its answer carries the band) and one outside the set, which points at the hub.
+    { operationId: 'get_tld', input: { tld: 'ai' }, data: { quality: 'prime' } },
+    { operationId: 'get_tld', input: { tld: 'aaa' }, data: { quality: null } },
     { operationId: 'list_tlds', input: {} },
     { operationId: 'list_tld_applications', input: {} },
     { operationId: 'list_registrars', input: {} },

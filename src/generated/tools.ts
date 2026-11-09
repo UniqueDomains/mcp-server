@@ -36,6 +36,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -181,17 +182,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 },
                                 "renewalTrap": {
                                     "type": "boolean"
-                                },
-                                "regularPrice": {
-                                    "description": "Keyed.",
-                                    "anyOf": [
-                                        {
-                                            "type": "number"
-                                        },
-                                        {
-                                            "type": "null"
-                                        }
-                                    ]
                                 }
                             }
                         },
@@ -373,99 +363,8 @@ export const TOOLS: readonly ToolDefinition[] = [
                                             "type": "null"
                                         }
                                     ]
-                                },
-                                "score": {
-                                    "description": "Keyed, on this endpoint only.",
-                                    "anyOf": [
-                                        {
-                                            "type": "integer",
-                                            "minimum": 0,
-                                            "maximum": 100
-                                        },
-                                        {
-                                            "type": "null"
-                                        }
-                                    ]
                                 }
                             }
-                        },
-                        "verdict": {
-                            "description": "Keyed.",
-                            "anyOf": [
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "rating": {
-                                            "type": "string",
-                                            "enum": [
-                                                "strong",
-                                                "good",
-                                                "risky",
-                                                "unrated"
-                                            ]
-                                        },
-                                        "confidence": {
-                                            "anyOf": [
-                                                {
-                                                    "type": "string",
-                                                    "enum": [
-                                                        "high",
-                                                        "medium",
-                                                        "low"
-                                                    ]
-                                                },
-                                                {
-                                                    "type": "null"
-                                                }
-                                            ]
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        },
-                        "value": {
-                            "description": "Keyed.",
-                            "anyOf": [
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "value": {
-                                            "type": "integer"
-                                        },
-                                        "upsidePercent": {
-                                            "anyOf": [
-                                                {
-                                                    "type": "number"
-                                                },
-                                                {
-                                                    "type": "null"
-                                                }
-                                            ]
-                                        },
-                                        "liquidity": {
-                                            "anyOf": [
-                                                {
-                                                    "type": "string",
-                                                    "enum": [
-                                                        "high",
-                                                        "medium",
-                                                        "low"
-                                                    ]
-                                                },
-                                                {
-                                                    "type": "null"
-                                                }
-                                            ]
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
                         },
                         "comps": {
                             "type": "object",
@@ -653,6 +552,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -1315,6 +1215,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -1934,6 +1835,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -2173,6 +2075,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -2183,17 +2086,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "boolean"
                         },
                         "observedOn": {
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        },
-                        "observedAt": {
-                            "description": "Keyed.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -2501,6 +2393,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -2747,6 +2640,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -2973,6 +2867,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -3201,6 +3096,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -3411,6 +3307,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -3593,6 +3490,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -3775,6 +3673,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -3960,6 +3859,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -4175,6 +4075,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -4428,6 +4329,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -4596,6 +4498,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -5298,6 +5201,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -5513,6 +5417,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -6105,6 +6010,9 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [
+            "include"
+        ],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -6165,32 +6073,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "integer"
                             },
                             "description": "`{ ending: count }`."
-                        },
-                        "cheapest": {
-                            "type": "object",
-                            "description": "Keyed `include=cheapest` only.",
-                            "properties": {
-                                "ending": {
-                                    "anyOf": [
-                                        {
-                                            "type": "string"
-                                        },
-                                        {
-                                            "type": "null"
-                                        }
-                                    ]
-                                },
-                                "price": {
-                                    "anyOf": [
-                                        {
-                                            "type": "number"
-                                        },
-                                        {
-                                            "type": "null"
-                                        }
-                                    ]
-                                }
-                            }
                         }
                     }
                 },
@@ -6347,6 +6229,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -6609,6 +6492,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -6889,6 +6773,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -7089,6 +6974,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -7273,6 +7159,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -7468,6 +7355,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -7632,6 +7520,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -7827,6 +7716,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -8117,6 +8007,11 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [
+            "prefix",
+            "contains",
+            "sort"
+        ],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -8188,7 +8083,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 ]
                             },
                             "ratingBand": {
-                                "description": "A simple band; the score behind it is never served on a list.",
                                 "anyOf": [
                                     {
                                         "type": "string",
@@ -8269,79 +8163,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "null"
                                     }
                                 ]
-                            },
-                            "value": {
-                                "description": "Keyed: the current estimate, USD.",
-                                "anyOf": [
-                                    {
-                                        "type": "object",
-                                        "properties": {
-                                            "value": {
-                                                "type": "number"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "type": "null"
-                                    }
-                                ]
-                            },
-                            "upsidePercent": {
-                                "description": "Keyed.",
-                                "anyOf": [
-                                    {
-                                        "type": "number"
-                                    },
-                                    {
-                                        "type": "null"
-                                    }
-                                ]
-                            },
-                            "liquidity": {
-                                "description": "Keyed.",
-                                "anyOf": [
-                                    {
-                                        "type": "string",
-                                        "enum": [
-                                            "high",
-                                            "medium",
-                                            "low"
-                                        ]
-                                    },
-                                    {
-                                        "type": "null"
-                                    }
-                                ]
-                            },
-                            "verdict": {
-                                "type": "object",
-                                "description": "Keyed.",
-                                "properties": {
-                                    "rating": {
-                                        "type": "string",
-                                        "enum": [
-                                            "strong",
-                                            "good",
-                                            "risky",
-                                            "unrated"
-                                        ]
-                                    },
-                                    "confidence": {
-                                        "anyOf": [
-                                            {
-                                                "type": "string",
-                                                "enum": [
-                                                    "high",
-                                                    "medium",
-                                                    "low"
-                                                ]
-                                            },
-                                            {
-                                                "type": "null"
-                                            }
-                                        ]
-                                    }
-                                }
                             }
                         }
                     }
@@ -8488,6 +8309,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -8633,17 +8455,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 },
                                 "renewalTrap": {
                                     "type": "boolean"
-                                },
-                                "regularPrice": {
-                                    "description": "Keyed.",
-                                    "anyOf": [
-                                        {
-                                            "type": "number"
-                                        },
-                                        {
-                                            "type": "null"
-                                        }
-                                    ]
                                 }
                             }
                         },
@@ -8825,99 +8636,8 @@ export const TOOLS: readonly ToolDefinition[] = [
                                             "type": "null"
                                         }
                                     ]
-                                },
-                                "score": {
-                                    "description": "Keyed, on this endpoint only.",
-                                    "anyOf": [
-                                        {
-                                            "type": "integer",
-                                            "minimum": 0,
-                                            "maximum": 100
-                                        },
-                                        {
-                                            "type": "null"
-                                        }
-                                    ]
                                 }
                             }
-                        },
-                        "verdict": {
-                            "description": "Keyed.",
-                            "anyOf": [
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "rating": {
-                                            "type": "string",
-                                            "enum": [
-                                                "strong",
-                                                "good",
-                                                "risky",
-                                                "unrated"
-                                            ]
-                                        },
-                                        "confidence": {
-                                            "anyOf": [
-                                                {
-                                                    "type": "string",
-                                                    "enum": [
-                                                        "high",
-                                                        "medium",
-                                                        "low"
-                                                    ]
-                                                },
-                                                {
-                                                    "type": "null"
-                                                }
-                                            ]
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        },
-                        "value": {
-                            "description": "Keyed.",
-                            "anyOf": [
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "value": {
-                                            "type": "integer"
-                                        },
-                                        "upsidePercent": {
-                                            "anyOf": [
-                                                {
-                                                    "type": "number"
-                                                },
-                                                {
-                                                    "type": "null"
-                                                }
-                                            ]
-                                        },
-                                        "liquidity": {
-                                            "anyOf": [
-                                                {
-                                                    "type": "string",
-                                                    "enum": [
-                                                        "high",
-                                                        "medium",
-                                                        "low"
-                                                    ]
-                                                },
-                                                {
-                                                    "type": "null"
-                                                }
-                                            ]
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
                         },
                         "comps": {
                             "type": "object",
@@ -9119,6 +8839,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -9333,6 +9054,9 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [
+            "ending"
+        ],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -9615,6 +9339,11 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [
+            "prefix",
+            "contains",
+            "sort"
+        ],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -9686,7 +9415,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 ]
                             },
                             "ratingBand": {
-                                "description": "A simple band; the score behind it is never served on a list.",
                                 "anyOf": [
                                     {
                                         "type": "string",
@@ -9767,79 +9495,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "null"
                                     }
                                 ]
-                            },
-                            "value": {
-                                "description": "Keyed: the current estimate, USD.",
-                                "anyOf": [
-                                    {
-                                        "type": "object",
-                                        "properties": {
-                                            "value": {
-                                                "type": "number"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "type": "null"
-                                    }
-                                ]
-                            },
-                            "upsidePercent": {
-                                "description": "Keyed.",
-                                "anyOf": [
-                                    {
-                                        "type": "number"
-                                    },
-                                    {
-                                        "type": "null"
-                                    }
-                                ]
-                            },
-                            "liquidity": {
-                                "description": "Keyed.",
-                                "anyOf": [
-                                    {
-                                        "type": "string",
-                                        "enum": [
-                                            "high",
-                                            "medium",
-                                            "low"
-                                        ]
-                                    },
-                                    {
-                                        "type": "null"
-                                    }
-                                ]
-                            },
-                            "verdict": {
-                                "type": "object",
-                                "description": "Keyed.",
-                                "properties": {
-                                    "rating": {
-                                        "type": "string",
-                                        "enum": [
-                                            "strong",
-                                            "good",
-                                            "risky",
-                                            "unrated"
-                                        ]
-                                    },
-                                    "confidence": {
-                                        "anyOf": [
-                                            {
-                                                "type": "string",
-                                                "enum": [
-                                                    "high",
-                                                    "medium",
-                                                    "low"
-                                                ]
-                                            },
-                                            {
-                                                "type": "null"
-                                            }
-                                        ]
-                                    }
-                                }
                             }
                         }
                     }
@@ -10002,6 +9657,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -10226,6 +9882,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -10451,6 +10108,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -10875,6 +10533,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -11024,6 +10683,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -11314,8 +10974,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "strong",
                                 "niche",
                                 "thin"
-                            ],
-                            "description": "Simple band of the nightly public score; public-set TLDs only."
+                            ]
                         },
                         "registrars": {
                             "type": "array",
@@ -11530,6 +11189,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -12034,6 +11694,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -12242,6 +11903,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -12432,6 +12094,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -12654,6 +12317,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -12980,6 +12644,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -13169,6 +12834,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -13524,6 +13190,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -13766,6 +13433,9 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [
+            "delisted"
+        ],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -14002,6 +13672,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -14206,6 +13877,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -14388,6 +14060,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -14643,6 +14316,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -14907,6 +14581,12 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [
+            "ending",
+            "registrar",
+            "field",
+            "since"
+        ],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -15104,6 +14784,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -15297,6 +14978,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -15510,6 +15192,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -15768,6 +15451,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -16057,6 +15741,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -16237,6 +15922,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -16406,6 +16092,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -16672,6 +16359,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -16850,6 +16538,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -17047,6 +16736,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -17414,6 +17104,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -17613,6 +17304,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -17793,6 +17485,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -18085,6 +17778,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -18321,6 +18015,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -18636,6 +18331,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -18857,6 +18553,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -19101,6 +18798,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -19426,6 +19124,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -19589,6 +19288,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -19847,6 +19547,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -20094,6 +19795,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -20380,6 +20082,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -20867,6 +20570,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -21389,6 +21093,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -21895,6 +21600,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -22154,6 +21860,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -22341,6 +22048,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -22516,6 +22224,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -22677,6 +22386,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -22898,6 +22608,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
+        "keyedParameters": [],
         "outputSchema": {
             "type": "object",
             "properties": {

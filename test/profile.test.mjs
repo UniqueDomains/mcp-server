@@ -6,7 +6,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { OPERATIONS } from '@uniquedomains/sdk';
 
-import { detailsFor, outputSchemaFor, readConfig, registrarSlug, shapeAnswer, splitInput, textLine, TOOLS, DETAILS_RULES, ConfigError } from '../dist/index.js';
+import { detailsFor, outputSchemaFor, readConfig, registrarSlug, resetPhrase, shapeAnswer, splitInput, textLine, TOOLS, DETAILS_RULES, ConfigError } from '../dist/index.js';
 
 const envelope = (data, links = {}) => ({
     data,
@@ -48,7 +48,10 @@ test('the hosted output schema names no register or product link', () => {
 test('every hosted tool has a details rule, and the rules point at the website', () => {
     for (const tool of TOOLS.filter((candidate) => candidate.hosted)) assert.ok(tool.operationId in DETAILS_RULES, tool.operationId);
     assert.equal(detailsFor('get_name_registry', { name: 'Harbor.io' }, null, undefined), 'https://unique.domains/whois/harbor.io');
-    assert.equal(detailsFor('get_tld', { tld: 'ai' }, null, undefined), 'https://unique.domains/tld/ai');
+    // `/tld/<ending>` exists for the public set only: get_tld's band says so; elsewhere the hub (review finding 3).
+    assert.equal(detailsFor('get_tld', { tld: '.ai' }, { quality: 'prime' }, undefined), 'https://unique.domains/tld/ai');
+    assert.equal(detailsFor('get_tld', { tld: 'aaa' }, { quality: null }, undefined), 'https://unique.domains/tld');
+    assert.equal(detailsFor('list_tld_phases', { tld: 'ai' }, [], undefined), 'https://unique.domains/tld');
     assert.equal(detailsFor('list_registrar_prices', { registrar: 'name.com' }, null, undefined), 'https://unique.domains/registrars/name-com');
     assert.equal(detailsFor('get_trend', { slug: 'padel' }, null, undefined), 'https://unique.domains/trending-domains/trends/padel');
     assert.equal(detailsFor('get_edition', { persona: 'investor', date: '2026-11-08' }, null, undefined), 'https://unique.domains/trending-domains/2026-11-08');
@@ -95,4 +98,16 @@ test('the config: the hosted profile ignores UD_API_KEY and reads the connector 
     assert.deepEqual(readConfig({ UD_API_KEY: ' ud_live_x ', UD_CONNECTOR_SECRET: 'x' }), { profile: 'local', apiKey: 'ud_live_x', apiBase: null, connectorSecret: null });
     assert.throws(() => readConfig({ UD_MCP_PROFILE: 'remote' }), ConfigError);
     assert.throws(() => readConfig({ UD_API_BASE: 'ftp://x' }), ConfigError);
+});
+
+test('the reset phrase says seconds under a minute, minutes, then hours', () => {
+    const now = new Date('2026-11-09T17:00:00Z');
+    assert.equal(resetPhrase(1, now), 'at 17:00 UTC (in about 1 second)');
+    assert.equal(resetPhrase(45, now), 'at 17:00 UTC (in about 45 seconds)');
+    assert.equal(resetPhrase(900, now), 'at 17:15 UTC (in about 15 minutes)');
+    assert.equal(resetPhrase(25200, now), 'at 00:00 UTC (in about 7 hours)');
+});
+
+test('a free tool declares no keyed-only field in its output schema', () => {
+    for (const tool of TOOLS.filter((candidate) => candidate.tier === 'free')) assert.ok(!JSON.stringify(tool.outputSchema).includes('"score"'), tool.name);
 });

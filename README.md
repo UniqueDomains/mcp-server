@@ -203,7 +203,7 @@ The hosted connector serves the free tools only and takes no key. Three free too
 | `UD_WELLKNOWN_FILES` | hosted | Files served under `/.well-known/`, as a JSON object (see below). |
 | `PORT` | hosted | The HTTP port, 8080 by default. |
 
-The hosted profile registers the free tools only, sends no `Authorization` header whatever `UD_API_KEY` holds, removes the `register` and `product` links from answers and adds `links.details`.
+The hosted profile registers the free tools only, sends no `Authorization` header whatever `UD_API_KEY` holds, removes the `register` and `product` links from answers and adds `links.details`. Without a key (the hosted profile, or the npm server with no `UD_API_KEY`), the inputs only a key may send, such as `sort` or `prefix`, are not listed.
 
 `UD_WELLKNOWN_FILES` maps a file name to its body (served as plain text) or to `{ "body": "...", "contentType": "..." }`, so a directory's proof takes a variable change and no deploy:
 
@@ -224,6 +224,12 @@ docker run -p 8080:8080 uniquedomains-mcp-server
 
 The image runs `node dist/http.js` with `UD_MCP_PROFILE=hosted`: `POST /mcp` (stateless Streamable HTTP, plain JSON answers), `GET /healthz`, and the well-known files. Every answer is `Cache-Control: no-store`, and `/mcp` allows any origin.
 
+The same image speaks stdio when given the stdio entry, for catalogs that inspect a server that way:
+
+```bash
+docker run -i --rm -e UD_MCP_PROFILE=local uniquedomains-mcp-server dist/stdio.js
+```
+
 ## Development
 
 ```bash
@@ -235,7 +241,8 @@ npm run smoke
 
 - `npm run generate` rebuilds `src/generated/tools.ts`, `openapi/v1.json` and the tool list above from the API document that `@uniquedomains/sdk` ships; `-- --check` fails when they are out of date, `-- --live` compares the live document.
 - `npm run smoke` runs the MCP Inspector against both transports and a fixture API; `-- --live` uses the live API.
-- `npm run plugin` builds `dist/chatgpt-plugin.zip` and checks it against OpenAI's limits.
+- `npm run plugin` builds `dist/chatgpt-plugin.zip` and checks it against OpenAI's limits; it refuses while `plugin/review.json` holds placeholder texts (`npm run plugin:test` builds anyway, for CI).
+- The nightly contract workflow opens its pull request with the workflow token, which needs the repository setting "Allow GitHub Actions to create and approve pull requests" (Settings, Actions, General).
 
 ## License
 

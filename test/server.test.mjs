@@ -6,6 +6,7 @@ import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
+import { createServer } from 'node:http';
 
 import { createMcpServer, prepareServer, readConfig, ConfigError } from '../dist/index.js';
 import { FOUNDER_KEY, INVESTOR_KEY, REFUSED_KEY, UNPAID_KEY, problem, startApiFixture } from './support/api-fixture.mjs';
@@ -24,6 +25,10 @@ before(async () => {
         'GET /tlds/busy': [problem(429, 'rate_limited', 'Too many calls this second.', { headers: { 'Retry-After': '2' } }), { status: 200, body: { data: { tld: 'busy' }, meta: {}, links: {} } }],
         'GET /tlds/spent': problem(429, 'budget_spent', "The connector's day is spent.", { headers: { 'Retry-After': '25200' } }),
         'GET /tlds/down': problem(503, 'internal', 'The API is restarting.'),
+        'GET /tlds/badshape': { status: 200, body: { data: 'not an object', meta: { asOf: 12 }, links: {} } },
+        'GET /tlds/second': [problem(429, 'rate_limited', 'Too many calls this second.', { headers: { 'Retry-After': '1' } }), problem(429, 'rate_limited', 'Too many calls this second.', { headers: { 'Retry-After': '1' } }), { status: 200, body: { data: { tld: 'second' }, meta: {}, links: {} } }],
+        'GET /tlds/keyed': problem(403, 'keyed_only', 'Paid subscriptions only: sort.'),
+        'POST /words/fresh/request': { status: 202, headers: { 'Content-Type': 'application/json', 'Retry-After': '600' }, body: { data: { status: 'accepted', requestId: '7f1c2d3e-0000-4000-8000-000000000001' }, meta: {}, links: {} } },
         'POST /names/slow.io/check': { status: 202, headers: { 'Content-Type': 'application/json', 'Retry-After': '30', Location: '/v1/names/slow.io' }, body: { data: { name: 'slow.io', status: 'checking' }, meta: {}, links: {} } },
     });
 });
@@ -92,8 +97,11 @@ test('a call answers structuredContent, one line, then the same JSON as text', a
     await client.close();
 });
 
-test('the recorded answers validate against their output schemas (the client checks each)', async () => {
-    const { client } = await connect({});
+test('the recorded answers validate against their output schemas, both profiles (the client checks each)', async () => {
+    // The MCP Client validates structuredContent only for the tools its listTools() cached (review finding 5).
+    for (const profile of ['local', 'hosted']) {
+    const { client } = await connect({ UD_MCP_PROFILE: profile });
+    await client.listTools();
     for (const [name, args] of [
         ['ud_list_tlds', { limit: 3 }],
         ['ud_get_tld', { tld: 'ai' }],
@@ -105,9 +113,12 @@ test('the recorded answers validate against their output schemas (the client che
         ['ud_list_trends', { limit: 2 }],
     ]) {
         const result = await client.callTool({ name, arguments: args });
-        assert.equal(result.isError, undefined, `${name}: ${result.content[0].text}`);
+        assert.equal(result.isError, undefined, `${profile} ${name}: ${result.content[0].text}`);
     }
+    // A wrong answer shape is caught: the check is live, not assumed.
+    await assert.rejects(() => client.callTool({ name: 'ud_get_tld', arguments: { tld: 'badshape' } }), /structured content does not match/iu);
     await client.close();
+    }
 });
 
 test('refusals are sentences an assistant can act on', async () => {
@@ -139,12 +150,64 @@ test('a short 429 is retried once; a long one is told with its reset', async () 
     await client.close();
 });
 
-test('a 202 says the answer is not ready and when to call again', async () => {
-    const { client } = await connect({ UD_API_KEY: FOUNDER_KEY });
-    const result = await client.callTool({ name: 'ud_check_name', arguments: { name: 'slow.io' } });
-    assert.equal(result.isError, undefined);
-    assert.match(result.content[0].text, /^Not ready yet: .* again in about 30 seconds\./u);
+test('a 202 never advises a call that spends another unit', async () => {
+    const { client } = await connect({ UD_API_KEY: INVESTOR_KEY });
+    const check = await client.callTool({ name: 'ud_check_name', arguments: { name: 'slow.io' } });
+    assert.equal(check.isError, undefined);
+    assert.match(check.content[0].text, /^Not ready yet: .* Read it with ud_get_name in about 30 seconds; calling ud_check_name again spends another live check\./u);
+    const word = await client.callTool({ name: 'ud_request_word', arguments: { word: 'fresh' } });
+    assert.match(word.content[0].text, /^Queued: .* Follow it with ud_get_word_request with requestId 7f1c2d3e-0000-4000-8000-000000000001 in about 600 seconds\./u);
     await client.close();
+});
+
+test('a one-second 429 is not retried again by the server (the SDK retried it once)', async () => {
+    const waits = [];
+    const { client } = await connect({}, { sleep: async (ms) => void waits.push(ms) });
+    const before = fixture.requests.length;
+    const result = await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'second' } });
+    assert.equal(result.isError, true);
+    assert.equal(result.content[0].text, 'Too many calls this second. It resets at 17:00 UTC (in about 1 second).');
+    assert.deepEqual(waits, []);
+    assert.equal(fixture.requests.slice(before).filter((request) => request.path === '/tlds/second').length, 2);
+    await client.close();
+});
+
+test('without a key, the inputs only a key may send are hidden and refused before any call', async () => {
+    const { client } = await connect({});
+    const listDomains = (await client.listTools()).tools.find((tool) => tool.name === 'ud_list_domains');
+    for (const name of ['sort', 'prefix', 'contains']) assert.equal(listDomains.inputSchema.properties[name], undefined, name);
+    assert.equal(listDomains.inputSchema.properties.limit.description, 'Page size, 20 at most.');
+    const before = fixture.requests.length;
+    const result = await client.callTool({ name: 'ud_list_domains', arguments: { sort: 'price' } });
+    assert.equal(result.isError, true);
+    assert.match(result.content[0].text, /^`sort` needs a member key/u);
+    assert.equal(fixture.requests.length, before);
+    await client.close();
+
+    const keyed = await connect({ UD_API_KEY: FOUNDER_KEY });
+    const withKey = (await keyed.client.listTools()).tools.find((tool) => tool.name === 'ud_list_domains');
+    assert.ok(withKey.inputSchema.properties.sort);
+    await keyed.client.close();
+});
+
+test('a path input that would move the request is refused', async () => {
+    const { client } = await connect({});
+    const result = await client.callTool({ name: 'ud_get_name', arguments: { name: '..' } });
+    assert.equal(result.isError, true);
+    assert.match(result.content[0].text, /^`name` must be one path segment/u);
+    await client.close();
+});
+
+test('the start does not wait on a hung API for the key: free tools after the timeout', { timeout: 20_000 }, async () => {
+    const hung = createServer(() => {});
+    await new Promise((resolve) => hung.listen(0, '127.0.0.1', resolve));
+    const lines = [];
+    const prepared = await prepareServer(readConfig({ UD_API_BASE: `http://127.0.0.1:${hung.address().port}/v1`, UD_API_KEY: FOUNDER_KEY }), { log: (line) => lines.push(line) });
+    assert.equal(prepared.plan, 'none');
+    assert.equal(prepared.tools.length, 57);
+    assert.match(lines[0], /Starting with the free tools only/u);
+    hung.closeAllConnections();
+    await new Promise((resolve) => hung.close(resolve));
 });
 
 test('the API unreachable: a sentence, not a crash', async () => {

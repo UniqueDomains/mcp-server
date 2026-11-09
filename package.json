@@ -48,6 +48,7 @@
     "test": "node --test test/*.test.mjs",
     "check:text": "node scripts/check-text.mjs",
     "plugin": "node scripts/plugin-manifest.mjs",
+    "plugin:test": "node scripts/plugin-manifest.mjs --allow-placeholder",
     "smoke": "node scripts/smoke.mjs",
     "prepack": "npm run build"
   },

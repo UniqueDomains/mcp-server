@@ -14,8 +14,8 @@
   "termsOfServiceURL": "https://unique.domains/terms",
   "supportURL": "https://github.com/UniqueDomains/mcp-server/issues",
   "defaultPrompt": [
-    "Is harbor.io registered, and what does its registry record say?",
-    "Which registrars sell .ai, and what does the first year cost at each?",
+    "Is harbor.io registered, and who is its registrar?",
+    "Which endings renew at a much higher price than their first year?",
     "What launch phases does .ai have, and when do they open?"
   ],
   "brandColor": "#121314",

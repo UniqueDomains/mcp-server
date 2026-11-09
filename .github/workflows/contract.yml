@@ -7,6 +7,10 @@ name: Contract
 #   - one website page per links.details pattern must answer 200 (plan decision 3);
 #   - the Inspector smoke against the live API.
 
+# The pull request step needs the repository setting "Allow GitHub Actions to create and approve pull requests"
+# (Settings, Actions, General), which is off by default. A pull request opened with GITHUB_TOKEN starts no CI run:
+# close and reopen it, or push to its branch, to run CI on it.
+
 on:
   schedule:
     - cron: '17 4 * * *'

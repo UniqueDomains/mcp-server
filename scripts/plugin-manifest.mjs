@@ -107,6 +107,9 @@ for (const tool of hostedTools) {
     for (const reason of ['readOnly', 'openWorld', 'destructive']) check(oneLine(tool.justification[reason]), `${tool.name}: a ${reason} justification`);
 }
 
+// Placeholder texts never reach a zip meant for upload: CI builds with --allow-placeholder (review finding 11).
+check(!review.placeholder || process.argv.includes('--allow-placeholder'), 'plugin/review.json holds placeholder texts: fill them from the channels kit and set "placeholder" to false (or pass --allow-placeholder for a test build)');
+
 if (problems.length > 0) {
     console.error(`The plugin package does not meet OpenAI's limits:\n- ${problems.join('\n- ')}`);
     process.exit(1);
@@ -238,4 +241,4 @@ await writeFile(
     }),
 );
 console.log(`dist/chatgpt-plugin.zip and dist/chatgpt-plugin-review.json written (${hostedTools.length} tools).`);
-if (review.placeholder) console.log('Note: plugin/review.json still holds placeholder texts; the channels kit fills them before the submission.');
+if (review.placeholder) console.log('Test build: plugin/review.json still holds placeholder texts; the channels kit fills them before the submission.');
