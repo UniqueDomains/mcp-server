@@ -33,7 +33,7 @@ jobs:
       - run: npm run smoke
       - uses: actions/upload-artifact@v4
         with:
-          name: chatgpt-plugin
+          name: chatgpt-plugin-test
           path: |
             dist/chatgpt-plugin.zip
             dist/chatgpt-plugin-review.json

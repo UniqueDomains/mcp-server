@@ -1,12 +1,16 @@
 name: Contract
 
 # Nightly: does the live API still match the tools, and do the website pages behind links.details still answer?
-#   - the latest @uniquedomains/sdk (within the range package.json allows) and the live document: when either changed,
-#     regenerate the tools and open (or refresh) one pull request "openapi: <date>" on the branch contract/openapi;
-#   - the live document against openapi/v1.json: a drift the SDK has not shipped yet fails the run, so it is seen;
+#   - the latest @uniquedomains/sdk, whatever its minor version: when it changes the tools, the `pull-request` job opens
+#     (or refreshes) one pull request "openapi: <date>" on the branch contract/openapi;
+#   - the live document against openapi/v1.json: a drift the SDK has not shipped yet fails the run and opens no pull
+#     request, since the tools are generated from the SDK's document and the fix is an SDK release;
 #   - one website page per links.details pattern must answer 200 (plan decision 3);
 #   - the Inspector smoke against the live API.
-
+#
+# `check` installs and runs npm scripts with read rights only and no token in the git config; `pull-request` holds the
+# write rights, applies the diff `check` hands it, and runs no npm script.
+#
 # The pull request step needs the repository setting "Allow GitHub Actions to create and approve pull requests"
 # (Settings, Actions, General), which is off by default. A pull request opened with GITHUB_TOKEN starts no CI run:
 # close and reopen it, or push to its branch, to run CI on it.
@@ -17,31 +21,66 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
-  contract:
+  check:
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.diff.outputs.changed }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm update @uniquedomains/sdk
+      # `latest`, not `npm update`: a caret range on a 0.x version would stay inside 0.1.x and never see 0.2.0.
+      - run: npm install @uniquedomains/sdk@latest
       - run: npm run build
       - run: npm run generate
+      - name: Hand over the diff
+        id: diff
+        run: |
+          if git diff --quiet; then
+            echo "The tools match the latest SDK."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git diff --binary > "$RUNNER_TEMP/contract.patch"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: steps.diff.outputs.changed == 'true'
+        with:
+          name: contract-patch
+          path: ${{ runner.temp }}/contract.patch
+      - run: npm run generate -- --live
+      - run: npm run build
+      - run: node scripts/check-details.mjs
+      - run: npm run smoke -- --live
+
+  pull-request:
+    needs: check
+    # Also when a live check failed: the output is set before them, and the SDK's new tools still deserve their pull request.
+    if: ${{ !cancelled() && needs.check.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: contract-patch
+          path: ${{ runner.temp }}/contract
       - name: Open or refresh the pull request
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if git diff --quiet; then
-            echo "The tools match the latest SDK."
-            exit 0
-          fi
           day="$(date -u +%Y-%m-%d)"
+          git apply "$RUNNER_TEMP/contract/contract.patch"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -B contract/openapi
@@ -52,7 +91,3 @@ jobs:
           else
             gh pr create --head contract/openapi --title "openapi: ${day}" --body "The nightly contract run regenerated the tools from the latest @uniquedomains/sdk. Review the tool changes in src/generated/tools.ts and the README's tool list."
           fi
-      - run: npm run generate -- --live
-      - run: npm run build
-      - run: node scripts/check-details.mjs
-      - run: npm run smoke -- --live

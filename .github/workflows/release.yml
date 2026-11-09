@@ -86,16 +86,20 @@ jobs:
           if ! output="$(npm publish uniquedomains-mcp-server-*.tgz --provenance --access public 2>&1)"; then
             echo "$output"
             grep -qi "cannot publish over the previously published versions" <<<"$output" && exit 0
+            if grep -qiE "E404|E401|E403|ENEEDAUTH" <<<"$output"; then
+              echo "::error::npm refused the publish. Create the trusted-publishing configuration for @uniquedomains/mcp-server (repository UniqueDomains/mcp-server, workflow release.yml, direct publishing on), or publish ${version} by hand, then re-run this job."
+            fi
             exit 1
           fi
           echo "$output"
       - name: GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes --verify-tag
+        run: gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 || gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes --verify-tag
 
   image:
-    needs: build
+    # After npm: an image must not carry a version npm refused.
+    needs: [build, npm]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -115,9 +119,13 @@ jobs:
             --label org.opencontainers.image.source=https://github.com/UniqueDomains/mcp-server \
             --label org.opencontainers.image.licenses=MIT \
             --label "org.opencontainers.image.version=${version}" \
-            -t "${image}:${version}" -t "${image}:latest" .
+            -t "${image}:${version}" .
           docker push "${image}:${version}"
-          docker push "${image}:latest"
+          # A prerelease (v1.2.3-rc.1) never moves :latest.
+          if [[ "$version" != *-* ]]; then
+            docker tag "${image}:${version}" "${image}:latest"
+            docker push "${image}:latest"
+          fi
 
   registry:
     # The registry checks that the npm package carries mcpName, so it runs once the package is on npm.
