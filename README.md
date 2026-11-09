@@ -143,7 +143,7 @@ The hosted connector serves the free tools only and takes no key. Three free too
 | `ud_get_catalog_stats` | Catalog headline totals for the latest day | free |
 | `ud_list_tlds` | Every root TLD with its registry facts and launch phases | free |
 | `ud_get_tld` | One TLD in full | free |
-| `ud_get_tld_stats` | Ending's latest market rollup | free |
+| `ud_get_tld_stats` | Ending's latest market figures | free |
 | `ud_list_tld_phases` | Every dated launch phase of the ending, chronological | free |
 | `ud_list_tld_changes` | Ending's public registry changes, newest first | free |
 | `ud_list_tld_keywords` | Keywords the catalog attaches to the ending, by type | free |
@@ -170,7 +170,7 @@ The hosted connector serves the free tools only and takes no key. Three free too
 | `ud_list_market_sales_movers` | Up to ten words whose sales moved over the last 30 days | free |
 | `ud_get_market_sales_word` | One word's sales market over 12 months | free, npm only |
 | `ud_get_market_auctions` | Today's domain auctions by venue | free |
-| `ud_list_market_auctions_sample` | Day's frozen sample of up to 20 single-word names at auction | free |
+| `ud_list_market_auctions_sample` | Day's fixed sample of up to 20 single-word names at auction | free |
 | `ud_list_market_auction_venues` | Seven auction venues with their verified rules and today's counts | free |
 | `ud_list_market_auction_outcomes` | Confirmed auction outcomes by venue | Investor key |
 | `ud_list_trends` | Every published trend with its latest edition figures and its first and last edition day | free |

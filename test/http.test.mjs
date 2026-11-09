@@ -5,11 +5,15 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
+import { readFileSync } from 'node:fs';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 
 import { assertServable, createRequestHandler, prepareServer, readConfig, readWellKnownFiles, ConfigError } from '../dist/index.js';
 import { FOUNDER_KEY, problem, startApiFixture } from './support/api-fixture.mjs';
+
+/** The package's own version, so a release bump needs no edit here. */
+const PACKAGE_VERSION = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version;
 
 const SECRET = 's'.repeat(40);
 let fixture;
@@ -135,7 +139,7 @@ test('the well-known files, /healthz, CORS, no-store, 405 and 413', async () => 
 
     const health = await fetch(`${base}/healthz`);
     assert.equal(health.status, 200);
-    assert.deepEqual(await health.json(), { ok: true, version: '0.1.1', tools: 53 });
+    assert.deepEqual(await health.json(), { ok: true, version: PACKAGE_VERSION, tools: 53 });
     assert.equal(health.headers.get('cache-control'), 'no-store');
 
     const get = await fetch(`${base}/mcp`);

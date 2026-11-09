@@ -6,7 +6,7 @@ import type { ToolDefinition } from '../tool';
 
 /** The API document version and the SDK version the tools were generated from. */
 export const TOOLS_DOCUMENT_VERSION = "1.0.0";
-export const TOOLS_SDK_VERSION = "0.1.0";
+export const TOOLS_SDK_VERSION = "0.2.0";
 
 /** Every tool of the server, in the document order. */
 export const TOOLS: readonly ToolDefinition[] = [
@@ -14,7 +14,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_get_name",
         "operationId": "get_name",
         "title": "Stored answer for one domain name",
-        "description": "The stored answer for one domain name: status, drop day, price today, registry facts, word facts and similar sales. Pass `name` (such as lantern.io).",
+        "description": "The stored answer for one domain name: status, drop day, price today, registry facts, word facts and similar sales. Pass `name` (such as get.plumbing).",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -1057,7 +1057,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_check_name",
         "operationId": "check_name",
         "title": "Reads one name live from its registry and a registrar",
-        "description": "Reads one name live from its registry and a registrar, stores the answer and returns the keyed name resource. Pass `name` (such as lantern.io).",
+        "description": "Reads one name live from its registry and a registrar, stores the answer and returns the keyed name resource. Pass `name` (such as get.plumbing).",
         "tier": "keyed",
         "plan": null,
         "metered": "Live",
@@ -1623,7 +1623,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_get_name_prices",
         "operationId": "get_name_prices",
         "title": "Every stored registrar quote for one name",
-        "description": "Every stored registrar quote for one name, and the renewal-trap flag. Pass `name` (such as lantern.io).",
+        "description": "Every stored registrar quote for one name, and the renewal-trap flag. Pass `name` (such as get.plumbing).",
         "tier": "keyed",
         "plan": null,
         "metered": null,
@@ -1858,7 +1858,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_get_name_registry",
         "operationId": "get_name_registry",
         "title": "Latest stored registry record of one name",
-        "description": "The latest stored registry record of one name: dates, registrar, status codes, nameservers, DNSSEC and holder. Pass `name` (such as lantern.io).",
+        "description": "The latest stored registry record of one name: dates, registrar, status codes, nameservers, DNSSEC and holder. Pass `name` (such as get.plumbing).",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -2172,7 +2172,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_get_name_registry_history",
         "operationId": "get_name_registry_history",
         "title": "Stored registry record versions of one name and what moved between them",
-        "description": "The stored registry record versions of one name and what moved between them. Pass `name` (such as lantern.io).",
+        "description": "The stored registry record versions of one name and what moved between them. Pass `name` (such as get.plumbing).",
         "tier": "keyed",
         "plan": "investor",
         "metered": null,
@@ -2416,7 +2416,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_get_name_dns",
         "operationId": "get_name_dns",
         "title": "Latest stored DNS reading of one name",
-        "description": "The latest stored DNS reading of one name, with its parking venue. Pass `name` (such as lantern.io).",
+        "description": "The latest stored DNS reading of one name, with its parking venue. Pass `name` (such as get.plumbing).",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -2628,7 +2628,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_list_name_changes",
         "operationId": "list_name_changes",
         "title": "Change events of one name, newest first",
-        "description": "The change events of one name, newest first. Pass `name` (such as lantern.io); the other inputs are optional.",
+        "description": "The change events of one name, newest first. Pass `name` (such as get.plumbing); the other inputs are optional.",
         "tier": "keyed",
         "plan": "investor",
         "metered": null,
@@ -2854,7 +2854,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_get_name_history",
         "operationId": "get_name_history",
         "title": "Web history of one name as our bands",
-        "description": "The web history of one name as our bands: archive captures, authority band and language. Pass `name` (such as lantern.io).",
+        "description": "The web history of one name as our bands: archive captures, authority band and language. Pass `name` (such as get.plumbing).",
         "tier": "keyed",
         "plan": "investor",
         "metered": null,
@@ -3065,7 +3065,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_get_name_value",
         "operationId": "get_name_value",
         "title": "Stored value estimate of one name and its last 20 estimates",
-        "description": "The stored value estimate of one name and its last 20 estimates. Pass `name` (such as lantern.io).",
+        "description": "The stored value estimate of one name and its last 20 estimates. Pass `name` (such as get.plumbing).",
         "tier": "keyed",
         "plan": null,
         "metered": null,
@@ -3248,7 +3248,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_appraise_name",
         "operationId": "appraise_name",
         "title": "Runs the appraisal of one stored name when its estimate is missing",
-        "description": "Runs the appraisal of one stored name when its estimate is missing, and returns the value resource. Pass `name` (such as lantern.io).",
+        "description": "Runs the appraisal of one stored name when its estimate is missing, and returns the value resource. Pass `name` (such as get.plumbing).",
         "tier": "keyed",
         "plan": "investor",
         "metered": "Appraisal",
@@ -3431,7 +3431,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_get_name_comps",
         "operationId": "get_name_comps",
         "title": "Similar-sales aggregate of one name and the endings its word sold on",
-        "description": "The similar-sales aggregate of one name and the endings its word sold on. Pass `name` (such as lantern.io).",
+        "description": "The similar-sales aggregate of one name and the endings its word sold on. Pass `name` (such as get.plumbing).",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -3609,7 +3609,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_get_name_auction",
         "operationId": "get_name_auction",
         "title": "Open auction of one name, if any",
-        "description": "The open auction of one name, if any: venue, deadline, bid and the first-year cost. Pass `name` (such as lantern.io).",
+        "description": "The open auction of one name, if any: venue, deadline, bid and the first-year cost. Pass `name` (such as get.plumbing).",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -4366,7 +4366,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         }
                                     },
                                     "denyClass": {
-                                        "description": "Why the word stays off public lists (ADR-0111); null when none.",
+                                        "description": "Why the word stays off public lists; null when none.",
                                         "anyOf": [
                                             {
                                                 "type": "string"
@@ -5207,7 +5207,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             }
                         },
                         "denyClass": {
-                            "description": "Why the word stays off public lists (ADR-0111); null when none.",
+                            "description": "Why the word stays off public lists; null when none.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -7798,7 +7798,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_get_domain",
         "operationId": "get_domain",
         "title": "One catalog name, by name or id",
-        "description": "One catalog name, by name or id. Pass `nameOrId` (such as lantern.io).",
+        "description": "One catalog name, by name or id. Pass `nameOrId` (such as get.plumbing).",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -9672,7 +9672,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                         "properties": {
                                                             "computedAt": {
                                                                 "type": "string",
-                                                                "description": "Timestamp of the rollup."
+                                                                "description": "When these figures were computed."
                                                             },
                                                             "availableOneWord": {
                                                                 "type": "integer",
@@ -10043,7 +10043,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "properties": {
                                         "computedAt": {
                                             "type": "string",
-                                            "description": "Timestamp of the rollup."
+                                            "description": "When these figures were computed."
                                         },
                                         "availableOneWord": {
                                             "type": "integer",
@@ -10341,8 +10341,8 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_tld_stats",
         "operationId": "get_tld_stats",
-        "title": "Ending's latest market rollup",
-        "description": "The ending's latest market rollup, and with history its last daily rows. Pass `tld` (such as ai); the other inputs are optional.",
+        "title": "Ending's latest market figures",
+        "description": "The ending's latest market figures, and with history its last daily rows. Pass `tld` (such as ai); the other inputs are optional.",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -10383,7 +10383,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         },
                         "day": {
                             "type": "string",
-                            "description": "The rollup's day."
+                            "description": "The day of these figures."
                         },
                         "computedAt": {
                             "anyOf": [
@@ -10555,7 +10555,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     },
                                     "day": {
                                         "type": "string",
-                                        "description": "The rollup's day."
+                                        "description": "The day of these figures."
                                     },
                                     "computedAt": {
                                         "anyOf": [
@@ -16759,8 +16759,8 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_list_market_auctions_sample",
         "operationId": "list_market_auctions_sample",
-        "title": "Day's frozen sample of up to 20 single-word names at auction",
-        "description": "The day's frozen sample of up to 20 single-word names at auction, by deadline. Takes no input.",
+        "title": "Day's fixed sample of up to 20 single-word names at auction",
+        "description": "The day's fixed sample of up to 20 single-word names at auction, by deadline. Takes no input.",
         "tier": "free",
         "plan": null,
         "metered": null,
