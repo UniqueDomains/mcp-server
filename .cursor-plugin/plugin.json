@@ -1,0 +1,13 @@
+{
+  "name": "unique-domains",
+  "description": "Domain names, words, TLDs, registrar prices, the domain market, trends and the agenda, from the Unique Domains API.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Unique Domains"
+  },
+  "homepage": "https://unique.domains/api",
+  "repository": "https://github.com/UniqueDomains/mcp-server",
+  "license": "MIT",
+  "keywords": ["domain-names", "whois", "tld", "registrar-prices", "domain-market", "mcp"],
+  "logo": "assets/logo.png"
+}

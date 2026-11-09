@@ -1,0 +1,45 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "domains.unique/mcp-server",
+  "title": "Unique Domains",
+  "description": "Domain names, words, TLDs, registrar prices, the domain market, trends and the agenda.",
+  "version": "0.1.0",
+  "websiteUrl": "https://unique.domains/api",
+  "repository": {
+    "url": "https://github.com/UniqueDomains/mcp-server",
+    "source": "github"
+  },
+  "icons": [
+    {
+      "src": "https://unique.domains/public/app/apple-touch-icon-180x180.png",
+      "mimeType": "image/png",
+      "sizes": ["180x180"]
+    }
+  ],
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@uniquedomains/mcp-server",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "UD_API_KEY",
+          "description": "Optional member key (Settings, Account, API in Unique Domains): adds the tools of the key's plan.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        }
+      ]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.unique.domains/mcp"
+    }
+  ]
+}

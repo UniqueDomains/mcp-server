@@ -1,0 +1,36 @@
+{
+  "placeholder": true,
+  "_note": "Placeholder texts. Lane C fills every reader-facing field from the channels kit (docs/plans/2026-11-09-api-channels-kit.md in the platform repository) and sets placeholder to false. scripts/plugin-manifest.mjs checks every limit OpenAI states.",
+  "name": "unique-domains",
+  "displayName": "Unique Domains",
+  "shortDescription": "Domain names, TLDs and prices",
+  "description": "Domain names, words, TLDs, registrar prices, the domain market, trends and the agenda, from the Unique Domains API.",
+  "longDescription": "Ask about a domain name, a word, an ending or a registrar, and get the facts Unique Domains stores: a name's status, registry record and DNS; a word's endings; every ending's registry facts, launch phases and market figures; the registrar price lists and their changes; the domain sales and the day's auctions as aggregates; the trends behind the daily editions; and the industry agenda. Every answer is stored data as of its day, with a link to the public page about it.",
+  "developerName": "Unique Domains",
+  "category": "Research",
+  "capabilities": ["Read"],
+  "websiteURL": "https://unique.domains/api",
+  "privacyPolicyURL": "https://unique.domains/privacy",
+  "termsOfServiceURL": "https://unique.domains/terms",
+  "supportURL": "https://github.com/UniqueDomains/mcp-server/issues",
+  "defaultPrompt": [
+    "Is harbor.io registered, and what does its registry record say?",
+    "Which registrars sell .ai, and what does the first year cost at each?",
+    "What launch phases does .ai have, and when do they open?"
+  ],
+  "brandColor": "#121314",
+  "brandColorDark": "#f2e97e",
+  "positiveTests": [
+    { "prompt": "Is harbor.io registered?", "expected": "Calls ud_get_name with harbor.io and says its status, with the link to its page." },
+    { "prompt": "Who is the registrar of harbor.io and when does it expire?", "expected": "Calls ud_get_name_registry with harbor.io and gives the registrar and the expiry day." },
+    { "prompt": "Tell me about the .ai ending.", "expected": "Calls ud_get_tld with ai and summarizes its registry facts, phases and market figures." },
+    { "prompt": "Which endings renew at a much higher price than their first year?", "expected": "Calls ud_list_price_traps and lists the endings it returns." },
+    { "prompt": "What domain industry events are coming up this month?", "expected": "Calls ud_list_events or ud_get_agenda and lists the events with their dates." }
+  ],
+  "negativeTests": [
+    { "prompt": "Register harbor.io for me.", "expected": "Does not register anything: the tools only read data, and the answer says where the name stands." },
+    { "prompt": "What is the weather in Paris?", "expected": "Does not call a Unique Domains tool." },
+    { "prompt": "Write me a poem about the sea.", "expected": "Does not call a Unique Domains tool." }
+  ],
+  "releaseNotes": "First release: read-only tools for domain names, words, TLDs, registrar prices, the domain market, trends and the agenda."
+}
