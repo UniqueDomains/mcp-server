@@ -140,29 +140,21 @@ const findOperation = (operationId, document) => {
 /* ---------- Output schemas ---------- */
 
 /** Keywords an MCP client's JSON Schema validator understands; OpenAPI's own (`example`, `x-*`, `discriminator`) go. */
-const KEPT_KEYWORDS = new Set([
-    'type',
-    'description',
-    'properties',
-    'items',
-    'enum',
-    'const',
-    'anyOf',
-    'allOf',
-    'minimum',
-    'maximum',
-    'minItems',
-    'maxItems',
-    'minLength',
-    'maxLength',
-    'additionalProperties',
-]);
+const KEPT_KEYWORDS = new Set(['type', 'description', 'properties', 'items', 'anyOf', 'allOf', 'additionalProperties']);
+
+/**
+ * Plan talk in a free tool's output descriptions ("Paid subscriptions only", "keyed", "null on free"): dropped like
+ * the score ones, since the hosted connector carries none (decision 15) and the field stays typed.
+ */
+export const PLAN_WORDS = /\bpaid\b|\bsubscriptions?\b|\bkeyed\b|\bfree (?:tier|grade)\b|\bon free\b|\bnames keyed\b/iu;
 
 /**
  * The answer's schema as an MCP `outputSchema`: references inlined, OpenAPI keywords dropped, `oneOf` read as
  * `anyOf`, and no `required` or closed object anywhere. A client validates `structuredContent` against it, and the
  * answer legitimately lacks keys: `fields` keeps only the keys asked, the hosted profile strips two links, a 202 holds
- * the resource so far. The schema describes the shape; it does not gate it.
+ * the resource so far. The schema describes the shape; it does not gate it: no `enum`, `const`, bound or length is
+ * kept either, since a validating client (the Inspector, Cursor, the TypeScript client) would refuse a whole answer the
+ * day the API adds a venue, a status or a band, until the server is regenerated.
  */
 export const relaxSchema = (node, resolve, options = {}) => {
     const again = (value) => relaxSchema(value, resolve, options);
@@ -188,6 +180,7 @@ export const relaxSchema = (node, resolve, options = {}) => {
         // A description naming a score or a ranking is dropped, not reworded: the tool texts carry none (AGENTS.md,
         // Minimum Data Exposure), and the field it describes stays typed.
         if (key === 'description' && FORBIDDEN_WORDS.some((word) => word.test(value))) continue;
+        if (key === 'description' && options.dropKeyed && PLAN_WORDS.test(value)) continue;
         out[key] = again(value);
     }
     return splitTypeArray(out);
@@ -307,6 +300,18 @@ export const justificationOf = (operation) => {
 
 /* ---------- The tool set ---------- */
 
+/**
+ * The summary a tool's description opens with. A free tool's summary loses a clause that talks grades ("Names
+ * dropping on one day: counts free, names keyed."): the hosted connector lists free tools only and names no plan
+ * (decision 15).
+ */
+export const summaryOf = (operation) => {
+    const summary = operation.summary.trim();
+    if (operation.tier !== 'free') return summary;
+    const [head, ...tail] = summary.split(': ');
+    return tail.length > 0 && PLAN_WORDS.test(tail.join(': ')) ? `${head.replace(/\.$/u, '')}.` : summary;
+};
+
 /** Every tool of the server, in the document's order, with the profile it belongs to. */
 export const buildTools = (operations, document) => {
     const tools = [];
@@ -317,7 +322,7 @@ export const buildTools = (operations, document) => {
             name: toolName(operation.id),
             operationId: operation.id,
             title: titleOf(operation.summary),
-            description: `${operation.summary} ${usageOf(operation)}`,
+            description: `${summaryOf(operation)} ${usageOf(operation)}`,
             tier: operation.tier,
             plan: operation.plan,
             metered: operation.metered,

@@ -210,6 +210,22 @@ test('the start does not wait on a hung API for the key: free tools after the ti
     await new Promise((resolve) => hung.close(resolve));
 });
 
+test('a hung call: a sentence after the call deadline, not a held request', { timeout: 10_000 }, async () => {
+    const hung = createServer(() => {});
+    await new Promise((resolve) => hung.listen(0, '127.0.0.1', resolve));
+    const prepared = await prepareServer(readConfig({ UD_API_BASE: `http://127.0.0.1:${hung.address().port}/v1` }), { log: () => {} });
+    const server = createMcpServer(prepared, { timeoutMs: 300 });
+    const [clientSide, serverSide] = InMemoryTransport.createLinkedPair();
+    const client = new Client({ name: 'test', version: '0' });
+    await Promise.all([client.connect(clientSide), server.connect(serverSide)]);
+    const result = await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'ai' } });
+    assert.equal(result.isError, true);
+    assert.equal(result.content[0].text, 'The Unique Domains API took too long to answer. Try again in a minute.');
+    await client.close();
+    hung.closeAllConnections();
+    await new Promise((resolve) => hung.close(resolve));
+});
+
 test('the API unreachable: a sentence, not a crash', async () => {
     const prepared = await prepareServer(readConfig({ UD_API_BASE: 'http://127.0.0.1:9/v1' }), { log: () => {} });
     const server = createMcpServer(prepared);

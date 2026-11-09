@@ -37,7 +37,7 @@ claude mcp add uniquedomains -e UD_API_KEY=ud_live_your_key -- npx -y @uniquedom
 
 ### Cursor
 
-[Add to Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=uniquedomains&config=eyJ1cmwiOiJodHRwczovL21jcC51bmlxdWUuZG9tYWlucy9tY3AifQ==), or put this in `.cursor/mcp.json`:
+[Add to Cursor](https://cursor.com/en/install-mcp?name=uniquedomains&config=eyJ1cmwiOiJodHRwczovL21jcC51bmlxdWUuZG9tYWlucy9tY3AifQ==) (the direct link is `cursor://anysphere.cursor-deeplink/mcp/install?name=uniquedomains&config=eyJ1cmwiOiJodHRwczovL21jcC51bmlxdWUuZG9tYWlucy9tY3AifQ==`), or put this in `.cursor/mcp.json`:
 
 ```json
 {

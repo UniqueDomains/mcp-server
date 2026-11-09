@@ -111,3 +111,21 @@ test('the reset phrase says seconds under a minute, minutes, then hours', () => 
 test('a free tool declares no keyed-only field in its output schema', () => {
     for (const tool of TOOLS.filter((candidate) => candidate.tier === 'free')) assert.ok(!JSON.stringify(tool.outputSchema).includes('"score"'), tool.name);
 });
+
+test('output schemas describe, never gate: no enum, const, bound or length a new API value would break', () => {
+    const gating = new Set(['enum', 'const', 'minimum', 'maximum', 'minItems', 'maxItems', 'minLength', 'maxLength', 'pattern', 'format', 'required']);
+    // Walks schema keywords only: under `properties` the keys are field names (`format` is one).
+    const walk = (node, name) => {
+        if (Array.isArray(node)) return node.forEach((item) => walk(item, name));
+        if (node === null || typeof node !== 'object') return;
+        for (const [key, value] of Object.entries(node)) {
+            if (key === 'properties') {
+                for (const child of Object.values(value)) walk(child, name);
+                continue;
+            }
+            assert.ok(!gating.has(key), `${name} ${key}`);
+            walk(value, name);
+        }
+    };
+    for (const tool of TOOLS) walk(tool.outputSchema, tool.name);
+});

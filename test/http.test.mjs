@@ -19,6 +19,7 @@ let base;
 before(async () => {
     fixture = await startApiFixture({
         'GET /tlds/spent': problem(429, 'budget_spent', "The connector's day is spent.", { headers: { 'Retry-After': '3600' } }),
+        'GET /tlds/second': problem(429, 'rate_limited', 'Too many calls this second.', { headers: { 'Retry-After': '30' } }),
         'GET /tlds/keyed': problem(403, 'keyed_only', 'The free answer of this endpoint is a fixed cut: `limit` and `cursor` need a paid subscription.'),
     });
     const env = {
@@ -80,6 +81,8 @@ test('a problem: the budget refusal tells when it resets and that the allowance 
     const result = await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'spent' } });
     assert.equal(result.isError, true);
     assert.match(result.content[0].text, /^The connector's day is spent\. This connector shares one daily allowance among its users\. It resets at \d\d:\d\d UTC \(in about 60 minutes\)\.$/u);
+    const second = await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'second' } });
+    assert.match(second.content[0].text, /^Too many calls this second\. It resets/u);
     await client.close();
 });
 
@@ -90,6 +93,8 @@ test('the hosted connector carries no plan talk: no keyed input listed, a keyed 
         const text = JSON.stringify(tool.inputSchema);
         assert.ok(!/paid|subscription|member key/iu.test(text), `${tool.name} input schema`);
         assert.ok(!/"score"|\bscores?\b|\branking\b/iu.test(JSON.stringify(tool.outputSchema)), `${tool.name} output schema`);
+        // "Founder page" names an edition page; only the plans and their keys are plan talk.
+        assert.ok(!/\bpaid\b|subscription|\bkeyed\b|member key/iu.test(JSON.stringify(tool)) && !/\b(?:Investor|Founder) (?:plan|key)\b/u.test(JSON.stringify(tool)), `${tool.name} plan talk`);
     }
     const refused = await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'keyed' } });
     assert.equal(refused.content[0].text, 'This connector serves the free answers only, and that input or page is not one of them. Call the tool again without it.');

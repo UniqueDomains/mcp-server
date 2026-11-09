@@ -12,6 +12,12 @@ export const RETRY_AFTER_MAX_SECONDS = 5;
 /** How long the start waits for `get_key` before it falls back to the free tools (review finding 9). */
 export const KEY_BOOT_TIMEOUT_MS = 10_000;
 
+/**
+ * How long one tool call waits for the API before it tells the assistant to try again (review of R2). A hung API would
+ * otherwise hold the hosted POST until Cloudflare's own timeout.
+ */
+export const CALL_TIMEOUT_MS = 30_000;
+
 /** The request body limit of the HTTP transport (plan section 2). */
 export const HTTP_BODY_LIMIT_BYTES = 1024 * 1024;
 

@@ -102,7 +102,7 @@ export const toListedTool = (tool: ToolDefinition, prepared: PreparedServer): To
     annotations: { title: tool.title, ...tool.annotations },
 });
 
-export const createMcpServer = (prepared: PreparedServer, overrides: Partial<Pick<CallContext, 'sleep' | 'now'>> = {}): Server => {
+export const createMcpServer = (prepared: PreparedServer, overrides: Partial<Pick<CallContext, 'sleep' | 'now' | 'timeoutMs'>> = {}): Server => {
     const server = new Server({ name: SERVER_NAME, title: 'Unique Domains', version: SERVER_VERSION }, { capabilities: { tools: { listChanged: false } }, instructions: INSTRUCTIONS });
     const byName = new Map(prepared.tools.map((tool) => [tool.name, tool]));
     const listed = prepared.tools.map((tool) => toListedTool(tool, prepared));

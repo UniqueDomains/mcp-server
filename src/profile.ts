@@ -43,6 +43,8 @@ export const isKeyless = (profile: Profile, plan: KeyPlan): boolean => profile =
 /** `limit`'s description for a caller without a key: the document's names the paid page size, which is plan talk here. */
 const KEYLESS_LIMIT_DESCRIPTION = 'Page size, 20 at most.';
 
+const INPUT_PLAN_TALK = /\bpaid\b|\bsubscriptions?\b|\bkeyed\b|\bfree (?:tier|grade)\b|\bmember key\b/iu;
+
 /**
  * The input schema a caller sees: without a key, the inputs only a key may send are left out (review finding 2; the
  * API would refuse them `keyed_only`, and the hosted connector carries no plan talk, decision 15), and `limit` reads
@@ -55,7 +57,15 @@ export const inputSchemaFor = (tool: ToolDefinition, profile: Profile, plan: Key
     const kept: Record<string, JsonValue> = {};
     for (const [name, schema] of Object.entries(properties)) {
         if (schema === undefined || tool.keyedParameters.includes(name)) continue;
-        kept[name] = name === 'limit' && isObject(schema) ? { ...schema, description: KEYLESS_LIMIT_DESCRIPTION } : schema;
+        if (name === 'limit' && isObject(schema)) {
+            kept[name] = { ...schema, description: KEYLESS_LIMIT_DESCRIPTION };
+        } else if (profile === 'hosted' && isObject(schema) && typeof schema.description === 'string' && INPUT_PLAN_TALK.test(schema.description)) {
+            // "`properNoun` is ignored on the free tier": plan talk the hosted connector does not carry (decision 15).
+            const { description: _dropped, ...rest } = schema;
+            kept[name] = rest;
+        } else {
+            kept[name] = schema;
+        }
     }
     return { ...tool.inputSchema, properties: kept };
 };

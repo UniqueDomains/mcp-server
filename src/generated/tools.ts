@@ -65,23 +65,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "The catalog stores the name."
                         },
                         "status": {
-                            "type": "string",
-                            "enum": [
-                                "free",
-                                "free_premium",
-                                "for_sale",
-                                "at_auction",
-                                "expiring",
-                                "expired",
-                                "redemption",
-                                "pending_delete",
-                                "parked",
-                                "in_use",
-                                "registered",
-                                "not_checked",
-                                "not_covered",
-                                "not_a_name"
-                            ]
+                            "type": "string"
                         },
                         "lifecycle": {
                             "anyOf": [
@@ -97,11 +81,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "object",
                             "properties": {
                                 "kind": {
-                                    "type": "string",
-                                    "enum": [
-                                        "date",
-                                        "none"
-                                    ]
+                                    "type": "string"
                                 },
                                 "dropsOn": {
                                     "type": "string"
@@ -117,13 +97,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "kind": {
                                     "anyOf": [
                                         {
-                                            "type": "string",
-                                            "enum": [
-                                                "registry",
-                                                "premium",
-                                                "aftermarket",
-                                                "backorder"
-                                            ]
+                                            "type": "string"
                                         },
                                         {
                                             "type": "null"
@@ -289,11 +263,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "format": {
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "enum": [
-                                        "oneWord",
-                                        "hack"
-                                    ]
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
@@ -303,14 +273,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "shape": {
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "enum": [
-                                        "single",
-                                        "properNoun",
-                                        "acronym",
-                                        "twoWords",
-                                        "phrase"
-                                    ]
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
@@ -351,13 +314,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "band": {
                                     "anyOf": [
                                         {
-                                            "type": "string",
-                                            "enum": [
-                                                "prime",
-                                                "strong",
-                                                "niche",
-                                                "thin"
-                                            ]
+                                            "type": "string"
                                         },
                                         {
                                             "type": "null"
@@ -370,17 +327,9 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "object",
                             "properties": {
                                 "tier": {
-                                    "description": "`sold_before` (this exact name sold before) on keyed answers only.",
                                     "anyOf": [
                                         {
-                                            "type": "string",
-                                            "enum": [
-                                                "same_word",
-                                                "synonyms",
-                                                "related",
-                                                "market",
-                                                "sold_before"
-                                            ]
+                                            "type": "string"
                                         },
                                         {
                                             "type": "null"
@@ -585,23 +534,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "description": "The catalog stores the name."
                                     },
                                     "status": {
-                                        "type": "string",
-                                        "enum": [
-                                            "free",
-                                            "free_premium",
-                                            "for_sale",
-                                            "at_auction",
-                                            "expiring",
-                                            "expired",
-                                            "redemption",
-                                            "pending_delete",
-                                            "parked",
-                                            "in_use",
-                                            "registered",
-                                            "not_checked",
-                                            "not_covered",
-                                            "not_a_name"
-                                        ]
+                                        "type": "string"
                                     },
                                     "lifecycle": {
                                         "anyOf": [
@@ -617,11 +550,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "object",
                                         "properties": {
                                             "kind": {
-                                                "type": "string",
-                                                "enum": [
-                                                    "date",
-                                                    "none"
-                                                ]
+                                                "type": "string"
                                             },
                                             "dropsOn": {
                                                 "type": "string"
@@ -637,13 +566,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                             "kind": {
                                                 "anyOf": [
                                                     {
-                                                        "type": "string",
-                                                        "enum": [
-                                                            "registry",
-                                                            "premium",
-                                                            "aftermarket",
-                                                            "backorder"
-                                                        ]
+                                                        "type": "string"
                                                     },
                                                     {
                                                         "type": "null"
@@ -820,11 +743,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "format": {
                                         "anyOf": [
                                             {
-                                                "type": "string",
-                                                "enum": [
-                                                    "oneWord",
-                                                    "hack"
-                                                ]
+                                                "type": "string"
                                             },
                                             {
                                                 "type": "null"
@@ -834,14 +753,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "shape": {
                                         "anyOf": [
                                             {
-                                                "type": "string",
-                                                "enum": [
-                                                    "single",
-                                                    "properNoun",
-                                                    "acronym",
-                                                    "twoWords",
-                                                    "phrase"
-                                                ]
+                                                "type": "string"
                                             },
                                             {
                                                 "type": "null"
@@ -882,13 +794,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                             "band": {
                                                 "anyOf": [
                                                     {
-                                                        "type": "string",
-                                                        "enum": [
-                                                            "prime",
-                                                            "strong",
-                                                            "niche",
-                                                            "thin"
-                                                        ]
+                                                        "type": "string"
                                                     },
                                                     {
                                                         "type": "null"
@@ -899,9 +805,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                 "description": "Keyed, on this endpoint only.",
                                                 "anyOf": [
                                                     {
-                                                        "type": "integer",
-                                                        "minimum": 0,
-                                                        "maximum": 100
+                                                        "type": "integer"
                                                     },
                                                     {
                                                         "type": "null"
@@ -917,23 +821,12 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                 "type": "object",
                                                 "properties": {
                                                     "rating": {
-                                                        "type": "string",
-                                                        "enum": [
-                                                            "strong",
-                                                            "good",
-                                                            "risky",
-                                                            "unrated"
-                                                        ]
+                                                        "type": "string"
                                                     },
                                                     "confidence": {
                                                         "anyOf": [
                                                             {
-                                                                "type": "string",
-                                                                "enum": [
-                                                                    "high",
-                                                                    "medium",
-                                                                    "low"
-                                                                ]
+                                                                "type": "string"
                                                             },
                                                             {
                                                                 "type": "null"
@@ -969,12 +862,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                     "liquidity": {
                                                         "anyOf": [
                                                             {
-                                                                "type": "string",
-                                                                "enum": [
-                                                                    "high",
-                                                                    "medium",
-                                                                    "low"
-                                                                ]
+                                                                "type": "string"
                                                             },
                                                             {
                                                                 "type": "null"
@@ -995,14 +883,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                 "description": "`sold_before` (this exact name sold before) on keyed answers only.",
                                                 "anyOf": [
                                                     {
-                                                        "type": "string",
-                                                        "enum": [
-                                                            "same_word",
-                                                            "synonyms",
-                                                            "related",
-                                                            "market",
-                                                            "sold_before"
-                                                        ]
+                                                        "type": "string"
                                                     },
                                                     {
                                                         "type": "null"
@@ -1049,10 +930,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "error": {
-                                        "type": "string",
-                                        "enum": [
-                                            "validation_failed"
-                                        ]
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -1244,23 +1122,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "The catalog stores the name."
                         },
                         "status": {
-                            "type": "string",
-                            "enum": [
-                                "free",
-                                "free_premium",
-                                "for_sale",
-                                "at_auction",
-                                "expiring",
-                                "expired",
-                                "redemption",
-                                "pending_delete",
-                                "parked",
-                                "in_use",
-                                "registered",
-                                "not_checked",
-                                "not_covered",
-                                "not_a_name"
-                            ]
+                            "type": "string"
                         },
                         "lifecycle": {
                             "anyOf": [
@@ -1276,11 +1138,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "object",
                             "properties": {
                                 "kind": {
-                                    "type": "string",
-                                    "enum": [
-                                        "date",
-                                        "none"
-                                    ]
+                                    "type": "string"
                                 },
                                 "dropsOn": {
                                     "type": "string"
@@ -1296,13 +1154,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "kind": {
                                     "anyOf": [
                                         {
-                                            "type": "string",
-                                            "enum": [
-                                                "registry",
-                                                "premium",
-                                                "aftermarket",
-                                                "backorder"
-                                            ]
+                                            "type": "string"
                                         },
                                         {
                                             "type": "null"
@@ -1479,11 +1331,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "format": {
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "enum": [
-                                        "oneWord",
-                                        "hack"
-                                    ]
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
@@ -1493,14 +1341,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "shape": {
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "enum": [
-                                        "single",
-                                        "properNoun",
-                                        "acronym",
-                                        "twoWords",
-                                        "phrase"
-                                    ]
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
@@ -1541,13 +1382,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "band": {
                                     "anyOf": [
                                         {
-                                            "type": "string",
-                                            "enum": [
-                                                "prime",
-                                                "strong",
-                                                "niche",
-                                                "thin"
-                                            ]
+                                            "type": "string"
                                         },
                                         {
                                             "type": "null"
@@ -1558,9 +1393,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "description": "Keyed, on this endpoint only.",
                                     "anyOf": [
                                         {
-                                            "type": "integer",
-                                            "minimum": 0,
-                                            "maximum": 100
+                                            "type": "integer"
                                         },
                                         {
                                             "type": "null"
@@ -1576,23 +1409,12 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "type": "object",
                                     "properties": {
                                         "rating": {
-                                            "type": "string",
-                                            "enum": [
-                                                "strong",
-                                                "good",
-                                                "risky",
-                                                "unrated"
-                                            ]
+                                            "type": "string"
                                         },
                                         "confidence": {
                                             "anyOf": [
                                                 {
-                                                    "type": "string",
-                                                    "enum": [
-                                                        "high",
-                                                        "medium",
-                                                        "low"
-                                                    ]
+                                                    "type": "string"
                                                 },
                                                 {
                                                     "type": "null"
@@ -1628,12 +1450,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "liquidity": {
                                             "anyOf": [
                                                 {
-                                                    "type": "string",
-                                                    "enum": [
-                                                        "high",
-                                                        "medium",
-                                                        "low"
-                                                    ]
+                                                    "type": "string"
                                                 },
                                                 {
                                                     "type": "null"
@@ -1654,14 +1471,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "description": "`sold_before` (this exact name sold before) on keyed answers only.",
                                     "anyOf": [
                                         {
-                                            "type": "string",
-                                            "enum": [
-                                                "same_word",
-                                                "synonyms",
-                                                "related",
-                                                "market",
-                                                "sold_before"
-                                            ]
+                                            "type": "string"
                                         },
                                         {
                                             "type": "null"
@@ -1913,12 +1723,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "kind": {
                                         "anyOf": [
                                             {
-                                                "type": "string",
-                                                "enum": [
-                                                    "registry",
-                                                    "aftermarket",
-                                                    "backorder"
-                                                ]
+                                                "type": "string"
                                             },
                                             {
                                                 "type": "null"
@@ -2238,11 +2043,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "transport": {
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "enum": [
-                                        "rdap",
-                                        "whois"
-                                    ]
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
@@ -2488,10 +2289,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "kind": {
-                                        "type": "string",
-                                        "enum": [
-                                            "lock_removed"
-                                        ]
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -2880,22 +2678,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "type": {
-                                "type": "string",
-                                "enum": [
-                                    "price_drop",
-                                    "price_increase",
-                                    "status_change",
-                                    "expiry_window",
-                                    "lifecycle_move",
-                                    "registrar_change",
-                                    "transfer",
-                                    "lock_removed",
-                                    "renewal_observed",
-                                    "nameserver_change",
-                                    "parking_change",
-                                    "auction_ending",
-                                    "auction_jump"
-                                ]
+                                "type": "string"
                             },
                             "observedAt": {
                                 "type": "string"
@@ -2904,10 +2687,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "object",
                                 "properties": {
                                     "kind": {
-                                        "type": "string",
-                                        "enum": [
-                                            "name"
-                                        ]
+                                        "type": "string"
                                     },
                                     "key": {
                                         "anyOf": [
@@ -3681,17 +3461,9 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "tier": {
-                            "description": "`sold_before` (this exact name sold before) on keyed answers only.",
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "enum": [
-                                        "same_word",
-                                        "synonyms",
-                                        "related",
-                                        "market",
-                                        "sold_before"
-                                    ]
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
@@ -3869,16 +3641,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "object",
                             "properties": {
                                 "venue": {
-                                    "type": "string",
-                                    "enum": [
-                                        "godaddy",
-                                        "dynadot",
-                                        "namesilo",
-                                        "namecheap",
-                                        "snapnames",
-                                        "parkio",
-                                        "domainlore"
-                                    ]
+                                    "type": "string"
                                 },
                                 "venueLabel": {
                                     "type": "string"
@@ -3907,11 +3670,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     ]
                                 },
                                 "currency": {
-                                    "type": "string",
-                                    "enum": [
-                                        "USD",
-                                        "GBP"
-                                    ]
+                                    "type": "string"
                                 },
                                 "firstYear": {
                                     "anyOf": [
@@ -4105,14 +3864,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "shape": {
                                     "anyOf": [
                                         {
-                                            "type": "string",
-                                            "enum": [
-                                                "single",
-                                                "properNoun",
-                                                "acronym",
-                                                "twoWords",
-                                                "phrase"
-                                            ]
+                                            "type": "string"
                                         },
                                         {
                                             "type": "null"
@@ -4120,24 +3872,10 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     ]
                                 },
                                 "origin": {
-                                    "type": "string",
-                                    "enum": [
-                                        "dictionary",
-                                        "trend",
-                                        "api",
-                                        "review"
-                                    ]
+                                    "type": "string"
                                 },
                                 "via": {
-                                    "type": "string",
-                                    "enum": [
-                                        "exact",
-                                        "case",
-                                        "accent",
-                                        "inflected",
-                                        "lookalike",
-                                        "two_words"
-                                    ]
+                                    "type": "string"
                                 }
                             }
                         },
@@ -4166,14 +3904,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "shape": {
                                         "anyOf": [
                                             {
-                                                "type": "string",
-                                                "enum": [
-                                                    "single",
-                                                    "properNoun",
-                                                    "acronym",
-                                                    "twoWords",
-                                                    "phrase"
-                                                ]
+                                                "type": "string"
                                             },
                                             {
                                                 "type": "null"
@@ -4181,13 +3912,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         ]
                                     },
                                     "origin": {
-                                        "type": "string",
-                                        "enum": [
-                                            "dictionary",
-                                            "trend",
-                                            "api",
-                                            "review"
-                                        ]
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -4529,14 +4254,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "shape": {
                                         "anyOf": [
                                             {
-                                                "type": "string",
-                                                "enum": [
-                                                    "single",
-                                                    "properNoun",
-                                                    "acronym",
-                                                    "twoWords",
-                                                    "phrase"
-                                                ]
+                                                "type": "string"
                                             },
                                             {
                                                 "type": "null"
@@ -4588,9 +4306,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "description": "How widely the word is used; never sales or demand.",
                                         "anyOf": [
                                             {
-                                                "type": "integer",
-                                                "minimum": 0,
-                                                "maximum": 100
+                                                "type": "integer"
                                             },
                                             {
                                                 "type": "null"
@@ -4601,9 +4317,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "description": "50 is neutral.",
                                         "anyOf": [
                                             {
-                                                "type": "integer",
-                                                "minimum": 0,
-                                                "maximum": 100
+                                                "type": "integer"
                                             },
                                             {
                                                 "type": "null"
@@ -4613,9 +4327,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "brandability": {
                                         "anyOf": [
                                             {
-                                                "type": "integer",
-                                                "minimum": 0,
-                                                "maximum": 100
+                                                "type": "integer"
                                             },
                                             {
                                                 "type": "null"
@@ -4625,15 +4337,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "style": {
                                         "anyOf": [
                                             {
-                                                "type": "string",
-                                                "enum": [
-                                                    "modern",
-                                                    "elegant",
-                                                    "slab",
-                                                    "handwritten",
-                                                    "playful",
-                                                    "futuristic"
-                                                ]
+                                                "type": "string"
                                             },
                                             {
                                                 "type": "null"
@@ -4665,16 +4369,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "description": "Why the word stays off public lists (ADR-0111); null when none.",
                                         "anyOf": [
                                             {
-                                                "type": "string",
-                                                "enum": [
-                                                    "brand",
-                                                    "trademark",
-                                                    "person",
-                                                    "harm",
-                                                    "vice",
-                                                    "politics",
-                                                    "controversy"
-                                                ]
+                                                "type": "string"
                                             },
                                             {
                                                 "type": "null"
@@ -4682,13 +4377,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         ]
                                     },
                                     "origin": {
-                                        "type": "string",
-                                        "enum": [
-                                            "dictionary",
-                                            "trend",
-                                            "api",
-                                            "review"
-                                        ]
+                                        "type": "string"
                                     },
                                     "addedAt": {
                                         "description": "When the intake added it; null means the dictionary load.",
@@ -4737,12 +4426,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                             "memorabilityLabel": {
                                                 "anyOf": [
                                                     {
-                                                        "type": "string",
-                                                        "enum": [
-                                                            "low",
-                                                            "medium",
-                                                            "high"
-                                                        ]
+                                                        "type": "string"
                                                     },
                                                     {
                                                         "type": "null"
@@ -4772,12 +4456,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                             "pronounceabilityLabel": {
                                                 "anyOf": [
                                                     {
-                                                        "type": "string",
-                                                        "enum": [
-                                                            "easy",
-                                                            "medium",
-                                                            "hard"
-                                                        ]
+                                                        "type": "string"
                                                     },
                                                     {
                                                         "type": "null"
@@ -4817,12 +4496,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                             "pronunciationConfidence": {
                                                 "anyOf": [
                                                     {
-                                                        "type": "string",
-                                                        "enum": [
-                                                            "low",
-                                                            "medium",
-                                                            "high"
-                                                        ]
+                                                        "type": "string"
                                                     },
                                                     {
                                                         "type": "null"
@@ -4862,12 +4536,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                             "soundTextureLabel": {
                                                 "anyOf": [
                                                     {
-                                                        "type": "string",
-                                                        "enum": [
-                                                            "soft",
-                                                            "balanced",
-                                                            "sharp"
-                                                        ]
+                                                        "type": "string"
                                                     },
                                                     {
                                                         "type": "null"
@@ -4907,12 +4576,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                             "spellingLabel": {
                                                 "anyOf": [
                                                     {
-                                                        "type": "string",
-                                                        "enum": [
-                                                            "low",
-                                                            "medium",
-                                                            "high"
-                                                        ]
+                                                        "type": "string"
                                                     },
                                                     {
                                                         "type": "null"
@@ -5229,14 +4893,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "shape": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "enum": [
-                                            "single",
-                                            "properNoun",
-                                            "acronym",
-                                            "twoWords",
-                                            "phrase"
-                                        ]
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
@@ -5264,13 +4921,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 ]
                             },
                             "origin": {
-                                "type": "string",
-                                "enum": [
-                                    "dictionary",
-                                    "trend",
-                                    "api",
-                                    "review"
-                                ]
+                                "type": "string"
                             }
                         }
                     }
@@ -5444,14 +5095,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "shape": {
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "enum": [
-                                        "single",
-                                        "properNoun",
-                                        "acronym",
-                                        "twoWords",
-                                        "phrase"
-                                    ]
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
@@ -5503,9 +5147,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "How widely the word is used; never sales or demand.",
                             "anyOf": [
                                 {
-                                    "type": "integer",
-                                    "minimum": 0,
-                                    "maximum": 100
+                                    "type": "integer"
                                 },
                                 {
                                     "type": "null"
@@ -5516,9 +5158,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "50 is neutral.",
                             "anyOf": [
                                 {
-                                    "type": "integer",
-                                    "minimum": 0,
-                                    "maximum": 100
+                                    "type": "integer"
                                 },
                                 {
                                     "type": "null"
@@ -5528,9 +5168,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "brandability": {
                             "anyOf": [
                                 {
-                                    "type": "integer",
-                                    "minimum": 0,
-                                    "maximum": 100
+                                    "type": "integer"
                                 },
                                 {
                                     "type": "null"
@@ -5540,15 +5178,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "style": {
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "enum": [
-                                        "modern",
-                                        "elegant",
-                                        "slab",
-                                        "handwritten",
-                                        "playful",
-                                        "futuristic"
-                                    ]
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
@@ -5580,16 +5210,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "Why the word stays off public lists (ADR-0111); null when none.",
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "enum": [
-                                        "brand",
-                                        "trademark",
-                                        "person",
-                                        "harm",
-                                        "vice",
-                                        "politics",
-                                        "controversy"
-                                    ]
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
@@ -5597,13 +5218,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "origin": {
-                            "type": "string",
-                            "enum": [
-                                "dictionary",
-                                "trend",
-                                "api",
-                                "review"
-                            ]
+                            "type": "string"
                         },
                         "addedAt": {
                             "description": "When the intake added it; null means the dictionary load.",
@@ -5652,12 +5267,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "memorabilityLabel": {
                                     "anyOf": [
                                         {
-                                            "type": "string",
-                                            "enum": [
-                                                "low",
-                                                "medium",
-                                                "high"
-                                            ]
+                                            "type": "string"
                                         },
                                         {
                                             "type": "null"
@@ -5687,12 +5297,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "pronounceabilityLabel": {
                                     "anyOf": [
                                         {
-                                            "type": "string",
-                                            "enum": [
-                                                "easy",
-                                                "medium",
-                                                "hard"
-                                            ]
+                                            "type": "string"
                                         },
                                         {
                                             "type": "null"
@@ -5732,12 +5337,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "pronunciationConfidence": {
                                     "anyOf": [
                                         {
-                                            "type": "string",
-                                            "enum": [
-                                                "low",
-                                                "medium",
-                                                "high"
-                                            ]
+                                            "type": "string"
                                         },
                                         {
                                             "type": "null"
@@ -5777,12 +5377,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "soundTextureLabel": {
                                     "anyOf": [
                                         {
-                                            "type": "string",
-                                            "enum": [
-                                                "soft",
-                                                "balanced",
-                                                "sharp"
-                                            ]
+                                            "type": "string"
                                         },
                                         {
                                             "type": "null"
@@ -5822,12 +5417,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "spellingLabel": {
                                     "anyOf": [
                                         {
-                                            "type": "string",
-                                            "enum": [
-                                                "low",
-                                                "medium",
-                                                "high"
-                                            ]
+                                            "type": "string"
                                         },
                                         {
                                             "type": "null"
@@ -6540,11 +6130,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "object",
                                 "properties": {
                                     "office": {
-                                        "type": "string",
-                                        "enum": [
-                                            "US",
-                                            "EU"
-                                        ]
+                                        "type": "string"
                                     },
                                     "serial": {
                                         "type": "string"
@@ -6563,11 +6149,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         ]
                                     },
                                     "status": {
-                                        "type": "string",
-                                        "enum": [
-                                            "live",
-                                            "dead"
-                                        ]
+                                        "type": "string"
                                     },
                                     "owner": {
                                         "anyOf": [
@@ -7182,11 +6764,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 ]
                             },
                             "relation": {
-                                "type": "string",
-                                "enum": [
-                                    "synonym",
-                                    "related"
-                                ]
+                                "type": "string"
                             },
                             "openNames": {
                                 "description": "Open to register plus for sale; null: not counted yet.",
@@ -7368,16 +6946,10 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "fit": {
-                                "type": "integer",
-                                "minimum": 0,
-                                "maximum": 100
+                                "type": "integer"
                             },
                             "basis": {
-                                "type": "string",
-                                "enum": [
-                                    "rated",
-                                    "default"
-                                ]
+                                "type": "string"
                             }
                         }
                     }
@@ -7528,12 +7100,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "status": {
-                            "type": "string",
-                            "enum": [
-                                "in_catalog",
-                                "accepted",
-                                "queued"
-                            ]
+                            "type": "string"
                         },
                         "requestId": {
                             "type": "string",
@@ -7562,13 +7129,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     ]
                                 },
                                 "origin": {
-                                    "type": "string",
-                                    "enum": [
-                                        "dictionary",
-                                        "trend",
-                                        "api",
-                                        "review"
-                                    ]
+                                    "type": "string"
                                 }
                             }
                         }
@@ -7727,13 +7288,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "string"
                         },
                         "status": {
-                            "type": "string",
-                            "enum": [
-                                "queued",
-                                "ready",
-                                "rejected",
-                                "failed"
-                            ]
+                            "type": "string"
                         },
                         "word": {
                             "description": "On `ready`; null when the catalog no longer serves the word.",
@@ -7764,19 +7319,10 @@ export const TOOLS: readonly ToolDefinition[] = [
                         },
                         "scan": {
                             "type": "string",
-                            "enum": [
-                                "pending",
-                                "done"
-                            ],
                             "description": "On `ready` with a word: whether the first scan of every ending ran."
                         },
                         "reason": {
                             "type": "string",
-                            "enum": [
-                                "not_a_word",
-                                "brand",
-                                "offensive"
-                            ],
                             "description": "On `rejected`."
                         },
                         "requestedAt": {
@@ -8031,18 +7577,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "status": {
-                                "type": "string",
-                                "enum": [
-                                    "available",
-                                    "premium",
-                                    "resell",
-                                    "expiring",
-                                    "expired",
-                                    "taken",
-                                    "dormant",
-                                    "sold",
-                                    "unknown"
-                                ]
+                                "type": "string"
                             },
                             "price": {
                                 "description": "Price today, USD.",
@@ -8058,14 +7593,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "priceKind": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "enum": [
-                                            "registration",
-                                            "premium",
-                                            "marketplace",
-                                            "auction",
-                                            "backorder"
-                                        ]
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
@@ -8085,13 +7613,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "ratingBand": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "enum": [
-                                            "prime",
-                                            "strong",
-                                            "niche",
-                                            "thin"
-                                        ]
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
@@ -8101,11 +7623,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "format": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "enum": [
-                                            "oneWord",
-                                            "hack"
-                                        ]
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
@@ -8115,14 +7633,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "shape": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "enum": [
-                                            "single",
-                                            "properNoun",
-                                            "acronym",
-                                            "twoWords",
-                                            "phrase"
-                                        ]
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
@@ -8338,23 +7849,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "The catalog stores the name."
                         },
                         "status": {
-                            "type": "string",
-                            "enum": [
-                                "free",
-                                "free_premium",
-                                "for_sale",
-                                "at_auction",
-                                "expiring",
-                                "expired",
-                                "redemption",
-                                "pending_delete",
-                                "parked",
-                                "in_use",
-                                "registered",
-                                "not_checked",
-                                "not_covered",
-                                "not_a_name"
-                            ]
+                            "type": "string"
                         },
                         "lifecycle": {
                             "anyOf": [
@@ -8370,11 +7865,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "object",
                             "properties": {
                                 "kind": {
-                                    "type": "string",
-                                    "enum": [
-                                        "date",
-                                        "none"
-                                    ]
+                                    "type": "string"
                                 },
                                 "dropsOn": {
                                     "type": "string"
@@ -8390,13 +7881,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "kind": {
                                     "anyOf": [
                                         {
-                                            "type": "string",
-                                            "enum": [
-                                                "registry",
-                                                "premium",
-                                                "aftermarket",
-                                                "backorder"
-                                            ]
+                                            "type": "string"
                                         },
                                         {
                                             "type": "null"
@@ -8562,11 +8047,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "format": {
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "enum": [
-                                        "oneWord",
-                                        "hack"
-                                    ]
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
@@ -8576,14 +8057,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "shape": {
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "enum": [
-                                        "single",
-                                        "properNoun",
-                                        "acronym",
-                                        "twoWords",
-                                        "phrase"
-                                    ]
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
@@ -8624,13 +8098,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "band": {
                                     "anyOf": [
                                         {
-                                            "type": "string",
-                                            "enum": [
-                                                "prime",
-                                                "strong",
-                                                "niche",
-                                                "thin"
-                                            ]
+                                            "type": "string"
                                         },
                                         {
                                             "type": "null"
@@ -8643,17 +8111,9 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "object",
                             "properties": {
                                 "tier": {
-                                    "description": "`sold_before` (this exact name sold before) on keyed answers only.",
                                     "anyOf": [
                                         {
-                                            "type": "string",
-                                            "enum": [
-                                                "same_word",
-                                                "synonyms",
-                                                "related",
-                                                "market",
-                                                "sold_before"
-                                            ]
+                                            "type": "string"
                                         },
                                         {
                                             "type": "null"
@@ -8858,11 +8318,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "status": {
-                                "type": "string",
-                                "enum": [
-                                    "expiring",
-                                    "expired"
-                                ]
+                                "type": "string"
                             },
                             "expiresOn": {
                                 "type": "string"
@@ -9020,7 +8476,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_get_domain_drops",
         "operationId": "get_domain_drops",
         "title": "Names dropping on one day",
-        "description": "Names dropping on one day: counts free, names keyed. Every input is optional; `limit` sets the page size.",
+        "description": "Names dropping on one day. Every input is optional; `limit` sets the page size.",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -9061,7 +8517,6 @@ export const TOOLS: readonly ToolDefinition[] = [
             "type": "object",
             "properties": {
                 "data": {
-                    "description": "Free: the summary object. Keyed: the list of names.",
                     "anyOf": [
                         {
                             "type": "object",
@@ -9117,18 +8572,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "status": {
-                                        "type": "string",
-                                        "enum": [
-                                            "available",
-                                            "premium",
-                                            "resell",
-                                            "expiring",
-                                            "expired",
-                                            "taken",
-                                            "dormant",
-                                            "sold",
-                                            "unknown"
-                                        ]
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -9363,18 +8807,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "status": {
-                                "type": "string",
-                                "enum": [
-                                    "available",
-                                    "premium",
-                                    "resell",
-                                    "expiring",
-                                    "expired",
-                                    "taken",
-                                    "dormant",
-                                    "sold",
-                                    "unknown"
-                                ]
+                                "type": "string"
                             },
                             "price": {
                                 "description": "Price today, USD.",
@@ -9390,14 +8823,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "priceKind": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "enum": [
-                                            "registration",
-                                            "premium",
-                                            "marketplace",
-                                            "auction",
-                                            "backorder"
-                                        ]
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
@@ -9417,13 +8843,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "ratingBand": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "enum": [
-                                            "prime",
-                                            "strong",
-                                            "niche",
-                                            "thin"
-                                        ]
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
@@ -9433,11 +8853,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "format": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "enum": [
-                                            "oneWord",
-                                            "hack"
-                                        ]
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
@@ -9447,14 +8863,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "shape": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "enum": [
-                                            "single",
-                                            "properNoun",
-                                            "acronym",
-                                            "twoWords",
-                                            "phrase"
-                                        ]
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
@@ -9673,22 +9082,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "type": {
-                                "type": "string",
-                                "enum": [
-                                    "price_drop",
-                                    "price_increase",
-                                    "status_change",
-                                    "expiry_window",
-                                    "lifecycle_move",
-                                    "registrar_change",
-                                    "transfer",
-                                    "lock_removed",
-                                    "renewal_observed",
-                                    "nameserver_change",
-                                    "parking_change",
-                                    "auction_ending",
-                                    "auction_jump"
-                                ]
+                                "type": "string"
                             },
                             "observedAt": {
                                 "type": "string"
@@ -9697,10 +9091,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "object",
                                 "properties": {
                                     "kind": {
-                                        "type": "string",
-                                        "enum": [
-                                            "name"
-                                        ]
+                                        "type": "string"
                                     },
                                     "key": {
                                         "anyOf": [
@@ -10128,11 +9519,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "ianaStatus": {
                                 "anyOf": [
                                     {
-                                        "enum": [
-                                            "delegated",
-                                            "removed",
-                                            "never_delegated"
-                                        ],
                                         "description": "IANA root zone status."
                                     },
                                     {
@@ -10141,11 +9527,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 ]
                             },
                             "kind": {
-                                "enum": [
-                                    "root",
-                                    "second_level",
-                                    "web3"
-                                ],
                                 "description": "Catalog kind."
                             },
                             "ianaType": {
@@ -10246,20 +9627,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                             "type": "string",
                                             "description": "`TldLaunchPhase.id`."
                                         },
-                                        "phase": {
-                                            "enum": [
-                                                "delegation",
-                                                "sunrise",
-                                                "limited_registration",
-                                                "qualified_launch",
-                                                "exclusive_registration",
-                                                "approved_launch",
-                                                "claims",
-                                                "general_availability",
-                                                "removal",
-                                                "contract_termination"
-                                            ]
-                                        },
+                                        "phase": {},
                                         "startsOn": {
                                             "type": "string",
                                             "description": "First day."
@@ -10365,11 +9733,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                             "salesTrend": {
                                                                 "anyOf": [
                                                                     {
-                                                                        "enum": [
-                                                                            "up",
-                                                                            "flat",
-                                                                            "down"
-                                                                        ],
                                                                         "description": "12-month count against the previous 12 months, ±10 % threshold."
                                                                     },
                                                                     {
@@ -10702,11 +10065,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "ianaStatus": {
                                     "anyOf": [
                                         {
-                                            "enum": [
-                                                "delegated",
-                                                "removed",
-                                                "never_delegated"
-                                            ],
                                             "description": "IANA root zone status."
                                         },
                                         {
@@ -10715,11 +10073,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     ]
                                 },
                                 "kind": {
-                                    "enum": [
-                                        "root",
-                                        "second_level",
-                                        "web3"
-                                    ],
                                     "description": "Catalog kind."
                                 },
                                 "ianaType": {
@@ -10800,20 +10153,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string",
                                         "description": "`TldLaunchPhase.id`."
                                     },
-                                    "phase": {
-                                        "enum": [
-                                            "delegation",
-                                            "sunrise",
-                                            "limited_registration",
-                                            "qualified_launch",
-                                            "exclusive_registration",
-                                            "approved_launch",
-                                            "claims",
-                                            "general_availability",
-                                            "removal",
-                                            "contract_termination"
-                                        ]
-                                    },
+                                    "phase": {},
                                     "startsOn": {
                                         "type": "string",
                                         "description": "First day."
@@ -10911,11 +10251,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "salesTrend": {
                                             "anyOf": [
                                                 {
-                                                    "enum": [
-                                                        "up",
-                                                        "flat",
-                                                        "down"
-                                                    ],
                                                     "description": "12-month count against the previous 12 months, ±10 % threshold."
                                                 },
                                                 {
@@ -10968,14 +10303,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 }
                             ]
                         },
-                        "quality": {
-                            "enum": [
-                                "prime",
-                                "strong",
-                                "niche",
-                                "thin"
-                            ]
-                        },
+                        "quality": {},
                         "registrars": {
                             "type": "array",
                             "items": {
@@ -11207,8 +10535,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "computedAt": {
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "description": "Rollup timestamp, keyed; null on free, which reads `day` (as `/catalog/stats`)."
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
@@ -11285,11 +10612,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "salesTrend": {
                             "anyOf": [
                                 {
-                                    "enum": [
-                                        "up",
-                                        "flat",
-                                        "down"
-                                    ],
                                     "description": "12-month count against the previous 12 months, ±10 % threshold."
                                 },
                                 {
@@ -11385,8 +10707,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "computedAt": {
                                         "anyOf": [
                                             {
-                                                "type": "string",
-                                                "description": "Rollup timestamp, keyed; null on free, which reads `day` (as `/catalog/stats`)."
+                                                "type": "string"
                                             },
                                             {
                                                 "type": "null"
@@ -11463,11 +10784,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "salesTrend": {
                                         "anyOf": [
                                             {
-                                                "enum": [
-                                                    "up",
-                                                    "flat",
-                                                    "down"
-                                                ],
                                                 "description": "12-month count against the previous 12 months, ±10 % threshold."
                                             },
                                             {
@@ -11707,20 +11023,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string",
                                 "description": "`TldLaunchPhase.id`."
                             },
-                            "phase": {
-                                "enum": [
-                                    "delegation",
-                                    "sunrise",
-                                    "limited_registration",
-                                    "qualified_launch",
-                                    "exclusive_registration",
-                                    "approved_launch",
-                                    "claims",
-                                    "general_availability",
-                                    "removal",
-                                    "contract_termination"
-                                ]
-                            },
+                            "phase": {},
                             "startsOn": {
                                 "type": "string",
                                 "description": "First day."
@@ -11912,15 +11215,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "items": {
                         "type": "object",
                         "properties": {
-                            "kind": {
-                                "enum": [
-                                    "delegation",
-                                    "removal",
-                                    "contract_termination",
-                                    "phase_added",
-                                    "phase_moved"
-                                ]
-                            },
+                            "kind": {},
                             "after": {
                                 "anyOf": [
                                     {
@@ -12404,13 +11699,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "wordPopularityBand": {
                                 "anyOf": [
-                                    {
-                                        "enum": [
-                                            "low",
-                                            "medium",
-                                            "high"
-                                        ]
-                                    },
+                                    {},
                                     {
                                         "type": "null"
                                     }
@@ -12418,14 +11707,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "comparableSalesBand": {
                                 "anyOf": [
-                                    {
-                                        "enum": [
-                                            "none",
-                                            "low",
-                                            "medium",
-                                            "high"
-                                        ]
-                                    },
+                                    {},
                                     {
                                         "type": "null"
                                     }
@@ -12433,15 +11715,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "typeKey": {
                                 "anyOf": [
-                                    {
-                                        "enum": [
-                                            "standard",
-                                            "brand",
-                                            "community",
-                                            "geographic",
-                                            "other"
-                                        ]
-                                    },
+                                    {},
                                     {
                                         "type": "null"
                                     }
@@ -12449,16 +11723,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "statusKey": {
                                 "anyOf": [
-                                    {
-                                        "enum": [
-                                            "received",
-                                            "initial_evaluation",
-                                            "withdrawn",
-                                            "objection_filed",
-                                            "early_warning",
-                                            "other"
-                                        ]
-                                    },
+                                    {},
                                     {
                                         "type": "null"
                                     }
@@ -12659,12 +11924,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "string": {
                                 "type": "string"
                             },
-                            "kind": {
-                                "enum": [
-                                    "status",
-                                    "contention_set"
-                                ]
-                            },
+                            "kind": {},
                             "before": {
                                 "anyOf": [
                                     {
@@ -12927,13 +12187,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     },
                                     "wordPopularityBand": {
                                         "anyOf": [
-                                            {
-                                                "enum": [
-                                                    "low",
-                                                    "medium",
-                                                    "high"
-                                                ]
-                                            },
+                                            {},
                                             {
                                                 "type": "null"
                                             }
@@ -12941,14 +12195,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     },
                                     "comparableSalesBand": {
                                         "anyOf": [
-                                            {
-                                                "enum": [
-                                                    "none",
-                                                    "low",
-                                                    "medium",
-                                                    "high"
-                                                ]
-                                            },
+                                            {},
                                             {
                                                 "type": "null"
                                             }
@@ -12956,15 +12203,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     },
                                     "typeKey": {
                                         "anyOf": [
-                                            {
-                                                "enum": [
-                                                    "standard",
-                                                    "brand",
-                                                    "community",
-                                                    "geographic",
-                                                    "other"
-                                                ]
-                                            },
+                                            {},
                                             {
                                                 "type": "null"
                                             }
@@ -12972,16 +12211,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     },
                                     "statusKey": {
                                         "anyOf": [
-                                            {
-                                                "enum": [
-                                                    "received",
-                                                    "initial_evaluation",
-                                                    "withdrawn",
-                                                    "objection_filed",
-                                                    "early_warning",
-                                                    "other"
-                                                ]
-                                            },
+                                            {},
                                             {
                                                 "type": "null"
                                             }
@@ -13020,12 +12250,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "string": {
                                         "type": "string"
                                     },
-                                    "kind": {
-                                        "enum": [
-                                            "status",
-                                            "contention_set"
-                                        ]
-                                    },
+                                    "kind": {},
                                     "before": {
                                         "anyOf": [
                                             {
@@ -13502,8 +12727,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 ]
                             },
                             "delisted": {
-                                "type": "boolean",
-                                "description": "Paid subscriptions only: the last complete list no longer carries the ending."
+                                "type": "boolean"
                             }
                         }
                     }
@@ -13698,11 +12922,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "description": "Display name."
                             },
                             "field": {
-                                "enum": [
-                                    "purchase",
-                                    "renewal",
-                                    "transfer"
-                                ],
                                 "description": "Which price moved."
                             },
                             "oldPrice": {
@@ -14132,8 +13351,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "regularPurchasePrice": {
                                 "anyOf": [
                                     {
-                                        "type": "number",
-                                        "description": "Paid subscriptions only: the regular first year behind a promo."
+                                        "type": "number"
                                     },
                                     {
                                         "type": "null"
@@ -14612,11 +13830,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "description": "Display name."
                             },
                             "field": {
-                                "enum": [
-                                    "purchase",
-                                    "renewal",
-                                    "transfer"
-                                ],
                                 "description": "Which price moved."
                             },
                             "oldPrice": {
@@ -15758,13 +14971,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string",
                                 "description": "Name as IANA publishes it."
                             },
-                            "status": {
-                                "enum": [
-                                    "accredited",
-                                    "terminated",
-                                    "reserved"
-                                ]
-                            },
+                            "status": {},
                             "rdapBaseUrl": {
                                 "anyOf": [
                                     {
@@ -15937,13 +15144,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "string",
                             "description": "Name as IANA publishes it."
                         },
-                        "status": {
-                            "enum": [
-                                "accredited",
-                                "terminated",
-                                "reserved"
-                            ]
-                        },
+                        "status": {},
                         "rdapBaseUrl": {
                             "anyOf": [
                                 {
@@ -16122,12 +15323,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "object",
                                         "properties": {
                                             "id": {
-                                                "type": "string",
-                                                "enum": [
-                                                    "7d",
-                                                    "30d",
-                                                    "12m"
-                                                ]
+                                                "type": "string"
                                             },
                                             "count": {
                                                 "type": "integer"
@@ -16164,14 +15360,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "object",
                                         "properties": {
                                             "band": {
-                                                "type": "string",
-                                                "enum": [
-                                                    "50_999",
-                                                    "1000_4999",
-                                                    "5000_24999",
-                                                    "25000_99999",
-                                                    "100000_up"
-                                                ]
+                                                "type": "string"
                                             },
                                             "count": {
                                                 "type": "integer"
@@ -16185,14 +15374,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "object",
                                         "properties": {
                                             "band": {
-                                                "type": "string",
-                                                "enum": [
-                                                    "50_999",
-                                                    "1000_4999",
-                                                    "5000_24999",
-                                                    "25000_99999",
-                                                    "100000_up"
-                                                ]
+                                                "type": "string"
                                             },
                                             "count": {
                                                 "type": "integer"
@@ -16577,13 +15759,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 ]
                             },
                             "trendWord": {
-                                "type": "string",
-                                "enum": [
-                                    "up",
-                                    "down",
-                                    "flat",
-                                    "new"
-                                ]
+                                "type": "string"
                             },
                             "count30d": {
                                 "type": "integer"
@@ -16775,13 +15951,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         ]
                                     },
                                     "trendWord": {
-                                        "type": "string",
-                                        "enum": [
-                                            "up",
-                                            "down",
-                                            "flat",
-                                            "new"
-                                        ]
+                                        "type": "string"
                                     },
                                     "count30d": {
                                         "type": "integer"
@@ -16831,13 +16001,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         ]
                                     },
                                     "trendWord": {
-                                        "type": "string",
-                                        "enum": [
-                                            "up",
-                                            "down",
-                                            "flat",
-                                            "new"
-                                        ]
+                                        "type": "string"
                                     },
                                     "count30d": {
                                         "type": "integer"
@@ -16887,13 +16051,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         ]
                                     },
                                     "trendWord": {
-                                        "type": "string",
-                                        "enum": [
-                                            "up",
-                                            "down",
-                                            "flat",
-                                            "new"
-                                        ]
+                                        "type": "string"
                                     },
                                     "count30d": {
                                         "type": "integer"
@@ -16943,13 +16101,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         ]
                                     },
                                     "trendWord": {
-                                        "type": "string",
-                                        "enum": [
-                                            "up",
-                                            "down",
-                                            "flat",
-                                            "new"
-                                        ]
+                                        "type": "string"
                                     },
                                     "count30d": {
                                         "type": "integer"
@@ -17123,12 +16275,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "integer"
                             },
                             "direction": {
-                                "type": "string",
-                                "enum": [
-                                    "up",
-                                    "down",
-                                    "flat"
-                                ]
+                                "type": "string"
                             },
                             "sales90d": {
                                 "type": "integer"
@@ -17312,11 +16459,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "status": {
-                            "type": "string",
-                            "enum": [
-                                "result",
-                                "none"
-                            ]
+                            "type": "string"
                         },
                         "word": {
                             "type": "string"
@@ -17543,15 +16686,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "properties": {
                                     "venue": {
                                         "type": "string",
-                                        "enum": [
-                                            "godaddy",
-                                            "dynadot",
-                                            "namesilo",
-                                            "namecheap",
-                                            "snapnames",
-                                            "parkio",
-                                            "domainlore"
-                                        ],
                                         "description": "Auction venue id (`GET /meta/enums` names each)."
                                     },
                                     "closing": {
@@ -17795,15 +16929,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "venue": {
                                 "type": "string",
-                                "enum": [
-                                    "godaddy",
-                                    "dynadot",
-                                    "namesilo",
-                                    "namecheap",
-                                    "snapnames",
-                                    "parkio",
-                                    "domainlore"
-                                ],
                                 "description": "Auction venue id (`GET /meta/enums` names each)."
                             },
                             "venueLabel": {
@@ -17813,11 +16938,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "currency": {
-                                "type": "string",
-                                "enum": [
-                                    "USD",
-                                    "GBP"
-                                ]
+                                "type": "string"
                             },
                             "bid": {
                                 "anyOf": [
@@ -17842,12 +16963,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "verdict": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "enum": [
-                                            "Strong choice",
-                                            "Good",
-                                            "Risky"
-                                        ]
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
@@ -17867,10 +16983,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "tag": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "enum": [
-                                            "jumped"
-                                        ]
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
@@ -18026,36 +17139,18 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "properties": {
                             "id": {
                                 "type": "string",
-                                "enum": [
-                                    "godaddy",
-                                    "dynadot",
-                                    "namesilo",
-                                    "namecheap",
-                                    "snapnames",
-                                    "parkio",
-                                    "domainlore"
-                                ],
                                 "description": "Auction venue id (`GET /meta/enums` names each)."
                             },
                             "label": {
                                 "type": "string"
                             },
                             "currency": {
-                                "type": "string",
-                                "enum": [
-                                    "USD",
-                                    "GBP"
-                                ]
+                                "type": "string"
                             },
                             "kinds": {
                                 "type": "array",
                                 "items": {
-                                    "type": "string",
-                                    "enum": [
-                                        "expired",
-                                        "user",
-                                        "unspecified"
-                                    ]
+                                    "type": "string"
                                 }
                             },
                             "closeRule": {
@@ -18342,15 +17437,6 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "properties": {
                             "venue": {
                                 "type": "string",
-                                "enum": [
-                                    "godaddy",
-                                    "dynadot",
-                                    "namesilo",
-                                    "namecheap",
-                                    "snapnames",
-                                    "parkio",
-                                    "domainlore"
-                                ],
                                 "description": "Auction venue id (`GET /meta/enums` names each)."
                             },
                             "venueLabel": {
@@ -18360,11 +17446,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "currency": {
-                                "type": "string",
-                                "enum": [
-                                    "USD",
-                                    "GBP"
-                                ]
+                                "type": "string"
                             },
                             "count": {
                                 "type": "integer"
@@ -18613,11 +17695,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "lane": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "enum": [
-                                            "weekly",
-                                            "yearly"
-                                        ]
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
@@ -18856,11 +17934,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "lane": {
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "enum": [
-                                        "weekly",
-                                        "yearly"
-                                    ]
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
@@ -18911,11 +17985,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "persona": {
-                                        "type": "string",
-                                        "enum": [
-                                            "founder",
-                                            "investor"
-                                        ]
+                                        "type": "string"
                                     },
                                     "searches": {
                                         "anyOf": [
@@ -18968,13 +18038,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "growthWindow": {
                                         "anyOf": [
                                             {
-                                                "type": "string",
-                                                "enum": [
-                                                    "3m",
-                                                    "6m",
-                                                    "1y",
-                                                    "5y"
-                                                ]
+                                                "type": "string"
                                             },
                                             {
                                                 "type": "null"
@@ -19370,13 +18434,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "growthWindow": {
                                             "anyOf": [
                                                 {
-                                                    "type": "string",
-                                                    "enum": [
-                                                        "3m",
-                                                        "6m",
-                                                        "1y",
-                                                        "5y"
-                                                    ]
+                                                    "type": "string"
                                                 },
                                                 {
                                                     "type": "null"
@@ -19589,15 +18647,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "category": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "enum": [
-                                            "domaining",
-                                            "dns_governance",
-                                            "brand_ip",
-                                            "hosting_cloud",
-                                            "security_privacy",
-                                            "other_tech"
-                                        ]
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
@@ -19645,10 +18695,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 ]
                             },
                             "kind": {
-                                "type": "string",
-                                "enum": [
-                                    "industry_event"
-                                ]
+                                "type": "string"
                             }
                         }
                     }
@@ -19835,15 +18882,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "category": {
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "enum": [
-                                        "domaining",
-                                        "dns_governance",
-                                        "brand_ip",
-                                        "hosting_cloud",
-                                        "security_privacy",
-                                        "other_tech"
-                                    ]
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
@@ -20098,12 +19137,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "kind": {
-                                        "type": "string",
-                                        "enum": [
-                                            "industry_event",
-                                            "tld_phase",
-                                            "tld_change"
-                                        ]
+                                        "type": "string"
                                     },
                                     "title": {
                                         "type": "string"
@@ -20131,16 +19165,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "category": {
                                         "anyOf": [
                                             {
-                                                "type": "string",
-                                                "enum": [
-                                                    "domaining",
-                                                    "dns_governance",
-                                                    "brand_ip",
-                                                    "hosting_cloud",
-                                                    "security_privacy",
-                                                    "other_tech",
-                                                    "launches"
-                                                ]
+                                                "type": "string"
                                             },
                                             {
                                                 "type": "null"
@@ -20209,12 +19234,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "kind": {
-                                        "type": "string",
-                                        "enum": [
-                                            "industry_event",
-                                            "tld_phase",
-                                            "tld_change"
-                                        ]
+                                        "type": "string"
                                     },
                                     "title": {
                                         "type": "string"
@@ -20242,16 +19262,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "category": {
                                         "anyOf": [
                                             {
-                                                "type": "string",
-                                                "enum": [
-                                                    "domaining",
-                                                    "dns_governance",
-                                                    "brand_ip",
-                                                    "hosting_cloud",
-                                                    "security_privacy",
-                                                    "other_tech",
-                                                    "launches"
-                                                ]
+                                                "type": "string"
                                             },
                                             {
                                                 "type": "null"
@@ -20320,12 +19331,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "kind": {
-                                        "type": "string",
-                                        "enum": [
-                                            "industry_event",
-                                            "tld_phase",
-                                            "tld_change"
-                                        ]
+                                        "type": "string"
                                     },
                                     "title": {
                                         "type": "string"
@@ -20353,16 +19359,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "category": {
                                         "anyOf": [
                                             {
-                                                "type": "string",
-                                                "enum": [
-                                                    "domaining",
-                                                    "dns_governance",
-                                                    "brand_ip",
-                                                    "hosting_cloud",
-                                                    "security_privacy",
-                                                    "other_tech",
-                                                    "launches"
-                                                ]
+                                                "type": "string"
                                             },
                                             {
                                                 "type": "null"
@@ -20578,11 +19575,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "persona": {
-                            "type": "string",
-                            "enum": [
-                                "founder",
-                                "investor"
-                            ]
+                            "type": "string"
                         },
                         "date": {
                             "type": "string"
@@ -20597,8 +19590,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "integer"
                         },
                         "openCount": {
-                            "type": "integer",
-                            "maximum": 5
+                            "type": "integer"
                         },
                         "previousDate": {
                             "anyOf": [
@@ -20676,11 +19668,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "lane": {
                                         "anyOf": [
                                             {
-                                                "type": "string",
-                                                "enum": [
-                                                    "weekly",
-                                                    "yearly"
-                                                ]
+                                                "type": "string"
                                             },
                                             {
                                                 "type": "null"
@@ -20736,11 +19724,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                     "type": "string"
                                                 },
                                                 "matchKind": {
-                                                    "type": "string",
-                                                    "enum": [
-                                                        "exact",
-                                                        "related"
-                                                    ]
+                                                    "type": "string"
                                                 },
                                                 "relation": {
                                                     "anyOf": [
@@ -20753,14 +19737,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                     ]
                                                 },
                                                 "status": {
-                                                    "type": "string",
-                                                    "enum": [
-                                                        "available",
-                                                        "premium",
-                                                        "forSale",
-                                                        "auction",
-                                                        "expiring"
-                                                    ]
+                                                    "type": "string"
                                                 },
                                                 "price": {
                                                     "anyOf": [
@@ -20775,13 +19752,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                 "priceKind": {
                                                     "anyOf": [
                                                         {
-                                                            "type": "string",
-                                                            "enum": [
-                                                                "registration",
-                                                                "premium",
-                                                                "marketplace",
-                                                                "auction"
-                                                            ]
+                                                            "type": "string"
                                                         },
                                                         {
                                                             "type": "null"
@@ -20847,12 +19818,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                 "liquidity": {
                                                     "anyOf": [
                                                         {
-                                                            "type": "string",
-                                                            "enum": [
-                                                                "high",
-                                                                "medium",
-                                                                "low"
-                                                            ]
+                                                            "type": "string"
                                                         },
                                                         {
                                                             "type": "null"
@@ -20865,20 +19831,10 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                             "type": "object",
                                                             "properties": {
                                                                 "label": {
-                                                                    "type": "string",
-                                                                    "enum": [
-                                                                        "strong",
-                                                                        "good",
-                                                                        "risky"
-                                                                    ]
+                                                                    "type": "string"
                                                                 },
                                                                 "confidence": {
-                                                                    "type": "string",
-                                                                    "enum": [
-                                                                        "high",
-                                                                        "medium",
-                                                                        "low"
-                                                                    ]
+                                                                    "type": "string"
                                                                 }
                                                             }
                                                         },
@@ -20888,13 +19844,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                     ]
                                                 },
                                                 "rating": {
-                                                    "type": "string",
-                                                    "enum": [
-                                                        "strong",
-                                                        "good",
-                                                        "risky",
-                                                        "unrated"
-                                                    ]
+                                                    "type": "string"
                                                 },
                                                 "ideas": {
                                                     "type": "array",
@@ -21101,11 +20051,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "persona": {
-                            "type": "string",
-                            "enum": [
-                                "founder",
-                                "investor"
-                            ]
+                            "type": "string"
                         },
                         "date": {
                             "type": "string"
@@ -21120,8 +20066,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "integer"
                         },
                         "openCount": {
-                            "type": "integer",
-                            "maximum": 5
+                            "type": "integer"
                         },
                         "previousDate": {
                             "anyOf": [
@@ -21199,11 +20144,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "lane": {
                                         "anyOf": [
                                             {
-                                                "type": "string",
-                                                "enum": [
-                                                    "weekly",
-                                                    "yearly"
-                                                ]
+                                                "type": "string"
                                             },
                                             {
                                                 "type": "null"
@@ -21259,11 +20200,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                     "type": "string"
                                                 },
                                                 "matchKind": {
-                                                    "type": "string",
-                                                    "enum": [
-                                                        "exact",
-                                                        "related"
-                                                    ]
+                                                    "type": "string"
                                                 },
                                                 "relation": {
                                                     "anyOf": [
@@ -21276,14 +20213,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                     ]
                                                 },
                                                 "status": {
-                                                    "type": "string",
-                                                    "enum": [
-                                                        "available",
-                                                        "premium",
-                                                        "forSale",
-                                                        "auction",
-                                                        "expiring"
-                                                    ]
+                                                    "type": "string"
                                                 },
                                                 "price": {
                                                     "anyOf": [
@@ -21298,13 +20228,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                 "priceKind": {
                                                     "anyOf": [
                                                         {
-                                                            "type": "string",
-                                                            "enum": [
-                                                                "registration",
-                                                                "premium",
-                                                                "marketplace",
-                                                                "auction"
-                                                            ]
+                                                            "type": "string"
                                                         },
                                                         {
                                                             "type": "null"
@@ -21370,12 +20294,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                 "liquidity": {
                                                     "anyOf": [
                                                         {
-                                                            "type": "string",
-                                                            "enum": [
-                                                                "high",
-                                                                "medium",
-                                                                "low"
-                                                            ]
+                                                            "type": "string"
                                                         },
                                                         {
                                                             "type": "null"
@@ -21388,20 +20307,10 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                             "type": "object",
                                                             "properties": {
                                                                 "label": {
-                                                                    "type": "string",
-                                                                    "enum": [
-                                                                        "strong",
-                                                                        "good",
-                                                                        "risky"
-                                                                    ]
+                                                                    "type": "string"
                                                                 },
                                                                 "confidence": {
-                                                                    "type": "string",
-                                                                    "enum": [
-                                                                        "high",
-                                                                        "medium",
-                                                                        "low"
-                                                                    ]
+                                                                    "type": "string"
                                                                 }
                                                             }
                                                         },
@@ -21411,13 +20320,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                     ]
                                                 },
                                                 "rating": {
-                                                    "type": "string",
-                                                    "enum": [
-                                                        "strong",
-                                                        "good",
-                                                        "risky",
-                                                        "unrated"
-                                                    ]
+                                                    "type": "string"
                                                 },
                                                 "ideas": {
                                                     "type": "array",
@@ -21685,15 +20588,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "object",
                                 "properties": {
                                     "id": {
-                                        "type": "string",
-                                        "enum": [
-                                            "godaddy",
-                                            "dynadot",
-                                            "namesilo",
-                                            "namecheap",
-                                            "snapnames",
-                                            "domainlore"
-                                        ]
+                                        "type": "string"
                                     },
                                     "label": {
                                         "type": "string"
@@ -21713,12 +20608,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "kind": {
-                                        "type": "string",
-                                        "enum": [
-                                            "marketplace",
-                                            "parking",
-                                            "dropcatch"
-                                        ]
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -21902,11 +20792,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         ]
                                     },
                                     "state": {
-                                        "type": "string",
-                                        "enum": [
-                                            "running",
-                                            "completed"
-                                        ]
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -22234,19 +21120,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "type": "object",
                         "properties": {
                             "class": {
-                                "type": "integer",
-                                "minimum": 1,
-                                "maximum": 45
+                                "type": "integer"
                             },
                             "title": {
                                 "type": "string"
                             },
                             "kind": {
-                                "type": "string",
-                                "enum": [
-                                    "goods",
-                                    "services"
-                                ]
+                                "type": "string"
                             }
                         }
                     }
@@ -22433,15 +21313,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "object",
                                 "properties": {
                                     "id": {
-                                        "type": "string",
-                                        "enum": [
-                                            "godaddy",
-                                            "dynadot",
-                                            "namesilo",
-                                            "namecheap",
-                                            "snapnames",
-                                            "domainlore"
-                                        ]
+                                        "type": "string"
                                     },
                                     "label": {
                                         "type": "string"
@@ -22461,12 +21333,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "kind": {
-                                        "type": "string",
-                                        "enum": [
-                                            "marketplace",
-                                            "parking",
-                                            "dropcatch"
-                                        ]
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -22616,20 +21483,12 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "access": {
-                            "type": "string",
-                            "enum": [
-                                "member",
-                                "rapidapi"
-                            ]
+                            "type": "string"
                         },
                         "plan": {
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "enum": [
-                                        "founder",
-                                        "investor"
-                                    ]
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
@@ -22649,25 +21508,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "listing": {
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "enum": [
-                                        "names",
-                                        "words",
-                                        "catalog",
-                                        "tlds",
-                                        "registrars",
-                                        "market",
-                                        "trends",
-                                        "agenda",
-                                        "availability",
-                                        "whois",
-                                        "appraisal",
-                                        "expired",
-                                        "auctions",
-                                        "sales-history",
-                                        "price-comparison",
-                                        "trending-topics"
-                                    ]
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
@@ -22677,14 +21518,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "subscription": {
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "enum": [
-                                        "BASIC",
-                                        "PRO",
-                                        "ULTRA",
-                                        "MEGA",
-                                        "CUSTOM"
-                                    ]
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"

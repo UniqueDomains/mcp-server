@@ -16,7 +16,7 @@ import { ApiProblemError, isOperationId, OPERATIONS, type JsonObject, type JsonV
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 
 import type { Profile } from './config';
-import { RETRY_AFTER_MAX_SECONDS } from './limits';
+import { CALL_TIMEOUT_MS, RETRY_AFTER_MAX_SECONDS } from './limits';
 import { isObject, shapeAnswer, textLine } from './profile';
 import type { ToolDefinition } from './tool';
 import { InputError, splitInput } from './validate';
@@ -29,6 +29,8 @@ export type CallContext = {
     /** Waits before the one retry of a short 429 (tests pass a stub). */
     readonly sleep?: (milliseconds: number) => Promise<void>;
     readonly now?: () => Date;
+    /** The deadline of one API request (tests pass a short one). */
+    readonly timeoutMs?: number;
 };
 
 const sleepFor = (milliseconds: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -43,9 +45,10 @@ const pad = (value: number): string => String(value).padStart(2, '0');
 export const resetPhrase = (seconds: number, now: Date): string => {
     const at = new Date(now.getTime() + seconds * 1000);
     const minutes = Math.ceil(seconds / 60);
+    const rounded = Math.max(1, Math.round(seconds));
     const wait =
-        seconds < 60
-            ? `${Math.max(1, Math.round(seconds))} ${Math.round(seconds) === 1 ? 'second' : 'seconds'}`
+        rounded < 60
+            ? `${rounded} ${rounded === 1 ? 'second' : 'seconds'}`
             : minutes < 90
               ? `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}`
               : `${Math.round(minutes / 60)} hours`;
@@ -72,7 +75,9 @@ export const refusalText = (error: ApiProblemError, profile: Profile, now: Date)
             return suggestion === '' ? detail : `${detail} Try: ${sentence(suggestion)}`;
         }
         case 'plan_required':
-            if (profile === 'hosted' || !error.product) return `${detail} This tool comes with the Investor plan.`;
+            // The hosted connector serves free tools only and names no plan (decision 15).
+            if (profile === 'hosted') return 'This connector serves the free answers only, and that call is not one of them.';
+            if (!error.product) return `${detail} This tool comes with the Investor plan.`;
             return `${detail} This tool comes with the Investor plan; move to Investor at ${error.product}.`;
         case 'keyed_only':
             // The hosted connector carries no plan talk (decision 15): the API's own detail names the paid tiers.
@@ -86,7 +91,8 @@ export const refusalText = (error: ApiProblemError, profile: Profile, now: Date)
         case 'budget_spent':
         case 'consumer_day_cap':
         case 'intake_day_cap': {
-            const shared = profile === 'hosted' ? ' This connector shares one daily allowance among its users.' : '';
+            // The per-second limit is not the shared day: only the day's caps carry the clause.
+            const shared = profile === 'hosted' && error.code !== 'rate_limited' ? ' This connector shares one daily allowance among its users.' : '';
             if (error.retryAfter === null) return `${detail}${shared} Try again later.`;
             return `${detail}${shared} It resets ${resetPhrase(error.retryAfter, now)}.`;
         }
@@ -131,6 +137,9 @@ export const acceptedLine = (operationId: string, wait: number, data: JsonValue)
  */
 const isNetworkFailure = (error: unknown): boolean => error instanceof TypeError && (error.message === 'fetch failed' || error.cause !== undefined);
 
+/** The call's own deadline ran out (`AbortSignal.timeout` rejects with a `TimeoutError` DOMException). */
+const isTimeout = (error: unknown): boolean => error instanceof Error && error.name === 'TimeoutError';
+
 /* ---------- The call ---------- */
 
 const callOnce = (context: CallContext, operationId: string, input: ReturnType<typeof splitInput>) => {
@@ -141,6 +150,7 @@ const callOnce = (context: CallContext, operationId: string, input: ReturnType<t
         ...(hasPath ? { path: input.path } : {}),
         ...(hasQuery ? { query: input.query } : {}),
         ...(input.body !== undefined ? { body: input.body } : {}),
+        signal: AbortSignal.timeout(context.timeoutMs ?? CALL_TIMEOUT_MS),
     });
 };
 
@@ -181,6 +191,7 @@ export const runTool = async (context: CallContext, tool: ToolDefinition, args: 
     } catch (error) {
         if (error instanceof ApiProblemError) return errorResult(refusalText(error, context.profile, now()));
         if (isNetworkFailure(error)) return errorResult('The Unique Domains API did not answer. Try again in a minute.');
+        if (isTimeout(error)) return errorResult('The Unique Domains API took too long to answer. Try again in a minute.');
         throw error;
     }
 
