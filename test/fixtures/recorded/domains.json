@@ -1,0 +1,402 @@
+{
+  "path": "/domains",
+  "status": 200,
+  "recordedOn": "2026-11-09",
+  "body": {
+    "data": [
+      {
+        "id": "dom_59400afb-6eb3-4c52-bad1-b096b57dd8cf",
+        "name": "preparer.org",
+        "ending": "org",
+        "status": "resell",
+        "price": null,
+        "priceKind": null,
+        "renewal": null,
+        "ratingBand": "niche",
+        "format": null,
+        "shape": "single",
+        "length": 8,
+        "coverage": {
+          "available": 0,
+          "premium": 0,
+          "forSale": 1,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_b457c0d9-9a45-4fd7-9d0f-4bcbf9d0162e",
+        "name": "entrepreneur.blog",
+        "ending": "blog",
+        "status": "premium",
+        "price": null,
+        "priceKind": null,
+        "renewal": null,
+        "ratingBand": "prime",
+        "format": null,
+        "shape": "single",
+        "length": 12,
+        "coverage": {
+          "available": 22,
+          "premium": 54,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_37ca9dbf-c503-4c8e-98c4-8bf86b3077cf",
+        "name": "spotlight.courses",
+        "ending": "courses",
+        "status": "available",
+        "price": 2.19,
+        "priceKind": "registration",
+        "renewal": 38.99,
+        "ratingBand": "prime",
+        "format": null,
+        "shape": "single",
+        "length": 9,
+        "coverage": {
+          "available": 71,
+          "premium": 65,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_0e1b585e-26a5-4e63-b40a-68fe6ca47a1e",
+        "name": "domain.clothing",
+        "ending": "clothing",
+        "status": "available",
+        "price": 32.99,
+        "priceKind": "registration",
+        "renewal": 32.99,
+        "ratingBand": "prime",
+        "format": null,
+        "shape": "single",
+        "length": 6,
+        "coverage": {
+          "available": 28,
+          "premium": 65,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_123e8042-d907-4fce-98ee-4f2ce76cf668",
+        "name": "footboard.co",
+        "ending": "co",
+        "status": "premium",
+        "price": 116,
+        "priceKind": "premium",
+        "renewal": 116,
+        "ratingBand": "strong",
+        "format": null,
+        "shape": "single",
+        "length": 9,
+        "coverage": {
+          "available": 0,
+          "premium": 0,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_b7a276a0-255f-4cdb-977d-3fa16a93f55e",
+        "name": "pizza.host",
+        "ending": "host",
+        "status": "premium",
+        "price": 1650,
+        "priceKind": "premium",
+        "renewal": 3300,
+        "ratingBand": "strong",
+        "format": null,
+        "shape": "single",
+        "length": 5,
+        "coverage": {
+          "available": 86,
+          "premium": 153,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_73509c41-77c9-43bf-8881-09ac034667d5",
+        "name": "power.fit",
+        "ending": "fit",
+        "status": "premium",
+        "price": null,
+        "priceKind": null,
+        "renewal": null,
+        "ratingBand": "strong",
+        "format": null,
+        "shape": "single",
+        "length": 5,
+        "coverage": {
+          "available": 24,
+          "premium": 116,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_840556f2-8d22-409a-b34e-796ef124b202",
+        "name": "icon.diamonds",
+        "ending": "diamonds",
+        "status": "available",
+        "price": 43.77,
+        "priceKind": "registration",
+        "renewal": 43.77,
+        "ratingBand": "strong",
+        "format": null,
+        "shape": "single",
+        "length": 4,
+        "coverage": {
+          "available": 123,
+          "premium": 90,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_a5b0b249-6750-47f5-86cb-61f691301330",
+        "name": "unifications.co",
+        "ending": "co",
+        "status": "premium",
+        "price": 116,
+        "priceKind": "premium",
+        "renewal": 116,
+        "ratingBand": "thin",
+        "format": null,
+        "shape": "single",
+        "length": 12,
+        "coverage": {
+          "available": 0,
+          "premium": 0,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_8fea7a1c-1dfd-42b3-b8a4-d69082072475",
+        "name": "progressive.io",
+        "ending": "io",
+        "status": "resell",
+        "price": null,
+        "priceKind": null,
+        "renewal": null,
+        "ratingBand": "niche",
+        "format": null,
+        "shape": "single",
+        "length": 11,
+        "coverage": {
+          "available": 0,
+          "premium": 0,
+          "forSale": 20,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_aef877f0-676a-46a9-8ab3-422877c8fb05",
+        "name": "icon.auto",
+        "ending": "auto",
+        "status": "available",
+        "price": 2140.22,
+        "priceKind": "registration",
+        "renewal": 2140.22,
+        "ratingBand": "niche",
+        "format": null,
+        "shape": "single",
+        "length": 4,
+        "coverage": {
+          "available": 123,
+          "premium": 90,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_6d1786e1-535f-4781-9b2e-9db901ac3cd1",
+        "name": "design.luxe",
+        "ending": "luxe",
+        "status": "premium",
+        "price": 2660,
+        "priceKind": "premium",
+        "renewal": 17.7,
+        "ratingBand": "strong",
+        "format": null,
+        "shape": "single",
+        "length": 6,
+        "coverage": {
+          "available": 37,
+          "premium": 142,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_7a68e008-0b69-4dde-a32d-30255bdaa878",
+        "name": "enjoy.press",
+        "ending": "press",
+        "status": "premium",
+        "price": 325,
+        "priceKind": "premium",
+        "renewal": 650,
+        "ratingBand": "strong",
+        "format": null,
+        "shape": "single",
+        "length": 5,
+        "coverage": {
+          "available": 41,
+          "premium": 96,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_0a3200ca-ab95-409b-ae5a-8cf679e3316a",
+        "name": "digital.engineer",
+        "ending": "engineer",
+        "status": "premium",
+        "price": 1107,
+        "priceKind": "premium",
+        "renewal": 1107,
+        "ratingBand": "strong",
+        "format": null,
+        "shape": "single",
+        "length": 7,
+        "coverage": {
+          "available": 26,
+          "premium": 123,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_6228d9ba-3917-4997-8035-e85d7205e901",
+        "name": "dessertspoon.co",
+        "ending": "co",
+        "status": "premium",
+        "price": 116,
+        "priceKind": "premium",
+        "renewal": 116,
+        "ratingBand": "strong",
+        "format": null,
+        "shape": "single",
+        "length": 12,
+        "coverage": {
+          "available": 0,
+          "premium": 0,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_afc4bb82-beb7-4101-b9a9-8119abc19946",
+        "name": "spotlight.art",
+        "ending": "art",
+        "status": "premium",
+        "price": 3450,
+        "priceKind": "premium",
+        "renewal": 83.3,
+        "ratingBand": "strong",
+        "format": null,
+        "shape": "single",
+        "length": 9,
+        "coverage": {
+          "available": 71,
+          "premium": 65,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_7a6ee0a3-d96d-4c8e-8be5-9f2a6ad2ed53",
+        "name": "finance.boston",
+        "ending": "boston",
+        "status": "premium",
+        "price": 207.2,
+        "priceKind": "premium",
+        "renewal": 18.83,
+        "ratingBand": "prime",
+        "format": null,
+        "shape": "single",
+        "length": 7,
+        "coverage": {
+          "available": 54,
+          "premium": 152,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_5d2f971f-16ff-46aa-8c8b-4c72fc0982a7",
+        "name": "design.charity",
+        "ending": "charity",
+        "status": "premium",
+        "price": 207.2,
+        "priceKind": "premium",
+        "renewal": 207.2,
+        "ratingBand": "prime",
+        "format": null,
+        "shape": "single",
+        "length": 6,
+        "coverage": {
+          "available": 37,
+          "premium": 142,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_3f78f42f-c397-4b89-a9d4-79e1a257aab7",
+        "name": "sandwort.co",
+        "ending": "co",
+        "status": "premium",
+        "price": 100,
+        "priceKind": "premium",
+        "renewal": null,
+        "ratingBand": "strong",
+        "format": null,
+        "shape": "single",
+        "length": 8,
+        "coverage": {
+          "available": 0,
+          "premium": 0,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      },
+      {
+        "id": "dom_cd0b1075-14a5-4e0c-9cd0-ecae39677b6f",
+        "name": "match.fans",
+        "ending": "fans",
+        "status": "premium",
+        "price": 258.95,
+        "priceKind": "premium",
+        "renewal": 517.7,
+        "ratingBand": "strong",
+        "format": null,
+        "shape": "single",
+        "length": 5,
+        "coverage": {
+          "available": 36,
+          "premium": 103,
+          "forSale": 0,
+          "unavailable": 0
+        }
+      }
+    ],
+    "meta": {
+      "asOf": null,
+      "cursor": null,
+      "limit": 20
+    },
+    "links": {
+      "self": "https://api.unique.domains/v1/domains",
+      "next": null,
+      "register": null,
+      "product": null,
+      "dataset": "https://github.com/uniquedomains/oneword-domains",
+      "details": "https://unique.domains/domains"
+    }
+  }
+}

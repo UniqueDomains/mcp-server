@@ -1,0 +1,98 @@
+/*----------------------------------
+- PROFILES, LINKS, TEXT LINE, INPUT CHECK, CONFIG
+----------------------------------*/
+
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { OPERATIONS } from '@uniquedomains/sdk';
+
+import { detailsFor, outputSchemaFor, readConfig, registrarSlug, shapeAnswer, splitInput, textLine, TOOLS, DETAILS_RULES, ConfigError } from '../dist/index.js';
+
+const envelope = (data, links = {}) => ({
+    data,
+    meta: { asOf: null, cursor: null, limit: null },
+    links: { self: 'https://api.unique.domains/v1/x', next: null, register: 'https://reg.example/harbor.io', product: 'https://app.unique.domains/x', dataset: null, ...links },
+});
+
+test('the hosted profile strips register and product, at every depth, and sets details', () => {
+    const answer = shapeAnswer('hosted', 'get_name', { name: 'harbor.io' }, envelope({ name: 'harbor.io', rows: [{ links: { register: 'r', product: 'p', self: 's' } }] }));
+    assert.equal(answer.links.register, undefined);
+    assert.equal(answer.links.product, undefined);
+    assert.equal(answer.links.details, 'https://unique.domains/availability/harbor.io');
+    assert.deepEqual(answer.data.rows[0].links, { self: 's' });
+    assert.ok(!JSON.stringify(answer).includes('"register"'));
+    assert.ok(!JSON.stringify(answer).includes('"product"'));
+});
+
+test('the API own details wins over the map', () => {
+    const answer = shapeAnswer('hosted', 'list_trends', {}, envelope([], { details: 'https://unique.domains/somewhere' }));
+    assert.equal(answer.links.details, 'https://unique.domains/somewhere');
+});
+
+test('the local profile keeps every link and adds none', () => {
+    const answer = shapeAnswer('local', 'get_name', { name: 'harbor.io' }, envelope({ name: 'harbor.io' }));
+    assert.equal(answer.links.register, 'https://reg.example/harbor.io');
+    assert.equal(answer.links.product, 'https://app.unique.domains/x');
+    assert.equal(answer.links.details, undefined);
+});
+
+test('the hosted output schema names no register or product link', () => {
+    const tool = TOOLS.find((candidate) => candidate.name === 'ud_get_name');
+    const hostedLinks = outputSchemaFor(tool, 'hosted').properties.links.properties;
+    assert.equal(hostedLinks.register, undefined);
+    assert.equal(hostedLinks.product, undefined);
+    assert.ok(hostedLinks.details);
+    assert.ok(outputSchemaFor(tool, 'local').properties.links.properties.register);
+});
+
+test('every hosted tool has a details rule, and the rules point at the website', () => {
+    for (const tool of TOOLS.filter((candidate) => candidate.hosted)) assert.ok(tool.operationId in DETAILS_RULES, tool.operationId);
+    assert.equal(detailsFor('get_name_registry', { name: 'Harbor.io' }, null, undefined), 'https://unique.domains/whois/harbor.io');
+    assert.equal(detailsFor('get_tld', { tld: 'ai' }, null, undefined), 'https://unique.domains/tld/ai');
+    assert.equal(detailsFor('list_registrar_prices', { registrar: 'name.com' }, null, undefined), 'https://unique.domains/registrars/name-com');
+    assert.equal(detailsFor('get_trend', { slug: 'padel' }, null, undefined), 'https://unique.domains/trending-domains/trends/padel');
+    assert.equal(detailsFor('get_edition', { persona: 'investor', date: '2026-11-08' }, null, undefined), 'https://unique.domains/trending-domains/2026-11-08');
+    assert.equal(detailsFor('get_domain', { nameOrId: 'dom_1' }, { name: 'harbor.io' }, undefined), 'https://unique.domains/availability/harbor.io');
+    assert.equal(detailsFor('get_word_endings', { word: 'harbor' }, null, undefined), null);
+    assert.equal(registrarSlug('name.com'), 'name-com');
+});
+
+test('the text line names the subject and its fact, or the count and the first three, never an id or a cursor', () => {
+    const one = textLine('Stored answer for one domain name', { data: { id: 'dom_123', name: 'harbor.io', status: 'taken' }, meta: { cursor: null }, links: {} });
+    assert.equal(one, 'Stored answer for one domain name: harbor.io, status taken.');
+    const list = textLine('Every root TLD', { data: [{ tld: '.aaa' }, { tld: '.abb' }, { tld: '.abc' }, { tld: '.able' }], meta: { cursor: 'eyJ2Ijox' }, links: {} });
+    assert.equal(list, 'Every root TLD. 4 rows on this page, more on the next: .aaa, .abb, .abc and more.');
+    assert.ok(!list.includes('eyJ'));
+    assert.equal(textLine('Empty', { data: [], meta: {}, links: {} }), 'Empty. No rows.');
+});
+
+test('the input check: required, unknown keys, types, enums, ranges, lenient strings', () => {
+    const getName = OPERATIONS.get_name;
+    assert.throws(() => splitInput(getName, {}), /`name` is required/u);
+    assert.throws(() => splitInput(getName, { name: 'harbor.io', nmae: 'x' }), /does not take `nmae`.*takes `name`, `fields`/su);
+    assert.deepEqual(splitInput(getName, { name: 'harbor.io' }), { path: { name: 'harbor.io' }, query: {}, body: undefined });
+
+    const listTlds = OPERATIONS.list_tlds;
+    assert.deepEqual(splitInput(listTlds, { limit: '5', publicSet: 'true' }).query, { limit: 5, publicSet: true });
+    assert.throws(() => splitInput(listTlds, { limit: 0 }), /`limit` must be a whole number from 1 to 100/u);
+    assert.throws(() => splitInput(listTlds, { limit: 2.5 }), /whole number/u);
+    assert.throws(() => splitInput(listTlds, { ianaStatus: 'nope' }), /one of/u);
+    // No limit is filled in: the free grade refuses `limit` on its fixed-cut endpoints.
+    assert.deepEqual(splitInput(listTlds, {}).query, {});
+
+    const batch = OPERATIONS.batch_names;
+    assert.deepEqual(splitInput(batch, { names: ['a.io', 'b.io'] }).body, { names: ['a.io', 'b.io'] });
+    assert.deepEqual(splitInput(batch, { names: 'a.io, b.io' }).body, { names: ['a.io', 'b.io'] });
+    assert.throws(() => splitInput(batch, { names: [] }), /non-empty list/u);
+    const check = OPERATIONS.check_name;
+    assert.throws(() => splitInput(check, { name: 'a.io', blocks: ['nope'] }), /one of/u);
+    assert.deepEqual(splitInput(check, { name: 'a.io' }).body, {});
+});
+
+test('the config: the hosted profile ignores UD_API_KEY and reads the connector secret only when not blank', () => {
+    assert.deepEqual(readConfig({ UD_MCP_PROFILE: 'hosted', UD_API_KEY: 'ud_live_x', UD_CONNECTOR_SECRET: '  ' }), { profile: 'hosted', apiKey: null, apiBase: null, connectorSecret: null });
+    assert.equal(readConfig({ UD_MCP_PROFILE: 'hosted', UD_CONNECTOR_SECRET: 's'.repeat(32) }).connectorSecret, 's'.repeat(32));
+    assert.deepEqual(readConfig({ UD_API_KEY: ' ud_live_x ', UD_CONNECTOR_SECRET: 'x' }), { profile: 'local', apiKey: 'ud_live_x', apiBase: null, connectorSecret: null });
+    assert.throws(() => readConfig({ UD_MCP_PROFILE: 'remote' }), ConfigError);
+    assert.throws(() => readConfig({ UD_API_BASE: 'ftp://x' }), ConfigError);
+});

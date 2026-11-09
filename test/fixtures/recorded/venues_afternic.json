@@ -1,0 +1,59 @@
+{
+  "path": "/venues/afternic",
+  "status": 200,
+  "recordedOn": "2026-11-09",
+  "body": {
+    "data": {
+      "slug": "afternic",
+      "name": "Afternic",
+      "kind": "marketplace",
+      "ianaId": null,
+      "accredited": false,
+      "homepageUrl": "https://www.afternic.com?utm_source=unique.domains&utm_medium=website&utm_campaign=lets-partnership-together",
+      "siteUrl": "https://www.afternic.com",
+      "logoUrl": "/public/brand/registrars/afternic.png",
+      "footprint": {
+        "names": 338300,
+        "listed": 320300,
+        "parked": 18000,
+        "arrivalsWeek": 0,
+        "departuresWeek": 0
+      },
+      "footprintDay": "2026-11-09",
+      "listingTerms": {
+        "homepageUrl": "https://www.afternic.com",
+        "checkedOn": "2026-10-10",
+        "commission": {
+          "bands": [
+            {
+              "upToUsd": null,
+              "pct": 15
+            }
+          ],
+          "minimumUsd": 15,
+          "fastTransferPct": null
+        },
+        "exclusivity": "not_stated",
+        "exclusivityNote": null,
+        "paymentPlans": {
+          "maxMonths": 60
+        },
+        "fastTransfer": true,
+        "payoutDays": "not_stated",
+        "note": "On Afternic nameservers with the Basic plan; 20% with Boost, 25% to 30% on other nameservers."
+      }
+    },
+    "meta": {
+      "asOf": null,
+      "cursor": null,
+      "limit": null
+    },
+    "links": {
+      "self": "https://api.unique.domains/v1/venues/afternic",
+      "next": null,
+      "register": null,
+      "product": null,
+      "dataset": null
+    }
+  }
+}

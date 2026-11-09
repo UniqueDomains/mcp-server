@@ -1,0 +1,456 @@
+{
+  "path": "/editions/founder/latest",
+  "status": 200,
+  "recordedOn": "2026-11-09",
+  "body": {
+    "data": {
+      "persona": "investor",
+      "date": "2026-11-05",
+      "publishAt": "2026-11-05T06:00:00.000Z",
+      "trendCount": 5,
+      "nameCount": 8,
+      "openCount": 5,
+      "previousDate": "2026-11-04",
+      "nextDate": null,
+      "trends": [
+        {
+          "slug": "squiggly-mirror",
+          "name": "Squiggly mirror",
+          "category": "Home",
+          "definition": "Decorative mirror featuring a wavy or irregular frame design, often used as a statement piece in home decor. The unique and contemporary design of the squiggly mirror adds visual interest and a modern touch to various spaces, differentiating it from traditional mirror designs. This type of mirror is popular among homeowners and interior designers looking to enhance the aesthetic appeal of living areas, bedrooms, and other interior spaces.",
+          "volume": 3600,
+          "growth": 8600,
+          "lane": null,
+          "headWord": null,
+          "whyNow": null,
+          "openNames": null,
+          "lockedCount": 0,
+          "rows": [
+            {
+              "name": "squiggly.group",
+              "word": "squiggly",
+              "ending": "group",
+              "matchKind": "exact",
+              "relation": null,
+              "status": "available",
+              "price": 25.99,
+              "priceKind": "registration",
+              "quotedBy": "NameSilo",
+              "renewal": 25.99,
+              "fiveYearCost": 130,
+              "value": null,
+              "upsidePercent": null,
+              "upsideCapped": false,
+              "liquidity": null,
+              "verdict": {
+                "label": "risky",
+                "confidence": "low"
+              },
+              "rating": "risky",
+              "ideas": [
+                {
+                  "title": "Squiggly Mirror Collective",
+                  "idea": "A curated marketplace that helps homeowners and interior designers find and buy wavy-frame mirrors from independent makers.",
+                  "problem": "Buyers struggle to compare distinctive mirror styles, dimensions, finishes, shipping terms, and maker quality across scattered shops.",
+                  "customer": "Independent mirror makers and decor brands pay, while homeowners and interior designers purchase products.",
+                  "valueProp": "Customers get a focused catalog with clear sizing, room photos, finish filters, and vetted seller information.",
+                  "whyNow": "Search interest for squiggly mirror is 3.6K monthly searches and has grown 86×, indicating rising demand for this specific decor style.",
+                  "monetization": "The business takes a commission on sales and charges sellers for promoted listings.",
+                  "nameFit": "squiggly.group fits a collective of makers and shoppers centered on the defining design feature.",
+                  "checklist": [
+                    "Interview ten independent mirror makers",
+                    "Collect fifty product listings manually",
+                    "Build a searchable landing page",
+                    "Test commission terms with sellers"
+                  ]
+                },
+                {
+                  "title": "Squiggly Mirror Studio",
+                  "idea": "A custom mirror design service that creates made-to-order wavy mirrors for homeowners, renters, and interior designers.",
+                  "problem": "Shoppers often find the right irregular shape but cannot get the needed size, frame color, mounting method, or budget.",
+                  "customer": "Homeowners and interior designers pay for custom pieces and trade orders.",
+                  "valueProp": "Customers get a tailored mirror specification, visual mockup, fixed quote, and coordinated fabrication.",
+                  "whyNow": "Squiggly mirror has reached 3.6K monthly searches after 86× growth, creating a clearer audience for custom versions.",
+                  "monetization": "The business earns design fees, fabrication margins, and installation referral fees.",
+                  "nameFit": "squiggly.group fits a studio that brings fabricators, designers, and buyers together around custom wavy mirrors.",
+                  "checklist": [
+                    "Survey buyers about desired dimensions",
+                    "Source three local fabricators",
+                    "Create five configurable mirror mockups",
+                    "Quote ten custom requests manually"
+                  ]
+                },
+                {
+                  "title": "Squiggly Room Planner",
+                  "idea": "An online visualization tool that lets decor shoppers and designers preview wavy mirrors in uploaded room photos before buying.",
+                  "problem": "Buyers cannot easily judge whether an irregular mirror will fit a wall, match existing decor, or look proportionate in a room.",
+                  "customer": "Mirror retailers, interior designers, and decor shoppers pay for visualization tools or assisted design.",
+                  "valueProp": "Customers get scaled placement previews, style suggestions, and product links that reduce purchase uncertainty.",
+                  "whyNow": "The 86× growth in squiggly mirror searches to 3.6K monthly searches suggests more shoppers are evaluating a visually specific product online.",
+                  "monetization": "The business charges retailers a software subscription and earns affiliate fees on referred purchases.",
+                  "nameFit": "squiggly.group fits a shared planning space for people choosing and placing squiggly decor.",
+                  "checklist": [
+                    "Prototype photo upload and placement",
+                    "Recruit fifteen decor shoppers",
+                    "Test previews with mirror retailers",
+                    "Measure clicks to product links"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "squiggly.in",
+              "word": "squiggly",
+              "ending": "in",
+              "matchKind": "exact",
+              "relation": null,
+              "status": "available",
+              "price": 7.95,
+              "priceKind": "registration",
+              "quotedBy": "NameSilo",
+              "renewal": 7.95,
+              "fiveYearCost": 40,
+              "value": null,
+              "upsidePercent": null,
+              "upsideCapped": false,
+              "liquidity": null,
+              "verdict": {
+                "label": "risky",
+                "confidence": "low"
+              },
+              "rating": "risky",
+              "ideas": [
+                {
+                  "title": "Squiggly Mirror Marketplace",
+                  "idea": "A curated marketplace that helps homeowners and interior designers buy distinctive wavy-frame mirrors from independent makers.",
+                  "problem": "Buyers struggle to compare quality, dimensions, shipping terms, and styles across scattered decor sellers.",
+                  "customer": "Homeowners, renters, and interior designers pay for mirrors, while sellers pay marketplace fees.",
+                  "valueProp": "Customers get a focused catalog with clear sizing, room photos, maker details, and delivery estimates.",
+                  "whyNow": "Search interest for squiggly mirror is 3.6K monthly searches and has grown 86×, indicating rapidly rising demand for this decor category.",
+                  "monetization": "The business takes a commission on sales and charges makers for promoted listings.",
+                  "nameFit": "Squiggly.in directly describes the defining visual style shoppers are seeking.",
+                  "checklist": [
+                    "Interview twenty recent mirror buyers",
+                    "Recruit ten independent mirror makers",
+                    "Build a landing page with collections",
+                    "Test paid search for buyer leads"
+                  ]
+                },
+                {
+                  "title": "Custom Wavy Mirror Studio",
+                  "idea": "A made-to-order mirror service that lets homeowners and designers specify wavy frame shapes, sizes, colors, and mounting options.",
+                  "problem": "Standard decorative mirrors rarely fit a customer's exact wall dimensions, color scheme, or design brief.",
+                  "customer": "Interior designers, hospitality projects, and design-conscious homeowners pay for custom pieces.",
+                  "valueProp": "Customers receive a tailored statement mirror with design previews and production guidance before ordering.",
+                  "whyNow": "Squiggly mirror searches reach 3.6K per month after 86× growth, creating an opening for higher-value custom options.",
+                  "monetization": "The business earns margin on custom fabrication, design fees, and expedited production.",
+                  "nameFit": "Squiggly.in is memorable and immediately signals custom wavy mirror design.",
+                  "checklist": [
+                    "Collect fifty custom mirror inquiries",
+                    "Source three local fabrication partners",
+                    "Create configurable design mockups",
+                    "Quote five designer-led projects"
+                  ]
+                },
+                {
+                  "title": "Squiggly Mirror Visualizer",
+                  "idea": "An augmented-reality and room-planning tool that helps decor shoppers preview wavy mirrors on their own walls before purchase.",
+                  "problem": "Shoppers cannot easily judge whether an irregular mirror shape and size will suit their room.",
+                  "customer": "Mirror retailers and home decor brands pay for software that improves product discovery and conversion.",
+                  "valueProp": "Retailers get embeddable visualization tools that reduce buyer uncertainty and support better product selection.",
+                  "whyNow": "The 86× growth in squiggly mirror searches from a base of 3.6K monthly searches makes specialized shopping tools timely for sellers.",
+                  "monetization": "The business charges retailers monthly software subscriptions and setup fees for product catalog integration.",
+                  "nameFit": "Squiggly.in gives the tool a category-specific identity tied to the searched style.",
+                  "checklist": [
+                    "Prototype wall placement in mobile web",
+                    "Interview eight decor ecommerce managers",
+                    "Test visualization with sample mirror models",
+                    "Measure conversion against static product photos"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "lifting-hooks",
+          "name": "Lifting hooks",
+          "category": "Health & Wellness",
+          "definition": "Devices used for grabbing and lifting loads with the help of equipment such as hoists or cranes. Typically equipped with a safety latch, lifting hooks prevent the disengagement of the lifting wire rope sling, chain, or rope to which the load is attached, ensuring secure handling of heavy materials. These hooks are essential for industries that require the movement of heavy objects, such as construction, manufacturing, and shipping.",
+          "volume": 12100,
+          "growth": 4,
+          "lane": null,
+          "headWord": null,
+          "whyNow": null,
+          "openNames": null,
+          "lockedCount": 0,
+          "rows": [
+            {
+              "name": "lifting.sh",
+              "word": "lifting",
+              "ending": "sh",
+              "matchKind": "exact",
+              "relation": null,
+              "status": "available",
+              "price": 39.99,
+              "priceKind": "registration",
+              "quotedBy": "NameSilo",
+              "renewal": 47.99,
+              "fiveYearCost": 232,
+              "value": null,
+              "upsidePercent": null,
+              "upsideCapped": false,
+              "liquidity": null,
+              "verdict": null,
+              "rating": "unrated",
+              "ideas": [
+                {
+                  "title": "Hook Inspection Log",
+                  "idea": "A mobile inspection and compliance log for rigging teams that use lifting hooks on construction and industrial sites.",
+                  "problem": "Teams often rely on paper checks and scattered records, making it hard to prove hooks were inspected and removed when damaged.",
+                  "customer": "Safety managers and operations leaders at construction, manufacturing, and logistics companies pay for the service.",
+                  "valueProp": "Customers get scheduled inspections, photo evidence, defect tracking, and exportable compliance records in one place.",
+                  "whyNow": "Lifting hooks receive 12.1K monthly searches and are growing 4%, indicating sustained interest in equipment used across heavy-material handling work.",
+                  "monetization": "Charge a monthly fee per site or per active inspector, with higher tiers for reporting and integrations.",
+                  "nameFit": "lifting.sh is short, memorable, and directly describes the work crews perform around inspected equipment.",
+                  "checklist": [
+                    "Interview ten rigging safety managers",
+                    "Review applicable inspection requirements",
+                    "Build a mobile inspection prototype",
+                    "Pilot with one jobsite crew"
+                  ]
+                },
+                {
+                  "title": "Rigging Hook Selector",
+                  "idea": "An online selection tool for buyers who need to match lifting hooks with slings, chains, loads, and working conditions.",
+                  "problem": "Buyers can choose incompatible or underspecified hooks because product specifications are technical and spread across supplier catalogs.",
+                  "customer": "Procurement teams, small contractors, and industrial supply distributors pay for guided selection and quote tools.",
+                  "valueProp": "Customers get a structured way to narrow suitable hook types, compare specifications, and request supplier quotes.",
+                  "whyNow": "The lifting hooks trend has 12.1K monthly searches with 4% growth, showing ongoing buyer research around this equipment category.",
+                  "monetization": "Earn referral fees from suppliers, charge distributors for catalog software, and sell premium procurement accounts.",
+                  "nameFit": "lifting.sh works as a concise action-oriented address for choosing equipment used to lift loads.",
+                  "checklist": [
+                    "Map common hook selection criteria",
+                    "Interview five industrial equipment buyers",
+                    "Create a rules-based comparison tool",
+                    "Recruit two supplier catalog partners"
+                  ]
+                },
+                {
+                  "title": "Hook Asset Marketplace",
+                  "idea": "A verified marketplace for industrial firms to buy surplus, refurbished, and inspected lifting hooks from approved sellers.",
+                  "problem": "Companies hold unused rigging inventory while buyers struggle to assess condition, certification, and compatibility in secondary markets.",
+                  "customer": "Equipment dealers, rental firms, contractors, and manufacturers pay to list inventory or access verified sourcing.",
+                  "valueProp": "Customers get condition records, inspection documentation, clear specifications, and a focused channel for hard-to-source equipment.",
+                  "whyNow": "Search interest in lifting hooks totals 12.1K monthly searches and has risen 4%, supporting a focused discovery channel for the category.",
+                  "monetization": "Take a transaction commission, charge sellers for verified listings, and offer paid inspection coordination.",
+                  "nameFit": "lifting.sh is a direct, category-relevant name for a marketplace centered on lifting equipment.",
+                  "checklist": [
+                    "Interview surplus equipment dealers",
+                    "Define listing documentation standards",
+                    "Launch a manual seller intake page",
+                    "List fifty verified hook products"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "long-corset-dress",
+          "name": "Long corset dress",
+          "category": "Fashion",
+          "definition": "A long corset dress is a type of garment that features a fitted bodice, often reinforced with boning, combined with a long, flowing skirt. This style is distinguished by its ability to accentuate the waist and provide a structured silhouette, often incorporating elements like puff shoulders and bust-enhancing necklines. It is popular among individuals seeking elegant evening wear or bridal attire, offering a blend of classic and contemporary fashion elements.",
+          "volume": 5400,
+          "growth": 107,
+          "lane": null,
+          "headWord": null,
+          "whyNow": null,
+          "openNames": null,
+          "lockedCount": 0,
+          "rows": [
+            {
+              "name": "dress.gg",
+              "word": "dress",
+              "ending": "gg",
+              "matchKind": "exact",
+              "relation": null,
+              "status": "forSale",
+              "price": 82.98,
+              "priceKind": "marketplace",
+              "quotedBy": "Namecheap",
+              "renewal": null,
+              "fiveYearCost": null,
+              "value": null,
+              "upsidePercent": null,
+              "upsideCapped": false,
+              "liquidity": null,
+              "verdict": null,
+              "rating": "unrated",
+              "ideas": [
+                {
+                  "title": "Corset Dress Finder",
+                  "idea": "A visual shopping tool that helps occasionwear shoppers find long corset dresses matching their size, budget, color, and event.",
+                  "problem": "Shoppers waste time comparing inconsistent sizing, silhouettes, and prices across fashion retailers.",
+                  "customer": "Dress shoppers pay, while participating retailers and boutiques can also pay for qualified referrals.",
+                  "valueProp": "Users get a filtered shortlist of suitable dresses with fit notes, delivery timing, and comparable prices.",
+                  "whyNow": "Searches for long corset dress reach 5.4K monthly and have grown 107%, showing rising purchase research around this style.",
+                  "monetization": "Earn affiliate commissions on sales and charge boutiques for featured placement or inventory feeds.",
+                  "nameFit": "dress.gg is short, memorable, and broad enough to become a destination for dress discovery.",
+                  "checklist": [
+                    "Interview twenty recent occasionwear shoppers",
+                    "Build a retailer inventory spreadsheet",
+                    "Launch a single-style landing page",
+                    "Test affiliate links with paid search"
+                  ]
+                },
+                {
+                  "title": "Virtual Corset Fit Check",
+                  "idea": "A mobile fit assessment service that helps long corset dress buyers choose sizes and alterations before ordering online.",
+                  "problem": "Structured bodices are difficult to size remotely, causing returns, discomfort, and costly last-minute alterations.",
+                  "customer": "Online dress shoppers pay for guidance, and boutiques pay to reduce fit-related returns.",
+                  "valueProp": "Customers receive size recommendations, measurement instructions, and alteration guidance tailored to a selected dress.",
+                  "whyNow": "The 107% growth in long corset dress searches suggests more buyers are considering a garment category with unusually high fit risk.",
+                  "monetization": "Charge per fit review, sell premium video consultations, and license the service to dress retailers.",
+                  "nameFit": "dress.gg gives the service a simple fashion-focused identity that works well on mobile.",
+                  "checklist": [
+                    "Recruit five independent seamstresses",
+                    "Document common corset sizing issues",
+                    "Create a measurement intake form",
+                    "Run ten paid manual consultations"
+                  ]
+                },
+                {
+                  "title": "Corset Dress Rental Network",
+                  "idea": "A rental marketplace that lets event guests borrow long corset dresses from local boutiques and verified individual owners.",
+                  "problem": "People often need formal dresses for one event but face high purchase costs and limited closet reuse.",
+                  "customer": "Wedding guests, gala attendees, and prom shoppers pay rental fees, while suppliers pay marketplace commissions.",
+                  "valueProp": "Renters access structured formalwear at lower upfront cost with local fitting and return options.",
+                  "whyNow": "Long corset dress searches total 5.4K per month after 107% growth, indicating expanding interest in a high-consideration occasionwear item.",
+                  "monetization": "Take a percentage of each rental and charge optional cleaning, protection, and delivery fees.",
+                  "nameFit": "dress.gg is concise and flexible for a social marketplace centered on borrowing dresses.",
+                  "checklist": [
+                    "Survey local formalwear boutiques",
+                    "List twenty sample rental dresses",
+                    "Set cleaning and damage policies",
+                    "Pilot pickups in one city"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "dress.sh",
+              "word": "dress",
+              "ending": "sh",
+              "matchKind": "exact",
+              "relation": null,
+              "status": "available",
+              "price": 39.99,
+              "priceKind": "registration",
+              "quotedBy": "NameSilo",
+              "renewal": 47.99,
+              "fiveYearCost": 232,
+              "value": null,
+              "upsidePercent": null,
+              "upsideCapped": false,
+              "liquidity": null,
+              "verdict": null,
+              "rating": "unrated",
+              "ideas": [
+                {
+                  "title": "Corset Dress Finder",
+                  "idea": "A shopping comparison site that helps occasionwear buyers find long corset dresses by size, neckline, color, price, and delivery date.",
+                  "problem": "Buyers waste time searching across retailers and cannot easily compare fit details, stock, and return policies.",
+                  "customer": "Dress shoppers pay through purchases, while retailers pay for qualified traffic.",
+                  "valueProp": "Customers get a focused catalog with filters for structured bodices, length, occasion, and availability.",
+                  "whyNow": "Long corset dress receives 5.4K monthly searches and has grown 107%, showing rising intent around a specific dress style.",
+                  "monetization": "Earn affiliate commissions on sales and charge retailers for sponsored placements.",
+                  "nameFit": "dress.sh is short, memorable, and broad enough to expand from corset styles into other dress searches.",
+                  "checklist": [
+                    "Interview ten recent occasionwear shoppers",
+                    "Build a searchable retailer catalog",
+                    "Publish twenty style-specific landing pages",
+                    "Test affiliate links with paid search"
+                  ]
+                },
+                {
+                  "title": "Made-to-Measure Corset Studio",
+                  "idea": "A virtual fitting service that helps bridal and formalwear shoppers order made-to-measure long corset dresses from independent makers.",
+                  "problem": "Shoppers struggle to find structured dresses that fit their bust, waist, torso length, and event timeline.",
+                  "customer": "Brides, wedding guests, and formal-event shoppers pay for fitting guidance and custom garments.",
+                  "valueProp": "Customers get measurement support, maker matching, and clearer expectations before committing to a custom order.",
+                  "whyNow": "The 107% growth in searches for long corset dress suggests more shoppers are actively seeking this structured silhouette.",
+                  "monetization": "Charge a consultation fee and take a commission on completed maker orders.",
+                  "nameFit": "dress.sh gives the service a simple fashion-first identity without limiting it to one maker or occasion.",
+                  "checklist": [
+                    "Recruit five independent dressmakers",
+                    "Create a guided measurement questionnaire",
+                    "Run remote fittings with ten shoppers",
+                    "Track conversion from consultation to order"
+                  ]
+                },
+                {
+                  "title": "Corset Dress Rental",
+                  "idea": "A rental marketplace that supplies long corset dresses for weddings, galas, photoshoots, and other one-time events.",
+                  "problem": "Formal shoppers want a high-impact structured dress but may not want the cost or storage burden of ownership.",
+                  "customer": "Event attendees and content creators pay to rent dresses for short periods.",
+                  "valueProp": "Customers get access to premium occasionwear with sizing guidance, insured shipping, and simple returns.",
+                  "whyNow": "Long corset dress has 5.4K monthly searches after 107% growth, supporting demand for a recognizable formalwear category.",
+                  "monetization": "Collect rental fees, late fees, damage protection charges, and commissions from inventory partners.",
+                  "nameFit": "dress.sh is a clean, category-level name that can support rentals across many dress styles over time.",
+                  "checklist": [
+                    "Survey renters about preferred event dates",
+                    "Source twenty rentable corset dresses",
+                    "Test local pickup before shipping",
+                    "Price rentals against retail alternatives"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "suede-blazer",
+          "name": "Suede blazer",
+          "category": "Fashion",
+          "definition": "A stylish outerwear piece crafted from suede leather, known for its soft texture and versatility in both casual and semi-formal settings. Suede blazers are available in various colors and require special care to maintain their appearance, setting them apart from other types of blazers. They are popular among fashion-conscious individuals seeking a sophisticated yet relaxed look.",
+          "volume": 5400,
+          "growth": 100,
+          "lane": null,
+          "headWord": null,
+          "whyNow": null,
+          "openNames": null,
+          "lockedCount": 2,
+          "rows": []
+        },
+        {
+          "slug": "carbon-handprint",
+          "name": "Carbon handprint",
+          "category": "Industry",
+          "definition": "A measure of the positive impact that a company, product, or service can have on reducing greenhouse gas (GHG) emissions. It quantifies the amount of GHG emission reductions achieved through the use of a particular product or service compared to a baseline, indicating a greater positive impact on the climate. This concept is particularly relevant for businesses and consumers aiming to make environmentally conscious choices and reduce their overall carbon footprint.",
+          "volume": 260,
+          "growth": 2000,
+          "lane": null,
+          "headWord": null,
+          "whyNow": null,
+          "openNames": null,
+          "lockedCount": 1,
+          "rows": []
+        }
+      ]
+    },
+    "meta": {
+      "asOf": "2026-11-05T06:00:00.000Z",
+      "cursor": null,
+      "limit": null
+    },
+    "links": {
+      "self": "https://api.unique.domains/v1/editions/founder/latest",
+      "next": null,
+      "register": null,
+      "product": null,
+      "dataset": "https://github.com/uniquedomains/trending-domains-business-ideas",
+      "details": "https://unique.domains/business-ideas"
+    }
+  }
+}

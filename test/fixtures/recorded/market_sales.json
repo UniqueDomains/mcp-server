@@ -1,0 +1,99 @@
+{
+  "path": "/market/sales",
+  "status": 200,
+  "recordedOn": "2026-11-09",
+  "body": {
+    "data": {
+      "freshness": {
+        "today": "2026-11-09",
+        "yesterday": "2026-11-08",
+        "rollupAt": "2026-11-09T04:25:12.000Z"
+      },
+      "pulse": {
+        "windows": [
+          {
+            "id": "7d",
+            "count": 0,
+            "prevCount": 0,
+            "medianUsd": null,
+            "prevMedianUsd": null
+          },
+          {
+            "id": "30d",
+            "count": 1335,
+            "prevCount": 3147,
+            "medianUsd": 1830,
+            "prevMedianUsd": 1800
+          },
+          {
+            "id": "12m",
+            "count": 38829,
+            "prevCount": 7169,
+            "medianUsd": 750,
+            "prevMedianUsd": 1688
+          }
+        ],
+        "priceBandMix30d": [
+          {
+            "band": "50_999",
+            "count": 45
+          },
+          {
+            "band": "1000_4999",
+            "count": 1072
+          },
+          {
+            "band": "5000_24999",
+            "count": 171
+          },
+          {
+            "band": "25000_99999",
+            "count": 38
+          },
+          {
+            "band": "100000_up",
+            "count": 9
+          }
+        ],
+        "priceBandMix12m": [
+          {
+            "band": "50_999",
+            "count": 21917
+          },
+          {
+            "band": "1000_4999",
+            "count": 13517
+          },
+          {
+            "band": "5000_24999",
+            "count": 2717
+          },
+          {
+            "band": "25000_99999",
+            "count": 496
+          },
+          {
+            "band": "100000_up",
+            "count": 182
+          }
+        ]
+      },
+      "soldBefore": {
+        "size": 7003
+      }
+    },
+    "meta": {
+      "asOf": "2026-11-09T04:25:12.000Z",
+      "cursor": null,
+      "limit": null
+    },
+    "links": {
+      "self": "https://api.unique.domains/v1/market/sales",
+      "next": null,
+      "register": null,
+      "product": null,
+      "dataset": null,
+      "details": "https://unique.domains/sales"
+    }
+  }
+}

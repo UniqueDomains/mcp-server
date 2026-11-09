@@ -1,0 +1,50 @@
+{
+  "path": "/trends?limit=2",
+  "status": 200,
+  "recordedOn": "2026-11-09",
+  "body": {
+    "data": [
+      {
+        "slug": "360-car-seat",
+        "name": "360 car seat",
+        "category": "Business",
+        "definition": "A type of car seat that features a rotating mechanism, allowing it to swivel 360 degrees for easier access. These seats often come as all-in-one or convertible models, providing versatility in configurations such as rear-facing, forward-facing, and booster seat modes, and include advanced safety features like SensorSafe technology. The primary target demographic is parents seeking convenience and enhanced safety for their children during car travel.",
+        "volume": 49500,
+        "growth": 4,
+        "lane": null,
+        "headWord": null,
+        "whyNow": null,
+        "firstEditionOn": "2026-10-29",
+        "lastEditionOn": "2026-10-29",
+        "editionCount": 1
+      },
+      {
+        "slug": "adjustable-spanner",
+        "name": "Adjustable spanner",
+        "category": "Home",
+        "definition": "A versatile tool with a movable jaw that can be adjusted to fit various sizes of nuts and bolts. It is commonly used in plumbing, automotive repair, and general maintenance tasks, providing flexibility and convenience in handling different fasteners. The adjustable spanner is particularly useful for professionals and DIY enthusiasts who require a single tool to accommodate multiple sizes of nuts and bolts.",
+        "volume": 49500,
+        "growth": 9,
+        "lane": null,
+        "headWord": null,
+        "whyNow": null,
+        "firstEditionOn": "2026-10-18",
+        "lastEditionOn": "2026-10-18",
+        "editionCount": 1
+      }
+    ],
+    "meta": {
+      "asOf": null,
+      "cursor": "eyJ2IjoxLCJzb3J0IjoidHJlbmRzOnNsdWciLCJrZXkiOlsiYWRqdXN0YWJsZS1zcGFubmVyIiwiYWRqdXN0YWJsZS1zcGFubmVyIl19",
+      "limit": 2
+    },
+    "links": {
+      "self": "https://api.unique.domains/v1/trends?limit=2",
+      "next": "https://api.unique.domains/v1/trends?limit=2&cursor=eyJ2IjoxLCJzb3J0IjoidHJlbmRzOnNsdWciLCJrZXkiOlsiYWRqdXN0YWJsZS1zcGFubmVyIiwiYWRqdXN0YWJsZS1zcGFubmVyIl19",
+      "register": null,
+      "product": null,
+      "dataset": null,
+      "details": "https://unique.domains/trending-domains"
+    }
+  }
+}

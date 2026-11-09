@@ -1,0 +1,285 @@
+{
+  "path": "/registrars/namecheap/prices",
+  "status": 200,
+  "recordedOn": "2026-11-09",
+  "body": {
+    "data": [
+      {
+        "extension": "computer",
+        "purchasePrice": 22.48,
+        "renewalPrice": 53.98,
+        "transferPrice": 45.98,
+        "isPromo": true,
+        "currency": "USD"
+      },
+      {
+        "extension": "cruises",
+        "purchasePrice": 61.48,
+        "renewalPrice": 76.98,
+        "transferPrice": 61.48,
+        "isPromo": false,
+        "currency": "USD"
+      },
+      {
+        "extension": "cyou",
+        "purchasePrice": 1.39,
+        "renewalPrice": 25.98,
+        "transferPrice": 19.98,
+        "isPromo": true,
+        "currency": "USD"
+      },
+      {
+        "extension": "earth",
+        "purchasePrice": 19.98,
+        "renewalPrice": 27.98,
+        "transferPrice": null,
+        "isPromo": false,
+        "currency": "USD"
+      },
+      {
+        "extension": "faith",
+        "purchasePrice": 12.98,
+        "renewalPrice": 16.98,
+        "transferPrice": 12.98,
+        "isPromo": true,
+        "currency": "USD"
+      },
+      {
+        "extension": "fyi",
+        "purchasePrice": 6.98,
+        "renewalPrice": 9.68,
+        "transferPrice": 6.98,
+        "isPromo": false,
+        "currency": "USD"
+      },
+      {
+        "extension": "global",
+        "purchasePrice": 34.98,
+        "renewalPrice": 143.48,
+        "transferPrice": 115.48,
+        "isPromo": true,
+        "currency": "USD"
+      },
+      {
+        "extension": "gmbh",
+        "purchasePrice": 61.98,
+        "renewalPrice": 73.48,
+        "transferPrice": 61.98,
+        "isPromo": false,
+        "currency": "USD"
+      },
+      {
+        "extension": "gripe",
+        "purchasePrice": 6.98,
+        "renewalPrice": 8.98,
+        "transferPrice": 6.98,
+        "isPromo": false,
+        "currency": "USD"
+      },
+      {
+        "extension": "in",
+        "purchasePrice": 9.98,
+        "renewalPrice": 11.98,
+        "transferPrice": 9.98,
+        "isPromo": true,
+        "currency": "USD"
+      },
+      {
+        "extension": "insure",
+        "purchasePrice": 85.48,
+        "renewalPrice": 101.98,
+        "transferPrice": 85.48,
+        "isPromo": false,
+        "currency": "USD"
+      },
+      {
+        "extension": "kitchen",
+        "purchasePrice": 8.98,
+        "renewalPrice": 93.98,
+        "transferPrice": 76.48,
+        "isPromo": true,
+        "currency": "USD"
+      },
+      {
+        "extension": "lease",
+        "purchasePrice": 58.98,
+        "renewalPrice": 73.98,
+        "transferPrice": 58.98,
+        "isPromo": false,
+        "currency": "USD"
+      },
+      {
+        "extension": "lgbt",
+        "purchasePrice": 11.98,
+        "renewalPrice": 100.98,
+        "transferPrice": 90.48,
+        "isPromo": true,
+        "currency": "USD"
+      },
+      {
+        "extension": "loans",
+        "purchasePrice": 17.48,
+        "renewalPrice": 144.98,
+        "transferPrice": 122.98,
+        "isPromo": true,
+        "currency": "USD"
+      },
+      {
+        "extension": "locker",
+        "purchasePrice": 6.98,
+        "renewalPrice": 56.98,
+        "transferPrice": 46.98,
+        "isPromo": true,
+        "currency": "USD"
+      },
+      {
+        "extension": "melbourne",
+        "purchasePrice": 44.98,
+        "renewalPrice": 53.98,
+        "transferPrice": 44.98,
+        "isPromo": false,
+        "currency": "USD"
+      },
+      {
+        "extension": "monster",
+        "purchasePrice": 1.8,
+        "renewalPrice": 21.98,
+        "transferPrice": 17.58,
+        "isPromo": true,
+        "currency": "USD"
+      },
+      {
+        "extension": "pe",
+        "purchasePrice": 88.98,
+        "renewalPrice": 95.98,
+        "transferPrice": 115.98,
+        "isPromo": false,
+        "currency": "USD"
+      },
+      {
+        "extension": "ph",
+        "purchasePrice": 52.98,
+        "renewalPrice": 56.98,
+        "transferPrice": 68.98,
+        "isPromo": false,
+        "currency": "USD"
+      },
+      {
+        "extension": "photos",
+        "purchasePrice": 8.98,
+        "renewalPrice": 46.48,
+        "transferPrice": 35.98,
+        "isPromo": true,
+        "currency": "USD"
+      },
+      {
+        "extension": "plumbing",
+        "purchasePrice": 85.48,
+        "renewalPrice": 99.98,
+        "transferPrice": 85.48,
+        "isPromo": false,
+        "currency": "USD"
+      },
+      {
+        "extension": "promo",
+        "purchasePrice": 11.98,
+        "renewalPrice": 36.98,
+        "transferPrice": 29.48,
+        "isPromo": true,
+        "currency": "USD"
+      },
+      {
+        "extension": "ryukyu",
+        "purchasePrice": 17.98,
+        "renewalPrice": 22.98,
+        "transferPrice": null,
+        "isPromo": false,
+        "currency": "USD"
+      },
+      {
+        "extension": "security",
+        "purchasePrice": 2070,
+        "renewalPrice": 2950,
+        "transferPrice": 2327.98,
+        "isPromo": true,
+        "currency": "USD"
+      },
+      {
+        "extension": "ski",
+        "purchasePrice": 84.48,
+        "renewalPrice": 91.48,
+        "transferPrice": null,
+        "isPromo": false,
+        "currency": "USD"
+      },
+      {
+        "extension": "sucks",
+        "purchasePrice": 278.98,
+        "renewalPrice": 298,
+        "transferPrice": null,
+        "isPromo": false,
+        "currency": "USD"
+      },
+      {
+        "extension": "supplies",
+        "purchasePrice": 28.48,
+        "renewalPrice": 35.98,
+        "transferPrice": 28.48,
+        "isPromo": false,
+        "currency": "USD"
+      },
+      {
+        "extension": "support",
+        "purchasePrice": 4.98,
+        "renewalPrice": 41.48,
+        "transferPrice": 31.98,
+        "isPromo": true,
+        "currency": "USD"
+      },
+      {
+        "extension": "systems",
+        "purchasePrice": 11.98,
+        "renewalPrice": 52.98,
+        "transferPrice": 41.48,
+        "isPromo": true,
+        "currency": "USD"
+      },
+      {
+        "extension": "theater",
+        "purchasePrice": 67.98,
+        "renewalPrice": 80.98,
+        "transferPrice": 67.98,
+        "isPromo": false,
+        "currency": "USD"
+      },
+      {
+        "extension": "voting",
+        "purchasePrice": 1398,
+        "renewalPrice": 1448,
+        "transferPrice": null,
+        "isPromo": false,
+        "currency": "USD"
+      },
+      {
+        "extension": "voyage",
+        "purchasePrice": 61.98,
+        "renewalPrice": 73.98,
+        "transferPrice": 61.98,
+        "isPromo": false,
+        "currency": "USD"
+      }
+    ],
+    "meta": {
+      "asOf": "2026-11-09T04:24:38.000Z",
+      "cursor": null,
+      "limit": 20
+    },
+    "links": {
+      "self": "https://api.unique.domains/v1/registrars/namecheap/prices",
+      "next": null,
+      "register": null,
+      "product": null,
+      "dataset": null
+    }
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "path": "/tlds/ai",
+  "status": 200,
+  "recordedOn": "2026-11-09",
+  "body": {
+    "data": {
+      "slug": "ai",
+      "registry": {
+        "slug": "ai",
+        "ianaStatus": "delegated",
+        "kind": "root",
+        "ianaType": "country-code",
+        "registryOperator": "Government of Anguilla",
+        "registryCountryCode": "AI",
+        "isBrand": false,
+        "isIdn": false,
+        "delegatedOn": "1995-02-16",
+        "removedOn": null,
+        "contractTerminated": false
+      },
+      "phases": [],
+      "market": {
+        "computedAt": "2026-11-09T04:26:45.000Z",
+        "availableOneWord": 35485,
+        "registrations90d": 9433,
+        "medianBuy": 85.6,
+        "medianRenew": 84.15,
+        "cheapestRegistrar": "spaceship",
+        "sales12m": 3497,
+        "salesMedian12mUsd": 809,
+        "salesTrend": "up",
+        "tracked": 78757,
+        "available": 64226,
+        "resell": 11543,
+        "expiring90d": 703,
+        "salesMonthly": {
+          "from": "2025-11",
+          "counts": [
+            179,
+            324,
+            580,
+            710,
+            414,
+            605,
+            436,
+            18,
+            21,
+            57,
+            116,
+            78
+          ]
+        }
+      },
+      "quality": "prime",
+      "registrars": [
+        {
+          "registrar": "namecheap",
+          "name": "Namecheap",
+          "homepageUrl": "https://www.namecheap.com",
+          "purchasePrice": 89.98,
+          "renewalPrice": 114.98,
+          "renewalTrap": false,
+          "cheapest": false
+        },
+        {
+          "registrar": "porkbun",
+          "name": "Porkbun",
+          "homepageUrl": "https://porkbun.com?utm_source=unique.domains&utm_medium=website&utm_campaign=lets-partnership-together",
+          "purchasePrice": 82.7,
+          "renewalPrice": 82.7,
+          "renewalTrap": false,
+          "cheapest": false
+        },
+        {
+          "registrar": "dynadot",
+          "name": "Dynadot",
+          "homepageUrl": "https://www.dynadot.com?utm_source=unique.domains&utm_medium=website&utm_campaign=lets-partnership-together",
+          "purchasePrice": 85.6,
+          "renewalPrice": 85.6,
+          "renewalTrap": false,
+          "cheapest": false
+        },
+        {
+          "registrar": "spaceship",
+          "name": "Spaceship",
+          "homepageUrl": "https://www.spaceship.com?utm_source=unique.domains&utm_medium=website&utm_campaign=lets-partnership-together",
+          "purchasePrice": 79.98,
+          "renewalPrice": 79.98,
+          "renewalTrap": false,
+          "cheapest": true
+        },
+        {
+          "registrar": "namesilo",
+          "name": "NameSilo",
+          "homepageUrl": "https://www.namesilo.com?utm_source=unique.domains&utm_medium=website&utm_campaign=lets-partnership-together",
+          "purchasePrice": 99.99,
+          "renewalPrice": 99.99,
+          "renewalTrap": false,
+          "cheapest": false
+        },
+        {
+          "registrar": "unstoppable",
+          "name": "Unstoppable Domains",
+          "homepageUrl": "https://unstoppabledomains.com?utm_source=unique.domains&utm_medium=website&utm_campaign=lets-partnership-together",
+          "purchasePrice": 90,
+          "renewalPrice": null,
+          "renewalTrap": false,
+          "cheapest": false
+        },
+        {
+          "registrar": "cloudflare",
+          "name": "Cloudflare",
+          "homepageUrl": "https://domains.cloudflare.com",
+          "purchasePrice": 80,
+          "renewalPrice": 80,
+          "renewalTrap": false,
+          "cheapest": false
+        }
+      ],
+      "githubRepoUrl": "https://github.com/uniquedomains/ai-oneword-domains"
+    },
+    "meta": {
+      "asOf": "2026-11-09T04:26:45.000Z",
+      "cursor": null,
+      "limit": null
+    },
+    "links": {
+      "self": "https://api.unique.domains/v1/tlds/ai",
+      "next": null,
+      "register": null,
+      "product": null,
+      "dataset": null
+    }
+  }
+}
