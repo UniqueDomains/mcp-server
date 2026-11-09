@@ -17,9 +17,9 @@ const free = TOOLS.filter((tool) => tool.tier === 'free');
 const hosted = TOOLS.filter((tool) => tool.hosted);
 const keyed = TOOLS.filter((tool) => tool.tier === 'keyed');
 
-test('57 free tools, 54 on the hosted connector, every keyed operation as a keyed tool', () => {
-    assert.equal(free.length, 57);
-    assert.equal(hosted.length, 54);
+test('56 free tools, 53 on the hosted connector, every keyed operation as a keyed tool', () => {
+    assert.equal(free.length, 56);
+    assert.equal(hosted.length, 53);
     assert.equal(keyed.length, Object.values(OPERATIONS).filter((operation) => operation.tier === 'keyed').length);
     assert.equal(TOOLS.length, Object.keys(OPERATIONS).length - TRANSPORT_OPERATIONS.length);
 });
@@ -122,8 +122,8 @@ test('output schemas: the envelope, no required key, no closed object, details d
 });
 
 test('the profiles and plans select the expected sets', () => {
-    assert.equal(selectTools(TOOLS, 'local', 'none').length, 57);
-    assert.equal(selectTools(TOOLS, 'hosted', 'investor').length, 54);
+    assert.equal(selectTools(TOOLS, 'local', 'none').length, 56);
+    assert.equal(selectTools(TOOLS, 'hosted', 'investor').length, 53);
     const founder = selectTools(TOOLS, 'local', 'founder');
     const investor = selectTools(TOOLS, 'local', 'investor');
     assert.ok(founder.every((tool) => tool.tier === 'free' || tool.plan !== 'investor'));

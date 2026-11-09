@@ -9874,153 +9874,6 @@ export const TOOLS: readonly ToolDefinition[] = [
         }
     },
     {
-        "name": "ud_get_meta_tlds",
-        "operationId": "get_meta_tlds",
-        "title": "V1 TLD list path, redirected to /tlds for one release",
-        "description": "The v1 TLD list path, redirected to /tlds for one release. Every input is optional.",
-        "tier": "free",
-        "plan": null,
-        "metered": null,
-        "hosted": true,
-        "inputSchema": {
-            "type": "object",
-            "properties": {
-                "listing": {
-                    "type": "string",
-                    "enum": [
-                        "all",
-                        "public"
-                    ],
-                    "description": "v1's switch: `public` becomes `publicSet=true`."
-                }
-            },
-            "additionalProperties": false
-        },
-        "keyedParameters": [],
-        "outputSchema": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "null",
-                    "description": "No body: a `308` with `Location`."
-                },
-                "meta": {
-                    "type": "object",
-                    "properties": {
-                        "asOf": {
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        },
-                        "cursor": {
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        },
-                        "limit": {
-                            "anyOf": [
-                                {
-                                    "type": "integer"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        }
-                    },
-                    "additionalProperties": true,
-                    "description": "The day of the answer, and the page cursor of a list."
-                },
-                "links": {
-                    "type": "object",
-                    "description": "Links of the answer.",
-                    "properties": {
-                        "self": {
-                            "type": "string",
-                            "description": "This answer on the API."
-                        },
-                        "next": {
-                            "description": "The next page on the API, when there is one.",
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        },
-                        "register": {
-                            "description": "Where to register the name, when it can be registered.",
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        },
-                        "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        },
-                        "dataset": {
-                            "description": "The GitHub dataset holding the same rows.",
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        },
-                        "details": {
-                            "description": "The public Unique Domains page about the subject.",
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "annotations": {
-            "readOnlyHint": true,
-            "destructiveHint": false,
-            "idempotentHint": true,
-            "openWorldHint": false
-        },
-        "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
-            "destructive": "Not destructive: it writes and deletes nothing."
-        }
-    },
-    {
         "name": "ud_get_tld",
         "operationId": "get_tld",
         "title": "One TLD in full",
@@ -12659,7 +12512,9 @@ export const TOOLS: readonly ToolDefinition[] = [
             "additionalProperties": false
         },
         "keyedParameters": [
-            "delisted"
+            "delisted",
+            "limit",
+            "cursor"
         ],
         "outputSchema": {
             "type": "object",
@@ -12852,7 +12707,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_list_registrar_changes",
         "operationId": "list_registrar_changes",
         "title": "A registrar's confirmed list-price changes, newest first",
-        "description": "A registrar's confirmed list-price changes, newest first. Pass `registrar` (such as namecheap); the other inputs are optional.",
+        "description": "A registrar's confirmed list-price changes, newest first. Pass `registrar` (such as namecheap).",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -12896,7 +12751,10 @@ export const TOOLS: readonly ToolDefinition[] = [
             ],
             "additionalProperties": false
         },
-        "keyedParameters": [],
+        "keyedParameters": [
+            "limit",
+            "cursor"
+        ],
         "outputSchema": {
             "type": "object",
             "properties": {
@@ -13741,7 +13599,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_list_price_changes",
         "operationId": "list_price_changes",
         "title": "Confirmed registrar price changes across the nine",
-        "description": "Confirmed registrar price changes across the nine, newest first. Every input is optional; `limit` sets the page size.",
+        "description": "Confirmed registrar price changes across the nine, newest first. Every input is optional.",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -13803,7 +13661,9 @@ export const TOOLS: readonly ToolDefinition[] = [
             "ending",
             "registrar",
             "field",
-            "since"
+            "since",
+            "limit",
+            "cursor"
         ],
         "outputSchema": {
             "type": "object",
@@ -13971,7 +13831,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_list_price_traps",
         "operationId": "list_price_traps",
         "title": "Endings whose cheapest first year renews at a trap price",
-        "description": "Endings whose cheapest first year renews at a trap price, alphabetical. Every input is optional; `limit` sets the page size.",
+        "description": "Endings whose cheapest first year renews at a trap price, alphabetical. Every input is optional.",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -13997,7 +13857,10 @@ export const TOOLS: readonly ToolDefinition[] = [
             },
             "additionalProperties": false
         },
-        "keyedParameters": [],
+        "keyedParameters": [
+            "limit",
+            "cursor"
+        ],
         "outputSchema": {
             "type": "object",
             "properties": {

@@ -18,10 +18,11 @@ import { ApiProblemError, createClient, type UniqueDomainsClient } from '@unique
 
 import packageJson from '../package.json';
 import { runTool, type CallContext } from './call';
-import { ConfigError, type ServerConfig } from './config';
+import { ConfigError, type Profile, type ServerConfig } from './config';
 import { KEY_BOOT_TIMEOUT_MS } from './limits';
 import { TOOLS } from './generated/tools';
-import { inputSchemaFor, isKeyless, isObject, outputSchemaFor, selectTools, type KeyPlan } from './profile';
+import { isObject } from './json';
+import { inputSchemaFor, isKeyless, outputSchemaFor, selectTools, type KeyPlan } from './profile';
 import type { ToolDefinition } from './tool';
 
 export const SERVER_NAME = 'uniquedomains';
@@ -30,7 +31,7 @@ export const SERVER_VERSION: string = packageJson.version;
 /** The short guide a client may show the assistant (MCP `instructions`). */
 export const INSTRUCTIONS = [
     'Unique Domains reads its own catalog of domain names, words, TLDs, registrar prices, the domain market, trends and the industry agenda.',
-    'Every answer is stored data as of its day; `links.details` points at the public page about the subject when there is one.',
+    'Answers are stored data as of their day, unless a tool says it reads live; `links.details` points at the public page about the subject when there is one.',
     'Pass a full domain name such as harbor.io to the name tools, and an ending without its dot such as ai to the TLD tools.',
 ].join(' ');
 
@@ -41,6 +42,8 @@ export type PreparedServer = {
     readonly client: UniqueDomainsClient;
     readonly plan: KeyPlan;
     readonly tools: readonly ToolDefinition[];
+    /** The tools as `tools/list` shows them, built once: the HTTP transport creates one server per request. */
+    readonly listed: readonly Tool[];
 };
 
 export type PrepareOptions = {
@@ -83,9 +86,12 @@ export const readKeyPlan = async (client: UniqueDomainsClient, log: Logger): Pro
 
 export const prepareServer = async (config: ServerConfig, options: PrepareOptions = {}): Promise<PreparedServer> => {
     const log = options.log ?? ((line: string) => process.stderr.write(`${line}\n`));
-    const client = createApiClient(config, options.fetch);
-    const plan = config.profile === 'local' && config.apiKey !== null ? await readKeyPlan(client, log) : 'none';
-    return { config, client, plan, tools: selectTools(TOOLS, config.profile, plan) };
+    const keyedClient = createApiClient(config, options.fetch);
+    const plan = config.profile === 'local' && config.apiKey !== null ? await readKeyPlan(keyedClient, log) : 'none';
+    // A key that opens no plan stays off the calls: the tools are the free ones, and it must not be charged for them.
+    const client = config.apiKey !== null && plan === 'none' ? createApiClient({ ...config, apiKey: null }, options.fetch) : keyedClient;
+    const tools = selectTools(TOOLS, config.profile, plan);
+    return { config, client, plan, tools, listed: tools.map((tool) => toListedTool(tool, config.profile, plan)) };
 };
 
 /**
@@ -93,22 +99,27 @@ export const prepareServer = async (config: ServerConfig, options: PrepareOption
  * (`JsonObject`, written by `scripts/generate.mjs`) and the MCP SDK's zod-derived `Tool` type, which describes the
  * same JSON Schema objects with an open index.
  */
-export const toListedTool = (tool: ToolDefinition, prepared: PreparedServer): Tool => ({
+export const toListedTool = (tool: ToolDefinition, profile: Profile, plan: KeyPlan): Tool => ({
     name: tool.name,
     title: tool.title,
     description: tool.description,
-    inputSchema: inputSchemaFor(tool, prepared.config.profile, prepared.plan) as Tool['inputSchema'],
-    outputSchema: outputSchemaFor(tool, prepared.config.profile) as Tool['outputSchema'],
+    inputSchema: inputSchemaFor(tool, profile, plan) as Tool['inputSchema'],
+    outputSchema: outputSchemaFor(tool, profile) as Tool['outputSchema'],
     annotations: { title: tool.title, ...tool.annotations },
 });
 
 export const createMcpServer = (prepared: PreparedServer, overrides: Partial<Pick<CallContext, 'sleep' | 'now' | 'timeoutMs'>> = {}): Server => {
     const server = new Server({ name: SERVER_NAME, title: 'Unique Domains', version: SERVER_VERSION }, { capabilities: { tools: { listChanged: false } }, instructions: INSTRUCTIONS });
     const byName = new Map(prepared.tools.map((tool) => [tool.name, tool]));
-    const listed = prepared.tools.map((tool) => toListedTool(tool, prepared));
-    const context: CallContext = { client: prepared.client, profile: prepared.config.profile, keyless: isKeyless(prepared.config.profile, prepared.plan), ...overrides };
+    const context: CallContext = {
+        client: prepared.client,
+        profile: prepared.config.profile,
+        keyless: isKeyless(prepared.config.profile, prepared.plan),
+        keyWithoutPlan: prepared.config.apiKey !== null && prepared.plan === 'none',
+        ...overrides,
+    };
 
-    server.setRequestHandler(ListToolsRequestSchema, () => ({ tools: listed }));
+    server.setRequestHandler(ListToolsRequestSchema, () => ({ tools: [...prepared.listed] }));
     server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const tool = byName.get(request.params.name);
         if (tool === undefined) {

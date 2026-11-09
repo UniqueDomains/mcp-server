@@ -1,7 +1,7 @@
 {
   "name": "unique-domains",
   "description": "Domain names, words, TLDs, registrar prices, the domain market, trends and the agenda, from the Unique Domains API.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "Unique Domains"
   },

@@ -5,12 +5,14 @@
 
 /**
  * Fails when a file written by hand in this repository carries a character or a word the project's writing rules
- * ban: the em dash, and the internal name of the scanner (say "scanner"). The snapshot and the generated files are
+ * ban: the em dash, the internal name of the scanner (say "scanner"), the names of the sales sources, and the score
+ * and ranking words (AGENTS.md, Minimum Data Exposure). The two guards that must name those words to ban them, the
+ * tool generator and the tests, are exempt from that last rule alone. The snapshot and the generated files are
  * the API's own published text and are checked by the API's repository, so they are left out here.
  */
 
 import { readdir, readFile } from 'node:fs/promises';
-import { join, relative } from 'node:path';
+import { join, relative, sep } from 'node:path';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -26,6 +28,8 @@ const BANNED = [
     { pattern: new RegExp(String.fromCharCode(0x2014)), label: 'an em dash' },
     // No closing boundary, so the plural and every suffixed form are caught too (review R1-13).
     { pattern: new RegExp(`\\b${['dae', 'mon'].join('')}`, 'i'), label: 'the internal name of the scanner (write "scanner")' },
+    { pattern: new RegExp([['name', 'bio'], ['dn', 'journal'], ['humble', 'worth']].map((parts) => parts.join('')).join('|'), 'i'), label: 'the name of a sales source' },
+    { pattern: /\b(?:scores?|scoring|rank|rankings?|ranked|formula)\b/i, label: 'a score or ranking word', exempt: (file) => file === join(ROOT, 'scripts', 'lib', 'tools.mjs') || file === join(ROOT, 'scripts', 'check-text.mjs') || file.startsWith(join(ROOT, 'test') + sep) },
 ];
 
 const walk = async (dir) => {
@@ -46,7 +50,7 @@ const problems = [];
 for (const file of await walk(ROOT)) {
     const lines = (await readFile(file, 'utf8')).split('\n');
     lines.forEach((line, index) => {
-        for (const { pattern, label } of BANNED) if (pattern.test(line)) problems.push(`${relative(ROOT, file)}:${index + 1}: ${label}`);
+        for (const { pattern, label, exempt } of BANNED) if (pattern.test(line) && !exempt?.(file)) problems.push(`${relative(ROOT, file)}:${index + 1}: ${label}`);
     });
 }
 

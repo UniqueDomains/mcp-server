@@ -68,7 +68,7 @@ const contrast = (a, b) => {
 /** Width and height of a PNG, from its IHDR chunk. */
 const pngSize = (buffer) => {
     const signature = buffer.subarray(0, 8).toString('hex');
-    if (signature !== '89504e470d0a1a0a') return null;
+    if (signature !== '89504e470d0a1a0a' || buffer.toString('latin1', 12, 16) !== 'IHDR') return null;
     return { width: buffer.readUInt32BE(16), height: buffer.readUInt32BE(20) };
 };
 
@@ -101,7 +101,7 @@ for (const [key, file] of [['logo', 'logo.png'], ['composerIcon', 'composer-icon
     icons[key] = { path: `assets/${file}`, buffer };
 }
 const hostedTools = TOOLS.filter((tool) => tool.hosted);
-check(hostedTools.length === 54, `the hosted profile has ${hostedTools.length} tools, 54 expected`);
+check(hostedTools.length === 53, `the hosted profile has ${hostedTools.length} tools, 53 expected`);
 for (const tool of hostedTools) {
     for (const hint of ['readOnlyHint', 'openWorldHint', 'destructiveHint']) check(typeof tool.annotations[hint] === 'boolean', `${tool.name}: ${hint} explicit`);
     for (const reason of ['readOnly', 'openWorld', 'destructive']) check(oneLine(tool.justification[reason]), `${tool.name}: a ${reason} justification`);

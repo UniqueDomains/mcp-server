@@ -9,7 +9,8 @@
  * assistant can act on: the input, what was wrong and what is accepted (Anthropic's directory asks for actionable
  * validation messages).
  *
- * Lenient where an assistant often slips: a number or a boolean sent as a string is read as one. A missing `limit` is
+ * Lenient where an assistant often slips: a number or a boolean sent as a string is read as one, a string is trimmed,
+ * and a list sent for a comma-list input is joined. A missing `limit` is
  * not filled in: the API's own default is the 20 the input schema shows, and the free grade refuses `limit` outright
  * on its fixed-cut endpoints (`list_registrar_prices`, ...), so sending it unasked would break those calls.
  */
@@ -65,10 +66,10 @@ const readScalar = (name: string, parameter: Pick<OperationParameter, 'type' | '
             else return refuse();
             break;
         default:
-            if (typeof raw === 'string') value = raw;
+            if (typeof raw === 'string') value = raw.trim();
             else if (typeof raw === 'number') value = String(raw);
             else return refuse();
-            if (value.trim() === '') return refuse();
+            if (value === '') return refuse();
     }
     if (parameter.enum && !parameter.enum.some((allowed) => allowed === value)) return refuse();
     return value;
@@ -81,6 +82,10 @@ const readBodyProperty = (property: BodyProperty, raw: unknown): JsonValue => {
     const itemType = property.items ?? { type: 'string' as const };
     return items.map((item) => readScalar(`${property.name}[]`, { type: itemType.type, enum: itemType.enum }, item));
 };
+
+/** A list for an input the API reads as a comma list ("Comma list of statuses", "Comma-separated keys"), joined. */
+const joinCommaList = (parameter: OperationParameter, raw: unknown): unknown =>
+    Array.isArray(raw) && parameter.type === 'string' && /^comma/iu.test(parameter.description) && raw.every((item) => typeof item === 'string' || typeof item === 'number') ? raw.join(',') : raw;
 
 /** @boundary `args` are the tool call's arguments as the client sent them. */
 export const splitInput = (operation: OperationDefinition, args: Readonly<Record<string, unknown>> | undefined): SplitInput => {
@@ -97,7 +102,7 @@ export const splitInput = (operation: OperationDefinition, args: Readonly<Record
     const path: Record<string, string | number> = {};
     const query: Record<string, string | number | boolean> = {};
     for (const parameter of operation.parameters) {
-        const raw = given[parameter.name];
+        const raw = joinCommaList(parameter, given[parameter.name]);
         if (raw === undefined || raw === null) {
             if (parameter.required) throw new InputError(`\`${parameter.name}\` is required: ${parameter.description}`);
             continue;

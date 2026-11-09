@@ -68,7 +68,7 @@ test('the ChatGPT plugin package builds, and a field over its limit fails the bu
     const sheet = JSON.parse(readFileSync(join(out, 'chatgpt-plugin-review.json'), 'utf8'));
     assert.equal(sheet.positiveTests.length, 5);
     assert.equal(sheet.negativeTests.length, 3);
-    assert.equal(sheet.tools.length, 54);
+    assert.equal(sheet.tools.length, 53);
 
     const review = read('plugin/review.json');
     const bad = join(out, 'review.json');

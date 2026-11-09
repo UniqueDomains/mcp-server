@@ -8,7 +8,7 @@ import { createServer } from 'node:http';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 
-import { createRequestHandler, prepareServer, readConfig, readWellKnownFiles, ConfigError } from '../dist/index.js';
+import { assertServable, createRequestHandler, prepareServer, readConfig, readWellKnownFiles, ConfigError } from '../dist/index.js';
 import { FOUNDER_KEY, problem, startApiFixture } from './support/api-fixture.mjs';
 
 const SECRET = 's'.repeat(40);
@@ -20,7 +20,10 @@ before(async () => {
     fixture = await startApiFixture({
         'GET /tlds/spent': problem(429, 'budget_spent', "The connector's day is spent.", { headers: { 'Retry-After': '3600' } }),
         'GET /tlds/second': problem(429, 'rate_limited', 'Too many calls this second.', { headers: { 'Retry-After': '30' } }),
-        'GET /tlds/keyed': problem(403, 'keyed_only', 'The free answer of this endpoint is a fixed cut: `limit` and `cursor` need a paid subscription.'),
+        'GET /tlds/keyed': problem(403, 'keyed_only', 'The statistics of .aaa need a paid subscription: the free tier carries the endings of the public set only.'),
+        // What the API really answers for `limit` on a fixed cut: a 400, whose detail the validation handler would repeat.
+        'GET /tlds/fixedcut': problem(400, 'validation_failed', 'The free answer of this endpoint is a fixed cut: `limit` and `cursor` need a paid subscription.'),
+        'GET /tlds/badvalue': problem(400, 'validation_failed', 'The `since` value is not a date.'),
     });
     const env = {
         UD_MCP_PROFILE: 'hosted',
@@ -49,12 +52,12 @@ const connect = async () => {
     return client;
 };
 
-test('initialize and tools/list: 54 tools, never the three one-a-day ones, whatever the key in the environment', async () => {
+test('initialize and tools/list: 53 tools, never the three one-a-day ones, whatever the key in the environment', async () => {
     const client = await connect();
     assert.equal(client.getServerVersion().name, 'uniquedomains');
     const { tools } = await client.listTools();
-    assert.equal(tools.length, 54);
-    for (const name of ['ud_get_market_sales_word', 'ud_get_word_market', 'ud_list_tld_prices', 'ud_get_key', 'ud_check_name']) assert.ok(!tools.some((tool) => tool.name === name), name);
+    assert.equal(tools.length, 53);
+    for (const name of ['ud_get_market_sales_word', 'ud_get_word_market', 'ud_list_tld_prices', 'ud_get_key', 'ud_check_name', 'ud_get_meta_tlds']) assert.ok(!tools.some((tool) => tool.name === name), name);
     for (const tool of tools) {
         assert.ok(tool.title && tool.annotations.readOnlyHint === true && tool.annotations.openWorldHint === false, tool.name);
         assert.equal(tool.outputSchema.properties.links.properties.register, undefined);
@@ -100,6 +103,23 @@ test('the hosted connector carries no plan talk: no keyed input listed, a keyed 
     assert.equal(refused.content[0].text, 'This connector serves the free answers only, and that input or page is not one of them. Call the tool again without it.');
     const keyedInput = await client.callTool({ name: 'ud_list_domains', arguments: { prefix: 'har' } });
     assert.equal(keyedInput.content[0].text, 'This connector does not take `prefix`. Call the tool again without it.');
+    const neutral = 'This connector serves the free answers only, and that input or page is not one of them. Call the tool again without it.';
+    assert.equal((await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'fixedcut' } })).content[0].text, neutral);
+    // A validation refusal with no plan talk still says what was wrong.
+    assert.equal((await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'badvalue' } })).content[0].text, 'The `since` value is not a date.');
+
+    // The four fixed cuts: `limit` and `cursor` are neither offered nor sent.
+    for (const name of ['ud_list_registrar_prices', 'ud_list_registrar_changes', 'ud_list_price_changes', 'ud_list_price_traps']) {
+        const tool = tools.find((candidate) => candidate.name === name);
+        assert.ok(!('limit' in tool.inputSchema.properties) && !('cursor' in tool.inputSchema.properties), name);
+        assert.ok(!/`limit`/u.test(tool.description), name);
+        const sentBefore = fixture.requests.length;
+        for (const input of ['limit', 'cursor']) {
+            const refused = await client.callTool({ name, arguments: { [input]: input === 'limit' ? 5 : 'abc' } });
+            assert.equal(refused.content[0].text, `This connector does not take \`${input}\`. Call the tool again without it.`);
+        }
+        assert.equal(fixture.requests.length, sentBefore, `${name} reached the API`);
+    }
     await client.close();
 });
 
@@ -115,7 +135,7 @@ test('the well-known files, /healthz, CORS, no-store, 405 and 413', async () => 
 
     const health = await fetch(`${base}/healthz`);
     assert.equal(health.status, 200);
-    assert.deepEqual(await health.json(), { ok: true, version: '0.1.0', tools: 54 });
+    assert.deepEqual(await health.json(), { ok: true, version: '0.1.1', tools: 53 });
     assert.equal(health.headers.get('cache-control'), 'no-store');
 
     const get = await fetch(`${base}/mcp`);
@@ -134,7 +154,7 @@ test('the well-known files, /healthz, CORS, no-store, 405 and 413', async () => 
     assert.equal(post.headers.get('cache-control'), 'no-store');
     assert.equal(post.headers.get('access-control-allow-origin'), '*');
     assert.match(post.headers.get('content-type'), /^application\/json/u);
-    assert.equal((await post.json()).result.tools.length, 54);
+    assert.equal((await post.json()).result.tools.length, 53);
 
     const big = await fetch(`${base}/mcp`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: `{"x":"${'a'.repeat(1024 * 1024 + 10)}"}` });
     assert.equal(big.status, 413);
@@ -149,6 +169,12 @@ test('the well-known files, /healthz, CORS, no-store, 405 and 413', async () => 
     assert.equal(streamed.status, 413);
     const bad = await fetch(`${base}/mcp`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{nope' });
     assert.equal(bad.status, 400);
+});
+
+test('the HTTP transport refuses to serve a member key', () => {
+    assert.throws(() => assertServable(readConfig({ UD_API_KEY: FOUNDER_KEY })), (error) => error instanceof ConfigError && /does not serve UD_API_KEY/u.test(error.message));
+    assert.doesNotThrow(() => assertServable(readConfig({ UD_MCP_PROFILE: 'hosted', UD_API_KEY: FOUNDER_KEY })));
+    assert.doesNotThrow(() => assertServable(readConfig({})));
 });
 
 test('UD_WELLKNOWN_FILES must be a JSON object of file names', () => {

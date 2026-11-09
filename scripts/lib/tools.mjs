@@ -7,18 +7,28 @@
  * metering) and the OpenAPI document it ships (the 200 answer's schema). Pure functions: `generate.mjs` writes the
  * result, the tests read it.
  *
- * The tool set (plan decision 4): every free operation except the five that serve a file or a liveness answer, plus
- * every keyed operation, which the server registers only for a member key of the right plan. The hosted connector
+ * The tool set (plan decision 4, then Gaetan's 1A of 2026-11-09): every free operation except the six that serve a
+ * file, a liveness answer or a redirect, plus every keyed operation, which the server registers only for a member key of the right plan. The hosted connector
  * leaves out the three free tools behind a one-a-day gate, since it is one caller for every assistant user (P1-D2).
  */
 
-/** Free operations that answer a document, a calendar file or liveness: the JSON tools already carry their data. */
-export const TRANSPORT_OPERATIONS = ['get_openapi', 'get_llms_txt', 'get_health', 'get_events_ics', 'get_agenda_ics'];
+/**
+ * Free operations that answer a document, a calendar file or liveness: the JSON tools already carry their data. And
+ * `get_meta_tlds`, the v1 path redirected to `/tlds` for one release, which `ud_list_tlds` already serves.
+ */
+export const TRANSPORT_OPERATIONS = ['get_openapi', 'get_llms_txt', 'get_health', 'get_events_ics', 'get_agenda_ics', 'get_meta_tlds'];
 
 /** Free tools the hosted connector leaves out: one word or one ending a caller a day, and the connector is one caller. */
 export const HOSTED_EXCLUDED_OPERATIONS = ['get_market_sales_word', 'get_word_market', 'list_tld_prices'];
 
-/** The page size a tool sends when the assistant passes none (plan section 2: `limit` defaults to 20). */
+/**
+ * Free answers that are the website's fixed cut: the API refuses `limit` (400) and `cursor` (403) without a key, though
+ * the document does not mark them keyed. A keyless caller is neither offered them nor lets them reach the API.
+ */
+export const FIXED_CUT_OPERATIONS = ['list_registrar_prices', 'list_registrar_changes', 'list_price_changes', 'list_price_traps'];
+const FIXED_CUT_PARAMETERS = ['limit', 'cursor'];
+
+/** The default page size the input schema shows (plan section 2). It is the API's own: the server fills nothing in. */
 export const DEFAULT_LIMIT = 20;
 
 /** Tools that spend a metered unit or write: not read-only. `check_name` alone reads the open registries live. */
@@ -28,12 +38,13 @@ const OPEN_WORLD_OPERATIONS = new Set(['check_name']);
 /** Words no text of a tool may carry (AGENTS.md, Minimum Data Exposure): no score or ranking, no sales source. */
 export const FORBIDDEN_WORDS = [
     /\bscores?\b/i,
-    /\branking\b/i,
+    /\bscoring\b/i,
+    /\brank\b/i,
+    /\brankings?\b/i,
     /\branked\b/i,
     /\bformula\b/i,
-    /namebio/i,
-    /dnjournal/i,
-    /humbleworth/i,
+    // Built from parts, so `scripts/check-text.mjs` can ban the names in this file too.
+    ...[['name', 'bio'], ['dn', 'journal'], ['humble', 'worth']].map((parts) => new RegExp(parts.join(''), 'i')),
 ];
 
 const toolName = (operationId) => `ud_${operationId}`;
@@ -64,13 +75,14 @@ export const usageOf = (operation) => {
         return example === null ? `\`${parameter.name}\`` : `\`${parameter.name}\` (such as ${example})`;
     });
     for (const property of bodyRequired) parts.push(`\`${property.name}\` (a list)`);
-    const optional = operation.parameters.filter((parameter) => !parameter.required && parameter.name !== 'fields');
+    const fixedCut = FIXED_CUT_OPERATIONS.includes(operation.id);
+    const optional = operation.parameters.filter((parameter) => !parameter.required && parameter.name !== 'fields' && !(fixedCut && FIXED_CUT_PARAMETERS.includes(parameter.name)));
     if (parts.length > 0) {
         const list = parts.length === 1 ? parts[0] : `${parts.slice(0, -1).join(', ')} and ${parts.at(-1)}`;
         return `Pass ${list}${optional.length > 0 ? '; the other inputs are optional' : ''}.`;
     }
     if (optional.some((parameter) => parameter.name === 'limit')) return 'Every input is optional; `limit` sets the page size.';
-    if (optional.length > 0) return 'Every input is optional.';
+    if (optional.length > 0 || fixedCut) return 'Every input is optional.';
     return 'Takes no input.';
 };
 
@@ -119,7 +131,8 @@ export const inputSchemaOf = (operation) => {
  */
 export const keyedParametersOf = (operationId, document) => {
     const operation = findOperation(operationId, document);
-    return (operation.parameters ?? []).filter(isKeyedParameter).map((parameter) => parameter.name);
+    const fixedCut = FIXED_CUT_OPERATIONS.includes(operationId);
+    return (operation.parameters ?? []).filter((parameter) => isKeyedParameter(parameter) || (fixedCut && FIXED_CUT_PARAMETERS.includes(parameter.name))).map((parameter) => parameter.name);
 };
 
 /**

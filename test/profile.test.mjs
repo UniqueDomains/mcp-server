@@ -20,6 +20,8 @@ test('the hosted profile strips register and product, at every depth, and sets d
     assert.equal(answer.links.product, undefined);
     assert.equal(answer.links.details, 'https://unique.domains/availability/harbor.io');
     assert.deepEqual(answer.data.rows[0].links, { self: 's' });
+    const withMeta = shapeAnswer('hosted', 'get_name', { name: 'harbor.io' }, { ...envelope({ name: 'harbor.io' }), meta: { asOf: null, links: { product: 'p', self: 's' } } });
+    assert.deepEqual(withMeta.meta.links, { self: 's' });
     assert.ok(!JSON.stringify(answer).includes('"register"'));
     assert.ok(!JSON.stringify(answer).includes('"product"'));
 });
@@ -63,6 +65,7 @@ test('every hosted tool has a details rule, and the rules point at the website',
 test('the text line names the subject and its fact, or the count and the first three, never an id or a cursor', () => {
     const one = textLine('Stored answer for one domain name', { data: { id: 'dom_123', name: 'harbor.io', status: 'taken' }, meta: { cursor: null }, links: {} });
     assert.equal(one, 'Stored answer for one domain name: harbor.io, status taken.');
+    assert.equal(textLine('One name', { data: { name: 'harbor.io', status: 'not_checked' }, meta: {}, links: {} }), 'One name: harbor.io, status not checked.');
     const list = textLine('Every root TLD', { data: [{ tld: '.aaa' }, { tld: '.abb' }, { tld: '.abc' }, { tld: '.able' }], meta: { cursor: 'eyJ2Ijox' }, links: {} });
     assert.equal(list, 'Every root TLD. 4 rows on this page, more on the next: .aaa, .abb, .abc and more.');
     assert.ok(!list.includes('eyJ'));
@@ -90,6 +93,13 @@ test('the input check: required, unknown keys, types, enums, ranges, lenient str
     const check = OPERATIONS.check_name;
     assert.throws(() => splitInput(check, { name: 'a.io', blocks: ['nope'] }), /one of/u);
     assert.deepEqual(splitInput(check, { name: 'a.io' }).body, {});
+
+    // Strings are trimmed; a list for a comma-list input is joined; a list elsewhere is still refused.
+    assert.deepEqual(splitInput(OPERATIONS.get_tld, { tld: ' ai ' }).path, { tld: 'ai' });
+    assert.equal(splitInput(OPERATIONS.list_domains, { status: ['available', 'premium'] }).query.status, 'available,premium');
+    assert.equal(splitInput(OPERATIONS.list_domains, { fields: ['id', 'name'] }).query.fields, 'id,name');
+    assert.throws(() => splitInput(OPERATIONS.get_tld, { tld: ['ai', 'io'] }), /`tld` must be a string/u);
+    assert.throws(() => splitInput(OPERATIONS.get_tld, { tld: '   ' }), /`tld` must be a string/u);
 });
 
 test('the config: the hosted profile ignores UD_API_KEY and reads the connector secret only when not blank', () => {

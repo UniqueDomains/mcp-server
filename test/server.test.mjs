@@ -20,14 +20,13 @@ before(async () => {
             body: { product: 'https://app.unique.domains/home?upgrade=investor' },
         }),
         'GET /names/quota.io/prices': problem(429, 'quota_spent', "This key's month is spent.", {
-            headers: { 'X-Quota-Limit': '10000', 'X-Quota-Remaining': '0', 'X-Quota-Reset': '2026-12-01T00:00:00Z', 'Retry-After': '1922400' },
+            headers: { 'X-Quota-Limit': '10000', 'X-Quota-Remaining': '0', 'X-Quota-Reset': '1796083200', 'Retry-After': '60' },
         }),
         'GET /tlds/busy': [problem(429, 'rate_limited', 'Too many calls this second.', { headers: { 'Retry-After': '2' } }), { status: 200, body: { data: { tld: 'busy' }, meta: {}, links: {} } }],
         'GET /tlds/spent': problem(429, 'budget_spent', "The connector's day is spent.", { headers: { 'Retry-After': '25200' } }),
         'GET /tlds/down': problem(503, 'internal', 'The API is restarting.'),
         'GET /tlds/badshape': { status: 200, body: { data: 'not an object', meta: { asOf: 12 }, links: {} } },
         'GET /tlds/second': [problem(429, 'rate_limited', 'Too many calls this second.', { headers: { 'Retry-After': '1' } }), problem(429, 'rate_limited', 'Too many calls this second.', { headers: { 'Retry-After': '1' } }), { status: 200, body: { data: { tld: 'second' }, meta: {}, links: {} } }],
-        'GET /tlds/keyed': problem(403, 'keyed_only', 'Paid subscriptions only: sort.'),
         'POST /words/fresh/request': { status: 202, headers: { 'Content-Type': 'application/json', 'Retry-After': '600' }, body: { data: { status: 'accepted', requestId: '7f1c2d3e-0000-4000-8000-000000000001' }, meta: {}, links: {} } },
         'POST /names/slow.io/check': { status: 202, headers: { 'Content-Type': 'application/json', 'Retry-After': '30', Location: '/v1/names/slow.io' }, body: { data: { name: 'slow.io', status: 'checking' }, meta: {}, links: {} } },
     });
@@ -45,10 +44,10 @@ const connect = async (env, overrides = {}) => {
 
 const names = async (client) => (await client.listTools()).tools.map((tool) => tool.name);
 
-test('without a key: the 57 free tools, and no get_key call', async () => {
+test('without a key: the 56 free tools, and no get_key call', async () => {
     const before = fixture.requests.length;
     const { client } = await connect({});
-    assert.equal((await names(client)).length, 57);
+    assert.equal((await names(client)).length, 56);
     assert.equal(fixture.requests.slice(before).filter((request) => request.path === '/meta/key').length, 0);
     await client.close();
 });
@@ -59,19 +58,26 @@ test('a Founder key adds the keyed tools without the Investor set', async () => 
     assert.ok(list.includes('ud_get_name_prices') && list.includes('ud_get_key') && list.includes('ud_check_name'));
     assert.ok(!list.includes('ud_batch_names') && !list.includes('ud_appraise_name'));
     assert.ok(list.includes('ud_get_word_notability') && list.includes('ud_get_word_market'));
-    assert.equal(list.length, 67);
+    assert.equal(list.length, 66);
     await client.close();
 });
 
 test('an Investor key shows every tool', async () => {
     const { client } = await connect({ UD_API_KEY: INVESTOR_KEY });
-    assert.equal((await names(client)).length, 82);
+    assert.equal((await names(client)).length, 81);
     await client.close();
 });
 
 test('a key with no paid plan keeps the free tools; a refused key stops the start', async () => {
     const { client } = await connect({ UD_API_KEY: UNPAID_KEY });
-    assert.equal((await names(client)).length, 57);
+    assert.equal((await names(client)).length, 56);
+    // The key that opens no plan goes no further than the start: calls leave without it, and a keyed input says why.
+    const before = fixture.requests.length;
+    assert.equal((await client.callTool({ name: 'ud_get_name', arguments: { name: 'harbor.io' } })).isError, undefined);
+    const sent = fixture.requests.slice(before).find((request) => request.path === '/names/harbor.io');
+    assert.equal(sent.headers.authorization, undefined);
+    const keyedInput = await client.callTool({ name: 'ud_list_domains', arguments: { prefix: 'har' } });
+    assert.match(keyedInput.content[0].text, /^`prefix` needs a member key on a paid plan, and UD_API_KEY opens none/u);
     await client.close();
     await assert.rejects(() => prepareServer(readConfig({ UD_API_BASE: fixture.base, UD_API_KEY: REFUSED_KEY }), { log: () => {} }), (error) => error instanceof ConfigError && /UD_API_KEY was refused: This key was revoked/u.test(error.message));
 });
@@ -204,7 +210,7 @@ test('the start does not wait on a hung API for the key: free tools after the ti
     const lines = [];
     const prepared = await prepareServer(readConfig({ UD_API_BASE: `http://127.0.0.1:${hung.address().port}/v1`, UD_API_KEY: FOUNDER_KEY }), { log: (line) => lines.push(line) });
     assert.equal(prepared.plan, 'none');
-    assert.equal(prepared.tools.length, 57);
+    assert.equal(prepared.tools.length, 56);
     assert.match(lines[0], /Starting with the free tools only/u);
     hung.closeAllConnections();
     await new Promise((resolve) => hung.close(resolve));

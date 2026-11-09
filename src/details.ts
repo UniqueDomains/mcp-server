@@ -11,7 +11,9 @@
  * A word has no page on the website: its tools answer null.
  */
 
-import type { JsonObject, JsonValue } from '@uniquedomains/sdk';
+import type { JsonValue } from '@uniquedomains/sdk';
+
+import { isObject } from './json';
 
 export const WEBSITE = 'https://unique.domains';
 
@@ -49,16 +51,14 @@ const registrarPage: DetailsRule = (input) => {
  */
 const tldPage: DetailsRule = (input, data) => {
     const raw = typeof input.tld === 'string' ? input.tld.trim().replace(/^\./u, '') : '';
-    const publicSet = isRecord(data) && typeof data.quality === 'string' && data.quality !== '';
+    const publicSet = isObject(data) && typeof data.quality === 'string' && data.quality !== '';
     const tld = segment(raw);
     return publicSet && tld !== null ? `${WEBSITE}/tld/${tld}` : `${WEBSITE}/tld`;
 };
 
-const isRecord = (value: JsonValue | undefined): value is JsonObject => value !== null && typeof value === 'object' && !Array.isArray(value);
-
 /** A domain read by name or id: the name from the answer when the caller passed an id. */
 const domainPage: DetailsRule = (input, data) => {
-    const fromData = isRecord(data) ? segment(data.name) : null;
+    const fromData = isObject(data) ? segment(data.name) : null;
     const name = fromData ?? (typeof input.nameOrId === 'string' && input.nameOrId.includes('.') ? segment(input.nameOrId) : null);
     return name === null ? `${WEBSITE}/domains` : `${WEBSITE}/availability/${name}`;
 };
@@ -96,7 +96,6 @@ export const DETAILS_RULES: Readonly<Record<string, DetailsRule>> = {
     get_catalog_stats: page('/domains'),
     // Endings.
     list_tlds: page('/tld'),
-    get_meta_tlds: page('/tld'),
     get_tld: tldPage,
     get_tld_stats: page('/tld'),
     list_tld_phases: page('/tld'),

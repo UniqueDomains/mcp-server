@@ -17,6 +17,7 @@ import type { JsonObject, JsonValue } from '@uniquedomains/sdk';
 
 import type { Profile } from './config';
 import { detailsFor } from './details';
+import { isObject } from './json';
 import type { JsonSchema, ToolDefinition } from './tool';
 
 /** What a member key opens: nothing beyond the free tools, the Founder set, or every keyed tool. */
@@ -32,9 +33,6 @@ export const selectTools = (tools: readonly ToolDefinition[], profile: Profile, 
     });
 };
 
-/** `Array.isArray` does not narrow a readonly array out of a union, hence the guard. */
-export const isObject = (value: JsonValue | undefined): value is JsonObject => value !== null && typeof value === 'object' && !Array.isArray(value);
-
 const STRIPPED_LINKS = ['register', 'product'];
 
 /** Whether the caller holds no key: the hosted connector always, the npm server without a paid member key. */
@@ -43,7 +41,8 @@ export const isKeyless = (profile: Profile, plan: KeyPlan): boolean => profile =
 /** `limit`'s description for a caller without a key: the document's names the paid page size, which is plan talk here. */
 const KEYLESS_LIMIT_DESCRIPTION = 'Page size, 20 at most.';
 
-const INPUT_PLAN_TALK = /\bpaid\b|\bsubscriptions?\b|\bkeyed\b|\bfree (?:tier|grade)\b|\bmember key\b/iu;
+/** Wording that names the paid grades, which the hosted connector never repeats (decision 15). */
+export const PLAN_TALK = /\bpaid\b|\bsubscriptions?\b|\bkeyed\b|\bfree (?:tier|grade)\b|\bmember key\b|\b(?:founder|investor) (?:plan|key)\b/iu;
 
 /**
  * The input schema a caller sees: without a key, the inputs only a key may send are left out (review finding 2; the
@@ -59,7 +58,7 @@ export const inputSchemaFor = (tool: ToolDefinition, profile: Profile, plan: Key
         if (schema === undefined || tool.keyedParameters.includes(name)) continue;
         if (name === 'limit' && isObject(schema)) {
             kept[name] = { ...schema, description: KEYLESS_LIMIT_DESCRIPTION };
-        } else if (profile === 'hosted' && isObject(schema) && typeof schema.description === 'string' && INPUT_PLAN_TALK.test(schema.description)) {
+        } else if (profile === 'hosted' && isObject(schema) && typeof schema.description === 'string' && PLAN_TALK.test(schema.description)) {
             // "`properNoun` is ignored on the free tier": plan talk the hosted connector does not carry (decision 15).
             const { description: _dropped, ...rest } = schema;
             kept[name] = rest;
@@ -115,7 +114,9 @@ export const shapeAnswer = (
     const links: Record<string, JsonValue> = {};
     for (const [name, link] of Object.entries(envelope.links)) if (!STRIPPED_LINKS.includes(name) && link !== undefined) links[name] = link;
     links.details = detailsFor(operationId, input, envelope.data, envelope.links.details);
-    return { data, meta: envelope.meta, links };
+    // `meta` holds no links today; walked so one added there later cannot carry an upsell.
+    const meta = stripLinks(envelope.meta);
+    return { data, meta: isObject(meta) ? meta : {}, links };
 };
 
 /* ---------- The text line ---------- */
@@ -139,7 +140,8 @@ const labelOf = (row: JsonValue): string | null => {
 const factOf = (row: JsonObject): string | null => {
     for (const key of FACT_KEYS) {
         const value = row[key];
-        if (typeof value === 'string' && value !== '' && value.length <= 40) return `${key} ${value}`;
+        // A reader's words, not the raw value: "status not checked".
+        if (typeof value === 'string' && value !== '' && value.length <= 40) return `${key} ${value.replace(/_/gu, ' ')}`;
         if (typeof value === 'boolean') return `${key} ${value ? 'yes' : 'no'}`;
     }
     return null;

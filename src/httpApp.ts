@@ -19,7 +19,7 @@
 import { createServer as createHttpServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 
-import { ConfigError, readConfig, type Environment } from './config';
+import { ConfigError, readConfig, type Environment, type ServerConfig } from './config';
 import { DRAIN_LIMIT_BYTES, HTTP_BODY_LIMIT_BYTES } from './limits';
 import { createMcpServer, prepareServer, SERVER_VERSION, type PreparedServer } from './server';
 
@@ -140,7 +140,7 @@ export const createRequestHandler =
                 if (req.method === 'POST') return await handleMcpPost(prepared, req, res);
                 return sendJsonRpcError(res, 405, -32000, 'This server is stateless: send JSON-RPC requests with POST.', { Allow: 'POST, OPTIONS' });
             }
-            if (req.method !== 'GET' && req.method !== 'HEAD') return send(res, 405, 'Method not allowed.\n', 'text/plain; charset=utf-8', { Allow: 'GET' });
+            if (req.method !== 'GET' && req.method !== 'HEAD') return send(res, 405, 'Method not allowed.\n', 'text/plain; charset=utf-8', { Allow: 'GET, HEAD' });
             if (path === '/healthz') {
                 return send(res, 200, JSON.stringify({ ok: true, version: SERVER_VERSION, tools: prepared.tools.length }), 'application/json');
             }
@@ -160,9 +160,20 @@ export const createRequestHandler =
         }
     };
 
+/**
+ * The HTTP transport answers anyone (`Access-Control-Allow-Origin: *`), so it never serves a member key: the local
+ * profile with `UD_API_KEY` set would open the owner's keyed tools and month to whoever reaches the port.
+ */
+export const assertServable = (config: ServerConfig): void => {
+    if (config.profile === 'local' && config.apiKey !== null) {
+        throw new ConfigError('The HTTP server answers anyone, so it does not serve UD_API_KEY: set UD_MCP_PROFILE=hosted, or run the npm server over stdio for a member key.');
+    }
+};
+
 /** Reads the environment, prepares the tools and listens on `PORT` (8080 by default). */
 export const startHttpServer = async (env: Environment = process.env): Promise<void> => {
     const config = readConfig(env);
+    assertServable(config);
     const wellKnown = readWellKnownFiles(env);
     const prepared = await prepareServer(config);
     const port = Number(env.PORT ?? 8080);

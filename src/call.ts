@@ -12,12 +12,13 @@
  * The server stores nothing and adds no limiter of its own (Gaetan, 2026-11-06).
  */
 
-import { ApiProblemError, isOperationId, OPERATIONS, type JsonObject, type JsonValue, type UniqueDomainsClient } from '@uniquedomains/sdk';
+import { ApiProblemError, isOperationId, OPERATIONS, type JsonObject, type JsonValue, type OperationId, type UniqueDomainsClient } from '@uniquedomains/sdk';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 
 import type { Profile } from './config';
 import { CALL_TIMEOUT_MS, RETRY_AFTER_MAX_SECONDS } from './limits';
-import { isObject, shapeAnswer, textLine } from './profile';
+import { isObject } from './json';
+import { PLAN_TALK, shapeAnswer, textLine } from './profile';
 import type { ToolDefinition } from './tool';
 import { InputError, splitInput } from './validate';
 
@@ -26,6 +27,8 @@ export type CallContext = {
     readonly profile: Profile;
     /** No key behind the calls (the hosted connector, or the npm server without a paid member key). */
     readonly keyless: boolean;
+    /** A key was set, but it opens no plan (or its plan could not be read at start), so calls go out without it. */
+    readonly keyWithoutPlan?: boolean;
     /** Waits before the one retry of a short 429 (tests pass a stub). */
     readonly sleep?: (milliseconds: number) => Promise<void>;
     readonly now?: () => Date;
@@ -63,6 +66,8 @@ const sentence = (text: string): string => {
     return trimmed === '' || /[.?!]$/u.test(trimmed) ? trimmed : `${trimmed}.`;
 };
 
+const HOSTED_FREE_ONLY = 'This connector serves the free answers only, and that input or page is not one of them. Call the tool again without it.';
+
 /** The assistant-facing sentence of a refusal, by problem code (plan section 2 and the P1 amendments). */
 export const refusalText = (error: ApiProblemError, profile: Profile, now: Date): string => {
     const detail = sentence(error.detail || error.title || `The API refused the call (${error.code}).`);
@@ -72,6 +77,8 @@ export const refusalText = (error: ApiProblemError, profile: Profile, now: Date)
         case 'cursor_invalid':
         case 'unsupported_field': {
             const suggestion = typeof problem.suggestion === 'string' ? problem.suggestion.trim() : '';
+            // A fixed cut's `limit` comes back as a 400 naming a paid subscription: never repeated on the hosted profile (decision 15).
+            if (profile === 'hosted' && PLAN_TALK.test(`${detail} ${suggestion}`)) return HOSTED_FREE_ONLY;
             return suggestion === '' ? detail : `${detail} Try: ${sentence(suggestion)}`;
         }
         case 'plan_required':
@@ -81,7 +88,7 @@ export const refusalText = (error: ApiProblemError, profile: Profile, now: Date)
             return `${detail} This tool comes with the Investor plan; move to Investor at ${error.product}.`;
         case 'keyed_only':
             // The hosted connector carries no plan talk (decision 15): the API's own detail names the paid tiers.
-            if (profile === 'hosted') return 'This connector serves the free answers only, and that input or page is not one of them. Call the tool again without it.';
+            if (profile === 'hosted') return HOSTED_FREE_ONLY;
             return `${detail} This tool needs a member key or a RapidAPI plan.`;
         case 'quota_spent': {
             const resetsAt = error.quota?.resetsAt ?? (error.retryAfter !== null ? new Date(now.getTime() + error.retryAfter * 1000) : null);
@@ -106,7 +113,7 @@ export const refusalText = (error: ApiProblemError, profile: Profile, now: Date)
         case 'internal':
             return `${detail} Try again in a minute.`;
         default:
-            if (error.status === 503 || error.status >= 500) return `${detail} Try again in a minute.`;
+            if (error.status >= 500) return `${detail} Try again in a minute.`;
             return detail;
     }
 };
@@ -142,8 +149,7 @@ const isTimeout = (error: unknown): boolean => error instanceof Error && error.n
 
 /* ---------- The call ---------- */
 
-const callOnce = (context: CallContext, operationId: string, input: ReturnType<typeof splitInput>) => {
-    if (!isOperationId(operationId)) throw new Error(`Unknown operation ${operationId}`);
+const callOnce = (context: CallContext, operationId: OperationId, input: ReturnType<typeof splitInput>) => {
     const hasPath = Object.keys(input.path).length > 0;
     const hasQuery = Object.keys(input.query).length > 0;
     return context.client.requestOperation(operationId, {
@@ -157,14 +163,16 @@ const callOnce = (context: CallContext, operationId: string, input: ReturnType<t
 /** @boundary `args` are the tool call's arguments as the client sent them. */
 export const runTool = async (context: CallContext, tool: ToolDefinition, args: Readonly<Record<string, unknown>> | undefined): Promise<CallToolResult> => {
     const now = context.now ?? (() => new Date());
-    const operation = isOperationId(tool.operationId) ? OPERATIONS[tool.operationId] : undefined;
-    if (operation === undefined) return errorResult(`The tool ${tool.name} has no operation in this version of the server.`);
+    const operationId = tool.operationId;
+    if (!isOperationId(operationId)) return errorResult(`The tool ${tool.name} has no operation in this version of the server.`);
+    const operation = OPERATIONS[operationId];
 
     // Without a key, the inputs only a key may send are hidden from the schema and refused here before any call.
     const keyedSent = context.keyless ? tool.keyedParameters.filter((name) => args?.[name] !== undefined && args[name] !== null) : [];
     if (keyedSent.length > 0) {
         const names = keyedSent.map((name) => `\`${name}\``).join(', ');
         if (context.profile === 'hosted') return errorResult(`This connector does not take ${names}. Call the tool again without it.`);
+        if (context.keyWithoutPlan === true) return errorResult(`${names} needs a member key on a paid plan, and UD_API_KEY opens none (or its plan could not be read when the server started). Call the tool again without it.`);
         return errorResult(`${names} needs a member key: set UD_API_KEY (Settings, Account, API in Unique Domains), or call the tool again without it.`);
     }
 
@@ -179,14 +187,14 @@ export const runTool = async (context: CallContext, tool: ToolDefinition, args: 
     let answer;
     try {
         try {
-            answer = await callOnce(context, tool.operationId, input);
+            answer = await callOnce(context, operationId, input);
         } catch (error) {
             // One retry of a short 429. A wait of one second or less was already retried once by the SDK, so it is not
             // retried again here (review finding 4); a wait over RETRY_AFTER_MAX_SECONDS is told instead.
             if (!(error instanceof ApiProblemError) || error.status !== 429 || error.code !== 'rate_limited') throw error;
             if (error.retryAfter === null || error.retryAfter <= 1 || error.retryAfter > RETRY_AFTER_MAX_SECONDS) throw error;
             await (context.sleep ?? sleepFor)(Math.max(1, error.retryAfter) * 1000);
-            answer = await callOnce(context, tool.operationId, input);
+            answer = await callOnce(context, operationId, input);
         }
     } catch (error) {
         if (error instanceof ApiProblemError) return errorResult(refusalText(error, context.profile, now()));

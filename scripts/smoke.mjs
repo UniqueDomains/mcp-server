@@ -7,8 +7,8 @@
  * Runs the MCP Inspector's command line against the built server, both transports (plan section 2, "an MCP Inspector
  * smoke in CI against the fixture"):
  *
- *   stdio   `node dist/stdio.js`, local profile: tools/list (57, schema check `--strict`), then `ud_get_name`
- *   http    `node dist/http.js` on a free port, hosted profile: tools/list (54, `--strict`), then `ud_get_name`
+ *   stdio   `node dist/stdio.js`, local profile: tools/list (56, schema check `--strict`), then `ud_get_name`
+ *   http    `node dist/http.js` on a free port, hosted profile: tools/list (53, `--strict`), then `ud_get_name`
  *
  *   npm run smoke              against the fixture API (`test/support/api-fixture.mjs`), offline
  *   npm run smoke -- --live    against https://api.unique.domains/v1 (keyless)
@@ -59,7 +59,7 @@ try {
     /* ---------- stdio, local profile ---------- */
     const stdio = ['-e', `UD_API_BASE=${apiBase}`, 'node', 'dist/stdio.js'];
     const stdioList = await inspector(stdio, 'tools/list', ['--strict']);
-    expect(stdioList.tools.length === 57, `stdio tools/list answers 57 tools (${stdioList.tools.length})`);
+    expect(stdioList.tools.length === 56, `stdio tools/list answers 56 tools (${stdioList.tools.length})`);
     const stdioCall = await inspector(stdio, 'tools/call', ['--tool-name', 'ud_get_name', '--tool-arg', 'name=harbor.io']);
     expect(!stdioCall.isError && stdioCall.structuredContent.data.name === 'harbor.io', 'stdio ud_get_name answers harbor.io');
 
@@ -76,7 +76,7 @@ try {
     });
     const url = [`http://127.0.0.1:${port}/mcp`, '--transport', 'http'];
     const httpList = await inspector(url, 'tools/list', ['--strict']);
-    expect(httpList.tools.length === 54, `http tools/list answers 54 tools (${httpList.tools.length})`);
+    expect(httpList.tools.length === 53, `http tools/list answers 53 tools (${httpList.tools.length})`);
     const httpCall = await inspector(url, 'tools/call', ['--tool-name', 'ud_get_name', '--tool-arg', 'name=harbor.io']);
     const links = httpCall.structuredContent.links;
     expect(!httpCall.isError && links.details === 'https://unique.domains/availability/harbor.io', 'http ud_get_name carries links.details');
