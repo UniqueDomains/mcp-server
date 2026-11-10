@@ -476,7 +476,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_batch_names",
         "operationId": "batch_names",
-        "title": "Keyed name resource for up to 100 names in one call",
+        "title": "Stored answers for up to 100 domain names in one call",
         "description": "The stored answers for up to 100 domain names in one call. Use it when screening a list of names at once; each name is read as stored, not live. Pass `names` (a list).",
         "tier": "keyed",
         "plan": "investor",
@@ -2853,7 +2853,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_name_history",
         "operationId": "get_name_history",
-        "title": "Web history of one name as our bands",
+        "title": "Web history of one name in bands",
         "description": "The web history of one name in bands: archive captures, authority band and language. Use it when someone asks whether a name carried a website before and how established it was. Pass `name` (such as get.plumbing).",
         "tier": "keyed",
         "plan": "investor",
@@ -5573,7 +5573,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_word_endings",
         "operationId": "get_word_endings",
-        "title": "A word's endings as the nightly update holds them",
+        "title": "A word's endings as stored on the latest day",
         "description": "A word's endings as stored on the latest day: counts, the key endings and the open names per ending. Use it when someone has a word and asks which endings are still open for it, such as harbor.ai or harbor.io. Pass `word` (such as harbor); the other inputs are optional.",
         "tier": "free",
         "plan": null,
@@ -6533,7 +6533,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_word_market",
         "operationId": "get_word_market",
-        "title": "A word's sales and auction aggregates from the nightly update",
+        "title": "A word's stored sales and auction aggregates",
         "description": "A word's stored sales and auction aggregates. Use it when someone asks how a word sells across endings: counts, prices and auctions. Pass `word` (such as harbor).",
         "tier": "free",
         "plan": "investor",
@@ -7797,7 +7797,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_domain",
         "operationId": "get_domain",
-        "title": "One catalog name, by name or id",
+        "title": "One catalog name, by name or catalog id",
         "description": "One catalog name, by name or catalog id. Use it when someone asks about one catalog name and holds its name or its catalog id. Pass `nameOrId` (such as get.plumbing).",
         "tier": "free",
         "plan": null,
@@ -9027,7 +9027,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_list_domain_changes",
         "operationId": "list_domain_changes",
-        "title": "Catalog's change feed, newest first",
+        "title": "Changes across the catalog's names, newest first",
         "description": "Changes across the catalog's names, newest first. Use it when following what changed across names since a day; it answers one page at a time. Every input is optional; `limit` sets the page size.",
         "tier": "keyed",
         "plan": "investor",
@@ -14781,7 +14781,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_list_iana_registrars",
         "operationId": "list_iana_registrars",
-        "title": "IANA registrar list as the registry sync stores it",
+        "title": "IANA registrar list as stored, by IANA id",
         "description": "The IANA registrar list as stored, by IANA id. Use it when someone asks for accredited registrars beyond the nine compared; it answers one page at a time. Every input is optional; `limit` sets the page size.",
         "tier": "free",
         "plan": null,
@@ -18035,7 +18035,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_list_trend_categories",
         "operationId": "list_trend_categories",
-        "title": "Trend categories, the `category` filter of `GET /trends`",
+        "title": "Trend categories, to narrow the trends by",
         "description": "The trend categories, to narrow the trends by. Use it when someone wants trends from one field only, such as business or health. Takes no input.",
         "tier": "free",
         "plan": null,
@@ -18188,7 +18188,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_list_trend_pool",
         "operationId": "list_trend_pool",
-        "title": "Admitted trend candidates the editions draw from",
+        "title": "Trend candidates the daily editions draw from",
         "description": "The trend candidates the daily editions draw from, with their observations. Use it when someone wants trends before the editions publish them; it answers one page at a time. Every input is optional; `limit` sets the page size.",
         "tier": "keyed",
         "plan": null,
@@ -19403,8 +19403,8 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_latest_edition",
         "operationId": "get_latest_edition",
-        "title": "Latest published daily edition of one page",
-        "description": "The latest daily edition for founders (Business Ideas) or investors (Trending Domains): trends with open names. Use it when someone wants today's name ideas from rising topics; it carries the edition's open names only. Pass `persona` (such as founder).",
+        "title": "Latest daily edition of Business Ideas or Trending Domains",
+        "description": "The latest daily edition of Business Ideas or Trending Domains: trends with open names, for founders or for investors. Use it when someone wants today's name ideas from rising topics; it carries the edition's open names only. Pass `persona` (such as founder).",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -19874,8 +19874,8 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_edition",
         "operationId": "get_edition",
-        "title": "One dated published edition of one page",
-        "description": "One dated daily edition for founders (Business Ideas) or investors (Trending Domains). Use it when someone asks about a past day's edition. Pass `persona` (such as founder) and `date` (such as 2026-11-02).",
+        "title": "One dated daily edition of Business Ideas or Trending Domains",
+        "description": "One dated daily edition of Business Ideas or Trending Domains: founders read the first, investors the second. Use it when someone asks about a past day's edition. Pass `persona` (such as founder) and `date` (such as 2026-11-02).",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -20350,7 +20350,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_meta_enums",
         "operationId": "get_meta_enums",
-        "title": "Every enum the payloads use, read from the code catalogs",
+        "title": "Every list of values the answers use",
         "description": "Every list of values the answers use, such as statuses, venues and bands. Use it when an answer holds a code and someone needs its meaning. Takes no input.",
         "tier": "free",
         "plan": null,
@@ -20597,7 +20597,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_meta_freshness",
         "operationId": "get_meta_freshness",
-        "title": "How current the scanner's passes are",
+        "title": "How current each part of the stored data is",
         "description": "How current each part of the stored data is, with the day's counts. Use it when someone asks how fresh the stored data is. Takes no input.",
         "tier": "free",
         "plan": null,
@@ -20781,7 +20781,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_list_meta_datasets",
         "operationId": "list_meta_datasets",
-        "title": "GitHub datasets and the API path serving the same rows",
+        "title": "Free GitHub datasets that hold the same rows as these answers",
         "description": "The free GitHub datasets that hold the same rows as these answers. Use it when someone wants the data in bulk, as files. Takes no input.",
         "tier": "free",
         "plan": null,
@@ -21322,7 +21322,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_key",
         "operationId": "get_key",
-        "title": "Calling key's own plan, allowances and month",
+        "title": "What the calling member key opens",
         "description": "What the calling member key opens: its allowances and its month. Use it when someone asks how many calls or checks are left this month. Takes no input.",
         "tier": "keyed",
         "plan": null,

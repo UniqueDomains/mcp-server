@@ -142,11 +142,13 @@ export type HttpAppOptions = { readonly wellKnown: ReadonlyMap<string, WellKnown
 export const createRequestHandler =
     (prepared: PreparedServer, options: HttpAppOptions) =>
     async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
-        const url = new URL(req.url ?? '/', 'http://localhost');
-        const path = url.pathname.replace(/\/+$/u, '') || '/';
         // Set before any branch: `writeHead` and the MCP transport both keep headers set here.
         res.setHeader('Strict-Transport-Security', HSTS_HEADER);
         try {
+            // Inside the `try`: a request line such as `GET //[` makes `new URL` throw, and outside it the rejection
+            // went unhandled and stopped the process (fix round review).
+            const url = new URL(req.url ?? '/', 'http://localhost');
+            const path = url.pathname.replace(/\/+$/u, '') || '/';
             if (path === '/mcp') {
                 if (req.method === 'OPTIONS') return send(res, 204, '', 'text/plain', CORS_HEADERS);
                 if (req.method === 'POST') return await handleMcpPost(prepared, req, res);

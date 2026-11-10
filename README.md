@@ -117,14 +117,14 @@ The hosted connector serves the free tools only and takes no key. Five free tool
 | Tool | What it reads | Needs |
 |---|---|---|
 | `ud_get_name` | Stored answer for one domain name | free |
-| `ud_batch_names` | Keyed name resource for up to 100 names in one call | Investor key |
+| `ud_batch_names` | Stored answers for up to 100 domain names in one call | Investor key |
 | `ud_check_name` | Reads one name live from its registry and a registrar | member key |
 | `ud_get_name_prices` | Every stored registrar quote for one name | member key |
 | `ud_get_name_registry` | Latest stored registry record of one name | free |
 | `ud_get_name_registry_history` | Stored registry record versions of one name and what moved between them | Investor key |
 | `ud_get_name_dns` | Latest stored DNS reading of one name | free |
 | `ud_list_name_changes` | Change events of one name, newest first | Investor key |
-| `ud_get_name_history` | Web history of one name as our bands | Investor key |
+| `ud_get_name_history` | Web history of one name in bands | Investor key |
 | `ud_get_name_value` | Stored value estimate of one name and its last 20 estimates | member key |
 | `ud_appraise_name` | Runs the appraisal of one stored name when its estimate is missing | Investor key |
 | `ud_get_name_comps` | Similar-sales aggregate of one name and the endings its word sold on | free |
@@ -134,21 +134,21 @@ The hosted connector serves the free tools only and takes no key. Five free tool
 | `ud_batch_words` | Up to 100 word profiles in one call | Investor key |
 | `ud_list_words` | Searches the catalog's words by text and facets | member key |
 | `ud_get_word` | A word's profile | member key |
-| `ud_get_word_endings` | A word's endings as the nightly update holds them | free |
+| `ud_get_word_endings` | A word's endings as stored on the latest day | free |
 | `ud_list_word_names` | A word's catalog names on the endings that sell, by name | member key |
 | `ud_get_word_trademarks` | A word's trademark counts and its exact-match marks | Investor key |
 | `ud_get_word_notability` | A word's Wikipedia and Wikidata facts | free |
-| `ud_get_word_market` | A word's sales and auction aggregates from the nightly update | free, npm only |
+| `ud_get_word_market` | A word's stored sales and auction aggregates | free, npm only |
 | `ud_list_related_words` | A word's synonyms then related words | Investor key |
 | `ud_list_word_fits` | How well the word fits each ending whose keywords list it | Investor key |
 | `ud_request_word` | Brings a word into the catalog | Investor key |
 | `ud_get_word_request` | State of a word request | Investor key |
 | `ud_list_domains` | One-word catalog names under filters | free |
-| `ud_get_domain` | One catalog name, by name or id | free, npm only |
+| `ud_get_domain` | One catalog name, by name or catalog id | free, npm only |
 | `ud_list_expiring_domains` | Catalog names expiring or expired, by expiry day | Investor key |
 | `ud_get_domain_drops` | Names dropping on one day | free |
 | `ud_list_domain_hacks` | Domain hacks | free |
-| `ud_list_domain_changes` | Catalog's change feed, newest first | Investor key |
+| `ud_list_domain_changes` | Changes across the catalog's names, newest first | Investor key |
 | `ud_get_catalog_stats` | Catalog headline totals for the latest day | free |
 | `ud_list_tlds` | Every root TLD with its registry facts and launch phases | free |
 | `ud_get_tld` | One TLD in full | free |
@@ -170,7 +170,7 @@ The hosted connector serves the free tools only and takes no key. Five free tool
 | `ud_list_cheapest_prices` | Cheapest registrar per ending for up to 100 endings | member key |
 | `ud_list_venues` | Parking and marketplace venues with a profile and their rounded footprint | free |
 | `ud_get_venue` | One venue's profile with its verified listing terms | free |
-| `ud_list_iana_registrars` | IANA registrar list as the registry sync stores it | free |
+| `ud_list_iana_registrars` | IANA registrar list as stored, by IANA id | free |
 | `ud_get_iana_registrar` | One IANA registrar by id | free |
 | `ud_get_market_sales` | Domain sales pulse as headline aggregates | free |
 | `ud_list_market_sales_series` | One sales series by day, week or month, oldest first | free |
@@ -184,19 +184,19 @@ The hosted connector serves the free tools only and takes no key. Five free tool
 | `ud_list_market_auction_outcomes` | Confirmed auction outcomes by venue | Investor key |
 | `ud_list_trends` | Every published trend with its latest edition figures and its first and last edition day | free |
 | `ud_get_trend` | One trend | free |
-| `ud_list_trend_categories` | Trend categories, the `category` filter of `GET /trends` | free |
-| `ud_list_trend_pool` | Admitted trend candidates the editions draw from | member key |
+| `ud_list_trend_categories` | Trend categories, to narrow the trends by | free |
+| `ud_list_trend_pool` | Trend candidates the daily editions draw from | member key |
 | `ud_list_events` | Industry events of one month | free |
 | `ud_get_event` | One industry event with its organizer | free |
 | `ud_get_agenda` | Whole public agenda of one month | free |
-| `ud_get_latest_edition` | Latest published daily edition of one page | free |
-| `ud_get_edition` | One dated published edition of one page | free |
-| `ud_get_meta_enums` | Every enum the payloads use, read from the code catalogs | free |
-| `ud_get_meta_freshness` | How current the scanner's passes are | free, npm only |
-| `ud_list_meta_datasets` | GitHub datasets and the API path serving the same rows | free |
+| `ud_get_latest_edition` | Latest daily edition of Business Ideas or Trending Domains | free |
+| `ud_get_edition` | One dated daily edition of Business Ideas or Trending Domains | free |
+| `ud_get_meta_enums` | Every list of values the answers use | free |
+| `ud_get_meta_freshness` | How current each part of the stored data is | free, npm only |
+| `ud_list_meta_datasets` | Free GitHub datasets that hold the same rows as these answers | free |
 | `ud_list_meta_trademark_classes` | 45 Nice classes a trademark is filed under | free |
 | `ud_get_meta_providers` | Registrar identities and the auction venue and parking service catalogs | free |
-| `ud_get_key` | Calling key's own plan, allowances and month | member key |
+| `ud_get_key` | What the calling member key opens | member key |
 
 <!-- tools:end -->
 

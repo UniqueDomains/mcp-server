@@ -110,11 +110,15 @@ const JARGON = [
     /\/v1\b/u,
 ];
 
-test('no description carries internal words, outside backticked input names', () => {
+test('no description or title carries internal words, outside backticked input names', () => {
     for (const tool of TOOLS) {
-        const prose = tool.description.replace(/`[^`]*`/gu, '');
-        for (const word of JARGON) assert.ok(!word.test(prose), `${tool.name}: ${word} in "${tool.description}"`);
+        for (const text of [tool.description, tool.title]) {
+            const prose = text.replace(/`[^`]*`/gu, '');
+            for (const word of JARGON) assert.ok(!word.test(prose), `${tool.name}: ${word} in "${text}"`);
+        }
     }
+    // The title follows a replaced summary (`ud_get_word_endings` no longer reads "as the nightly update holds them").
+    assert.equal(TOOLS.find((tool) => tool.name === 'ud_get_word_endings').title, "A word's endings as stored on the latest day");
 });
 
 test('no tool text carries a score, a ranking or a sales source, nor an em dash', () => {

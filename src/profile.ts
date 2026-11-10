@@ -64,6 +64,9 @@ export const inputSchemaFor = (tool: ToolDefinition, profile: Profile, plan: Key
             kept[name] = { ...schema, maximum: KEYLESS_LIMIT_MAX, description: KEYLESS_LIMIT_DESCRIPTION };
         } else if (profile === 'hosted' && name === 'fields' && isObject(schema) && typeof schema.description === 'string') {
             kept[name] = { ...schema, description: hostedFieldsDescription(tool.operationId, schema.description) };
+        } else if (profile === 'hosted' && isObject(schema) && typeof schema.description === 'string' && WORD_ID_CLAUSE.test(schema.description)) {
+            // "The catalog slug, the word, or `wrd_<id>`.": no hosted answer carries a `wrd_` id any more (fix round A2).
+            kept[name] = { ...schema, description: schema.description.replace(WORD_ID_CLAUSE, ' or the word') };
         } else if (profile === 'hosted' && isObject(schema) && typeof schema.description === 'string' && PLAN_TALK.test(schema.description)) {
             // "`properNoun` is ignored on the free tier": plan talk the hosted connector does not carry (decision 15).
             const { description: _dropped, ...rest } = schema;
@@ -95,12 +98,13 @@ const INTERNAL_ID_VALUE = /^(?:dom|wrd)_|^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0
 const ROW_NUMBER = /^\d+$/u;
 const isIdKey = (key: string): boolean => key === 'id' || /[a-z]Id$/u.test(key);
 
+/** An `id` left empty (an untracked name's) goes too: the hosted schema no longer declares it. */
 export const isInternalId = (key: string, value: JsonValue | undefined): boolean =>
-    isIdKey(key) && typeof value === 'string' && (INTERNAL_ID_VALUE.test(value) || (key === 'id' && ROW_NUMBER.test(value)));
+    (key === 'id' && value === null) || (isIdKey(key) && typeof value === 'string' && (INTERNAL_ID_VALUE.test(value) || (key === 'id' && ROW_NUMBER.test(value))));
 
-/** The UTC day of an ISO time. */
+/** The UTC day of an ISO time; a time with no offset is read as UTC, never as the server's own zone. */
 const utcDay = (value: string): string => {
-    const time = Date.parse(value);
+    const time = Date.parse(/(?:Z|[+-]\d{2}:?\d{2})$/u.test(value) ? value : `${value}Z`);
     return Number.isNaN(time) ? value.slice(0, 10) : new Date(time).toISOString().slice(0, 10);
 };
 
@@ -214,6 +218,8 @@ const hostedDroppedTopKeys = (operationId: string): Set<string> => {
     }
     return keys;
 };
+
+const WORD_ID_CLAUSE = /, the word, or `wrd_<id>`/u;
 
 const FIELDS_LIST = /^(Comma-separated top-level keys to keep: )(.+)\.$/u;
 

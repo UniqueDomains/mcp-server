@@ -240,6 +240,10 @@ test('the trim: whole values only, the deadline kept, public ids kept, the UTC d
     });
     assert.equal(isInternalId('ianaId', '146'), false);
     assert.equal(isInternalId('id', '146'), true);
+    // An untracked name's empty `id` goes; an empty public id stays a typed null.
+    assert.deepEqual(trimHosted({ id: null, name: 'harbor.io', registrar: { ianaId: null } }), { name: 'harbor.io', registrar: { ianaId: null } });
+    // A time with no offset is read as UTC, whatever the server's zone.
+    assert.deepEqual(trimHosted({ seenAt: '2026-11-10T23:30:00' }), { seenAt: '2026-11-10' });
 });
 
 /** Every `id` or `...Id` property path of a schema, as `data[].phases[].id`. */
@@ -278,6 +282,10 @@ test('every id key of a hosted tool is named internal or public, and the hosted 
 test('the hosted fields list offers no key the trim removes; limit is bounded at 20 without a key', () => {
     const getName = TOOLS.find((tool) => tool.name === 'ud_get_name');
     assert.ok(!/\bid\b/u.test(inputSchemaFor(getName, 'hosted', 'none').properties.fields.description));
+    // No hosted input offers a `wrd_` id, which no hosted answer carries.
+    for (const tool of TOOLS.filter((candidate) => candidate.hosted)) assert.ok(!JSON.stringify(inputSchemaFor(tool, 'hosted', 'none')).includes('wrd_'), tool.name);
+    assert.equal(inputSchemaFor(TOOLS.find((tool) => tool.name === 'ud_get_word_endings'), 'hosted', 'none').properties.word.description, 'The catalog slug or the word.');
+    assert.match(inputSchemaFor(TOOLS.find((tool) => tool.name === 'ud_get_word_endings'), 'local', 'none').properties.word.description, /wrd_<id>/u);
     assert.match(inputSchemaFor(getName, 'local', 'none').properties.fields.description, /\bid, name\b/u);
     for (const tool of TOOLS.filter((candidate) => candidate.hosted)) {
         const fields = inputSchemaFor(tool, 'hosted', 'none').properties.fields;

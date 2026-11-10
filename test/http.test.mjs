@@ -22,11 +22,11 @@ let base;
 
 before(async () => {
     fixture = await startApiFixture({
-        'GET /tlds/spent': problem(429, 'budget_spent', "The connector's day is spent.", { headers: { 'Retry-After': '3600' } }),
+        // The API's own words for the connector's two gates (platform `lib/api/v2/handler.ts`, `applyConnectorGates`).
+        'GET /tlds/spent': problem(429, 'budget_spent', "Today's 20000 calls of the hosted connector are spent. They reset at 00:00 UTC, in 3600 seconds.", { headers: { 'Retry-After': '3600' } }),
         'GET /tlds/second': problem(429, 'rate_limited', 'Too many calls this second.', { headers: { 'Retry-After': '30' } }),
         // The API's own words for a keyless ceiling name its grades: never repeated on the hosted profile (fix round A6).
-        'GET /tlds/hourly': problem(429, 'rate_limited', "You reached the free tier's 60 calls an hour per address. Retry in 612 seconds, or use a subscription for more.", { headers: { 'Retry-After': '612' } }),
-        'GET /tlds/daytier': problem(429, 'budget_spent', "The free tier's day is spent for this connector.", { headers: { 'Retry-After': '3600' } }),
+        'GET /tlds/ceiling': problem(429, 'rate_limited', "You reached the free tier's daily ceiling for all callers. Retry in 612 seconds.", { headers: { 'Retry-After': '612' } }),
         'GET /tlds/keyed': problem(403, 'keyed_only', 'The statistics of .aaa need a paid subscription: the free tier carries the endings of the public set only.'),
         // What the API really answers for `limit` on a fixed cut: a 400, whose detail the validation handler would repeat.
         'GET /tlds/fixedcut': problem(400, 'validation_failed', 'The free answer of this endpoint is a fixed cut: `limit` and `cursor` need a paid subscription.'),
@@ -92,14 +92,14 @@ test('a problem: the budget refusal tells when it resets and that the allowance 
     const client = await connect();
     const result = await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'spent' } });
     assert.equal(result.isError, true);
-    assert.match(result.content[0].text, /^The connector's day is spent\. This connector shares one daily allowance among its users\. It resets at \d\d:\d\d UTC \(in about 60 minutes\)\.$/u);
+    // One reset phrase: the connector's own sentence replaces the API's, which carried its own reset time.
+    assert.match(result.content[0].text, /^This connector's daily allowance is spent\. This connector shares one daily allowance among its users\. It resets at \d\d:\d\d UTC \(in about 60 minutes\)\.$/u);
     const second = await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'second' } });
     assert.match(second.content[0].text, /^Too many calls this second\. It resets/u);
     // The API's grade words are replaced by the connector's own neutral sentence, with the reset kept.
-    const hourly = await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'hourly' } });
-    assert.match(hourly.content[0].text, /^This connector has reached its allowance of calls for the moment\. It resets at \d\d:\d\d UTC \(in about 11 minutes\)\.$/u);
-    const daytier = await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'daytier' } });
-    assert.match(daytier.content[0].text, /^This connector's daily allowance is spent\. This connector shares one daily allowance among its users\. It resets at/u);
+    const ceiling = await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'ceiling' } });
+    assert.match(ceiling.content[0].text, /^This connector has reached the API's limit of calls\. It resets at \d\d:\d\d UTC \(in about 11 minutes\)\.$/u);
+    assert.ok(!/free tier|subscription/iu.test(ceiling.content[0].text));
     await client.close();
 });
 
@@ -203,6 +203,20 @@ test('the well-known files, /healthz, CORS, no-store, 405 and 413', async () => 
     assert.equal(streamed.status, 413);
     const bad = await fetch(`${base}/mcp`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{nope' });
     assert.equal(bad.status, 400);
+
+    // A request line `new URL` cannot parse is answered, not a crash of the process (fix round review).
+    const { request } = await import('node:http');
+    const address = new URL(base);
+    const status = await new Promise((resolve, reject) => {
+        const req = request({ host: address.hostname, port: address.port, path: '//[', method: 'GET' }, (response) => {
+            response.resume();
+            resolve(response.statusCode);
+        });
+        req.on('error', reject);
+        req.end();
+    });
+    assert.equal(status, 500);
+    assert.equal((await fetch(`${base}/healthz`)).status, 200);
 });
 
 test('the HTTP transport refuses to serve a member key', () => {

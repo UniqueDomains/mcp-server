@@ -354,7 +354,9 @@ export const buildTools = (operations, document) => {
         tools.push({
             name: toolName(operation.id),
             operationId: operation.id,
-            title: titleOf(operation.summary),
+            // From the summary the description opens with, so a replaced summary (`guidance.mjs`) fixes the title too: the
+            // title is `tools/list`'s, the README's and the first words of every answer's text line.
+            title: titleOf(summaryOf(operation)),
             description: descriptionOf(operation),
             tier: operation.tier,
             plan: operation.plan,

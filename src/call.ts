@@ -67,7 +67,7 @@ const sentence = (text: string): string => {
 };
 
 /** The hosted connector's own words for a spent allowance, when the API's detail names a grade (fix round A6). */
-const HOSTED_RATE_SPENT = 'This connector has reached its allowance of calls for the moment.';
+const HOSTED_RATE_SPENT = "This connector has reached the API's limit of calls.";
 const HOSTED_DAY_SPENT = "This connector's daily allowance is spent.";
 
 const HOSTED_FREE_ONLY = 'This connector serves the free answers only, and that input or page is not one of them. Call the tool again without it.';
@@ -104,9 +104,10 @@ export const refusalText = (error: ApiProblemError, profile: Profile, now: Date)
         case 'intake_day_cap': {
             // The per-second limit is not the shared day: only the day's caps carry the clause.
             const shared = profile === 'hosted' && error.code !== 'rate_limited' ? ' This connector shares one daily allowance among its users.' : '';
-            // The API's own detail names its grades ("the free tier's 60 calls an hour"): plan talk the hosted connector
-            // never repeats (decision 15, fix round A6), so it answers a neutral sentence of its own.
-            const said = profile === 'hosted' && PLAN_TALK.test(detail) ? (error.code === 'rate_limited' ? HOSTED_RATE_SPENT : HOSTED_DAY_SPENT) : detail;
+            // On the hosted connector the connector speaks for itself (decision 15, fix round A6): the API's ceiling detail
+            // names its grade ("the free tier's daily ceiling for all callers"), and its budget detail carries its own
+            // reset time, which the reset phrase below would repeat.
+            const said = profile !== 'hosted' ? detail : error.code !== 'rate_limited' ? HOSTED_DAY_SPENT : PLAN_TALK.test(detail) ? HOSTED_RATE_SPENT : detail;
             if (error.retryAfter === null) return `${said}${shared} Try again later.`;
             return `${said}${shared} It resets ${resetPhrase(error.retryAfter, now)}.`;
         }

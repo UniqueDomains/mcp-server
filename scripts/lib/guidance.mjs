@@ -255,11 +255,11 @@ export const GUIDANCE = {
         use: 'Use it when someone wants trends before the editions publish them; it answers one page at a time.',
     },
     get_latest_edition: {
-        summary: "The latest daily edition for founders (Business Ideas) or investors (Trending Domains): trends with open names.",
+        summary: 'The latest daily edition of Business Ideas or Trending Domains: trends with open names, for founders or for investors.',
         use: "Use it when someone wants today's name ideas from rising topics; it carries the edition's open names only.",
     },
     get_edition: {
-        summary: 'One dated daily edition for founders (Business Ideas) or investors (Trending Domains).',
+        summary: 'One dated daily edition of Business Ideas or Trending Domains: founders read the first, investors the second.',
         use: "Use it when someone asks about a past day's edition.",
     },
 
