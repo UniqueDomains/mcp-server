@@ -1,0 +1,35 @@
+{
+  "path": "/domains/drops",
+  "status": 200,
+  "recordedOn": "2026-11-10",
+  "note": "Recorded through the SDK by the fix round inventory: data and meta as answered, links rebuilt from the path. scripts/record-fixtures.mjs replaces it whole.",
+  "body": {
+    "data": {
+      "count": 1,
+      "byEnding": [
+        {
+          "ending": "site",
+          "count": 1
+        }
+      ],
+      "sample": [
+        {
+          "ending": "site",
+          "dropsOn": "2026-11-10"
+        }
+      ]
+    },
+    "meta": {
+      "asOf": null,
+      "cursor": null,
+      "limit": 20
+    },
+    "links": {
+      "self": "https://api.unique.domains/v1/domains/drops",
+      "next": null,
+      "register": null,
+      "product": null,
+      "dataset": null
+    }
+  }
+}

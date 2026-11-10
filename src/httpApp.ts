@@ -9,11 +9,17 @@
  *
  *   POST /mcp                  the MCP endpoint
  *   GET|DELETE /mcp            405: a stateless server has no stream and no session to end
- *   OPTIONS /mcp               the CORS preflight (`Access-Control-Allow-Origin: *`)
+ *   OPTIONS /mcp               the CORS preflight (`Access-Control-Allow-Origin: *`, methods POST and OPTIONS)
  *   GET /healthz               liveness for Railway, no API call
  *   GET /.well-known/<name>    a directory's proof, from `UD_WELLKNOWN_FILES` (a variable change, no code deploy)
  *
- * Every answer is `Cache-Control: no-store`; a body over 1 MB is refused 413.
+ * Every answer is `Cache-Control: no-store` and carries HSTS for a year (`max-age=31536000`, no `includeSubDomains`
+ * and no `preload`: the other `unique.domains` hosts are not this server's to commit; fix round P-9); a body over 1 MB
+ * is refused 413.
+ *
+ * `Origin` is not checked, and every origin is answered (Gaetan's 4A of 2026-11-10): the server is public, needs no
+ * sign-in, holds no session and serves no member key on HTTP (`assertServable`), so an origin check would protect
+ * nothing, and Anthropic warns that strict checks break Claude's own clients.
  */
 
 import { createServer as createHttpServer, type IncomingMessage, type ServerResponse } from 'node:http';
@@ -55,9 +61,13 @@ export const readWellKnownFiles = (env: Environment): ReadonlyMap<string, WellKn
     return files;
 };
 
+/** HSTS on every answer of the HTTP transport (fix round P-9). */
+export const HSTS_HEADER = 'max-age=31536000';
+
 const CORS_HEADERS: Readonly<Record<string, string>> = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, GET, DELETE, OPTIONS',
+    // GET and DELETE answer 405 on this stateless server, so the preflight does not offer them (fix round P-9).
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Accept, Mcp-Protocol-Version, Mcp-Session-Id, Last-Event-ID',
     'Access-Control-Expose-Headers': 'Mcp-Session-Id, Mcp-Protocol-Version',
     'Access-Control-Max-Age': '86400',
@@ -134,6 +144,8 @@ export const createRequestHandler =
     async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
         const url = new URL(req.url ?? '/', 'http://localhost');
         const path = url.pathname.replace(/\/+$/u, '') || '/';
+        // Set before any branch: `writeHead` and the MCP transport both keep headers set here.
+        res.setHeader('Strict-Transport-Security', HSTS_HEADER);
         try {
             if (path === '/mcp') {
                 if (req.method === 'OPTIONS') return send(res, 204, '', 'text/plain', CORS_HEADERS);

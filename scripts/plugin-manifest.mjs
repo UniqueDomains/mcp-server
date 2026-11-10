@@ -15,9 +15,11 @@
  *   skills/unique-domains/SKILL.md    a public zip needs at least one valid skill
  *   assets/logo.png, assets/composer-icon.png
  *
- * The test cases, the release notes and the annotation justifications are typed into the submission form, not read
- * from the zip (no documented place for them), so they go to the review sheet. The texts come from
- * `plugin/review.json`, which the channels kit fills; every limit OpenAI states is checked here and fails the build.
+ * The test cases, the demo recording's address, the commerce declaration and the release notes go in the zip too, under
+ * `extensions["com.openai"].review` and `.publication`, the keys OpenAI's submission page documents and the portal
+ * imports (`plugins/deploy/submission`, re-read on 2026-11-10; fix round A8). The annotation justifications have no
+ * documented key, so they stay in the review sheet with a copy of the rest. The texts come from `plugin/review.json`,
+ * copied from the channels kit; every limit OpenAI states is checked here and fails the build.
  */
 
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -40,6 +42,27 @@ const pkg = JSON.parse(await readFile(join(ROOT, 'package.json'), 'utf8'));
 const { TOOLS } = await import(join(ROOT, 'dist', 'index.js'));
 
 /* ---------- Checks (OpenAI's final submission limits) ---------- */
+
+/**
+ * The categories `interface.category` accepts, as OpenAI's error reference lists them under `plugin_category_unknown`
+ * (https://developers.openai.com/plugins/deploy/submission-errors, re-read on 2026-11-10). A category outside the list
+ * fails the upload.
+ */
+const OPENAI_CATEGORIES = [
+    'Productivity',
+    'Creativity',
+    'Developer Tools',
+    'Business & Operations',
+    'Data & Analytics',
+    'Communication',
+    'Education & Research',
+    'Security',
+    'Finance',
+    'Healthcare',
+    'Travel',
+    'Entertainment',
+    'Other',
+];
 
 const problems = [];
 const check = (condition, message) => {
@@ -77,6 +100,7 @@ check(oneLine(review.displayName) && review.displayName.length <= 30, 'displayNa
 check(oneLine(review.shortDescription) && review.shortDescription.length <= 30, 'shortDescription: one line, 30 characters at most');
 check(typeof review.longDescription === 'string' && review.longDescription.trim() !== '' && review.longDescription.length <= 4000, 'longDescription: 4,000 characters at most');
 check(oneLine(review.developerName) && review.developerName.length <= 80, 'developerName: one line, 80 characters at most');
+check(OPENAI_CATEGORIES.includes(review.category), `category: one of ${OPENAI_CATEGORIES.join(', ')}`);
 check(typeof review.description === 'string' && review.description.length <= 1024, 'description: 1,024 characters at most');
 check(Array.isArray(review.capabilities) && review.capabilities.length <= 20 && review.capabilities.every((item) => oneLine(item) && item.length <= 120), 'capabilities: 20 at most, one line of 120 characters each');
 const prompts = review.defaultPrompt ?? [];
@@ -88,8 +112,25 @@ check(/^#[0-9a-fA-F]{6}$/u.test(review.brandColor) && contrast(review.brandColor
 check(/^#[0-9a-fA-F]{6}$/u.test(review.brandColorDark) && contrast(review.brandColorDark, '#212121') >= 2, 'brandColorDark: #rrggbb with 2:1 contrast against #212121');
 check(Array.isArray(review.positiveTests) && review.positiveTests.length === 5, 'positiveTests: exactly five');
 check(Array.isArray(review.negativeTests) && review.negativeTests.length === 3, 'negativeTests: exactly three');
-for (const test of [...(review.positiveTests ?? []), ...(review.negativeTests ?? [])]) check(oneLine(test.prompt) && oneLine(test.expected), 'test cases: a prompt and an expected answer, one line each');
+for (const test of [...(review.positiveTests ?? []), ...(review.negativeTests ?? [])]) {
+    check(oneLine(test.description) && test.description.length <= 4000, 'test cases: a description of one line, 4,000 characters at most');
+    check(oneLine(test.prompt) && oneLine(test.expected), 'test cases: a prompt and an expected answer, one line each');
+}
+const hostedNames = new Set(TOOLS.filter((tool) => tool.hosted).map((tool) => tool.name));
+for (const test of review.positiveTests ?? []) {
+    check(Array.isArray(test.tools) && test.tools.length > 0, `positive test "${test.description}": the tools it triggers`);
+    for (const name of test.tools ?? []) check(hostedNames.has(name), `positive test "${test.description}": ${name} is not a hosted tool`);
+}
+for (const test of review.negativeTests ?? []) check(oneLine(test.reason), `negative test "${test.description}": why the plugin should not act`);
+// A tool named in an expected answer must be one the hosted connector lists (`ud_get_domain` left it in 0.1.3).
+for (const test of [...(review.positiveTests ?? []), ...(review.negativeTests ?? [])]) {
+    for (const name of `${test.expected} ${test.reason ?? ''}`.match(/\bud_[a-z_]+/gu) ?? []) check(hostedNames.has(name), `test "${test.description}": names ${name}, not a hosted tool`);
+}
 check(typeof review.releaseNotes === 'string' && review.releaseNotes.trim() !== '', 'releaseNotes: required');
+check(review.commerce === false, 'commerce: false (no payment or purchase anywhere)');
+check(oneLine(review.commerceDescription), 'commerceDescription: one line on why there is no commerce');
+check(review.demoRecordingURL === undefined || review.demoRecordingURL === '' || https(review.demoRecordingURL), 'demoRecordingURL: an HTTPS URL, or empty until it is recorded');
+check(review.countries === undefined || (Array.isArray(review.countries) && review.countries.every((code) => /^[A-Z]{2}$/u.test(code))), 'countries: left out, or a list of uppercase country codes ([] removes every restriction)');
 check(/^\d+\.\d+\.\d+$/u.test(pkg.version), 'version: a semantic version');
 
 const icons = {};
@@ -101,7 +142,7 @@ for (const [key, file] of [['logo', 'logo.png'], ['composerIcon', 'composer-icon
     icons[key] = { path: `assets/${file}`, buffer };
 }
 const hostedTools = TOOLS.filter((tool) => tool.hosted);
-check(hostedTools.length === 53, `the hosted profile has ${hostedTools.length} tools, 53 expected`);
+check(hostedTools.length === 51, `the hosted profile has ${hostedTools.length} tools, 51 expected`);
 for (const tool of hostedTools) {
     for (const hint of ['readOnlyHint', 'openWorldHint', 'destructiveHint']) check(typeof tool.annotations[hint] === 'boolean', `${tool.name}: ${hint} explicit`);
     for (const reason of ['readOnly', 'openWorld', 'destructive']) check(oneLine(tool.justification[reason]), `${tool.name}: a ${reason} justification`);
@@ -144,6 +185,23 @@ const plugin = {
                 brandColorDark: review.brandColorDark,
                 composerIcon: `./${icons.composerIcon.path}`,
                 logo: `./${icons.logo.path}`,
+            },
+            // OpenAI's import keys (fix round A8): imported test cases are read-only in the dashboard, so each negative
+            // case carries its reason and its expected refusal in `expected_behavior`, which the field reference allows
+            // on both lists.
+            review: {
+                test_cases: {
+                    positive: review.positiveTests.map((test) => ({ description: test.description, prompt: test.prompt, tools_triggered: test.tools.join(', '), expected_behavior: test.expected })),
+                    negative: review.negativeTests.map((test) => ({ description: test.description, prompt: test.prompt, expected_behavior: `${test.reason} ${test.expected}` })),
+                },
+                ...(review.demoRecordingURL ? { demo_recording_url: review.demoRecordingURL } : {}),
+                commerce: false,
+                commerce_description: review.commerceDescription,
+            },
+            publication: {
+                release_notes: review.releaseNotes,
+                // Left out unless the sheet sets it: omitting the key keeps the targeting chosen in Review details (AF-C3).
+                ...(review.countries !== undefined ? { countries: review.countries } : {}),
             },
         },
     },
@@ -237,8 +295,11 @@ await writeFile(
         positiveTests: review.positiveTests,
         negativeTests: review.negativeTests,
         releaseNotes: review.releaseNotes,
+        demoRecordingURL: review.demoRecordingURL || null,
+        commerce: false,
         tools: hostedTools.map((tool) => ({ name: tool.name, annotations: tool.annotations, justification: tool.justification })),
     }),
 );
 console.log(`dist/chatgpt-plugin.zip and dist/chatgpt-plugin-review.json written (${hostedTools.length} tools).`);
+if (!review.demoRecordingURL) console.warn('No demo recording yet: OpenAI requires one for the review. Set demoRecordingURL in plugin/review.json once Gaetan has recorded it.');
 if (review.placeholder) console.log('Test build: plugin/review.json still holds placeholder texts; the channels kit fills them before the submission.');

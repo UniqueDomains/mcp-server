@@ -9,16 +9,16 @@
 
 export { readConfig, readProfile, ConfigError } from './config';
 export type { Environment, Profile, ServerConfig } from './config';
-export { createApiClient, createMcpServer, prepareServer, readKeyPlan, toListedTool, INSTRUCTIONS, SERVER_NAME, SERVER_VERSION } from './server';
+export { createApiClient, createMcpServer, prepareServer, readKeyPlan, toListedTool, INSTRUCTIONS, instructionsFor, SERVER_NAME, SERVER_VERSION } from './server';
 export type { Logger, PreparedServer, PrepareOptions } from './server';
 export { runTool, refusalText, resetPhrase } from './call';
 export type { CallContext } from './call';
 export { isObject } from './json';
-export { PLAN_TALK, selectTools, shapeAnswer, textLine, outputSchemaFor } from './profile';
+export { PLAN_TALK, selectTools, shapeAnswer, textLine, outputSchemaFor, inputSchemaFor, trimHosted, isInternalId, HOSTED_DROPPED_STAMPS, HOSTED_KEPT_TIMES, HOSTED_INTERNAL_ID_PATHS, HOSTED_PUBLIC_ID_PATHS, KEYLESS_LIMIT_MAX } from './profile';
 export type { KeyPlan, StructuredAnswer } from './profile';
 export { splitInput, InputError } from './validate';
 export { detailsFor, registrarSlug, DETAILS_RULES, DETAILS_SAMPLES, WEBSITE } from './details';
 export { TOOLS, TOOLS_DOCUMENT_VERSION, TOOLS_SDK_VERSION } from './generated/tools';
 export type { ToolDefinition, JsonSchema } from './tool';
-export { assertServable, createRequestHandler, readWellKnownFiles, startHttpServer } from './httpApp';
+export { assertServable, createRequestHandler, readWellKnownFiles, startHttpServer, HSTS_HEADER } from './httpApp';
 export type { WellKnownFile, HttpAppOptions } from './httpApp';

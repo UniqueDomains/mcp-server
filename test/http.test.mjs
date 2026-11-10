@@ -24,6 +24,9 @@ before(async () => {
     fixture = await startApiFixture({
         'GET /tlds/spent': problem(429, 'budget_spent', "The connector's day is spent.", { headers: { 'Retry-After': '3600' } }),
         'GET /tlds/second': problem(429, 'rate_limited', 'Too many calls this second.', { headers: { 'Retry-After': '30' } }),
+        // The API's own words for a keyless ceiling name its grades: never repeated on the hosted profile (fix round A6).
+        'GET /tlds/hourly': problem(429, 'rate_limited', "You reached the free tier's 60 calls an hour per address. Retry in 612 seconds, or use a subscription for more.", { headers: { 'Retry-After': '612' } }),
+        'GET /tlds/daytier': problem(429, 'budget_spent', "The free tier's day is spent for this connector.", { headers: { 'Retry-After': '3600' } }),
         'GET /tlds/keyed': problem(403, 'keyed_only', 'The statistics of .aaa need a paid subscription: the free tier carries the endings of the public set only.'),
         // What the API really answers for `limit` on a fixed cut: a 400, whose detail the validation handler would repeat.
         'GET /tlds/fixedcut': problem(400, 'validation_failed', 'The free answer of this endpoint is a fixed cut: `limit` and `cursor` need a paid subscription.'),
@@ -56,12 +59,14 @@ const connect = async () => {
     return client;
 };
 
-test('initialize and tools/list: 53 tools, never the three one-a-day ones, whatever the key in the environment', async () => {
+test('initialize and tools/list: 51 tools, never the one-a-day ones nor the two npm-only ones, whatever the key in the environment', async () => {
     const client = await connect();
     assert.equal(client.getServerVersion().name, 'uniquedomains');
+    // No hosted tool reads live, so the hosted guide does not mention one (fix round A6).
+    assert.ok(!/reads live/u.test(client.getInstructions()), client.getInstructions());
     const { tools } = await client.listTools();
-    assert.equal(tools.length, 53);
-    for (const name of ['ud_get_market_sales_word', 'ud_get_word_market', 'ud_list_tld_prices', 'ud_get_key', 'ud_check_name', 'ud_get_meta_tlds']) assert.ok(!tools.some((tool) => tool.name === name), name);
+    assert.equal(tools.length, 51);
+    for (const name of ['ud_get_market_sales_word', 'ud_get_word_market', 'ud_list_tld_prices', 'ud_get_domain', 'ud_get_meta_freshness', 'ud_get_key', 'ud_check_name', 'ud_get_meta_tlds']) assert.ok(!tools.some((tool) => tool.name === name), name);
     for (const tool of tools) {
         assert.ok(tool.title && tool.annotations.readOnlyHint === true && tool.annotations.openWorldHint === false, tool.name);
         assert.equal(tool.outputSchema.properties.links.properties.register, undefined);
@@ -90,6 +95,11 @@ test('a problem: the budget refusal tells when it resets and that the allowance 
     assert.match(result.content[0].text, /^The connector's day is spent\. This connector shares one daily allowance among its users\. It resets at \d\d:\d\d UTC \(in about 60 minutes\)\.$/u);
     const second = await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'second' } });
     assert.match(second.content[0].text, /^Too many calls this second\. It resets/u);
+    // The API's grade words are replaced by the connector's own neutral sentence, with the reset kept.
+    const hourly = await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'hourly' } });
+    assert.match(hourly.content[0].text, /^This connector has reached its allowance of calls for the moment\. It resets at \d\d:\d\d UTC \(in about 11 minutes\)\.$/u);
+    const daytier = await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'daytier' } });
+    assert.match(daytier.content[0].text, /^This connector's daily allowance is spent\. This connector shares one daily allowance among its users\. It resets at/u);
     await client.close();
 });
 
@@ -139,15 +149,23 @@ test('the well-known files, /healthz, CORS, no-store, 405 and 413', async () => 
 
     const health = await fetch(`${base}/healthz`);
     assert.equal(health.status, 200);
-    assert.deepEqual(await health.json(), { ok: true, version: PACKAGE_VERSION, tools: 53 });
+    assert.deepEqual(await health.json(), { ok: true, version: PACKAGE_VERSION, tools: 51 });
     assert.equal(health.headers.get('cache-control'), 'no-store');
+    // HSTS on every answer, a year, no includeSubDomains or preload (fix round P-9).
+    assert.equal(health.headers.get('strict-transport-security'), 'max-age=31536000');
+    assert.equal(challenge.headers.get('strict-transport-security'), 'max-age=31536000');
+    assert.equal((await fetch(`${base}/nowhere`)).headers.get('strict-transport-security'), 'max-age=31536000');
 
     const get = await fetch(`${base}/mcp`);
     assert.equal(get.status, 405);
     assert.equal(get.headers.get('access-control-allow-origin'), '*');
-    const preflight = await fetch(`${base}/mcp`, { method: 'OPTIONS' });
+    assert.equal(get.headers.get('strict-transport-security'), 'max-age=31536000');
+    // Every origin is answered (Gaetan's 4A): the preflight offers POST and OPTIONS only, since GET and DELETE answer 405.
+    const preflight = await fetch(`${base}/mcp`, { method: 'OPTIONS', headers: { Origin: 'https://anything.example' } });
     assert.equal(preflight.status, 204);
     assert.equal(preflight.headers.get('access-control-allow-origin'), '*');
+    assert.equal(preflight.headers.get('access-control-allow-methods'), 'POST, OPTIONS');
+    assert.equal(preflight.headers.get('strict-transport-security'), 'max-age=31536000');
 
     const post = await fetch(`${base}/mcp`, {
         method: 'POST',
@@ -158,7 +176,19 @@ test('the well-known files, /healthz, CORS, no-store, 405 and 413', async () => 
     assert.equal(post.headers.get('cache-control'), 'no-store');
     assert.equal(post.headers.get('access-control-allow-origin'), '*');
     assert.match(post.headers.get('content-type'), /^application\/json/u);
-    assert.equal((await post.json()).result.tools.length, 53);
+    assert.equal(post.headers.get('strict-transport-security'), 'max-age=31536000');
+    assert.equal(post.headers.get('access-control-allow-methods'), 'POST, OPTIONS');
+    assert.equal((await post.json()).result.tools.length, 51);
+
+    // An unknown tool over HTTP: a JSON-RPC error -32602, not a tool result (fix round A5).
+    const unknown = await fetch(`${base}/mcp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json, text/event-stream' },
+        body: JSON.stringify({ jsonrpc: '2.0', id: 2, method: 'tools/call', params: { name: 'ud_no_such_tool', arguments: {} } }),
+    });
+    const unknownBody = await unknown.json();
+    assert.equal(unknownBody.error.code, -32602);
+    assert.equal(unknownBody.result, undefined);
 
     const big = await fetch(`${base}/mcp`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: `{"x":"${'a'.repeat(1024 * 1024 + 10)}"}` });
     assert.equal(big.status, 413);

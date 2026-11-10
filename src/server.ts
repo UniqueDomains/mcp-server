@@ -13,7 +13,7 @@
  */
 
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { CallToolRequestSchema, ListToolsRequestSchema, type Tool } from '@modelcontextprotocol/sdk/types.js';
+import { CallToolRequestSchema, ErrorCode, ListToolsRequestSchema, McpError, type Tool } from '@modelcontextprotocol/sdk/types.js';
 import { ApiProblemError, createClient, type UniqueDomainsClient } from '@uniquedomains/sdk';
 
 import packageJson from '../package.json';
@@ -28,12 +28,19 @@ import type { ToolDefinition } from './tool';
 export const SERVER_NAME = 'uniquedomains';
 export const SERVER_VERSION: string = packageJson.version;
 
-/** The short guide a client may show the assistant (MCP `instructions`). */
-export const INSTRUCTIONS = [
-    'Unique Domains reads its own catalog of domain names, words, TLDs, registrar prices, the domain market, trends and the industry agenda.',
-    'Answers are stored data as of their day, unless a tool says it reads live; `links.details` points at the public page about the subject when there is one.',
-    'Pass a full domain name such as get.plumbing to the name tools, and an ending without its dot such as ai to the TLD tools.',
-].join(' ');
+/**
+ * The short guide a client may show the assistant (MCP `instructions`). The hosted connector has no tool that reads
+ * live, so its guide does not mention one (fix round A6); a member key on npm may open `ud_check_name`, which does.
+ */
+export const instructionsFor = (profile: Profile): string =>
+    [
+        'Unique Domains reads its own catalog of domain names, words, TLDs, registrar prices, the domain market, trends and the industry agenda.',
+        `Answers are stored data as of their day${profile === 'local' ? ', unless a tool says it reads live' : ''}; \`links.details\` points at the public page about the subject when there is one.`,
+        'Pass a full domain name such as get.plumbing to the name tools, and an ending without its dot such as ai to the TLD tools.',
+    ].join(' ');
+
+/** The npm server's guide (the local profile). */
+export const INSTRUCTIONS = instructionsFor('local');
 
 export type Logger = (line: string) => void;
 
@@ -109,7 +116,7 @@ export const toListedTool = (tool: ToolDefinition, profile: Profile, plan: KeyPl
 });
 
 export const createMcpServer = (prepared: PreparedServer, overrides: Partial<Pick<CallContext, 'sleep' | 'now' | 'timeoutMs'>> = {}): Server => {
-    const server = new Server({ name: SERVER_NAME, title: 'Unique Domains', version: SERVER_VERSION }, { capabilities: { tools: { listChanged: false } }, instructions: INSTRUCTIONS });
+    const server = new Server({ name: SERVER_NAME, title: 'Unique Domains', version: SERVER_VERSION }, { capabilities: { tools: { listChanged: false } }, instructions: instructionsFor(prepared.config.profile) });
     const byName = new Map(prepared.tools.map((tool) => [tool.name, tool]));
     const context: CallContext = {
         client: prepared.client,
@@ -122,9 +129,9 @@ export const createMcpServer = (prepared: PreparedServer, overrides: Partial<Pic
     server.setRequestHandler(ListToolsRequestSchema, () => ({ tools: [...prepared.listed] }));
     server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const tool = byName.get(request.params.name);
-        if (tool === undefined) {
-            return { isError: true, content: [{ type: 'text', text: `There is no tool named ${request.params.name}. Call tools/list for the tools this server offers.` }] };
-        }
+        // An unknown tool is a protocol error, not a tool error: JSON-RPC -32602, as the 2025-11-25 Tools page's
+        // "Unknown tools" example shows (fix round A5).
+        if (tool === undefined) throw new McpError(ErrorCode.InvalidParams, `There is no tool named ${request.params.name}. Call tools/list for the tools this server offers.`);
         return runTool(context, tool, request.params.arguments);
     });
     return server;

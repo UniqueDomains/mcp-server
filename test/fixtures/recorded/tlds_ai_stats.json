@@ -1,0 +1,64 @@
+{
+  "path": "/tlds/ai/stats",
+  "status": 200,
+  "recordedOn": "2026-11-10",
+  "note": "Recorded through the SDK by the fix round inventory: data and meta as answered, links rebuilt from the path. scripts/record-fixtures.mjs replaces it whole.",
+  "body": {
+    "data": {
+      "tld": "ai",
+      "day": "2026-11-10",
+      "computedAt": null,
+      "tracked": 78649,
+      "available": 64282,
+      "availableOneWord": 35541,
+      "resell": 11398,
+      "expiring90d": 714,
+      "registrations90d": 9313,
+      "medianBuy": 85.6,
+      "medianRenew": 84.15,
+      "cheapestRegistrar": "spaceship",
+      "sales12m": 3539,
+      "salesPrev12m": 2116,
+      "salesMedian12m": 814,
+      "salesTrend": "up",
+      "salesMonthly": {
+        "from": "2025-11",
+        "counts": [
+          179,
+          324,
+          580,
+          710,
+          414,
+          605,
+          436,
+          18,
+          21,
+          57,
+          116,
+          95
+        ]
+      },
+      "sales30d": 84,
+      "salesMedian30d": 4424,
+      "salesMedianPrev12m": 2024,
+      "panel": {
+        "names": 11930,
+        "available": 9720,
+        "resell": 1765,
+        "expiring90d": 125
+      }
+    },
+    "meta": {
+      "asOf": "2026-11-10T04:44:39.000Z",
+      "cursor": null,
+      "limit": null
+    },
+    "links": {
+      "self": "https://api.unique.domains/v1/tlds/ai/stats",
+      "next": null,
+      "register": null,
+      "product": null,
+      "dataset": null
+    }
+  }
+}

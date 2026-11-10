@@ -8,7 +8,7 @@
  * smoke in CI against the fixture"):
  *
  *   stdio   `node dist/stdio.js`, local profile: tools/list (56, schema check `--strict`), then `ud_get_name`
- *   http    `node dist/http.js` on a free port, hosted profile: tools/list (53, `--strict`), then `ud_get_name`
+ *   http    `node dist/http.js` on a free port, hosted profile: tools/list (51, `--strict`), then `ud_get_name`
  *
  *   npm run smoke              against the fixture API (`test/support/api-fixture.mjs`), offline
  *   npm run smoke -- --live    against https://api.unique.domains/v1 (keyless)
@@ -76,11 +76,28 @@ try {
     });
     const url = [`http://127.0.0.1:${port}/mcp`, '--transport', 'http'];
     const httpList = await inspector(url, 'tools/list', ['--strict']);
-    expect(httpList.tools.length === 53, `http tools/list answers 53 tools (${httpList.tools.length})`);
+    expect(httpList.tools.length === 51, `http tools/list answers 51 tools (${httpList.tools.length})`);
     const httpCall = await inspector(url, 'tools/call', ['--tool-name', 'ud_get_name', '--tool-arg', 'name=get.plumbing']);
     const links = httpCall.structuredContent.links;
     expect(!httpCall.isError && links.details === 'https://unique.domains/availability/get.plumbing', 'http ud_get_name carries links.details');
     expect(!('register' in links) && !('product' in links), 'http answers carry no register or product link');
+
+    // The hosted trim (fix round A2): no internal id, no computing stamp, no time but an auction's deadline.
+    for (const [tool, args] of [['ud_get_name', ['name=get.plumbing']], ['ud_get_agenda', []], ['ud_list_price_changes', []]]) {
+        const call = await inspector(url, 'tools/call', ['--tool-name', tool, ...args.flatMap((arg) => ['--tool-arg', arg])]);
+        const text = JSON.stringify(call.structuredContent);
+        expect(!call.isError, `http ${tool} answers`);
+        expect(!/"(?:id|[a-z]+Id)":"(?:dom_|wrd_|[0-9a-f]{8}-[0-9a-f]{4}-|\d+")/u.test(text) && !/"(?:computedAt|rollupAt)"/u.test(text), `http ${tool} carries no internal id or stamp`);
+        expect(!/"(?!endsAt")[A-Za-z]+":"\d{4}-\d{2}-\d{2}T/u.test(text), `http ${tool} carries days, not times`);
+    }
+    // An unknown tool is a JSON-RPC error -32602 (fix round A5). Sent raw: the Inspector refuses a tool its list lacks
+    // before it reaches the server.
+    const unknown = await fetch(`http://127.0.0.1:${port}/mcp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json, text/event-stream' },
+        body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'ud_no_such_tool', arguments: {} } }),
+    }).then((response) => response.json());
+    expect(unknown.error?.code === -32602 && unknown.result === undefined, 'http an unknown tool answers -32602');
 } finally {
     http?.kill();
     await fixture?.close();

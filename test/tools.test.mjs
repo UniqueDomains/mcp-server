@@ -10,16 +10,17 @@ import { fileURLToPath } from 'node:url';
 import { OPERATIONS } from '@uniquedomains/sdk';
 
 import { TOOLS, selectTools } from '../dist/index.js';
-import { FORBIDDEN_WORDS, HOSTED_EXCLUDED_OPERATIONS, TRANSPORT_OPERATIONS, textsOf } from '../scripts/lib/tools.mjs';
+import { DESCRIPTION_MAX_LENGTH, FORBIDDEN_WORDS, HOSTED_EXCLUDED_OPERATIONS, TRANSPORT_OPERATIONS, textsOf } from '../scripts/lib/tools.mjs';
+import { GUIDANCE } from '../scripts/lib/guidance.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const free = TOOLS.filter((tool) => tool.tier === 'free');
 const hosted = TOOLS.filter((tool) => tool.hosted);
 const keyed = TOOLS.filter((tool) => tool.tier === 'keyed');
 
-test('56 free tools, 53 on the hosted connector, every keyed operation as a keyed tool', () => {
+test('56 free tools, 51 on the hosted connector, every keyed operation as a keyed tool', () => {
     assert.equal(free.length, 56);
-    assert.equal(hosted.length, 53);
+    assert.equal(hosted.length, 51);
     assert.equal(keyed.length, Object.values(OPERATIONS).filter((operation) => operation.tier === 'keyed').length);
     assert.equal(TOOLS.length, Object.keys(OPERATIONS).length - TRANSPORT_OPERATIONS.length);
 });
@@ -32,6 +33,9 @@ test('the five transport operations and the hosted exclusions', () => {
         assert.equal(tool.hosted, false, id);
     }
     assert.ok(hosted.every((tool) => tool.tier === 'free'));
+    // P-1 and P-2: the same data as ud_get_name, and the pipeline's state, stay on npm only.
+    assert.ok(!hosted.some((tool) => tool.name === 'ud_get_domain' || tool.name === 'ud_get_meta_freshness'));
+    assert.ok(free.some((tool) => tool.name === 'ud_get_domain') && free.some((tool) => tool.name === 'ud_get_meta_freshness'));
 });
 
 test('names: ud_<operationId>, under 64 characters, unique', () => {
@@ -60,14 +64,56 @@ test('read-only except the three metered tools; open world only for the live che
     for (const tool of free) assert.equal(tool.annotations.readOnlyHint, true, tool.name);
 });
 
-test('titles are short, descriptions one or two sentences ending with what to pass', () => {
+test('titles are short; descriptions say what the tool reads, when to use it, then what to pass, within the bound', () => {
     for (const tool of TOOLS) {
         assert.ok(tool.title.length > 3 && tool.title.length <= 100, tool.name);
         assert.match(tool.title, /^[A-Z0-9]/u, tool.name);
         const sentences = tool.description.split(/(?<=[.?!])\s+(?=[A-Z`])/u);
-        assert.ok(sentences.length >= 1 && sentences.length <= 2, `${tool.name}: ${sentences.length} sentences`);
-        assert.match(tool.description, /(Pass |Every input is optional|Takes no input)/u, tool.name);
-        assert.ok(tool.description.length <= 400, tool.name);
+        assert.ok(sentences.length >= 3 && sentences.length <= 5, `${tool.name}: ${sentences.length} sentences`);
+        assert.match(tool.description, /\bUse it (?:when|first when|to)\b/u, tool.name);
+        assert.match(tool.description, /(Pass |Every input is optional|Takes no input)[^]*\.$/u, tool.name);
+        assert.ok(tool.description.length <= DESCRIPTION_MAX_LENGTH, `${tool.name}: ${tool.description.length} characters`);
+    }
+});
+
+test('the guidance table names every emitted operation and nothing else, each with a use sentence', () => {
+    const emitted = TOOLS.map((tool) => tool.operationId).sort();
+    assert.deepEqual(Object.keys(GUIDANCE).sort(), emitted);
+    for (const [id, entry] of Object.entries(GUIDANCE)) {
+        assert.match(entry.use, /^Use it (?:when|first when|to) /u, id);
+        assert.match(entry.use, /\.$/u, id);
+        if (entry.summary !== undefined) assert.match(entry.summary, /^[A-Z].*\.$/u, id);
+    }
+});
+
+/**
+ * Words a reader outside the team would not know, or that name how the data is made rather than what it says
+ * (Anthropic policy 2.A, OpenAI's optimize-metadata page). Checked outside backticked input names (`persona` is one).
+ */
+const JARGON = [
+    /\bscanner\b/iu,
+    /\blanes?\b/iu,
+    // A pass of the data, not the "Pass `name`" that opens the input clause.
+    /\bpasses\b/iu,
+    /\b(?:a|the|each|its|every|last) pass\b/iu,
+    /\bsnapshots?\b/iu,
+    /\brollups?\b/iu,
+    /\bpipeline\b/iu,
+    /\bnightly\b/iu,
+    /\bsync\b/iu,
+    /\bpersonas?\b/iu,
+    /\bkeyed\b/iu,
+    /\btiers?\b/iu,
+    /\bplans?\b/iu,
+    /\bresource\b/iu,
+    /\b(?:GET|POST)\s+\//u,
+    /\/v1\b/u,
+];
+
+test('no description carries internal words, outside backticked input names', () => {
+    for (const tool of TOOLS) {
+        const prose = tool.description.replace(/`[^`]*`/gu, '');
+        for (const word of JARGON) assert.ok(!word.test(prose), `${tool.name}: ${word} in "${tool.description}"`);
     }
 });
 
@@ -123,7 +169,7 @@ test('output schemas: the envelope, no required key, no closed object, details d
 
 test('the profiles and plans select the expected sets', () => {
     assert.equal(selectTools(TOOLS, 'local', 'none').length, 56);
-    assert.equal(selectTools(TOOLS, 'hosted', 'investor').length, 53);
+    assert.equal(selectTools(TOOLS, 'hosted', 'investor').length, 51);
     const founder = selectTools(TOOLS, 'local', 'founder');
     const investor = selectTools(TOOLS, 'local', 'investor');
     assert.ok(founder.every((tool) => tool.tier === 'free' || tool.plan !== 'investor'));

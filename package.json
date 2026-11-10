@@ -1,6 +1,6 @@
 {
   "name": "@uniquedomains/mcp-server",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "MCP server for the Unique Domains API: domain names, words, TLDs, registrar prices, the domain market, trends and the agenda.",
   "license": "MIT",
   "author": "Unique Domains (https://unique.domains)",

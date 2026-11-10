@@ -2,6 +2,8 @@
 - TOOL DEFINITIONS FROM THE API DOCUMENT
 ----------------------------------*/
 
+import { guidanceOf } from './guidance.mjs';
+
 /**
  * Builds one MCP tool per operation the server exposes, from the SDK's operation table (parameters, tier, plan,
  * metering) and the OpenAPI document it ships (the 200 answer's schema). Pure functions: `generate.mjs` writes the
@@ -18,8 +20,18 @@
  */
 export const TRANSPORT_OPERATIONS = ['get_openapi', 'get_llms_txt', 'get_health', 'get_events_ics', 'get_agenda_ics', 'get_meta_tlds'];
 
-/** Free tools the hosted connector leaves out: one word or one ending a caller a day, and the connector is one caller. */
-export const HOSTED_EXCLUDED_OPERATIONS = ['get_market_sales_word', 'get_word_market', 'list_tld_prices'];
+/**
+ * Free tools the hosted connector leaves out:
+ *
+ * - `get_market_sales_word`, `get_word_market`, `list_tld_prices`: one word or one ending a caller a day, and the
+ *   connector is one caller for every assistant user (P1-D2).
+ * - `get_domain`: without a key it answers the same data as `get_name` (the same `data` keys), and its one difference,
+ *   the lookup by a `dom_` id, goes with the hosted trim of internal ids. Two tools with one purpose confuse the model,
+ *   and OpenAI's guidelines ask for distinct tools (fix round P-1). It stays on npm, for parity with the API.
+ * - `get_meta_freshness`: the state of the data pipeline, not an answer to a user's question; the day of every answer
+ *   already sits in its `meta` (fix round P-2). It stays on npm.
+ */
+export const HOSTED_EXCLUDED_OPERATIONS = ['get_market_sales_word', 'get_word_market', 'list_tld_prices', 'get_domain', 'get_meta_freshness'];
 
 /**
  * Free answers that are the website's fixed cut: the API refuses `limit` (400) and `cursor` (403) without a key, though
@@ -319,11 +331,19 @@ export const justificationOf = (operation) => {
  * (decision 15).
  */
 export const summaryOf = (operation) => {
+    const own = guidanceOf(operation.id).summary;
+    if (own !== undefined) return own;
     const summary = operation.summary.trim();
     if (operation.tier !== 'free') return summary;
     const [head, ...tail] = summary.split(': ');
     return tail.length > 0 && PLAN_WORDS.test(tail.join(': ')) ? `${head.replace(/\.$/u, '')}.` : summary;
 };
+
+/** A description's bound in characters: room for the summary, the use sentence and what to pass, under a screen line or three. */
+export const DESCRIPTION_MAX_LENGTH = 350;
+
+/** What the tool reads, when to use it, then what to pass (fix round A1). */
+export const descriptionOf = (operation) => `${summaryOf(operation)} ${guidanceOf(operation.id).use} ${usageOf(operation)}`;
 
 /** Every tool of the server, in the document's order, with the profile it belongs to. */
 export const buildTools = (operations, document) => {
@@ -335,7 +355,7 @@ export const buildTools = (operations, document) => {
             name: toolName(operation.id),
             operationId: operation.id,
             title: titleOf(operation.summary),
-            description: `${summaryOf(operation)} ${usageOf(operation)}`,
+            description: descriptionOf(operation),
             tier: operation.tier,
             plan: operation.plan,
             metered: operation.metered,

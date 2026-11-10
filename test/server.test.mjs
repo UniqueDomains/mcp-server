@@ -143,7 +143,8 @@ test('refusals are sentences an assistant can act on', async () => {
     assert.equal(await text('ud_get_tld', { tld: 'down' }), 'The API is restarting. Try again in a minute.');
     assert.equal(await text('ud_get_name', { name: 'missing.io' }), 'No fixture answers GET /names/missing.io.');
     assert.match(await text('ud_get_name', {}), /^`name` is required/u);
-    assert.match(await text('ud_nope', {}), /There is no tool named ud_nope/u);
+    // An unknown tool is a JSON-RPC error (-32602), not a tool result (2025-11-25 Tools page, "Unknown tools").
+    await assert.rejects(() => client.callTool({ name: 'ud_nope', arguments: {} }), (error) => error.code === -32602 && /There is no tool named ud_nope/u.test(error.message));
     await client.close();
 });
 

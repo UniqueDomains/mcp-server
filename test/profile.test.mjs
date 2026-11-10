@@ -139,3 +139,159 @@ test('output schemas describe, never gate: no enum, const, bound or length a new
     };
     for (const tool of TOOLS) walk(tool.outputSchema, tool.name);
 });
+
+/* ---------- The hosted trim (fix round A2) ---------- */
+
+import { readdirSync, readFileSync } from 'node:fs';
+import Ajv from 'ajv';
+import { HOSTED_INTERNAL_ID_PATHS, HOSTED_PUBLIC_ID_PATHS, HOSTED_KEPT_TIMES, inputSchemaFor, isInternalId, trimHosted, KEYLESS_LIMIT_MAX } from '../dist/index.js';
+
+const RECORDED = new URL('./fixtures/recorded/', import.meta.url);
+const ISO_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/u;
+const INTERNAL = /^(?:dom|wrd)_|^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu;
+
+/** The operation a recorded path answers, from the SDK's path templates. */
+const operationOf = (path) => {
+    const bare = path.split('?')[0];
+    const matches = Object.values(OPERATIONS).filter((operation) => operation.method === 'GET' && new RegExp(`^${operation.path.replace(/\{[^}]+\}/gu, '[^/]+')}$`, 'u').test(bare));
+    // A literal path wins over a template (`/domains/drops` over `/domains/{nameOrId}`).
+    return matches.sort((a, b) => (a.path.includes('{') ? 1 : 0) - (b.path.includes('{') ? 1 : 0))[0];
+};
+
+const recordings = readdirSync(RECORDED).map((file) => JSON.parse(readFileSync(new URL(file, RECORDED), 'utf8'))).filter((recording) => recording.status === 200);
+const echoedOf = (operation, path) => {
+    const names = [...operation.path.matchAll(/\{([^}]+)\}/gu)].map((match) => match[1]);
+    const values = operation.path.split('/').map((segment, index) => [segment, path.split('?')[0].split('/')[index]]);
+    return Object.fromEntries(values.filter(([segment]) => segment.startsWith('{')).map(([segment, value]) => [segment.slice(1, -1), value]).filter(([name]) => names.includes(name)));
+};
+
+/** Every string leaf with its key, at every depth. */
+const leaves = (value, key = null, out = []) => {
+    if (Array.isArray(value)) value.forEach((item) => leaves(item, key, out));
+    else if (value !== null && typeof value === 'object') for (const [name, child] of Object.entries(value)) leaves(child, name, out);
+    else out.push([key, value]);
+    return out;
+};
+
+test('the recorded answers cover the trim shapes: word ids, UUIDs, row numbers, stamps and times', () => {
+    const all = recordings.flatMap((recording) => leaves(recording.body.data));
+    assert.ok(all.some(([key, value]) => key === 'id' && typeof value === 'string' && value.startsWith('dom_')), 'a dom_ id');
+    assert.ok(all.some(([key, value]) => key === 'id' && typeof value === 'string' && value.startsWith('wrd_')), 'a wrd_ id');
+    assert.ok(all.some(([key, value]) => key === 'id' && typeof value === 'string' && /^[0-9a-f]{8}-/u.test(value)), 'a UUID');
+    assert.ok(all.some(([key]) => key === 'computedAt'), 'a computedAt');
+    assert.ok(all.some(([key, value]) => typeof value === 'string' && ISO_TIME.test(value) && key !== 'endsAt'), 'a time');
+});
+
+test('hosted answers of every recorded fixture: no internal id, no stamp, no time but a deadline; local answers unchanged', () => {
+    const ajv = new Ajv({ strict: false, allErrors: true });
+    for (const recording of recordings) {
+        const operation = operationOf(recording.path);
+        assert.ok(operation, recording.path);
+        const tool = TOOLS.find((candidate) => candidate.operationId === operation.id);
+        const envelope = { data: recording.body.data, meta: recording.body.meta ?? {}, links: recording.body.links ?? {} };
+        const input = echoedOf(operation, recording.path);
+
+        const local = shapeAnswer('local', operation.id, input, envelope);
+        assert.deepEqual(local, envelope, `${recording.path} local`);
+
+        const hosted = shapeAnswer('hosted', operation.id, input, envelope);
+        for (const [key, value] of [...leaves(hosted.data), ...leaves(hosted.meta)]) {
+            assert.ok(!(key === 'id' || /[a-z]Id$/u.test(key ?? '')) || !(typeof value === 'string' && (INTERNAL.test(value) || (key === 'id' && /^\d+$/u.test(value)))), `${recording.path}: ${key} ${value}`);
+            assert.ok(key !== 'computedAt' && key !== 'rollupAt', `${recording.path}: ${key}`);
+            if (typeof value === 'string' && ISO_TIME.test(value)) assert.ok(HOSTED_KEPT_TIMES.includes(key), `${recording.path}: ${key} ${value}`);
+        }
+        if (tool.hosted) {
+            const validate = ajv.compile(outputSchemaFor(tool, 'hosted'));
+            assert.ok(validate(hosted), `${recording.path}: ${JSON.stringify(validate.errors)}`);
+        }
+    }
+});
+
+test('the trim: whole values only, the deadline kept, public ids kept, the UTC day of a time', () => {
+    const trimmed = trimHosted({
+        id: 'dom_4efccac7-d9df-4c96-a076-3e0cc64220ec',
+        name: 'get.plumbing',
+        phrase: 'Opens 2026-11-10T10:00:00Z for everyone',
+        endsAt: '2026-11-10T18:30:00.000Z',
+        expiresAt: '2027-06-03T23:30:53.000+02:00',
+        day: '2026-11-10',
+        computedAt: '2026-11-10T03:00:00Z',
+        word: { id: 'wrd_23922', word: 'plumbing' },
+        registrar: { ianaId: 146, name: 'GoDaddy' },
+        eppStatuses: [{ id: 'clientDeleteProhibited' }],
+        wikidataId: 'Q12345',
+        applicationId: 'AA2634T-T39423',
+        changes: [{ id: '81233', confirmedAt: '2026-11-09T22:15:00Z' }],
+        phases: [{ id: '5bad80ea-d5ae-46f5-a828-0972c05c791e', startsOn: '2026-12-01' }],
+    });
+    assert.deepEqual(trimmed, {
+        name: 'get.plumbing',
+        phrase: 'Opens 2026-11-10T10:00:00Z for everyone',
+        endsAt: '2026-11-10T18:30:00.000Z',
+        expiresAt: '2027-06-03',
+        day: '2026-11-10',
+        word: { word: 'plumbing' },
+        registrar: { ianaId: 146, name: 'GoDaddy' },
+        eppStatuses: [{ id: 'clientDeleteProhibited' }],
+        wikidataId: 'Q12345',
+        applicationId: 'AA2634T-T39423',
+        changes: [{ confirmedAt: '2026-11-09' }],
+        phases: [{ startsOn: '2026-12-01' }],
+    });
+    assert.equal(isInternalId('ianaId', '146'), false);
+    assert.equal(isInternalId('id', '146'), true);
+});
+
+/** Every `id` or `...Id` property path of a schema, as `data[].phases[].id`. */
+const idPaths = (node, path, out = new Set()) => {
+    if (Array.isArray(node)) node.forEach((item) => idPaths(item, path, out));
+    else if (node !== null && typeof node === 'object') {
+        for (const [key, child] of Object.entries(node)) {
+            if (key === 'properties') {
+                for (const [name, schema] of Object.entries(child)) {
+                    const at = `${path}.${name}`;
+                    if (name === 'id' || /[a-z]Id$/u.test(name)) out.add(at);
+                    idPaths(schema, at, out);
+                }
+            } else if (key === 'items') idPaths(child, `${path}[]`, out);
+            else if (key === 'anyOf' || key === 'allOf') idPaths(child, path, out);
+        }
+    }
+    return out;
+};
+
+test('every id key of a hosted tool is named internal or public, and the hosted schema drops the internal ones and the stamps', () => {
+    for (const tool of TOOLS.filter((candidate) => candidate.hosted)) {
+        const internal = HOSTED_INTERNAL_ID_PATHS[tool.operationId] ?? [];
+        const publicIds = HOSTED_PUBLIC_ID_PATHS[tool.operationId] ?? [];
+        const declared = [...idPaths(tool.outputSchema.properties.data, 'data')];
+        for (const path of declared) assert.ok(internal.includes(path) || publicIds.includes(path), `${tool.name}: ${path} is named nowhere`);
+        for (const path of [...internal, ...publicIds]) assert.ok(declared.includes(path), `${tool.name}: ${path} is not in the schema`);
+        const hosted = outputSchemaFor(tool, 'hosted');
+        const left = [...idPaths(hosted.properties.data, 'data')];
+        for (const path of internal) assert.ok(!left.includes(path), `${tool.name}: ${path} still declared`);
+        assert.ok(!/"(?:computedAt|rollupAt)"/u.test(JSON.stringify(hosted)), `${tool.name}: a stamp declared`);
+    }
+    for (const id of Object.keys(HOSTED_INTERNAL_ID_PATHS)) assert.ok(TOOLS.some((tool) => tool.operationId === id && tool.hosted), id);
+});
+
+test('the hosted fields list offers no key the trim removes; limit is bounded at 20 without a key', () => {
+    const getName = TOOLS.find((tool) => tool.name === 'ud_get_name');
+    assert.ok(!/\bid\b/u.test(inputSchemaFor(getName, 'hosted', 'none').properties.fields.description));
+    assert.match(inputSchemaFor(getName, 'local', 'none').properties.fields.description, /\bid, name\b/u);
+    for (const tool of TOOLS.filter((candidate) => candidate.hosted)) {
+        const fields = inputSchemaFor(tool, 'hosted', 'none').properties.fields;
+        if (fields?.description) assert.ok(!/\bcomputedAt\b|\brollupAt\b/u.test(fields.description), tool.name);
+    }
+    const listDomains = TOOLS.find((tool) => tool.name === 'ud_list_domains');
+    assert.equal(KEYLESS_LIMIT_MAX, 20);
+    assert.equal(inputSchemaFor(listDomains, 'hosted', 'none').properties.limit.maximum, 20);
+    assert.equal(inputSchemaFor(listDomains, 'local', 'none').properties.limit.maximum, 20);
+    assert.equal(inputSchemaFor(listDomains, 'local', 'founder').properties.limit.maximum, 100);
+    const withLimit = TOOLS.filter((tool) => tool.hosted && 'limit' in tool.inputSchema.properties);
+    assert.equal(withLimit.length, 13);
+    for (const tool of withLimit) {
+        const limit = inputSchemaFor(tool, 'hosted', 'none').properties.limit;
+        if (limit) assert.equal(limit.maximum, 20, tool.name);
+    }
+});

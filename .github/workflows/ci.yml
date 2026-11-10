@@ -28,12 +28,12 @@ jobs:
       # Fails when src/generated/tools.ts, openapi/v1.json or the README's tool list differ from the installed SDK.
       - run: npm run generate -- --check
       - run: npm test
-      # A test build: plugin/review.json holds placeholder texts until the channels kit fills them.
-      - run: npm run plugin:test
+      # The real build: plugin/review.json is the channels kit's sheet, so a limit or a category it breaks fails CI.
+      - run: npm run plugin
       - run: npm run smoke
       - uses: actions/upload-artifact@v4
         with:
-          name: chatgpt-plugin-test
+          name: chatgpt-plugin
           path: |
             dist/chatgpt-plugin.zip
             dist/chatgpt-plugin-review.json

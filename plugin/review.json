@@ -1,36 +1,90 @@
 {
-  "placeholder": true,
-  "_note": "Placeholder texts. Lane C fills every reader-facing field from the channels kit (docs/plans/2026-11-09-api-channels-kit.md in the platform repository) and sets placeholder to false. scripts/plugin-manifest.mjs checks every limit OpenAI states.",
+  "placeholder": false,
   "name": "unique-domains",
   "displayName": "Unique Domains",
   "shortDescription": "Domain names, TLDs and prices",
-  "description": "Domain names, words, TLDs, registrar prices, the domain market, trends and the agenda, from the Unique Domains API.",
-  "longDescription": "Ask about a domain name, a word, an ending or a registrar, and get the facts Unique Domains stores: a name's status, registry record and DNS; a word's endings; every ending's registry facts, launch phases and market figures; the registrar price lists and their changes; the domain sales and the day's auctions as aggregates; the trends behind the daily editions; and the industry agenda. Every answer is stored data as of its day, with a link to the public page about it.",
+  "description": "Domain names, TLDs, registrar prices, the domain market, trends and the agenda, from stored data.",
+  "longDescription": "Unique Domains keeps a daily record of domain names and the endings they sit on. This connector lets your assistant read that record, so you can ask about a name, a word, an ending or a registrar in plain words and get stored facts back.\n\nWhat it can look up:\n\n- A domain name: its status, drop day and price today, its latest registry record (registrar, dates, status codes, nameservers), its DNS reading, how the same word sold on other endings (a count and a median), and its open auction if there is one.\n- A word: the catalog word behind what you typed, its endings and open names, and its Wikipedia and Wikidata facts.\n- An ending (TLD): registry facts, dated launch phases, market figures, registry changes, and the 2026 new gTLD applications as ICANN publishes them.\n- Registrars: the daily list prices of nine registrars, their confirmed price changes, and the endings whose renewal costs far more than the first year.\n- The market: domain sales and today's auctions as totals by ending, length and auction site, and a daily sample of single-word names at auction.\n- Trends and the agenda: naming trends with their daily editions, and the industry events and launch dates of a month.\n\nEvery answer is stored data, dated where the record has a day, and most answers carry a link to the public page about the subject on unique.domains. The tools only read: none registers, buys or changes a name. The connector needs no account and no sign-in, and it keeps no record of the calls it passes on.",
   "developerName": "Unique Domains",
-  "category": "Research",
-  "capabilities": ["Read"],
-  "websiteURL": "https://unique.domains/api",
-  "privacyPolicyURL": "https://unique.domains/privacy",
+  "category": "Data & Analytics",
+  "capabilities": [
+    "Read"
+  ],
+  "websiteURL": "https://unique.domains/api/mcp",
+  "privacyPolicyURL": "https://unique.domains/privacy#api-and-connector",
   "termsOfServiceURL": "https://unique.domains/terms",
-  "supportURL": "https://github.com/UniqueDomains/mcp-server/issues",
+  "supportURL": "https://unique.domains/api#faq",
   "defaultPrompt": [
-    "Is get.plumbing registered, and who is its registrar?",
-    "Which endings renew at a much higher price than their first year?",
-    "What launch phases does .ai have, and when do they open?"
+    "What is the registry record of get.plumbing?",
+    "What are the newest registrar price changes?",
+    "What is on the domain industry agenda this month?"
   ],
   "brandColor": "#121314",
   "brandColorDark": "#f2e97e",
   "positiveTests": [
-    { "prompt": "Is get.plumbing registered?", "expected": "Calls ud_get_name with get.plumbing and says its status, with the link to its page." },
-    { "prompt": "Who is the registrar of get.plumbing and when does it expire?", "expected": "Calls ud_get_name_registry with get.plumbing and gives the registrar and the expiry day." },
-    { "prompt": "Tell me about the .ai ending.", "expected": "Calls ud_get_tld with ai and summarizes its registry facts, phases and market figures." },
-    { "prompt": "Which endings renew at a much higher price than their first year?", "expected": "Calls ud_list_price_traps and lists the endings it returns." },
-    { "prompt": "What domain industry events are coming up this month?", "expected": "Calls ud_list_events or ud_get_agenda and lists the events with their dates." }
+    {
+      "description": "A name's registry record",
+      "prompt": "What is the registry record of get.plumbing?",
+      "tools": [
+        "ud_get_name_registry"
+      ],
+      "expected": "Gives the registrar (GoDaddy.com on 2026-11-10), the creation and expiry dates, the status codes and the nameservers, with the day the record was read."
+    },
+    {
+      "description": "A name's status and price",
+      "prompt": "Is get.plumbing for sale?",
+      "tools": [
+        "ud_get_name"
+      ],
+      "expected": "Says the name is registered and listed for sale, with the link to its page on unique.domains."
+    },
+    {
+      "description": "An ending's facts",
+      "prompt": "Tell me about the .app ending: its registry and its launch phases.",
+      "tools": [
+        "ud_get_tld"
+      ],
+      "expected": "Summarizes the ending's registry facts, its launch phases and its market figures."
+    },
+    {
+      "description": "Renewal traps",
+      "prompt": "Which endings renew at a much higher price than their first year?",
+      "tools": [
+        "ud_list_price_traps"
+      ],
+      "expected": "Lists the endings the tool returns, with the first-year and renewal prices."
+    },
+    {
+      "description": "The industry agenda",
+      "prompt": "What is on the domain industry agenda this month?",
+      "tools": [
+        "ud_get_agenda"
+      ],
+      "expected": "Lists the month's industry events, launch phases and registry changes with their dates."
+    }
   ],
   "negativeTests": [
-    { "prompt": "Register get.plumbing for me.", "expected": "Does not register anything: the tools only read data, and the answer says where the name stands." },
-    { "prompt": "What is the weather in Paris?", "expected": "Does not call a Unique Domains tool." },
-    { "prompt": "Write me a poem about the sea.", "expected": "Does not call a Unique Domains tool." }
+    {
+      "description": "Register a name",
+      "prompt": "Register get.plumbing for me.",
+      "reason": "The tools only read stored data; none registers or buys a name.",
+      "expected": "Does not claim to register the name. Says the tools only read, and may give the name's status from ud_get_name."
+    },
+    {
+      "description": "Renew a name the user owns",
+      "prompt": "Renew my domain get.plumbing for another year.",
+      "reason": "The connector has no account and acts on no name; renewal happens at the owner's registrar.",
+      "expected": "Says it cannot renew a name and that the owner's registrar does it, and may give the expiry day from ud_get_name_registry."
+    },
+    {
+      "description": "Change a name's DNS",
+      "prompt": "Point get.plumbing at my new web host.",
+      "reason": "The tools read a name's DNS but never change it.",
+      "expected": "Says it cannot change DNS and that the change is made at the registrar or DNS host, and may show the current DNS reading from ud_get_name_dns."
+    }
   ],
-  "releaseNotes": "First release: read-only tools for domain names, words, TLDs, registrar prices, the domain market, trends and the agenda."
+  "releaseNotes": "First release. 51 read-only tools over the Unique Domains data: domain names (status, registry record, DNS, how the word sold on other endings, open auction), words, endings and the 2026 new gTLD applications, registrar prices and their changes, the domain market as totals, naming trends and their daily editions, and the industry agenda. No sign-in. Every answer is stored data, dated where the record has a day.",
+  "demoRecordingURL": "",
+  "commerce": false,
+  "commerceDescription": "The plugin reads stored domain data only: it sells nothing, takes no payment and registers no name."
 }

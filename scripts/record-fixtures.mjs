@@ -30,10 +30,23 @@ const REQUESTS = [
     '/editions/founder/latest',
     '/market/sales',
     '/trends?limit=2',
+    // The hosted trim's shapes (fix round A2): word ids, UUIDs on phases and agenda rows, row numbers on price changes,
+    // computing stamps, and times that become a day or keep their hour.
+    '/words/resolve?q=harbors',
+    '/tlds/ai/stats',
+    '/prices/changes',
+    '/agenda',
+    '/events',
+    '/domains/drops',
+    '/market/auctions/sample',
 ];
 
+/** `node scripts/record-fixtures.mjs /agenda /events` records only the paths named (the keyless grade allows 60 calls an hour). */
+const only = process.argv.slice(2);
+for (const path of only) if (!REQUESTS.includes(path)) throw new Error(`${path} is not in the list of recorded requests.`);
+
 await mkdir(OUT, { recursive: true });
-for (const path of REQUESTS) {
+for (const path of only.length > 0 ? only : REQUESTS) {
     const response = await fetch(`${BASE}${path}`, { headers: { 'User-Agent': 'uniquedomains-mcp-server-fixtures' } });
     const body = await response.json();
     const file = `${path.replace(/^\//u, '').replace(/[^a-z0-9.]+/giu, '_')}.json`;

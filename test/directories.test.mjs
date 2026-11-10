@@ -7,6 +7,7 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
+import { inflateRawSync } from 'node:zlib';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Ajv from 'ajv';
@@ -55,26 +56,66 @@ test('the README carries the Cursor install link with the hosted config in base6
     assert.ok(readme.includes(`cursor://anysphere.cursor-deeplink/mcp/install?name=uniquedomains&config=${config}`));
 });
 
-test('the ChatGPT plugin package builds, and a field over its limit fails the build', () => {
+/** One file of a zip the builder wrote (local headers, deflate), by its name. */
+const unzipEntry = (zip, wanted) => {
+    let offset = 0;
+    while (zip.readUInt32LE(offset) === 0x04034b50) {
+        const size = zip.readUInt32LE(offset + 18);
+        const nameLength = zip.readUInt16LE(offset + 26);
+        const extraLength = zip.readUInt16LE(offset + 28);
+        const name = zip.toString('utf8', offset + 30, offset + 30 + nameLength);
+        const start = offset + 30 + nameLength + extraLength;
+        if (name === wanted) return inflateRawSync(zip.subarray(start, start + size));
+        offset = start + size;
+    }
+    return null;
+};
+
+test('the ChatGPT plugin package builds from the committed sheet, with the review keys OpenAI imports', () => {
     const out = mkdtempSync(join(tmpdir(), 'ud-plugin-'));
-    // The committed review sheet holds placeholder texts: a build without the flag fails, a test build passes.
-    assert.throws(
-        () => execFileSync(process.execPath, [join(ROOT, 'scripts', 'plugin-manifest.mjs'), '--out', out], { cwd: ROOT, stdio: 'pipe' }),
-        (error) => /placeholder texts/u.test(String(error.stderr)),
-    );
-    execFileSync(process.execPath, [join(ROOT, 'scripts', 'plugin-manifest.mjs'), '--out', out, '--allow-placeholder'], { cwd: ROOT, stdio: 'pipe' });
+    // The committed sheet is the channels kit's copy (fix round A8): it builds without --allow-placeholder.
+    execFileSync(process.execPath, [join(ROOT, 'scripts', 'plugin-manifest.mjs'), '--out', out], { cwd: ROOT, stdio: 'pipe' });
     const zip = readFileSync(join(out, 'chatgpt-plugin.zip'));
     for (const name of ['plugin.json', 'mcp.json', 'skills/unique-domains/SKILL.md', 'assets/logo.png', 'assets/composer-icon.png']) assert.ok(zip.includes(Buffer.from(name)), name);
     const sheet = JSON.parse(readFileSync(join(out, 'chatgpt-plugin-review.json'), 'utf8'));
     assert.equal(sheet.positiveTests.length, 5);
     assert.equal(sheet.negativeTests.length, 3);
-    assert.equal(sheet.tools.length, 53);
+    assert.equal(sheet.tools.length, 51);
 
+    const openai = JSON.parse(unzipEntry(zip, 'plugin.json').toString('utf8')).extensions['com.openai'];
+    assert.equal(openai.interface.category, 'Data & Analytics');
+    assert.equal(openai.review.test_cases.positive.length, 5);
+    assert.equal(openai.review.test_cases.negative.length, 3);
+    for (const test of openai.review.test_cases.positive) for (const key of ['description', 'prompt', 'tools_triggered', 'expected_behavior']) assert.ok(test[key], key);
+    for (const test of openai.review.test_cases.negative) for (const key of ['description', 'prompt', 'expected_behavior']) assert.ok(test[key], key);
+    assert.equal(openai.review.commerce, false);
+    assert.ok(openai.publication.release_notes.includes('51 read-only tools'));
+    // No demo recording yet, and no country list: both keys stay out, so the portal keeps its own values.
+    assert.equal('demo_recording_url' in openai.review, false);
+    assert.equal('countries' in openai.publication, false);
+    assert.equal(read('plugin/review.json').placeholder, false);
+});
+
+test('a field over its limit, an unknown category or a hidden tool fails the build; a placeholder sheet needs the flag', () => {
+    const out = mkdtempSync(join(tmpdir(), 'ud-plugin-'));
     const review = read('plugin/review.json');
-    const bad = join(out, 'review.json');
-    writeFileSync(bad, JSON.stringify({ ...review, displayName: 'A display name of more than thirty characters', negativeTests: review.negativeTests.slice(0, 2) }));
+    const build = (sheet, flags = []) => {
+        const file = join(out, 'review.json');
+        writeFileSync(file, JSON.stringify(sheet));
+        return execFileSync(process.execPath, [join(ROOT, 'scripts', 'plugin-manifest.mjs'), '--review', file, '--out', out, ...flags], { cwd: ROOT, stdio: 'pipe' });
+    };
     assert.throws(
-        () => execFileSync(process.execPath, [join(ROOT, 'scripts', 'plugin-manifest.mjs'), '--review', bad, '--out', out, '--allow-placeholder'], { cwd: ROOT, stdio: 'pipe' }),
+        () => build({ ...review, displayName: 'A display name of more than thirty characters', negativeTests: review.negativeTests.slice(0, 2) }),
         (error) => /displayName/u.test(String(error.stderr)) && /negativeTests/u.test(String(error.stderr)),
     );
+    assert.throws(() => build({ ...review, category: 'Research' }), (error) => /category: one of Productivity/u.test(String(error.stderr)));
+    const hidden = { ...review.positiveTests[0], tools: ['ud_get_domain'] };
+    assert.throws(() => build({ ...review, positiveTests: [hidden, ...review.positiveTests.slice(1)] }), (error) => /ud_get_domain is not a hosted tool/u.test(String(error.stderr)));
+    assert.throws(() => build({ ...review, placeholder: true }), (error) => /placeholder texts/u.test(String(error.stderr)));
+    build({ ...review, placeholder: true }, ['--allow-placeholder']);
+    // A recorded demo and an explicit country list reach the zip.
+    build({ ...review, demoRecordingURL: 'https://example.com/demo', countries: [] });
+    const openai = JSON.parse(unzipEntry(readFileSync(join(out, 'chatgpt-plugin.zip')), 'plugin.json').toString('utf8')).extensions['com.openai'];
+    assert.equal(openai.review.demo_recording_url, 'https://example.com/demo');
+    assert.deepEqual(openai.publication.countries, []);
 });

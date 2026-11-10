@@ -1,0 +1,30 @@
+{
+  "path": "/words/resolve?q=harbors",
+  "status": 200,
+  "recordedOn": "2026-11-10",
+  "note": "Recorded through the SDK by the fix round inventory: data and meta as answered, links rebuilt from the path. scripts/record-fixtures.mjs replaces it whole.",
+  "body": {
+    "data": {
+      "match": {
+        "id": "wrd_1405068",
+        "slug": "harbors",
+        "word": "harbors",
+        "shape": "single",
+        "origin": "dictionary",
+        "via": "exact"
+      }
+    },
+    "meta": {
+      "asOf": null,
+      "cursor": null,
+      "limit": null
+    },
+    "links": {
+      "self": "https://api.unique.domains/v1/words/resolve?q=harbors",
+      "next": null,
+      "register": null,
+      "product": null,
+      "dataset": null
+    }
+  }
+}
