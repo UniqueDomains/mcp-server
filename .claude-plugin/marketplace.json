@@ -1,0 +1,12 @@
+{
+  "name": "uniquedomains",
+  "description": "The Unique Domains plugin: the hosted Unique Domains connector and a skill that maps each question to its tool.",
+  "owner": { "name": "Unique Domains", "url": "https://unique.domains" },
+  "plugins": [
+    {
+      "name": "unique-domains",
+      "source": "./plugin",
+      "description": "Look up domain names, TLDs, registrar prices, the domain market, naming trends and industry events from the data Unique Domains collects and stores itself."
+    }
+  ]
+}

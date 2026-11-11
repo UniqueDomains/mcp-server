@@ -1,0 +1,8 @@
+{
+  "name": "unique-domains",
+  "version": "0.1.4",
+  "description": "Domain names, TLDs, registrar prices, the domain market, trends and the agenda, from stored data.",
+  "mcpServers": {
+    "uniquedomains": { "httpUrl": "https://mcp.unique.domains/mcp" }
+  }
+}

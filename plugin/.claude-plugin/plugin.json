@@ -1,0 +1,16 @@
+{
+  "name": "unique-domains",
+  "displayName": "Unique Domains",
+  "version": "0.1.4",
+  "description": "Look up domain names, TLDs, registrar prices, the domain market, naming trends and industry events from the data Unique Domains collects and stores itself.",
+  "author": { "name": "Unique Domains", "url": "https://unique.domains" },
+  "homepage": "https://unique.domains/api/mcp",
+  "repository": "https://github.com/UniqueDomains/mcp-server",
+  "license": "MIT",
+  "keywords": ["domain-names", "whois", "tld", "registrar-prices", "domain-market"],
+  "icon": "./logo.png",
+  "documentationUrl": "https://unique.domains/api/mcp",
+  "supportUrl": "https://unique.domains/api#faq",
+  "privacyPolicyUrl": "https://unique.domains/privacy#api-and-connector",
+  "termsOfServiceUrl": "https://unique.domains/terms"
+}

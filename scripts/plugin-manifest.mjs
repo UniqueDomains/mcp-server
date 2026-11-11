@@ -18,7 +18,7 @@
  * The test cases, the demo recording's address, the commerce declaration and the release notes go in the zip too, under
  * `extensions["com.openai"].review` and `.publication`, the keys OpenAI's submission page documents and the portal
  * imports (`plugins/deploy/submission`, re-read on 2026-11-10; fix round A8). The annotation justifications have no
- * documented key, so they stay in the review sheet with a copy of the rest. The texts come from `plugin/review.json`,
+ * documented key, so they stay in the review sheet with a copy of the rest. The texts come from `directories/openai/review.json`,
  * copied from the channels kit; every limit OpenAI states is checked here and fails the build.
  */
 
@@ -36,7 +36,7 @@ const argument = (name) => {
     const index = process.argv.indexOf(name);
     return index === -1 ? null : process.argv[index + 1];
 };
-const review = JSON.parse(await readFile(argument('--review') ?? join(ROOT, 'plugin', 'review.json'), 'utf8'));
+const review = JSON.parse(await readFile(argument('--review') ?? join(ROOT, 'directories', 'openai', 'review.json'), 'utf8'));
 const DIST = argument('--out') ?? join(ROOT, 'dist');
 const pkg = JSON.parse(await readFile(join(ROOT, 'package.json'), 'utf8'));
 const { TOOLS } = await import(join(ROOT, 'dist', 'index.js'));
@@ -149,7 +149,7 @@ for (const tool of hostedTools) {
 }
 
 // Placeholder texts never reach a zip meant for upload: CI builds with --allow-placeholder (review finding 11).
-check(!review.placeholder || process.argv.includes('--allow-placeholder'), 'plugin/review.json holds placeholder texts: fill them from the channels kit and set "placeholder" to false (or pass --allow-placeholder for a test build)');
+check(!review.placeholder || process.argv.includes('--allow-placeholder'), 'directories/openai/review.json holds placeholder texts: fill them from the channels kit and set "placeholder" to false (or pass --allow-placeholder for a test build)');
 
 if (problems.length > 0) {
     console.error(`The plugin package does not meet OpenAI's limits:\n- ${problems.join('\n- ')}`);
@@ -301,5 +301,5 @@ await writeFile(
     }),
 );
 console.log(`dist/chatgpt-plugin.zip and dist/chatgpt-plugin-review.json written (${hostedTools.length} tools).`);
-if (!review.demoRecordingURL) console.warn('No demo recording yet: OpenAI requires one for the review. Set demoRecordingURL in plugin/review.json once Gaetan has recorded it.');
-if (review.placeholder) console.log('Test build: plugin/review.json still holds placeholder texts; the channels kit fills them before the submission.');
+if (!review.demoRecordingURL) console.warn('No demo recording yet: OpenAI requires one for the review. Set demoRecordingURL in directories/openai/review.json once Gaetan has recorded it.');
+if (review.placeholder) console.log('Test build: directories/openai/review.json still holds placeholder texts; the channels kit fills them before the submission.');

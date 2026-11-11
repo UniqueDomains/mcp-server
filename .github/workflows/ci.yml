@@ -1,7 +1,7 @@
 name: CI
 
 # Every push and pull request: the text rules, the types, the build, the generated tools up to date with the installed
-# SDK, the tests, the ChatGPT plugin package, the MCP Inspector smoke on both transports against the fixture API, and
+# SDK, the tests, the ChatGPT plugin package and the Devin plugin folder, the MCP Inspector smoke on both transports against the fixture API, and
 # the Docker image of the hosted connector.
 
 on:
@@ -28,8 +28,10 @@ jobs:
       # Fails when src/generated/tools.ts, openapi/v1.json or the README's tool list differ from the installed SDK.
       - run: npm run generate -- --check
       - run: npm test
-      # The real build: plugin/review.json is the channels kit's sheet, so a limit or a category it breaks fails CI.
+      # The real build: directories/openai/review.json is the channels kit's sheet, so a limit or a category it breaks fails CI.
       - run: npm run plugin
+      # The folder a pull request copies into Devin's marketplace; its rules fail the build.
+      - run: npm run plugin:devin
       - run: npm run smoke
       - uses: actions/upload-artifact@v4
         with:
@@ -37,6 +39,11 @@ jobs:
           path: |
             dist/chatgpt-plugin.zip
             dist/chatgpt-plugin-review.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: devin-plugin
+          include-hidden-files: true
+          path: dist/devin/
 
   node-versions:
     runs-on: ubuntu-latest

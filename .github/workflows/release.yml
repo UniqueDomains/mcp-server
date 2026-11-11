@@ -31,7 +31,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      # The tag, package.json and both versions of server.json must agree.
+      # The tag, package.json, both versions of server.json and the four plugin manifests must agree.
       - name: Versions agree
         run: |
           version="${GITHUB_REF_NAME#v}"
@@ -43,6 +43,10 @@ jobs:
             if (pkg.version !== v) bad.push(`package.json ${pkg.version}`);
             if (server.version !== v) bad.push(`server.json ${server.version}`);
             if (server.packages[0].version !== v) bad.push(`server.json package ${server.packages[0].version}`);
+            for (const file of ["plugin/.claude-plugin/plugin.json", "plugin/.grok-plugin/plugin.json", "gemini-extension.json", ".cursor-plugin/plugin.json"]) {
+              const manifest = require(`./${file}`);
+              if (manifest.version !== v) bad.push(`${file} ${manifest.version}`);
+            }
             if (pkg.mcpName !== server.name) bad.push(`mcpName ${pkg.mcpName} is not ${server.name}`);
             if (bad.length) { console.error(`Tag v${v} does not match: ${bad.join(", ")}`); process.exit(1); }
           ' "$version"

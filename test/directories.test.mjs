@@ -47,6 +47,9 @@ test('glama.json names a maintainer; the Cursor plugin and its mcp.json point at
     const cursor = read('.cursor-plugin/plugin.json');
     assert.match(cursor.name, /^[a-z0-9]([a-z0-9.-]*[a-z0-9])?$/u);
     assert.equal(cursor.version, pkg.version);
+    // The skill's path (code repos plan, review item C-D3): it replaces Cursor's own `skills/` scan, so it must hold the skill.
+    assert.equal(cursor.skills, './plugin/skills/');
+    assert.ok(readFileSync(join(ROOT, cursor.skills, 'unique-domains', 'SKILL.md'), 'utf8').startsWith('---\nname: unique-domains\n'));
     assert.deepEqual(read('mcp.json'), { mcpServers: { uniquedomains: { url: 'https://mcp.unique.domains/mcp' } } });
 });
 
@@ -93,12 +96,12 @@ test('the ChatGPT plugin package builds from the committed sheet, with the revie
     // No demo recording yet, and no country list: both keys stay out, so the portal keeps its own values.
     assert.equal('demo_recording_url' in openai.review, false);
     assert.equal('countries' in openai.publication, false);
-    assert.equal(read('plugin/review.json').placeholder, false);
+    assert.equal(read('directories/openai/review.json').placeholder, false);
 });
 
 test('a field over its limit, an unknown category or a hidden tool fails the build; a placeholder sheet needs the flag', () => {
     const out = mkdtempSync(join(tmpdir(), 'ud-plugin-'));
-    const review = read('plugin/review.json');
+    const review = read('directories/openai/review.json');
     const build = (sheet, flags = []) => {
         const file = join(out, 'review.json');
         writeFileSync(file, JSON.stringify(sheet));

@@ -71,6 +71,25 @@ Go to [chatgpt.com/plugins](https://chatgpt.com/plugins), select the plus button
 
 Streamable HTTP at `https://mcp.unique.domains/mcp`, or stdio with `npx -y @uniquedomains/mcp-server`.
 
+## Plugins
+
+The [`plugin/`](plugin) folder is a plugin bundle: the hosted connector and a skill that tells the assistant which tool answers which question. Nothing is installed locally and no key is used.
+
+In Claude Code:
+
+```
+/plugin install unique-domains --marketplace UniqueDomains/mcp-server
+```
+
+On Claude Code before 2.1.275, add the marketplace first, then the plugin:
+
+```
+/plugin marketplace add UniqueDomains/mcp-server
+/plugin install unique-domains@uniquedomains
+```
+
+The same folder carries a Grok Build manifest (`plugin/.grok-plugin/plugin.json`), the root `gemini-extension.json` is the Gemini CLI extension (the hosted connector, without the skill), and `npm run plugin:devin` builds the folder Devin's marketplace takes.
+
 ## Free tools and a member key
 
 Without a key, the server answers what the Unique Domains website shows anyone: a name's status and registry record, an ending's facts, registrar prices, market aggregates, trends and the agenda.
@@ -249,7 +268,8 @@ npm run smoke
 
 - `npm run generate` rebuilds `src/generated/tools.ts`, `openapi/v1.json` and the tool list above from the API document that `@uniquedomains/sdk` ships; `-- --check` fails when they are out of date, `-- --live` compares the live document.
 - `npm run smoke` runs the MCP Inspector against both transports and a fixture API; `-- --live` uses the live API.
-- `npm run plugin` builds `dist/chatgpt-plugin.zip` from `plugin/review.json` (the review texts, the test cases, the release notes) and checks it against OpenAI's limits and categories; `npm run plugin:test` also builds a sheet marked as a placeholder.
+- `npm run plugin` builds `dist/chatgpt-plugin.zip` from `directories/openai/review.json` (the review texts, the test cases, the release notes) and checks it against OpenAI's limits and categories; `npm run plugin:test` also builds a sheet marked as a placeholder.
+- `npm run plugin:devin` builds `dist/devin/plugins/unique-domains/` (the manifest Devin's validator accepts, a 256 px logo and a copy of the skill) for a pull request to Devin's marketplace.
 - The nightly contract workflow opens its pull request with the workflow token, which needs the repository setting "Allow GitHub Actions to create and approve pull requests" (Settings, Actions, General).
 
 ## License
