@@ -20,7 +20,7 @@ One domain name. Pass the full name with its ending, such as `get.plumbing`.
 A word as a name.
 
 - Start with `ud_resolve_word` when the word is misspelled, plural or unclear, and use the word it answers.
-- How many of its names are open, taken or for sale, by ending: `ud_get_word_endings`. All zeros mean the word is not counted yet, not that nothing is open. For one ending, ask `ud_get_name` with the full name
+- How many of its names are open, taken or for sale, by ending: `ud_get_word_endings`. A word with no count (not scanned, or not counted yet) answers null; zeros are real: a counted word with zeros has no open name. For one ending, ask `ud_get_name` with the full name
 - How widely known it is: `ud_get_word_notability`
 - The word categories: `ud_list_word_categories`
 

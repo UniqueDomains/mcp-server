@@ -222,10 +222,23 @@ test('the word endings tool declares null counts and says so', async () => {
     const { byGroup, openByEnding } = tool.outputSchema.properties.data.properties;
     for (const field of [byGroup, openByEnding]) assert.ok(field.anyOf.some((branch) => branch.type === 'null'), JSON.stringify(field));
     assert.equal(byGroup.anyOf[0].type, 'object');
-    assert.match(tool.description, /not counted yet answers null counts, not zeros/u);
+    // The platform's one null sentence (review R-4 of 2026-11-11), the same in the plugin skill.
+    assert.match(tool.description, /A word with no count \(not scanned, or not counted yet\) answers null; zeros are real\./u);
 
     const { widenAheadOfSdk } = await import('../scripts/lib/tools.mjs');
     const already = { properties: { byGroup: { anyOf: [{ type: 'object' }, { type: 'null' }] }, openByEnding: { type: 'null' } } };
     assert.deepEqual(widenAheadOfSdk('get_word_endings', already), already, 'a no-op once the document is nullable');
     assert.throws(() => widenAheadOfSdk('get_word_endings', { properties: {} }), /no `byGroup` to widen/u);
+});
+
+// Review R-4 of 2026-11-11: the skill told an assistant that all zeros mean "not counted yet", the opposite of the
+// answer since null means no count; the skill now carries the tool's own sentence. Review R-5: `/meta/enums` lists the
+// same venues as `/meta/providers`, so its tool says the same thing.
+test('the plugin skill and the enums tool say what null and the venue list mean', async () => {
+    const { readFile } = await import('node:fs/promises');
+    const skill = await readFile(join(ROOT, 'plugin', 'skills', 'unique-domains', 'SKILL.md'), 'utf8');
+    assert.ok(skill.includes('A word with no count (not scanned, or not counted yet) answers null; zeros are real'));
+    assert.ok(!/All zeros mean/u.test(skill));
+    const enums = TOOLS.find((tool) => tool.operationId === 'get_meta_enums').description;
+    assert.match(enums, /may be one this list leaves out/u);
 });

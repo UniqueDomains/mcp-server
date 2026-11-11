@@ -90,8 +90,9 @@ export const GUIDANCE = {
     },
     get_word_endings: {
         summary: "A word's endings as stored on the latest day: counts, the key endings and the open names per ending.",
-        // The one limit (2026-11-11, decision B): a word not counted yet answers null, never zeros that read as "no names".
-        use: 'Use it when someone has a word and asks which endings are still open for it, such as harbor.ai or harbor.io. A word not counted yet answers null counts, not zeros.',
+        // The one limit (2026-11-11, decision B; the platform's one sentence of review R-4): null is "no count", never
+        // zeros that read as "no names"; an unscanned word keeps its null for good, so the sentence names both cases.
+        use: 'Use it when someone has a word and asks which endings are still open for it, such as harbor.ai. A word with no count (not scanned, or not counted yet) answers null; zeros are real.',
     },
     list_word_names: {
         use: 'Use it when someone wants every catalog name built on one word; it answers one page at a time.',
@@ -296,7 +297,8 @@ export const GUIDANCE = {
     /* ---------- Reference lists ---------- */
     get_meta_enums: {
         summary: 'Every list of values the answers use, such as statuses, venues and bands.',
-        use: 'Use it when an answer holds a code and someone needs its meaning.',
+        // The providers' venue sentence (review R-5 of 2026-11-11): this list leaves out the guarded venue too.
+        use: 'Use it when an answer holds a code and someone needs its meaning. An auction answer names its own venue on each row, which may be one this list leaves out.',
     },
     get_meta_freshness: {
         summary: "How current each part of the stored data is, with the day's counts.",
