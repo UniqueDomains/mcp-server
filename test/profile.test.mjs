@@ -48,16 +48,18 @@ test('the hosted output schema names no register or product link', () => {
 });
 
 test('every hosted tool has a details rule, and the rules point at the website', () => {
-    for (const tool of TOOLS.filter((candidate) => candidate.hosted)) assert.ok(tool.operationId in DETAILS_RULES, tool.operationId);
+    // Exactly the hosted tools: the rules run on the hosted profile only (review n9).
+    assert.deepEqual(Object.keys(DETAILS_RULES).sort(), TOOLS.filter((candidate) => candidate.hosted).map((tool) => tool.operationId).sort());
     assert.equal(detailsFor('get_name_registry', { name: 'Harbor.io' }, null, undefined), 'https://unique.domains/whois/harbor.io');
     // `/tld/<ending>` exists for the public set only: get_tld's band says so; elsewhere the hub (review finding 3).
     assert.equal(detailsFor('get_tld', { tld: '.ai' }, { quality: 'prime' }, undefined), 'https://unique.domains/tld/ai');
     assert.equal(detailsFor('get_tld', { tld: 'aaa' }, { quality: null }, undefined), 'https://unique.domains/tld');
     assert.equal(detailsFor('list_tld_phases', { tld: 'ai' }, [], undefined), 'https://unique.domains/tld');
     assert.equal(detailsFor('list_registrar_prices', { registrar: 'name.com' }, null, undefined), 'https://unique.domains/registrars/name-com');
-    assert.equal(detailsFor('get_trend', { slug: 'padel' }, null, undefined), 'https://unique.domains/trending-domains/trends/padel');
+    assert.equal(detailsFor('get_trend', { slug: 'ambient-lights' }, null, undefined), 'https://unique.domains/trending-domains/trends/ambient-lights');
     assert.equal(detailsFor('get_edition', { persona: 'investor', date: '2026-11-08' }, null, undefined), 'https://unique.domains/trending-domains/2026-11-08');
-    assert.equal(detailsFor('get_domain', { nameOrId: 'dom_1' }, { name: 'harbor.io' }, undefined), 'https://unique.domains/availability/harbor.io');
+    // A tool the connector leaves out has no rule: no page (review n9).
+    assert.equal(detailsFor('get_domain', { nameOrId: 'dom_1' }, { name: 'harbor.io' }, undefined), null);
     assert.equal(detailsFor('get_word_endings', { word: 'harbor' }, null, undefined), null);
     assert.equal(registrarSlug('name.com'), 'name-com');
 });

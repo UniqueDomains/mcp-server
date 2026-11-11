@@ -16,9 +16,14 @@
  * A `use` sentence starts "Use it when" (or "Use it first when", "Use it to") and names at most the one limit an
  * assistant must know: stored data, not a live reading; a fixed daily sample; one page at a time; a spent allowance.
  * It names no other tool, compares nothing and carries no plan talk (`test/tools.test.mjs`).
+ *
+ * Optionally `examples`, the sample value the description shows for a required input, in place of the API document's
+ * (review M1 of 2026-11-11). Each one answered on production on 2026-11-11 and is chosen to keep answering: a frozen
+ * edition day, a slug of a dated event row, a published trend and an applied-for string (none of these lookups is
+ * bounded by date). `npm run smoke -- --live` calls each on the hosted profile, so one that stops answering shows.
  */
 
-/** @type {Readonly<Record<string, { use: string, summary?: string }>>} */
+/** @type {Readonly<Record<string, { use: string, summary?: string, examples?: Readonly<Record<string, string>> }>>} */
 export const GUIDANCE = {
     /* ---------- One name ---------- */
     get_name: {
@@ -123,6 +128,9 @@ export const GUIDANCE = {
         use: 'Use it when someone wants names whose registration is about to run out, by day.',
     },
     get_domain_drops: {
+        // Review n10 of 2026-11-11: the document's summary ("Names dropping on one day") titled a tool whose keyless
+        // answer is a count by ending and never a name. Worded for both forms: the hosted profile carries no key talk.
+        summary: 'The names dropping on one day, counted by ending.',
         use: 'Use it when someone asks how many names drop on a given day, and on which endings.',
     },
     list_domain_hacks: {
@@ -162,6 +170,7 @@ export const GUIDANCE = {
         use: 'Use it when someone asks what moved in the 2026 round lately, such as a withdrawal or a contention change.',
     },
     get_tld_application_string: {
+        examples: { string: 'account' },
         use: 'Use it when someone asks about one applied-for ending, such as who applied for it.',
     },
 
@@ -244,6 +253,7 @@ export const GUIDANCE = {
         use: 'Use it when someone looks for rising topics to name a project after; it answers one page at a time.',
     },
     get_trend: {
+        examples: { slug: 'ambient-lights' },
         use: 'Use it when someone asks about one trend: how it grew and its key words.',
     },
     list_trend_categories: {
@@ -259,6 +269,8 @@ export const GUIDANCE = {
         use: "Use it when someone wants today's name ideas from rising topics; it carries the edition's open names only.",
     },
     get_edition: {
+        // 2026-11-10: a day the founders' page has an edition of its own (some earlier days answer the investors').
+        examples: { persona: 'founder', date: '2026-11-10' },
         summary: 'One dated daily edition of Business Ideas or Trending Domains: founders read the first, investors the second.',
         use: "Use it when someone asks about a past day's edition.",
     },
@@ -268,6 +280,7 @@ export const GUIDANCE = {
         use: 'Use it when someone asks about domain or internet industry events in a month.',
     },
     get_event: {
+        examples: { slug: 'registrar-day-afnic-2027' },
         use: 'Use it when someone asks for the details of one event.',
     },
     get_agenda: {

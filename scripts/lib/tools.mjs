@@ -10,8 +10,8 @@ import { guidanceOf } from './guidance.mjs';
  * result, the tests read it.
  *
  * The tool set (plan decision 4, then Gaetan's 1A of 2026-11-09): every free operation except the six that serve a
- * file, a liveness answer or a redirect, plus every keyed operation, which the server registers only for a member key of the right plan. The hosted connector
- * leaves out the three free tools behind a one-a-day gate, since it is one caller for every assistant user (P1-D2).
+ * file, a liveness answer or a redirect, plus every keyed operation, which the server registers only for a member key
+ * of the right plan. The hosted connector leaves out five free tools (`HOSTED_EXCLUDED_OPERATIONS`).
  */
 
 /**
@@ -72,7 +72,14 @@ export const titleOf = (summary) => {
     return clause.charAt(0).toUpperCase() + clause.slice(1);
 };
 
-const exampleOf = (parameter) => {
+/**
+ * The sample value a description shows for one input: `guidance.mjs`'s own first (review M1 of 2026-11-11: four of
+ * the API document's samples answer 404 or another persona's edition on production), then the document's, then the
+ * first allowed value.
+ */
+const exampleOf = (operationId, parameter) => {
+    const own = guidanceOf(operationId).examples?.[parameter.name];
+    if (own !== undefined) return own;
     if (parameter.example !== undefined) return String(parameter.example);
     if (parameter.enum && parameter.enum.length > 0) return String(parameter.enum[0]);
     return null;
@@ -83,7 +90,7 @@ export const usageOf = (operation) => {
     const required = operation.parameters.filter((parameter) => parameter.required);
     const bodyRequired = operation.body ? operation.body.properties.filter((property) => property.required) : [];
     const parts = required.map((parameter) => {
-        const example = exampleOf(parameter);
+        const example = exampleOf(operation.id, parameter);
         return example === null ? `\`${parameter.name}\`` : `\`${parameter.name}\` (such as ${example})`;
     });
     for (const property of bodyRequired) parts.push(`\`${property.name}\` (a list)`);

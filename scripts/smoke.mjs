@@ -11,7 +11,8 @@
  *   http    `node dist/http.js` on a free port, hosted profile: tools/list (51, `--strict`), then `ud_get_name`
  *
  *   npm run smoke              against the fixture API (`test/support/api-fixture.mjs`), offline
- *   npm run smoke -- --live    against https://api.unique.domains/v1 (keyless)
+ *   npm run smoke -- --live    against https://api.unique.domains/v1 (keyless), plus one hosted call per sample input
+ *                              `scripts/lib/guidance.mjs` sets, so a sample that stops answering shows
  *
  * The Inspector is pinned at a version at least two weeks old; `npx -y` fetches it on the first run.
  */
@@ -23,6 +24,7 @@ import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 
 import { startApiFixture } from '../test/support/api-fixture.mjs';
+import { GUIDANCE } from './lib/guidance.mjs';
 
 const INSPECTOR = '@modelcontextprotocol/inspector@2.12.0';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -90,6 +92,18 @@ try {
         expect(!/"(?:id|[a-z]+Id)":"(?:dom_|wrd_|[0-9a-f]{8}-[0-9a-f]{4}-|\d+")/u.test(text) && !/"(?:computedAt|rollupAt)"/u.test(text), `http ${tool} carries no internal id or stamp`);
         expect(!/"(?!endsAt")[A-Za-z]+":"\d{4}-\d{2}-\d{2}T/u.test(text), `http ${tool} carries days, not times`);
     }
+    // The descriptions' own samples answer on production (review M1 of 2026-11-11), and an edition is the persona asked.
+    if (live) {
+        for (const [id, entry] of Object.entries(GUIDANCE)) {
+            if (!entry.examples) continue;
+            const tool = `ud_${id}`;
+            const call = await inspector(url, 'tools/call', ['--tool-name', tool, ...Object.entries(entry.examples).flatMap(([name, value]) => ['--tool-arg', `${name}=${value}`])]);
+            const data = call.structuredContent?.data;
+            const persona = entry.examples.persona;
+            expect(!call.isError && data && (persona === undefined || data.persona === persona), `http ${tool} answers its description's sample`);
+        }
+    }
+
     // An unknown tool is a JSON-RPC error -32602 (fix round A5). Sent raw: the Inspector refuses a tool its list lacks
     // before it reaches the server.
     const unknown = await fetch(`http://127.0.0.1:${port}/mcp`, {

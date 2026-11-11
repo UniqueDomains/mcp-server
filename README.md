@@ -65,7 +65,7 @@ Or in `.vscode/mcp.json`:
 
 ### ChatGPT
 
-Go to [chatgpt.com/plugins](https://chatgpt.com/plugins), select the plus button, then "Add custom MCP server". Name it Unique Domains, enter `https://mcp.unique.domains/mcp` as the server URL with no authentication, then "Create as a plugin". In a new conversation, type `@` and pick the plugin. Your account's or workspace's policies decide whether custom servers can be added.
+Go to [chatgpt.com/plugins](https://chatgpt.com/plugins), select the plus button, then "Add custom MCP server". Name it Unique Domains, enter `https://mcp.unique.domains/mcp` as the server URL with no authentication, then "Create as a plugin". Install the plugin, then in a new conversation type `@` and pick it. Your account's or workspace's policies decide whether custom servers can be added.
 
 ### Any other client
 
@@ -146,7 +146,7 @@ The hosted connector serves the free tools only and takes no key. Five free tool
 | `ud_list_domains` | One-word catalog names under filters | free |
 | `ud_get_domain` | One catalog name, by name or catalog id | free, npm only |
 | `ud_list_expiring_domains` | Catalog names expiring or expired, by expiry day | Investor key |
-| `ud_get_domain_drops` | Names dropping on one day | free |
+| `ud_get_domain_drops` | Names dropping on one day, counted by ending | free |
 | `ud_list_domain_hacks` | Domain hacks | free |
 | `ud_list_domain_changes` | Changes across the catalog's names, newest first | Investor key |
 | `ud_get_catalog_stats` | Catalog headline totals for the latest day | free |

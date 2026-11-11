@@ -86,6 +86,18 @@ test('the guidance table names every emitted operation and nothing else, each wi
     }
 });
 
+test('a sample of the guidance table names a required input and reaches the description', () => {
+    for (const [id, entry] of Object.entries(GUIDANCE)) {
+        for (const [name, value] of Object.entries(entry.examples ?? {})) {
+            assert.ok(OPERATIONS[id].parameters.some((parameter) => parameter.name === name && parameter.required), `${id}.${name}`);
+            assert.ok(TOOLS.find((tool) => tool.operationId === id).description.includes(`\`${name}\` (such as ${value})`), `${id}.${name}`);
+        }
+    }
+    // Review M1: the API document's samples for these four answered 404, or the investors' edition, on production.
+    const texts = TOOLS.map((tool) => tool.description).join('\n');
+    for (const stale of ['studio', 'padel', 'namescon-global-2026', '2026-11-02']) assert.ok(!texts.includes(`(such as ${stale})`), stale);
+});
+
 /**
  * Words a reader outside the team would not know, or that name how the data is made rather than what it says
  * (Anthropic policy 2.A, OpenAI's optimize-metadata page). Checked outside backticked input names (`persona` is one).

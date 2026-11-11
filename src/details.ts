@@ -56,13 +56,6 @@ const tldPage: DetailsRule = (input, data) => {
     return publicSet && tld !== null ? `${WEBSITE}/tld/${tld}` : `${WEBSITE}/tld`;
 };
 
-/** A domain read by name or id: the name from the answer when the caller passed an id. */
-const domainPage: DetailsRule = (input, data) => {
-    const fromData = isObject(data) ? segment(data.name) : null;
-    const name = fromData ?? (typeof input.nameOrId === 'string' && input.nameOrId.includes('.') ? segment(input.nameOrId) : null);
-    return name === null ? `${WEBSITE}/domains` : `${WEBSITE}/availability/${name}`;
-};
-
 const EDITION_PAGES: Readonly<Record<string, string>> = { founder: '/business-ideas', investor: '/trending-domains' };
 
 const editionPage: DetailsRule = (input) => {
@@ -74,7 +67,11 @@ const editionPage: DetailsRule = (input) => {
 
 const none: DetailsRule = () => null;
 
-/** One rule per free tool (the hosted profile serves free tools only). */
+/**
+ * One rule per hosted tool, and no other: `shapeAnswer` reads them on the hosted profile only, so a rule for a tool
+ * the connector leaves out (`HOSTED_EXCLUDED_OPERATIONS`) would be dead code (review n9 of 2026-11-11);
+ * `test/profile.test.mjs` holds the keys to the hosted list.
+ */
 export const DETAILS_RULES: Readonly<Record<string, DetailsRule>> = {
     // A name: its status, price, comps and auction on the availability page, its registry and DNS on WHOIS.
     get_name: pageOf('/availability', 'name'),
@@ -87,10 +84,8 @@ export const DETAILS_RULES: Readonly<Record<string, DetailsRule>> = {
     list_word_categories: none,
     get_word_endings: none,
     get_word_notability: none,
-    get_word_market: none,
     // The catalog: its lists on /domains, one name on its availability page, the drops on the WHOIS hub.
     list_domains: page('/domains'),
-    get_domain: domainPage,
     get_domain_drops: page('/whois'),
     list_domain_hacks: page('/domains'),
     get_catalog_stats: page('/domains'),
@@ -108,7 +103,6 @@ export const DETAILS_RULES: Readonly<Record<string, DetailsRule>> = {
     list_registrars: page('/registrars'),
     list_registrar_prices: registrarPage,
     list_registrar_changes: registrarPage,
-    list_tld_prices: page('/registrars'),
     list_price_changes: page('/registrars'),
     list_price_traps: page('/registrars'),
     list_venues: page('/registrars'),
@@ -121,7 +115,6 @@ export const DETAILS_RULES: Readonly<Record<string, DetailsRule>> = {
     list_market_sales_endings: page('/sales'),
     get_market_sales_lengths: page('/sales'),
     list_market_sales_movers: page('/sales'),
-    get_market_sales_word: page('/sales'),
     get_market_auctions: page('/auctions'),
     list_market_auctions_sample: page('/auctions'),
     list_market_auction_venues: page('/auctions'),
@@ -137,7 +130,6 @@ export const DETAILS_RULES: Readonly<Record<string, DetailsRule>> = {
     get_agenda: page('/agenda'),
     // Reference lists: no page of their own.
     get_meta_enums: none,
-    get_meta_freshness: none,
     list_meta_datasets: none,
     list_meta_trademark_classes: none,
     get_meta_providers: none,

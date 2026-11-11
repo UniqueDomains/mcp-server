@@ -204,7 +204,7 @@ test('the well-known files, /healthz, CORS, no-store, 405 and 413', async () => 
     const bad = await fetch(`${base}/mcp`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{nope' });
     assert.equal(bad.status, 400);
 
-    // A request line `new URL` cannot parse is answered, not a crash of the process (fix round review).
+    // A request line `new URL` cannot parse is answered 400, not a crash of the process nor a server fault (review n8).
     const { request } = await import('node:http');
     const address = new URL(base);
     const status = await new Promise((resolve, reject) => {
@@ -215,7 +215,7 @@ test('the well-known files, /healthz, CORS, no-store, 405 and 413', async () => 
         req.on('error', reject);
         req.end();
     });
-    assert.equal(status, 500);
+    assert.equal(status, 400);
     assert.equal((await fetch(`${base}/healthz`)).status, 200);
 });
 

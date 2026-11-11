@@ -145,8 +145,10 @@ export const createRequestHandler =
         // Set before any branch: `writeHead` and the MCP transport both keep headers set here.
         res.setHeader('Strict-Transport-Security', HSTS_HEADER);
         try {
-            // Inside the `try`: a request line such as `GET //[` makes `new URL` throw, and outside it the rejection
-            // went unhandled and stopped the process (fix round review).
+            // A request line such as `GET //[` makes `new URL` throw; outside the `try` the rejection went unhandled and
+            // stopped the process (fix round review). It is the caller's mistake, so a 400, never a 500 that would count
+            // as a server fault in the directories' error rates (review n8 of 2026-11-11).
+            if (!URL.canParse(req.url ?? '/', 'http://localhost')) return send(res, 400, 'Bad request.\n', 'text/plain; charset=utf-8');
             const url = new URL(req.url ?? '/', 'http://localhost');
             const path = url.pathname.replace(/\/+$/u, '') || '/';
             if (path === '/mcp') {
