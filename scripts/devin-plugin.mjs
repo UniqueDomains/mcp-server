@@ -18,7 +18,7 @@
  */
 
 import { copyFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
+import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -68,4 +68,4 @@ await mkdir(join(out, 'skills', 'unique-domains'), { recursive: true });
 await writeFile(join(out, '.devin-plugin', 'plugin.json'), `${JSON.stringify(manifest, null, 2)}\n`);
 await copyFile(join(ROOT, 'assets', 'logo-256.png'), join(out, 'logo.png'));
 await copyFile(join(ROOT, 'plugin', 'skills', 'unique-domains', 'SKILL.md'), join(out, 'skills', 'unique-domains', 'SKILL.md'));
-console.log(`${out.slice(ROOT.length + 1)} written: .devin-plugin/plugin.json, logo.png, skills/unique-domains/SKILL.md.`);
+console.log(`${relative(ROOT, out)} written: .devin-plugin/plugin.json, logo.png, skills/unique-domains/SKILL.md.`);

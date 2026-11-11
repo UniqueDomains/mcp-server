@@ -49,6 +49,9 @@ const filesOf = (dir) =>
 
 const SKILL = readFileSync(join(PLUGIN, 'skills', 'unique-domains', 'SKILL.md'), 'utf8');
 
+/** Plan, price and key talk the bundle's texts never carry (decision 4), beyond `PLAN_WORDS` of the tool texts. */
+const BUNDLE_PLAN_TALK = /\b(?:plans?|upgrade|upgrading|pricing|subscribe|member key|api key)\b|ud_live_/iu;
+
 test('the five manifests agree on the name, the version, the repository and the licence, and carry the texts of section 6', () => {
     for (const manifest of [claude, grok, gemini, cursor, devin]) assert.equal(manifest.name, 'unique-domains');
     for (const manifest of [claude, grok, gemini, cursor]) assert.equal(manifest.version, pkg.version);
@@ -113,7 +116,7 @@ test('the skill names every hosted tool and no other, and holds no plan, price, 
 
     for (const word of FORBIDDEN_WORDS) assert.equal(word.test(SKILL), false, String(word));
     assert.equal(PLAN_WORDS.test(SKILL), false);
-    assert.equal(/\b(?:plan|plans|upgrade|pricing|member key|api key|founder plan|investor plan)\b/iu.test(SKILL.replace(/`(?:founder|investor)`/gu, '')), false);
+    assert.equal(BUNDLE_PLAN_TALK.test(SKILL), false);
     assert.equal(SKILL.includes('\u2014'), false);
 });
 
@@ -142,11 +145,17 @@ test('the plugin folder holds the files of the plan and meets Anthropic\'s limit
     assert.ok(readme.split(/\s+/u).filter(Boolean).length >= 40);
     assert.ok(readme.includes('https://mcp.unique.domains/mcp') && readme.includes('https://api.unique.domains'));
     assert.equal(PLAN_WORDS.test(readme), false);
+    assert.equal(BUNDLE_PLAN_TALK.test(readme), false);
     for (const word of FORBIDDEN_WORDS) assert.equal(word.test(readme), false, String(word));
 });
 
 test('the marketplace file lists the one plugin of ./plugin', () => {
     assert.equal(marketplace.name, 'uniquedomains');
+    assert.equal(marketplace.description, 'The Unique Domains plugin: the hosted Unique Domains connector and a skill that maps each question to its tool.');
+    for (const text of [marketplace.description, ...[claude, grok, gemini, cursor, devin].map((manifest) => manifest.description)]) {
+        assert.equal(PLAN_WORDS.test(text) || BUNDLE_PLAN_TALK.test(text), false, text);
+        for (const word of FORBIDDEN_WORDS) assert.equal(word.test(text), false, String(word));
+    }
     assert.equal(marketplace.owner.name, 'Unique Domains');
     assert.equal(marketplace.plugins.length, 1);
     assert.equal(marketplace.plugins[0].name, claude.name);
