@@ -1,12 +1,12 @@
 {
   "name": "uniquedomains",
-  "description": "The Unique Domains plugin: the hosted Unique Domains connector and a skill that maps each question to its tool.",
+  "description": "One plugin from Unique Domains. It connects your assistant to stored facts about domain names, TLDs, registrar prices and the domain market, and adds a skill that tells it which tool answers which question.",
   "owner": { "name": "Unique Domains", "url": "https://unique.domains" },
   "plugins": [
     {
       "name": "unique-domains",
       "source": "./plugin",
-      "description": "Look up domain names, TLDs, registrar prices, the domain market, naming trends and industry events from the data Unique Domains collects and stores itself."
+      "description": "Ask about a domain name, an ending (TLD) or a registrar. The answers are stored facts from the record Unique Domains keeps: status, registry record, prices, market totals, naming trends and events."
     }
   ]
 }

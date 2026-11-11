@@ -181,6 +181,33 @@ const KEPT_KEYWORDS = new Set(['type', 'description', 'properties', 'items', 'an
 export const PLAN_WORDS = /\bpaid\b|\bsubscriptions?\b|\bkeyed\b|\bfree (?:tier|grade)\b|\bon free\b|\bnames keyed\b/iu;
 
 /**
+ * Plan, price and key talk the plugin bundle's prose never carries (plugin bundle plan, decision 4; review M2): the
+ * skill, the bundle's README, every manifest and marketplace description, and the OpenAI sheet's texts. Each entry
+ * names what it refuses, so a failing check says which word it met. It allows "launch plans", "registrar pricing",
+ * "the events of a month" and the persona values `founder` and `investor` in lower case.
+ */
+export const BUNDLE_PLAN_TALK = [
+    { pattern: /\$\s?\d[\d.,]*|\b\d+(?:[.,]\d+)?\s?(?:USD|EUR|dollars?)\b/u, label: 'a price' },
+    // "a month" alone is a calendar month in these texts ("the events of a month"); after an amount it is a price.
+    { pattern: /\b\d[\d.,]*\s*(?:USD|EUR|dollars?)?\s*(?:a|\/)\s*(?:month|year)\b|\bper (?:month|year)\b|\bmonthly (?:fee|price|plan)\b/iu, label: 'a price per month' },
+    { pattern: /UD_API_KEY|ud_live_/u, label: 'a key or its variable' },
+    { pattern: /\b(?:api|member|a|your) keys?\b/iu, label: 'a key' },
+    { pattern: /\bmembers?\b|\bmembership\b/iu, label: 'membership' },
+    { pattern: /\bupgrad\w*/iu, label: 'an upgrade' },
+    { pattern: /\bsubscri\w*/iu, label: 'a subscription' },
+    { pattern: /\bpaid\b|\bkeyed\b|\bfree (?:tier|grade)\b/iu, label: 'a paid grade' },
+    { pattern: /\b(?:Founder|Investor)\b/u, label: 'a plan name' },
+    { pattern: /\b(?:a|our|your|the|paid|free|each|every|any) plans?\b/iu, label: 'a plan' },
+];
+
+/** The matches of `BUNDLE_PLAN_TALK` in a text, each as `label ("words met")`; empty when the text is clean. */
+export const bundlePlanTalkIn = (text) =>
+    BUNDLE_PLAN_TALK.flatMap(({ pattern, label }) => {
+        const match = text.match(pattern);
+        return match ? [`${label} ("${match[0]}")`] : [];
+    });
+
+/**
  * The answer's schema as an MCP `outputSchema`: references inlined, OpenAPI keywords dropped, `oneOf` read as
  * `anyOf`, and no `required` or closed object anywhere. A client validates `structuredContent` against it, and the
  * answer legitimately lacks keys: `fields` keeps only the keys asked, the hosted profile strips two links, a 202 holds

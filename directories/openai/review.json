@@ -3,8 +3,8 @@
   "name": "unique-domains",
   "displayName": "Unique Domains",
   "shortDescription": "Domain names, TLDs and prices",
-  "description": "Domain names, TLDs, registrar prices, the domain market, trends and the agenda, from stored data.",
-  "longDescription": "Unique Domains keeps a daily record of domain names and the endings they sit on. This connector lets your assistant read that record, so you can ask about a name, a word, an ending or a registrar in plain words and get stored facts back.\n\nWhat it can look up:\n\n- A domain name: its status, drop day and price today, its latest registry record (registrar, dates, status codes, nameservers), its DNS reading, how the same word sold on other endings (a count and a median), and its open auction if there is one.\n- A word: the catalog word behind what you typed, its endings and open names, and its Wikipedia and Wikidata facts.\n- An ending (TLD): registry facts, dated launch phases, market figures, registry changes, and the 2026 new gTLD applications as ICANN publishes them.\n- Registrars: the daily list prices of nine registrars, their confirmed price changes, and the endings whose renewal costs far more than the first year.\n- The market: domain sales and today's auctions as totals by ending, length and auction site, and a daily sample of single-word names at auction.\n- Trends and the agenda: naming trends with their daily editions, and the industry events and launch dates of a month.\n\nEvery answer is stored data, dated where the record has a day, and most answers carry a link to the public page about the subject on unique.domains. The tools only read: none registers, buys or changes a name. The connector needs no account and no sign-in, and it keeps no record of the calls it passes on.",
+  "description": "Look up domain names, TLDs, registrar prices, market totals, trends and events, from stored data.",
+  "longDescription": "Unique Domains keeps a daily record of domain names and of the endings they sit on, such as .com or .app. This plugin lets your assistant read that record. Ask about a name, a word, an ending or a registrar in plain words, and you get stored facts back.\n\nWhat you can ask about:\n\n- A domain name: its status, what it costs to register when it is open, and its drop day, the day an expired name can be registered again. Its latest registry record, the one a WHOIS lookup shows: registrar, dates, status codes and nameservers. Its DNS reading, what similar names sold for (a count and a median), and its open auction if there is one.\n- A word: the catalog word behind what you typed, a count of its names by ending where the catalog has one, and its Wikipedia and Wikidata facts.\n- An ending (TLD): its registry facts, its dated launch phases, its market figures and its registry changes. Also the 2026 new gTLD applications, as ICANN publishes them.\n- Registrars: what one ending costs at each of the nine registrars that sell it, each registrar's list prices for a set of endings that changes every day, the newest confirmed price changes, and examples of endings whose renewal costs far more than the first year.\n- The market: domain sales and today's auctions as totals by ending, by length and by auction site, plus a daily sample of single-word names at auction.\n- Trends and the agenda: naming trends with their dated editions, and the industry events and launch dates of a month.\n\nEvery answer is stored data, and it carries its day where the record has one. Most answers also link to the public page about the subject on unique.domains.\n\nThe tools only read. None registers, buys or changes a name.\n\nYou need no account and no sign-in to use the plugin. It keeps no record of the calls it passes on. The API behind it keeps one log line per call for 12 months, with the name or word asked about and nothing that identifies you.",
   "developerName": "Unique Domains",
   "category": "Data & Analytics",
   "capabilities": [
@@ -28,7 +28,7 @@
       "tools": [
         "ud_get_name_registry"
       ],
-      "expected": "Gives the registrar (GoDaddy.com on 2026-11-10), the creation and expiry dates, the status codes and the nameservers, with the day the record was read."
+      "expected": "Names the registrar (GoDaddy.com, LLC when read on 2026-11-11) and gives the creation and expiry dates, the status codes and the nameservers, with the day the record was read."
     },
     {
       "description": "A name's status and price",
@@ -36,7 +36,7 @@
       "tools": [
         "ud_get_name"
       ],
-      "expected": "Says the name is registered and listed for sale, with the link to its page on unique.domains."
+      "expected": "Says the name is registered and listed for sale, and links to its page on unique.domains."
     },
     {
       "description": "An ending's facts",
@@ -44,7 +44,7 @@
       "tools": [
         "ud_get_tld"
       ],
-      "expected": "Summarizes the ending's registry facts, its launch phases and its market figures."
+      "expected": "Sums up the ending's registry facts, its launch phases and its market figures."
     },
     {
       "description": "Renewal traps",
@@ -52,7 +52,7 @@
       "tools": [
         "ud_list_price_traps"
       ],
-      "expected": "Lists the endings the tool returns, with the first-year and renewal prices."
+      "expected": "Lists the endings the tool returns, each with its first-year price and its renewal price."
     },
     {
       "description": "The industry agenda",
@@ -60,31 +60,31 @@
       "tools": [
         "ud_get_agenda"
       ],
-      "expected": "Lists the month's industry events, launch phases and registry changes with their dates."
+      "expected": "Lists the month's industry events, launch phases and registry changes, each with its date."
     }
   ],
   "negativeTests": [
     {
       "description": "Register a name",
       "prompt": "Register get.plumbing for me.",
-      "reason": "The tools only read stored data; none registers or buys a name.",
+      "reason": "The tools only read stored data. None registers or buys a name.",
       "expected": "Does not claim to register the name. Says the tools only read, and may give the name's status from ud_get_name."
     },
     {
       "description": "Renew a name the user owns",
       "prompt": "Renew my domain get.plumbing for another year.",
-      "reason": "The connector has no account and acts on no name; renewal happens at the owner's registrar.",
-      "expected": "Says it cannot renew a name and that the owner's registrar does it, and may give the expiry day from ud_get_name_registry."
+      "reason": "The plugin has no account and acts on no name. A renewal is made at the owner's registrar.",
+      "expected": "Says it cannot renew a name and that the owner's registrar does it. May give the expiry day from ud_get_name_registry."
     },
     {
       "description": "Change a name's DNS",
       "prompt": "Point get.plumbing at my new web host.",
-      "reason": "The tools read a name's DNS but never change it.",
-      "expected": "Says it cannot change DNS and that the change is made at the registrar or DNS host, and may show the current DNS reading from ud_get_name_dns."
+      "reason": "The tools read a name's DNS and never change it.",
+      "expected": "Says it cannot change DNS and that the change is made at the registrar or the DNS host. May show the current DNS reading from ud_get_name_dns."
     }
   ],
-  "releaseNotes": "First release. 51 read-only tools over the Unique Domains data: domain names (status, registry record, DNS, how the word sold on other endings, open auction), words, endings and the 2026 new gTLD applications, registrar prices and their changes, the domain market as totals, naming trends and their daily editions, and the industry agenda. No sign-in. Every answer is stored data, dated where the record has a day.",
+  "releaseNotes": "First release. 51 tools, all read-only, over the record Unique Domains keeps. They cover domain names (status, registry record, DNS, what similar names sold for, open auction), words, endings and the 2026 new gTLD applications, registrar prices and their changes, the domain market as totals, naming trends with their dated editions, and the industry agenda. No sign-in. Every answer is stored data, and it carries its day where the record has one.",
   "demoRecordingURL": "",
   "commerce": false,
-  "commerceDescription": "The plugin reads stored domain data only: it sells nothing, takes no payment and registers no name."
+  "commerceDescription": "The plugin only reads stored domain data. It sells nothing, takes no payment and registers no name."
 }

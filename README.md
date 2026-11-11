@@ -73,22 +73,22 @@ Streamable HTTP at `https://mcp.unique.domains/mcp`, or stdio with `npx -y @uniq
 
 ## Plugins
 
-The [`plugin/`](plugin) folder is a plugin bundle: the hosted connector and a skill that tells the assistant which tool answers which question. Nothing is installed locally and no key is used.
+The [`plugin/`](plugin) folder is a plugin for the AI assistants that take one. It holds the hosted connector and one skill, which tells the assistant which tool answers which question. It runs nothing on your machine and uses no key.
 
-In Claude Code:
+In Claude Code, run this line:
 
 ```
 /plugin install unique-domains --marketplace UniqueDomains/mcp-server
 ```
 
-On Claude Code before 2.1.275, add the marketplace first, then the plugin:
+Claude Code asks you to confirm this repository as a marketplace, then opens the plugin's page, where you install it. The line needs Claude Code 2.1.275 or later. On an earlier version, do the same in two steps:
 
 ```
 /plugin marketplace add UniqueDomains/mcp-server
 /plugin install unique-domains@uniquedomains
 ```
 
-The same folder carries a Grok Build manifest (`plugin/.grok-plugin/plugin.json`), the root `gemini-extension.json` is the Gemini CLI extension (the hosted connector, without the skill), and `npm run plugin:devin` builds the folder Devin's marketplace takes.
+Three other tools read files of this repository. Grok Build reads `plugin/.grok-plugin/plugin.json`, in the same folder. Gemini CLI reads `gemini-extension.json` at the root, which adds the hosted connector without the skill. For Devin, `npm run plugin:devin` builds the folder its marketplace takes.
 
 ## Free tools and a member key
 
@@ -115,7 +115,7 @@ The hosted connector serves the free tools only and takes no key. Five free tool
 
 ## Privacy and security
 
-- **What the connector logs.** Nothing of its own: it stores no question, no answer and no caller. It passes each tool's input to the Unique Domains API, whose request log keeps one line per call (the path, which holds the name or word asked about, its time, its status and how long it took) for 12 months, after which a monthly job deletes it. The connector's calls carry no address or account of yours. Section 8 of the [privacy policy](https://unique.domains/privacy#api-and-connector) says what the API keeps and why.
+- **What the connector logs.** Nothing of its own. It stores no question, no answer and no caller. It passes each tool's input to the Unique Domains API, and the API's request log keeps one line per call for 12 months: the path, which holds the name or word asked about, with its time, its status and how long it took. A monthly job deletes older lines. The connector calls the API under its own name, so the API never sees your address or an account of yours. When your assistant runs on your own machine, it connects to the connector from your IP address. The connector's hosting providers see it, as they see the address behind any web request, and the connector does not store it. Section 8 of the [privacy policy](https://unique.domains/privacy#api-and-connector) says what the API keeps and why.
 - **Registry records.** A name's registry answer repeats the registry's public record, which can include the holder's name or organization when the registry publishes it.
 - **Every origin is accepted.** `/mcp` answers any `Origin` with `Access-Control-Allow-Origin: *`. The server is public, needs no sign-in, holds no session and never serves a member key over HTTP, so checking the origin would protect nothing, and strict origin checks break some assistants' own clients.
 - **HTTPS only.** The hosted connector answers over HTTPS and sends `Strict-Transport-Security: max-age=31536000`.
