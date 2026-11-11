@@ -64,7 +64,9 @@ export const GUIDANCE = {
         use: 'Use it when a name has no stored estimate yet; each call spends one appraisal of the month.',
     },
     get_name_comps: {
-        use: 'Use it when someone asks what similar names sold for, or on which endings the word sold.',
+        // After-fix check AF-1 of 2026-11-11: `endingsSoldOn` is a count, never the endings themselves.
+        summary: 'The similar-sales aggregate of one name and how many endings its word sold on.',
+        use: 'Use it when someone asks what similar names sold for, or on how many endings the word sold.',
     },
     get_name_auction: {
         use: 'Use it when someone asks whether a name is at auction now, its current bid or its deadline.',

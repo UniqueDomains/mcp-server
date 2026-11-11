@@ -127,7 +127,7 @@ The hosted connector serves the free tools only and takes no key. Five free tool
 | `ud_get_name_history` | Web history of one name in bands | Investor key |
 | `ud_get_name_value` | Stored value estimate of one name and its last 20 estimates | member key |
 | `ud_appraise_name` | Runs the appraisal of one stored name when its estimate is missing | Investor key |
-| `ud_get_name_comps` | Similar-sales aggregate of one name and the endings its word sold on | free |
+| `ud_get_name_comps` | Similar-sales aggregate of one name and how many endings its word sold on | free |
 | `ud_get_name_auction` | Open auction of one name, if any | free |
 | `ud_resolve_word` | Turns what a caller typed into the catalog word it names | free |
 | `ud_list_word_categories` | Catalog's word categories, by name | free |

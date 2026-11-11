@@ -3430,8 +3430,8 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_name_comps",
         "operationId": "get_name_comps",
-        "title": "Similar-sales aggregate of one name and the endings its word sold on",
-        "description": "The similar-sales aggregate of one name and the endings its word sold on. Use it when someone asks what similar names sold for, or on which endings the word sold. Pass `name` (such as get.plumbing).",
+        "title": "Similar-sales aggregate of one name and how many endings its word sold on",
+        "description": "The similar-sales aggregate of one name and how many endings its word sold on. Use it when someone asks what similar names sold for, or on how many endings the word sold. Pass `name` (such as get.plumbing).",
         "tier": "free",
         "plan": null,
         "metered": null,
