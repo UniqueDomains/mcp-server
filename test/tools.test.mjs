@@ -202,3 +202,15 @@ test('the profiles and plans select the expected sets', () => {
 test('the generated files match the installed SDK', () => {
     execFileSync(process.execPath, [join(ROOT, 'scripts', 'generate.mjs'), '--check'], { cwd: ROOT, stdio: 'pipe' });
 });
+
+// The three answers the directory fix round's reviewers read as wrong (2026-11-11): two were right by decision, and the
+// description now says why, so a reviewer running the tool reads the answer it gets.
+test('the editions and providers descriptions explain the answers that read as wrong', () => {
+    const edition = TOOLS.find((tool) => tool.operationId === 'get_edition').description;
+    // A founders' read of a day before 2026-11-10 answers the investors' edition (the API's D21 rule).
+    assert.match(edition, /Before 2026-11-10[^.]*investors' edition[^.]*`investor`/u);
+    const providers = TOOLS.find((tool) => tool.operationId === 'get_meta_providers').description;
+    // The guarded venue is named on the auction answers only (decision 44, letter 1A): the list never claims all of them.
+    assert.doesNotMatch(providers, /every (?:registrar, )?auction venue|seven/iu);
+    assert.match(providers, /may be one this list leaves out/u);
+});

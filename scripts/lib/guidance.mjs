@@ -274,7 +274,10 @@ export const GUIDANCE = {
         // 2026-11-10: a day the founders' page has an edition of its own (some earlier days answer the investors').
         examples: { persona: 'founder', date: '2026-11-10' },
         summary: 'One dated daily edition of Business Ideas or Trending Domains: founders read the first, investors the second.',
-        use: "Use it when someone asks about a past day's edition.",
+        // The one limit an assistant must know (2026-11-11): a founders' read of 2026-11-05 answered the investors'
+        // edition and read as a wrong answer. Days before 2026-11-10 hold one edition, written for investors, and the
+        // founders' page reads it with the founder ratings (the API's D21 rule).
+        use: "Use it when someone asks about a past day's edition. Before 2026-11-10 a day may hold the investors' edition only, which founders read too: the answer then says `investor`.",
     },
 
     /* ---------- The agenda ---------- */
@@ -306,7 +309,9 @@ export const GUIDANCE = {
         use: 'Use it when a trademark answer names a class number and someone needs what it covers.',
     },
     get_meta_providers: {
-        use: 'Use it when someone needs every registrar, auction venue and parking service an answer may name.',
+        // Not "every auction venue" (2026-11-11): one venue is named on the auction answers only (the platform's
+        // decision 44, letter 1A), so this list is shorter than the venues an auction row may carry.
+        use: 'Use it when someone needs the registrars, auction venues and parking services an answer may name. An auction answer names its own venue on each row, which may be one this list leaves out.',
     },
 
     /* ---------- The member key ---------- */
