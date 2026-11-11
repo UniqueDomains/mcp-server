@@ -5574,7 +5574,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_get_word_endings",
         "operationId": "get_word_endings",
         "title": "A word's endings as stored on the latest day",
-        "description": "A word's endings as stored on the latest day: counts, the key endings and the open names per ending. Use it when someone has a word and asks which endings are still open for it, such as harbor.ai or harbor.io. Pass `word` (such as harbor); the other inputs are optional.",
+        "description": "A word's endings as stored on the latest day: counts, the key endings and the open names per ending. Use it when someone has a word and asks which endings are still open for it, such as harbor.ai or harbor.io. A word not counted yet answers null counts, not zeros. Pass `word` (such as harbor); the other inputs are optional.",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -5610,21 +5610,28 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "byGroup": {
-                            "type": "object",
-                            "properties": {
-                                "scanned": {
-                                    "type": "integer"
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "scanned": {
+                                            "type": "integer"
+                                        },
+                                        "taken": {
+                                            "type": "integer"
+                                        },
+                                        "available": {
+                                            "type": "integer"
+                                        },
+                                        "forSale": {
+                                            "type": "integer"
+                                        }
+                                    }
                                 },
-                                "taken": {
-                                    "type": "integer"
-                                },
-                                "available": {
-                                    "type": "integer"
-                                },
-                                "forSale": {
-                                    "type": "integer"
+                                {
+                                    "type": "null"
                                 }
-                            }
+                            ]
                         },
                         "keyEndings": {
                             "type": "array",
@@ -5658,11 +5665,18 @@ export const TOOLS: readonly ToolDefinition[] = [
                             }
                         },
                         "openByEnding": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "integer"
-                            },
-                            "description": "`{ ending: count }`."
+                            "description": "`{ ending: count }`.",
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "integer"
+                                    }
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
                         }
                     }
                 },

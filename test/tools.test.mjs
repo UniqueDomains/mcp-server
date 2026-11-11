@@ -214,3 +214,18 @@ test('the editions and providers descriptions explain the answers that read as w
     assert.doesNotMatch(providers, /every (?:registrar, )?auction venue|seven/iu);
     assert.match(providers, /may be one this list leaves out/u);
 });
+
+// Decision B of 2026-11-11: the API answers a word with no endings count as null, not zeros; the declared schema takes
+// it now, so a validating client accepts the answer before the SDK's document says so.
+test('the word endings tool declares null counts and says so', async () => {
+    const tool = TOOLS.find((entry) => entry.operationId === 'get_word_endings');
+    const { byGroup, openByEnding } = tool.outputSchema.properties.data.properties;
+    for (const field of [byGroup, openByEnding]) assert.ok(field.anyOf.some((branch) => branch.type === 'null'), JSON.stringify(field));
+    assert.equal(byGroup.anyOf[0].type, 'object');
+    assert.match(tool.description, /not counted yet answers null counts, not zeros/u);
+
+    const { widenAheadOfSdk } = await import('../scripts/lib/tools.mjs');
+    const already = { properties: { byGroup: { anyOf: [{ type: 'object' }, { type: 'null' }] }, openByEnding: { type: 'null' } } };
+    assert.deepEqual(widenAheadOfSdk('get_word_endings', already), already, 'a no-op once the document is nullable');
+    assert.throws(() => widenAheadOfSdk('get_word_endings', { properties: {} }), /no `byGroup` to widen/u);
+});

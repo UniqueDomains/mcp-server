@@ -299,6 +299,34 @@ const linksSchema = () => ({
     },
 });
 
+/**
+ * Answer fields the API makes nullable before the SDK's document says so, per operation: the server declares them
+ * nullable now, so a validating client accepts the new answer whichever of the platform, the SDK and this server ships
+ * first. `get_word_endings`: a word with no endings count yet answers `byGroup` and `openByEnding` null, not zeros
+ * (2026-11-11, decision B). A field the document already makes nullable is left as it is, so the entry is a no-op once
+ * the SDK ships it and can then go.
+ */
+export const NULLABLE_AHEAD_OF_SDK = {
+    get_word_endings: ['byGroup', 'openByEnding'],
+};
+
+const acceptsNull = (schema) => schema?.type === 'null' || (Array.isArray(schema?.anyOf) && schema.anyOf.some(acceptsNull));
+
+/** `data`'s fields named in `NULLABLE_AHEAD_OF_SDK`, each widened to also accept null. */
+export const widenAheadOfSdk = (operationId, data) => {
+    const names = NULLABLE_AHEAD_OF_SDK[operationId] ?? [];
+    if (names.length === 0 || !data?.properties) return data;
+    const properties = { ...data.properties };
+    for (const name of names) {
+        const field = properties[name];
+        if (!field) throw new Error(`${operationId}: no \`${name}\` to widen`);
+        if (acceptsNull(field)) continue;
+        const { description, ...shape } = field;
+        properties[name] = { ...(description ? { description } : {}), anyOf: [shape, { type: 'null' }] };
+    }
+    return { ...data, properties };
+};
+
 /** The output schema of one operation, as the local profile answers it (the hosted profile drops two links at run time). */
 export const outputSchemaOf = (operationId, document) => {
     const operation = findOperation(operationId, document);
@@ -311,7 +339,7 @@ export const outputSchemaOf = (operationId, document) => {
         return target;
     };
     const relaxed = relaxSchema(schema, resolve, { dropKeyed: operation['x-tier'] === 'free' });
-    const data = relaxed.properties?.data ?? {};
+    const data = widenAheadOfSdk(operationId, relaxed.properties?.data ?? {});
     const links = relaxSchema(linksSchema(), resolve);
     const meta = relaxed.properties?.meta ?? { type: 'object' };
     return {

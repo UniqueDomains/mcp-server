@@ -90,7 +90,8 @@ export const GUIDANCE = {
     },
     get_word_endings: {
         summary: "A word's endings as stored on the latest day: counts, the key endings and the open names per ending.",
-        use: 'Use it when someone has a word and asks which endings are still open for it, such as harbor.ai or harbor.io.',
+        // The one limit (2026-11-11, decision B): a word not counted yet answers null, never zeros that read as "no names".
+        use: 'Use it when someone has a word and asks which endings are still open for it, such as harbor.ai or harbor.io. A word not counted yet answers null counts, not zeros.',
     },
     list_word_names: {
         use: 'Use it when someone wants every catalog name built on one word; it answers one page at a time.',
