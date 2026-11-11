@@ -244,3 +244,17 @@ test('the API unreachable: a sentence, not a crash', async () => {
     assert.equal(result.content[0].text, 'The Unique Domains API did not answer. Try again in a minute.');
     await client.close();
 });
+
+// The directory quality audit of 2026-11-11 (Gaetan's 3A): the hosted `limit: 5000` was refused "from 1 to 100" beside
+// a schema that says 20, and a missing `name` repeated the API's status code and problem code.
+test('a refusal repeats the bound and the words the tool shows, not the API document', async () => {
+    const { client } = await connect({ UD_MCP_PROFILE: 'hosted' });
+    await client.listTools();
+    const limit = await client.callTool({ name: 'ud_list_domains', arguments: { limit: 5000 } });
+    assert.equal(limit.isError, true);
+    assert.match(limit.content[0].text, /`limit` must be a whole number from 1 to 20/u);
+    const missing = await client.callTool({ name: 'ud_get_name', arguments: {} });
+    assert.match(missing.content[0].text, /^`name` is required: A full domain name/u);
+    assert.doesNotMatch(missing.content[0].text, /validation_failed|\b400\b/u);
+    await client.close();
+});

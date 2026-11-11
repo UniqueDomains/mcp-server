@@ -87,8 +87,18 @@ const readBodyProperty = (property: BodyProperty, raw: unknown): JsonValue => {
 const joinCommaList = (parameter: OperationParameter, raw: unknown): unknown =>
     Array.isArray(raw) && parameter.type === 'string' && /^comma/iu.test(parameter.description) && raw.every((item) => typeof item === 'string' || typeof item === 'number') ? raw.join(',') : raw;
 
+/**
+ * How the caller sees the inputs, so a refusal repeats what the tool's schema says rather than the API document: the
+ * descriptions in a tool user's words (`scripts/lib/guidance.mjs`) and, without a key, `limit`'s keyless bound (the
+ * directory quality audit of 2026-11-11: `limit: 5000` was refused "from 1 to 100" beside a schema that says 20).
+ */
+export type InputView = {
+    readonly descriptions?: Readonly<Record<string, string>>;
+    readonly limitMaximum?: number;
+};
+
 /** @boundary `args` are the tool call's arguments as the client sent them. */
-export const splitInput = (operation: OperationDefinition, args: Readonly<Record<string, unknown>> | undefined): SplitInput => {
+export const splitInput = (operation: OperationDefinition, args: Readonly<Record<string, unknown>> | undefined, view: InputView = {}): SplitInput => {
     const given = args ?? {};
     const known = new Set([...operation.parameters.map((parameter) => parameter.name), ...(operation.body?.properties.map((property) => property.name) ?? [])]);
     const unknown = Object.keys(given).filter((key) => !known.has(key));
@@ -101,10 +111,11 @@ export const splitInput = (operation: OperationDefinition, args: Readonly<Record
 
     const path: Record<string, string | number> = {};
     const query: Record<string, string | number | boolean> = {};
-    for (const parameter of operation.parameters) {
+    for (const documented of operation.parameters) {
+        const parameter = documented.name === 'limit' && view.limitMaximum !== undefined ? { ...documented, maximum: view.limitMaximum } : documented;
         const raw = joinCommaList(parameter, given[parameter.name]);
         if (raw === undefined || raw === null) {
-            if (parameter.required) throw new InputError(`\`${parameter.name}\` is required: ${parameter.description}`);
+            if (parameter.required) throw new InputError(`\`${parameter.name}\` is required: ${view.descriptions?.[parameter.name] ?? parameter.description}`);
             continue;
         }
         const value = readScalar(parameter.name, parameter, raw);

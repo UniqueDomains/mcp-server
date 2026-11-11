@@ -325,6 +325,35 @@ export const GUIDANCE = {
 };
 
 /** The guidance of one operation; a missing entry fails the generation, so no tool ships without one. */
+/*----------------------------------
+- INPUT DESCRIPTIONS
+----------------------------------*/
+
+/**
+ * Input descriptions in a tool user's words, in place of the API document's where it speaks the API's language (an
+ * HTTP status and problem code, a route, an internal word) or says nothing a caller can use (the directory quality
+ * audit of 2026-11-11, Gaetan's 3A). `SHARED_INPUTS` holds an input every tool that takes it reads the same way;
+ * `INPUTS` an input of one operation. Like `use`, these reach the server here, not through an SDK release.
+ */
+export const SHARED_INPUTS = {
+    name: 'A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion.',
+};
+
+/** @type {Readonly<Record<string, Readonly<Record<string, string>>>>} */
+export const INPUTS = {
+    // The document's `shape` text names a grade, which the hosted connector drops whole, leaving the input bare.
+    list_domains: { shape: 'Comma list of word shapes: single, properNoun, acronym, twoWords, phrase. A proper noun is left out of an answer without a key.' },
+    list_domain_hacks: { shape: 'Comma list of word shapes: single, properNoun, acronym, twoWords, phrase. A proper noun is left out of an answer without a key.' },
+    list_trends: {
+        category: 'A trend category slug, as the trend categories list names it.',
+        lane: 'How the trend rises: `weekly` for a topic rising now, `yearly` for one rising over the year.',
+    },
+    list_words: { category: 'A word category slug, as the word categories list names it.' },
+};
+
+/** The description an input carries in the tool, or null to keep the API document's. */
+export const inputDescriptionOf = (operationId, name) => INPUTS[operationId]?.[name] ?? SHARED_INPUTS[name] ?? null;
+
 export const guidanceOf = (operationId) => {
     const entry = GUIDANCE[operationId];
     if (!entry) throw new Error(`${operationId}: no entry in scripts/lib/guidance.mjs`);

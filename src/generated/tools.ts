@@ -24,7 +24,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, lowercased, IDN as punycode. A bare word, a subdomain, an e-mail address or an unknown ending answers 400 `validation_failed` with `reason` and `suggestion`."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
                 },
                 "fields": {
                     "type": "string",
@@ -65,7 +65,8 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "The catalog stores the name."
                         },
                         "status": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Where the name stands for a buyer. A list row's stored status reads here as: `resell` is `for_sale` (`at_auction` at a drop-catch venue), `premium` is `free_premium`."
                         },
                         "lifecycle": {
                             "anyOf": [
@@ -1067,7 +1068,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, lowercased, IDN as punycode. A bare word, a subdomain, an e-mail address or an unknown ending answers 400 `validation_failed` with `reason` and `suggestion`."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
                 },
                 "fields": {
                     "type": "string",
@@ -1633,7 +1634,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, lowercased, IDN as punycode. A bare word, a subdomain, an e-mail address or an unknown ending answers 400 `validation_failed` with `reason` and `suggestion`."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
                 },
                 "fields": {
                     "type": "string",
@@ -1868,7 +1869,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, lowercased, IDN as punycode. A bare word, a subdomain, an e-mail address or an unknown ending answers 400 `validation_failed` with `reason` and `suggestion`."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
                 },
                 "fields": {
                     "type": "string",
@@ -2182,7 +2183,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, lowercased, IDN as punycode. A bare word, a subdomain, an e-mail address or an unknown ending answers 400 `validation_failed` with `reason` and `suggestion`."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
                 },
                 "fields": {
                     "type": "string",
@@ -2426,7 +2427,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, lowercased, IDN as punycode. A bare word, a subdomain, an e-mail address or an unknown ending answers 400 `validation_failed` with `reason` and `suggestion`."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
                 },
                 "fields": {
                     "type": "string",
@@ -2638,7 +2639,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, lowercased, IDN as punycode. A bare word, a subdomain, an e-mail address or an unknown ending answers 400 `validation_failed` with `reason` and `suggestion`."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
                 },
                 "types": {
                     "type": "string",
@@ -2864,7 +2865,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, lowercased, IDN as punycode. A bare word, a subdomain, an e-mail address or an unknown ending answers 400 `validation_failed` with `reason` and `suggestion`."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
                 },
                 "fields": {
                     "type": "string",
@@ -3075,7 +3076,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, lowercased, IDN as punycode. A bare word, a subdomain, an e-mail address or an unknown ending answers 400 `validation_failed` with `reason` and `suggestion`."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
                 },
                 "fields": {
                     "type": "string",
@@ -3258,7 +3259,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, lowercased, IDN as punycode. A bare word, a subdomain, an e-mail address or an unknown ending answers 400 `validation_failed` with `reason` and `suggestion`."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
                 },
                 "fields": {
                     "type": "string",
@@ -3441,7 +3442,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, lowercased, IDN as punycode. A bare word, a subdomain, an e-mail address or an unknown ending answers 400 `validation_failed` with `reason` and `suggestion`."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
                 },
                 "fields": {
                     "type": "string",
@@ -3619,7 +3620,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, lowercased, IDN as punycode. A bare word, a subdomain, an e-mail address or an unknown ending answers 400 `validation_failed` with `reason` and `suggestion`."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
                 },
                 "fields": {
                     "type": "string",
@@ -4845,7 +4846,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                 },
                 "category": {
                     "type": "string",
-                    "description": "A category slug (`GET /words/categories`)."
+                    "description": "A word category slug, as the word categories list names it."
                 },
                 "limit": {
                     "type": "integer",
@@ -7505,7 +7506,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                 },
                 "shape": {
                     "type": "string",
-                    "description": "Comma list of word shapes: single, properNoun, acronym, twoWords, phrase. `properNoun` is ignored on the free tier."
+                    "description": "Comma list of word shapes: single, properNoun, acronym, twoWords, phrase. A proper noun is left out of an answer without a key."
                 },
                 "style": {
                     "type": "string",
@@ -7591,7 +7592,8 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "status": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "The stored status of the row. One name's own answer groups it for a buyer: `resell` reads `for_sale` there, `premium` reads `free_premium`."
                             },
                             "price": {
                                 "description": "Price today, USD.",
@@ -8743,7 +8745,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                 },
                 "shape": {
                     "type": "string",
-                    "description": "Comma list of word shapes: single, properNoun, acronym, twoWords, phrase. `properNoun` is ignored on the free tier."
+                    "description": "Comma list of word shapes: single, properNoun, acronym, twoWords, phrase. A proper noun is left out of an answer without a key."
                 },
                 "style": {
                     "type": "string",
@@ -8821,7 +8823,8 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "type": "string"
                             },
                             "status": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "The stored status of the row. One name's own answer groups it for a buyer: `resell` reads `for_sale` there, `premium` reads `free_premium`."
                             },
                             "price": {
                                 "description": "Price today, USD.",
@@ -17471,7 +17474,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "category": {
                     "type": "string",
-                    "description": "A category slug (`GET /trends/categories`)."
+                    "description": "A trend category slug, as the trend categories list names it."
                 },
                 "lane": {
                     "type": "string",
@@ -17479,7 +17482,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "weekly",
                         "yearly"
                     ],
-                    "description": "The editions' lane the trend was drawn from."
+                    "description": "How the trend rises: `weekly` for a topic rising now, `yearly` for one rising over the year."
                 },
                 "since": {
                     "type": "string",
@@ -19461,10 +19464,12 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "string"
                         },
                         "trendCount": {
-                            "type": "integer"
+                            "type": "integer",
+                            "description": "Trends in the whole edition. `trends` lists at most 20, the ones the public page shows, so this count can be larger."
                         },
                         "nameCount": {
-                            "type": "integer"
+                            "type": "integer",
+                            "description": "Names in the whole edition; `openCount` of them are open here."
                         },
                         "openCount": {
                             "type": "integer"
@@ -19937,10 +19942,12 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "string"
                         },
                         "trendCount": {
-                            "type": "integer"
+                            "type": "integer",
+                            "description": "Trends in the whole edition. `trends` lists at most 20, the ones the public page shows, so this count can be larger."
                         },
                         "nameCount": {
-                            "type": "integer"
+                            "type": "integer",
+                            "description": "Names in the whole edition; `openCount` of them are open here."
                         },
                         "openCount": {
                             "type": "integer"

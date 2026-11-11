@@ -18,9 +18,9 @@ import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import type { Profile } from './config';
 import { CALL_TIMEOUT_MS, RETRY_AFTER_MAX_SECONDS } from './limits';
 import { isObject } from './json';
-import { PLAN_TALK, shapeAnswer, textLine } from './profile';
+import { KEYLESS_LIMIT_MAX, PLAN_TALK, shapeAnswer, textLine } from './profile';
 import type { ToolDefinition } from './tool';
-import { InputError, splitInput } from './validate';
+import { InputError, splitInput, type InputView } from './validate';
 
 export type CallContext = {
     readonly client: UniqueDomainsClient;
@@ -157,6 +157,16 @@ const isTimeout = (error: unknown): boolean => error instanceof Error && error.n
 
 /* ---------- The call ---------- */
 
+/** The inputs as the tool shows them: its own descriptions, and the keyless `limit` bound without a key. */
+const inputViewOf = (tool: ToolDefinition, keyless: boolean): InputView => {
+    const descriptions: Record<string, string> = {};
+    const properties = tool.inputSchema.properties;
+    if (isObject(properties)) {
+        for (const [name, schema] of Object.entries(properties)) if (isObject(schema) && typeof schema.description === 'string') descriptions[name] = schema.description;
+    }
+    return { descriptions, ...(keyless ? { limitMaximum: KEYLESS_LIMIT_MAX } : {}) };
+};
+
 const callOnce = (context: CallContext, operationId: OperationId, input: ReturnType<typeof splitInput>) => {
     const hasPath = Object.keys(input.path).length > 0;
     const hasQuery = Object.keys(input.query).length > 0;
@@ -186,7 +196,7 @@ export const runTool = async (context: CallContext, tool: ToolDefinition, args: 
 
     let input: ReturnType<typeof splitInput>;
     try {
-        input = splitInput(operation, args);
+        input = splitInput(operation, args, inputViewOf(tool, context.keyless));
     } catch (error) {
         if (error instanceof InputError) return errorResult(error.message);
         throw error;

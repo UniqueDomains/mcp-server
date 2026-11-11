@@ -2,6 +2,7 @@
   "name": "unique-domains",
   "version": "0.1.5",
   "description": "Look up domain names, TLDs, registrar prices, market totals, trends and events, from stored data.",
+  "contextFileName": "GEMINI.md",
   "mcpServers": {
     "uniquedomains": { "httpUrl": "https://mcp.unique.domains/mcp" }
   }

@@ -242,3 +242,26 @@ test('the plugin skill and the enums tool say what null and the venue list mean'
     const enums = TOOLS.find((tool) => tool.operationId === 'get_meta_enums').description;
     assert.match(enums, /may be one this list leaves out/u);
 });
+
+// The directory quality audit of 2026-11-11 (Gaetan's 3A): inputs in a tool user's words, every one of them described
+// on both profiles, and the answers' field descriptions that explain an edition's counts and the two status words.
+test('every input is described in plain words, on the hosted profile too', async () => {
+    const { inputSchemaFor } = await import('../dist/index.js');
+    for (const tool of TOOLS.filter((entry) => entry.hosted)) {
+        for (const [name, schema] of Object.entries(inputSchemaFor(tool, 'hosted', 'none').properties)) {
+            assert.ok(typeof schema.description === 'string' && schema.description.length > 0, `${tool.name}.${name}`);
+            // `fields` lists the answer's own key names (`lane` among them), which a caller passes back as they are.
+            const prose = name === 'fields' ? schema.description.replace(/^Comma-separated top-level keys to keep: .*$/u, '') : schema.description;
+            assert.doesNotMatch(prose, /validation_failed|\b400\b|\b(?:GET|POST) \/|\blanes?\b/u, `${tool.name}.${name}`);
+        }
+    }
+    const shape = TOOLS.find((tool) => tool.name === 'ud_list_domains');
+    assert.match(inputSchemaFor(shape, 'hosted', 'none').properties.shape.description, /^Comma list of word shapes/u);
+});
+
+test('the answers explain an edition\'s counts and the two status words', () => {
+    const data = (name) => TOOLS.find((tool) => tool.name === name).outputSchema.properties.data;
+    for (const name of ['ud_get_latest_edition', 'ud_get_edition']) assert.match(data(name).properties.trendCount.description, /lists at most 20/u);
+    assert.match(data('ud_get_name').properties.status.description, /`resell` is `for_sale`/u);
+    for (const name of ['ud_list_domains', 'ud_list_domain_hacks']) assert.match(data(name).items.properties.status.description, /`resell` reads `for_sale`/u);
+});

@@ -2,7 +2,7 @@
 - TOOL DEFINITIONS FROM THE API DOCUMENT
 ----------------------------------*/
 
-import { guidanceOf } from './guidance.mjs';
+import { guidanceOf, inputDescriptionOf } from './guidance.mjs';
 
 /**
  * Builds one MCP tool per operation the server exposes, from the SDK's operation table (parameters, tier, plan,
@@ -131,6 +131,8 @@ export const inputSchemaOf = (operation) => {
     const required = [];
     for (const parameter of operation.parameters) {
         properties[parameter.name] = parameterSchema(parameter);
+        const own = inputDescriptionOf(operation.id, parameter.name);
+        if (own) properties[parameter.name].description = own;
         if (parameter.required) required.push(parameter.name);
     }
     if (operation.body) {
@@ -312,6 +314,42 @@ export const NULLABLE_AHEAD_OF_SDK = {
 
 const acceptsNull = (schema) => schema?.type === 'null' || (Array.isArray(schema?.anyOf) && schema.anyOf.some(acceptsNull));
 
+const EDITION_COUNTS = {
+    trendCount: 'Trends in the whole edition. `trends` lists at most 20, the ones the public page shows, so this count can be larger.',
+    nameCount: 'Names in the whole edition; `openCount` of them are open here.',
+};
+const ROW_STATUS = 'The stored status of the row. One name\'s own answer groups it for a buyer: `resell` reads `for_sale` there, `premium` reads `free_premium`.';
+
+/**
+ * Field descriptions the platform's API document gains with the release that carries this server's 0.1.5 (the
+ * directory quality audit of 2026-11-11, Gaetan's 3A), copied word for word so the declared output schema explains
+ * the answer now: an edition's counts beside its public cut, and the two status vocabularies (`for_sale` on one name,
+ * `resell` on a list row). Applied to `data`'s properties, or to its items' for a list. Like `NULLABLE_AHEAD_OF_SDK`,
+ * a no-op once the SDK's document carries the same text, and removed with it.
+ */
+export const DESCRIBED_AHEAD_OF_SDK = {
+    get_latest_edition: EDITION_COUNTS,
+    get_edition: EDITION_COUNTS,
+    get_name: { status: 'Where the name stands for a buyer. A list row\'s stored status reads here as: `resell` is `for_sale` (`at_auction` at a drop-catch venue), `premium` is `free_premium`.' },
+    list_domains: { status: ROW_STATUS },
+    list_domain_hacks: { status: ROW_STATUS },
+};
+
+/** `data`'s fields (or its items' fields) named in `DESCRIBED_AHEAD_OF_SDK`, each given its description. */
+export const describeAheadOfSdk = (operationId, data) => {
+    const notes = DESCRIBED_AHEAD_OF_SDK[operationId];
+    if (!notes) return data;
+    const isList = !data?.properties && data?.items?.properties;
+    const target = isList ? data.items : data;
+    if (!target?.properties) throw new Error(`${operationId}: no fields to describe`);
+    const properties = { ...target.properties };
+    for (const [name, description] of Object.entries(notes)) {
+        if (!properties[name]) throw new Error(`${operationId}: no \`${name}\` to describe`);
+        properties[name] = { ...properties[name], description };
+    }
+    return isList ? { ...data, items: { ...data.items, properties } } : { ...data, properties };
+};
+
 /** `data`'s fields named in `NULLABLE_AHEAD_OF_SDK`, each widened to also accept null. */
 export const widenAheadOfSdk = (operationId, data) => {
     const names = NULLABLE_AHEAD_OF_SDK[operationId] ?? [];
@@ -339,7 +377,7 @@ export const outputSchemaOf = (operationId, document) => {
         return target;
     };
     const relaxed = relaxSchema(schema, resolve, { dropKeyed: operation['x-tier'] === 'free' });
-    const data = widenAheadOfSdk(operationId, relaxed.properties?.data ?? {});
+    const data = describeAheadOfSdk(operationId, widenAheadOfSdk(operationId, relaxed.properties?.data ?? {}));
     const links = relaxSchema(linksSchema(), resolve);
     const meta = relaxed.properties?.meta ?? { type: 'object' };
     return {

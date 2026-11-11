@@ -118,7 +118,14 @@ test('every server entry of the bundle is the hosted connector, with no command,
     }
     // Only Gemini and Devin declare the server inside their manifest; Claude Code and Grok read `.mcp.json`.
     for (const manifest of [claude, grok, cursor]) assert.equal('mcpServers' in manifest, false);
-    assert.equal('contextFileName' in gemini, false);
+});
+
+// Gaetan's 3A of 2026-11-11: Gemini gets the guidance Claude's plugin skill gives, from a context file at the root,
+// the skill's body word for word (its front matter is Claude's own), so one edit of the skill reaches both.
+test('the Gemini context file is the plugin skill without its front matter', () => {
+    assert.equal(gemini.contextFileName, 'GEMINI.md');
+    const skill = readFileSync(join(ROOT, 'plugin', 'skills', 'unique-domains', 'SKILL.md'), 'utf8');
+    assert.equal(readFileSync(join(ROOT, 'GEMINI.md'), 'utf8'), skill.split('---\n', 3)[2].replace(/^\n+/u, ''));
 });
 
 test('the skill names every hosted tool and no other, and holds no plan, price, score or ranking word', () => {

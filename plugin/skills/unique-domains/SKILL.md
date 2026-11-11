@@ -11,7 +11,7 @@ The Unique Domains tools (their names start with `ud_`) read a catalog that is u
 
 One domain name. Pass the full name with its ending, such as `get.plumbing`.
 
-- Is it open, taken or for sale, its price today when the record has one, when it drops: `ud_get_name`
+- Is it open, taken or for sale, its price today when the record has one, when it drops: `ud_get_name`. Its `status` groups a list row's stored status for a buyer: a row's `resell` reads `for_sale` here, and `premium` reads `free_premium`
 - Its registrar, when it was registered, when it expires, and its holder when the registry publishes one: `ud_get_name_registry`
 - Whether it points anywhere or is parked: `ud_get_name_dns`
 - What similar names sold for, as a count and a median, and on how many endings its word sold: `ud_get_name_comps`. Its `tier` says how close those sales are, from the same word to the wider market
@@ -66,7 +66,7 @@ Trends and name ideas.
 
 - Trends with their searches and growth: `ud_list_trends`. Narrow it with `category`, a slug taken from `ud_list_trend_categories`
 - One trend: `ud_get_trend` with a slug taken from the list
-- The latest edition's name ideas from trends: `ud_get_latest_edition` with `founder` (Business Ideas) or `investor` (Trending Domains). Say the edition's date
+- The latest edition's name ideas from trends: `ud_get_latest_edition` with `founder` (Business Ideas) or `investor` (Trending Domains). Say the edition's date. `trendCount` counts the whole edition, while `trends` lists at most 20, the ones the public page shows
 - A past day's edition: `ud_get_edition`
 
 The industry agenda. Pass a month as `YYYY-MM`.
