@@ -11,7 +11,7 @@ import { basename, dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { TOOLS } from '../dist/index.js';
-import { FIXED_CUT_OPERATIONS, FORBIDDEN_WORDS, PLAN_WORDS, bundlePlanTalkIn } from '../scripts/lib/tools.mjs';
+import { FIXED_CUT_OPERATIONS, FORBIDDEN_WORDS, PLAN_WORDS, RECORD_PHRASES, bundlePlanTalkIn, dollarAmountsIn } from '../scripts/lib/tools.mjs';
 import { DEVIN_PLUGIN_KEYS, HOSTED_MCP_URL } from '../scripts/lib/plugin.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -68,11 +68,15 @@ const SKILL = readFileSync(join(PLUGIN, 'skills', 'unique-domains', 'SKILL.md'),
 
 /**
  * No plan, price, key, score or ranking talk in one text of the bundle; a failure names the words it met. `figures`
- * lets the record's dollar figures through (Gaetan's "A" of 2026-11-12: the plugin README and the OpenAI sheet's
- * longDescription only).
+ * names the text when it is one of the two that carry the record's figures (Gaetan's "A" of 2026-11-12:
+ * `pluginReadme`, `longDescription`); its dollar amounts must then be exactly those of its own approved phrases, and
+ * every other text must carry no dollar amount at all.
  */
-const assertCleanText = (text, where, options) => {
-    assert.deepEqual(bundlePlanTalkIn(text, options), [], `${where}: plan, price or key talk`);
+const assertCleanText = (text, where, figures) => {
+    const phrases = figures === undefined ? [] : RECORD_PHRASES[figures];
+    for (const phrase of phrases) assert.ok(text.includes(phrase), `${where}: carries "${phrase}"`);
+    assert.deepEqual(dollarAmountsIn(text).sort(), phrases.flatMap(dollarAmountsIn).sort(), `${where}: its dollar amounts are those of its approved phrases`);
+    assert.deepEqual(bundlePlanTalkIn(text, { figures }), [], `${where}: plan, price or key talk`);
     assert.equal(PLAN_WORDS.test(text), false, `${where}: ${text.match(PLAN_WORDS)?.[0]}`);
     for (const word of FORBIDDEN_WORDS) assert.equal(word.test(text), false, `${where}: ${text.match(word)?.[0]}`);
 };
@@ -170,16 +174,22 @@ test('the plan, price and key guard refuses a plan pitch and lets ordinary words
 test('the two texts that carry the record\'s figures still refuse plan and price words (Gaetan\'s "A" of 2026-11-12)', () => {
     const readme = readFileSync(join(PLUGIN, 'README.md'), 'utf8');
     const { longDescription } = read('directories/openai/review.json');
-    for (const [where, text] of [['plugin/README.md', readme], ['review.json longDescription', longDescription]]) {
-        assert.ok(/\$\d/u.test(text), `${where} carries a figure`);
-        assert.deepEqual(bundlePlanTalkIn(text, { figures: true }), [], where);
-        for (const words of ['Choose a plan.', 'The Founder plan.', 'Investor members read more.', 'Billed per month.', 'See our pricing.', 'Unlimited calls from $19/mo.', 'Full access: 19 dollars monthly.', 'All 81 tools for $19 a month, or $190 a year.']) {
-            assert.notDeepEqual(bundlePlanTalkIn(`${text}\n\n${words}`, { figures: true }), [], `${where} + "${words}"`);
-        }
-        assert.notDeepEqual(bundlePlanTalkIn(text), [], `${where}: the amount entries still read its figures`);
+    const probes = [
+        'Choose a plan.', 'The Founder plan.', 'Investor members read more.', 'Billed per month.', 'See our pricing.',
+        'Unlimited calls from $19/mo.', 'Full access: 19 dollars monthly.', 'All 81 tools for $19 a month, or $190 a year.',
+        // An approved figure reused as a price, or a longer figure that starts with one (the review's M1).
+        'Full access for $19.99 a month.', 'Unlimited calls: $3.50/mo.', 'Pick a $19.99 plan.', 'All 81 tools for $28.04 a year.',
+        'Sold for $2,677,000.', 'Renewal at $19.995.', 'Sold with a median of $2,677,000.', 'The renewal went from $17.29 to $19.995.',
+    ];
+    for (const [where, text, figures] of [['plugin/README.md', readme, 'pluginReadme'], ['review.json longDescription', longDescription, 'longDescription']]) {
+        assert.deepEqual(bundlePlanTalkIn(text, { figures }), [], where);
+        for (const words of probes) assert.notDeepEqual(bundlePlanTalkIn(`${text}\n\n${words}`, { figures }), [], `${where} + "${words}"`);
+        // Without its phrases taken out, the text's own figures read as prices.
+        assert.notDeepEqual(bundlePlanTalkIn(text), [], `${where}: its figures read as prices without the exemption`);
     }
-    // The figures pass only there: any other text still refuses an amount.
-    assert.notDeepEqual(bundlePlanTalkIn('From $19 a month.'), []);
+    // One text's phrases do not pass in the other: the README carries the median only.
+    assert.notDeepEqual(bundlePlanTalkIn(`${readme}\n\nThe .com renewal went from $17.29 to $19.99.`, { figures: 'pluginReadme' }), []);
+    assert.throws(() => bundlePlanTalkIn(readme, { figures: 'skill' }), /No record phrases/u);
 });
 
 test('the plugin folder holds the files of the plan and meets Anthropic\'s limits', () => {
@@ -205,7 +215,7 @@ test('the plugin folder holds the files of the plan and meets Anthropic\'s limit
     const readme = readFileSync(join(PLUGIN, 'README.md'), 'utf8');
     assert.ok(readme.split(/\s+/u).filter(Boolean).length >= 40);
     assert.ok(readme.includes('https://mcp.unique.domains/mcp') && readme.includes('https://api.unique.domains'));
-    assertCleanText(readme, 'plugin/README.md', { figures: true });
+    assertCleanText(readme, 'plugin/README.md', 'pluginReadme');
 });
 
 test('the marketplace file lists the one plugin of ./plugin', () => {
@@ -216,7 +226,7 @@ test('the marketplace file lists the one plugin of ./plugin', () => {
     for (const [where, text] of Object.entries(texts)) assertCleanText(text, where);
     // The OpenAI sheet ships the same skill and is a listing text too (decision 4).
     const sheet = read('directories/openai/review.json');
-    for (const key of ['displayName', 'shortDescription', 'description', 'longDescription', 'releaseNotes', 'commerceDescription']) assertCleanText(sheet[key], `review.json ${key}`, key === 'longDescription' ? { figures: true } : undefined);
+    for (const key of ['displayName', 'shortDescription', 'description', 'longDescription', 'releaseNotes', 'commerceDescription']) assertCleanText(sheet[key], `review.json ${key}`, key === 'longDescription' ? 'longDescription' : undefined);
     for (const test of [...sheet.positiveTests, ...sheet.negativeTests]) assertCleanText([test.description, test.prompt, test.expected, test.reason ?? ''].join(' '), `review.json "${test.description}"`);
     assert.equal(marketplace.owner.name, 'Unique Domains');
     assert.equal(marketplace.plugins.length, 1);

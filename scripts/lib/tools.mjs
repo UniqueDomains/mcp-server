@@ -188,19 +188,26 @@ export const PLAN_WORDS = /\bpaid\b|\bsubscriptions?\b|\bkeyed\b|\bfree (?:tier|
  * names what it refuses, so a failing check says which word it met. It allows "launch plans", "registrar pricing",
  * "the events of a month" and the persona values `founder` and `investor` in lower case.
  *
- * Gaetan's "A" of 2026-11-12: the plugin README and the OpenAI sheet's `longDescription` carry the record's own
- * figures in the approved listing texts (get.plumbing's sales median, NameSilo's .com renewal change, the .agency
- * trap), so those two pass `{ figures: true }`: the figures of `RECORD_FIGURES` are taken out, then every entry runs,
- * so any other amount there ("$19/mo", "from $19 a month") is still refused. When a dated figure is corrected at a
- * submission (decision 2 of the listing texts file), this list follows.
+ * Gaetan's "A" of 2026-11-12: two texts carry the record's own dollar figures in the approved listing texts, the
+ * plugin README (get.plumbing's sales median) and the OpenAI sheet's `longDescription` (the same median, NameSilo's
+ * .com renewal change, the .agency trap). `RECORD_PHRASES` holds, per text, the exact phrases that carry them. With
+ * `{ figures: '<text>' }`, `bundlePlanTalkIn` takes out that text's phrases only, and only where no further digit
+ * follows (so "$2,677,000" or "$19.995" stays a price), then runs every entry on what is left: a price that reuses an
+ * approved figure elsewhere ("$19.99 a month", "$3.50/mo") is still refused. When a dated figure is corrected at a
+ * submission (decision 2 of the listing texts file), the phrase follows.
  */
-export const RECORD_FIGURES = ['$2,677', '$17.29', '$19.99', '$3.50', '$28.04'];
+export const RECORD_PHRASES = {
+    pluginReadme: ['a median of $2,677'],
+    longDescription: ['a median of $2,677', 'from $17.29 to $19.99', 'at $3.50 the first year and $28.04 a year after'],
+};
+
+/** The dollar amounts a text carries, such as `$2,677` or `$28.04`, in order. */
+export const dollarAmountsIn = (text) => text.match(/\$\s?\d[\d,]*(?:\.\d+)?/gu) ?? [];
 
 export const BUNDLE_PLAN_TALK = [
     { pattern: /\$\s?\d[\d.,]*|\b\d+(?:[.,]\d+)?\s?(?:USD|EUR|dollars?)\b/u, label: 'a price' },
     // "a month" alone is a calendar month in these texts ("the events of a month"); after an amount it is a price.
-    { pattern: /\b\d[\d.,]*\s*(?:USD|EUR|dollars?)?\s*(?:a|\/)\s*(?:month|year)\b/iu, label: 'a price per month' },
-    { pattern: /\bper (?:month|year)\b|\bmonthly (?:fee|price|plan)\b/iu, label: 'a price per month' },
+    { pattern: /\b\d[\d.,]*\s*(?:USD|EUR|dollars?)?\s*(?:a|\/)\s*(?:month|year)\b|\bper (?:month|year)\b|\bmonthly (?:fee|price|plan)\b/iu, label: 'a price per month' },
     { pattern: /(?<!registrar )\bpricing\b/iu, label: 'pricing' },
     { pattern: /UD_API_KEY|ud_live_/u, label: 'a key or its variable' },
     { pattern: /\b(?:api|member|a|your) keys?\b/iu, label: 'a key' },
@@ -212,12 +219,17 @@ export const BUNDLE_PLAN_TALK = [
     { pattern: /\b(?:a|our|your|the|paid|free|each|every|any) plans?\b/iu, label: 'a plan' },
 ];
 
+/** A literal phrase as a pattern that matches only where no further digit follows it. */
+const phrasePattern = (phrase) => new RegExp(`${phrase.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&')}(?![\\d]|[.,]\\d)`, 'gu');
+
 /**
  * The matches of `BUNDLE_PLAN_TALK` in a text, each as `label ("words met")`; empty when the text is clean. With
- * `{ figures: true }` the record's figures (`RECORD_FIGURES`) are taken out first (the two texts that carry them).
+ * `{ figures: '<text>' }` (a key of `RECORD_PHRASES`), that text's approved phrases are taken out first.
  */
-export const bundlePlanTalkIn = (text, { figures = false } = {}) => {
-    const read = figures ? RECORD_FIGURES.reduce((rest, figure) => rest.split(figure).join('the figure'), text) : text;
+export const bundlePlanTalkIn = (text, { figures } = {}) => {
+    if (figures !== undefined && !Object.hasOwn(RECORD_PHRASES, figures)) throw new Error(`No record phrases for "${figures}"`);
+    const phrases = figures === undefined ? [] : RECORD_PHRASES[figures];
+    const read = phrases.reduce((rest, phrase) => rest.replace(phrasePattern(phrase), 'the figure'), text);
     return BUNDLE_PLAN_TALK.flatMap(({ pattern, label }) => {
         const match = read.match(pattern);
         return match ? [`${label} ("${match[0]}")`] : [];
