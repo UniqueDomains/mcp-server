@@ -173,7 +173,7 @@ test('the two texts that carry the record\'s figures still refuse plan and price
     for (const [where, text] of [['plugin/README.md', readme], ['review.json longDescription', longDescription]]) {
         assert.ok(/\$\d/u.test(text), `${where} carries a figure`);
         assert.deepEqual(bundlePlanTalkIn(text, { figures: true }), [], where);
-        for (const words of ['Choose a plan.', 'The Founder plan.', 'Investor members read more.', 'Billed per month.', 'See our pricing.']) {
+        for (const words of ['Choose a plan.', 'The Founder plan.', 'Investor members read more.', 'Billed per month.', 'See our pricing.', 'Unlimited calls from $19/mo.', 'Full access: 19 dollars monthly.', 'All 81 tools for $19 a month, or $190 a year.']) {
             assert.notDeepEqual(bundlePlanTalkIn(`${text}\n\n${words}`, { figures: true }), [], `${where} + "${words}"`);
         }
         assert.notDeepEqual(bundlePlanTalkIn(text), [], `${where}: the amount entries still read its figures`);

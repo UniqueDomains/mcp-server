@@ -188,15 +188,18 @@ export const PLAN_WORDS = /\bpaid\b|\bsubscriptions?\b|\bkeyed\b|\bfree (?:tier|
  * names what it refuses, so a failing check says which word it met. It allows "launch plans", "registrar pricing",
  * "the events of a month" and the persona values `founder` and `investor` in lower case.
  *
- * An entry marked `amount` refuses a dollar figure. Gaetan's "A" of 2026-11-12: the plugin README and the OpenAI
- * sheet's `longDescription` carry the record's own figures (a sales median, a renewal price) in the approved listing
- * texts, so those two pass `{ figures: true }` and skip the amount entries only; every plan, price and key word is
- * still refused there, and every other text keeps the amount entries too.
+ * Gaetan's "A" of 2026-11-12: the plugin README and the OpenAI sheet's `longDescription` carry the record's own
+ * figures in the approved listing texts (get.plumbing's sales median, NameSilo's .com renewal change, the .agency
+ * trap), so those two pass `{ figures: true }`: the figures of `RECORD_FIGURES` are taken out, then every entry runs,
+ * so any other amount there ("$19/mo", "from $19 a month") is still refused. When a dated figure is corrected at a
+ * submission (decision 2 of the listing texts file), this list follows.
  */
+export const RECORD_FIGURES = ['$2,677', '$17.29', '$19.99', '$3.50', '$28.04'];
+
 export const BUNDLE_PLAN_TALK = [
-    { pattern: /\$\s?\d[\d.,]*|\b\d+(?:[.,]\d+)?\s?(?:USD|EUR|dollars?)\b/u, label: 'a price', amount: true },
+    { pattern: /\$\s?\d[\d.,]*|\b\d+(?:[.,]\d+)?\s?(?:USD|EUR|dollars?)\b/u, label: 'a price' },
     // "a month" alone is a calendar month in these texts ("the events of a month"); after an amount it is a price.
-    { pattern: /\b\d[\d.,]*\s*(?:USD|EUR|dollars?)?\s*(?:a|\/)\s*(?:month|year)\b/iu, label: 'a price per month', amount: true },
+    { pattern: /\b\d[\d.,]*\s*(?:USD|EUR|dollars?)?\s*(?:a|\/)\s*(?:month|year)\b/iu, label: 'a price per month' },
     { pattern: /\bper (?:month|year)\b|\bmonthly (?:fee|price|plan)\b/iu, label: 'a price per month' },
     { pattern: /(?<!registrar )\bpricing\b/iu, label: 'pricing' },
     { pattern: /UD_API_KEY|ud_live_/u, label: 'a key or its variable' },
@@ -211,13 +214,15 @@ export const BUNDLE_PLAN_TALK = [
 
 /**
  * The matches of `BUNDLE_PLAN_TALK` in a text, each as `label ("words met")`; empty when the text is clean. With
- * `{ figures: true }` the amount entries are skipped (the two texts that carry the record's figures).
+ * `{ figures: true }` the record's figures (`RECORD_FIGURES`) are taken out first (the two texts that carry them).
  */
-export const bundlePlanTalkIn = (text, { figures = false } = {}) =>
-    BUNDLE_PLAN_TALK.filter((entry) => !(figures && entry.amount)).flatMap(({ pattern, label }) => {
-        const match = text.match(pattern);
+export const bundlePlanTalkIn = (text, { figures = false } = {}) => {
+    const read = figures ? RECORD_FIGURES.reduce((rest, figure) => rest.split(figure).join('the figure'), text) : text;
+    return BUNDLE_PLAN_TALK.flatMap(({ pattern, label }) => {
+        const match = read.match(pattern);
         return match ? [`${label} ("${match[0]}")`] : [];
     });
+};
 
 /**
  * The answer's schema as an MCP `outputSchema`: references inlined, OpenAPI keywords dropped, `oneOf` read as
