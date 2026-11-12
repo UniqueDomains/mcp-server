@@ -1,6 +1,6 @@
 {
   "name": "uniquedomains",
-  "description": "One plugin from Unique Domains: 51 read-only tools over a daily record of 37 million domain names, and a skill that tells your assistant which tool answers which question.",
+  "description": "One plugin from Unique.domains: 51 read-only tools over a daily record of 37 million domain names, and a skill that tells your assistant which tool answers which question.",
   "owner": { "name": "Unique Domains", "url": "https://unique.domains" },
   "plugins": [
     {

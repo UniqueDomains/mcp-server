@@ -1,6 +1,6 @@
-# Unique Domains MCP server
+# Unique.domains MCP server
 
-Without a tool, an assistant can only guess whether a domain name is taken. This server gives it the record: 37 million one-word names on 505 endings (TLDs), read every day and stored with their dates.
+Without a tool, an assistant can only guess whether a domain name is taken. This server gives it the record: 34 million one-word names on 505 endings (TLDs), read every day, each with its dates.
 
 - Hosted, nothing to install, no key: `https://mcp.unique.domains/mcp` (51 tools)
 - On your machine: `npx -y @uniquedomains/mcp-server` (56 tools without a key)
@@ -29,7 +29,7 @@ What the tools read:
 - **The market:** [over 200,000 auctions closing a day](https://unique.domains/auctions) across seven venues, and [12 months of sales](https://unique.domains/sales) as totals.
 - **Trends and the agenda:** the naming trends of two daily editions, [Trending Domains](https://unique.domains/trending-domains) and [Business Ideas](https://unique.domains/business-ideas), and [the month's launch dates](https://unique.domains/agenda).
 
-Doing this yourself means a WHOIS and RDAP client for every registry, nine price readers and seven auction feeds, run every day. Every tool here only reads stored data, as of its day. None registers, buys or changes a name.
+No tool here registers, buys or changes a name. An answer carries its day where the record has one, so your assistant can say how fresh it is.
 
 Three questions to try:
 

@@ -26,7 +26,7 @@ const pkg = read('package.json');
  */
 const ONE_LINER = 'Ask if a domain name is taken, what nine registrars charge for it and what similar names sold for. 51 read-only tools over a daily record of 37 million names. No account, no key, no sign-in.';
 const GEMINI_LINE = 'Domain status, WHOIS records, nine registrars\' daily prices, renewal traps and auctions. No key.';
-const MARKETPLACE_LINE = 'One plugin from Unique Domains: 51 read-only tools over a daily record of 37 million domain names, and a skill that tells your assistant which tool answers which question.';
+const MARKETPLACE_LINE = 'One plugin from Unique.domains: 51 read-only tools over a daily record of 37 million domain names, and a skill that tells your assistant which tool answers which question.';
 const GROK_LINE = 'Ask if a domain name is taken, what nine registrars charge for it and what similar names sold for. 51 read-only tools over a daily record of 37 million names. Hosted: nothing to install, no sign-in, no key.';
 const DEVIN_SHORT_LINE = 'Is that name taken? What does it cost?';
 const DEVIN_LINE = 'Check if a domain name is taken, compare nine registrars\' prices and spot renewal traps, from a daily record of 37 million names';
