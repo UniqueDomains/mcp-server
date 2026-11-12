@@ -32,7 +32,7 @@ There is nothing to set up afterwards. Ask one of the questions under "Try it" a
 - The market: domain sales and today's auctions as totals by ending, by length and by auction site, plus a daily sample of single-word names at auction.
 - Trends and the agenda: naming trends with their dated editions, and the industry events and launch dates of a month.
 
-Every answer is stored data, and it carries its day where the record has one. Most answers also link to the public page about the subject on unique.domains.
+Most answers also link to the public page about the subject on unique.domains.
 
 The tools only read. None registers, buys or changes a name.
 

@@ -89,8 +89,8 @@ test('the five manifests agree on the name, the version, the repository and the 
     for (const manifest of [claude, grok, cursor]) assert.equal(manifest.license, 'MIT');
     for (const manifest of [claude, grok, devin]) assert.equal(manifest.homepage, 'https://unique.domains/api/mcp');
     assert.deepEqual(claude.author, grok.author);
-    assert.equal(claude.displayName, 'Unique Domains');
-    assert.equal(devin.displayName, 'Unique Domains');
+    assert.equal(claude.displayName, 'Unique.domains');
+    assert.equal(devin.displayName, 'Unique.domains');
 
     assert.equal(claude.description, ONE_LINER);
     assert.equal(grok.description, GROK_LINE);
@@ -228,7 +228,7 @@ test('the marketplace file lists the one plugin of ./plugin', () => {
     const sheet = read('directories/openai/review.json');
     for (const key of ['displayName', 'shortDescription', 'description', 'longDescription', 'releaseNotes', 'commerceDescription']) assertCleanText(sheet[key], `review.json ${key}`, key === 'longDescription' ? 'longDescription' : undefined);
     for (const test of [...sheet.positiveTests, ...sheet.negativeTests]) assertCleanText([test.description, test.prompt, test.expected, test.reason ?? ''].join(' '), `review.json "${test.description}"`);
-    assert.equal(marketplace.owner.name, 'Unique Domains');
+    assert.equal(marketplace.owner.name, 'Unique.domains');
     assert.equal(marketplace.plugins.length, 1);
     assert.equal(marketplace.plugins[0].name, claude.name);
     assert.equal(marketplace.plugins[0].source, './plugin');

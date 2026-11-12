@@ -41,7 +41,7 @@ Three questions to try:
 
 ### Claude
 
-In Claude (web or Desktop), open Customize, then Connectors, click "+ Add", then "Add custom connector", name it Unique Domains and paste `https://mcp.unique.domains/mcp`. No sign-in is needed. On a Team or Enterprise plan, an Owner adds it in Organization settings, then Connectors, and members connect it from Customize, then Connectors.
+In Claude (web or Desktop), open Customize, then Connectors, click "+ Add", then "Add custom connector", name it Unique.domains and paste `https://mcp.unique.domains/mcp`. No sign-in is needed. On a Team or Enterprise plan, an Owner adds it in Organization settings, then Connectors, and members connect it from Customize, then Connectors.
 
 To run it on your machine instead, add this to Claude Desktop's `claude_desktop_config.json`:
 
@@ -95,7 +95,7 @@ Or in `.vscode/mcp.json`:
 
 ### ChatGPT
 
-Go to [chatgpt.com/plugins](https://chatgpt.com/plugins), select the plus button, then "Add custom MCP server". Name it Unique Domains, enter `https://mcp.unique.domains/mcp` as the server URL with no authentication, then "Create as a plugin". Install the plugin, then in a new conversation type `@` and pick it. Your account's or workspace's policies decide whether custom servers can be added.
+Go to [chatgpt.com/plugins](https://chatgpt.com/plugins), select the plus button, then "Add custom MCP server". Name it Unique.domains, enter `https://mcp.unique.domains/mcp` as the server URL with no authentication, then "Create as a plugin". Install the plugin, then in a new conversation type `@` and pick it. Your account's or workspace's policies decide whether custom servers can be added.
 
 ### Any other client
 
@@ -122,9 +122,9 @@ Three other tools read files of this repository. Grok Build reads `plugin/.grok-
 
 ## Free tools and a member key
 
-Without a key, the server answers what the Unique Domains website shows anyone: a name's status and registry record, an ending's facts, registrar prices, market aggregates, trends and the agenda.
+Without a key, the server answers what the Unique.domains website shows anyone: a name's status and registry record, an ending's facts, registrar prices, market aggregates, trends and the agenda.
 
-A member key adds the keyed tools of its plan, the Founder or the Investor plan. Create the key in Unique Domains under Settings, Account, API, then pass it to the server on your machine:
+A member key adds the keyed tools of its plan, the Founder or the Investor plan. Create the key in Unique.domains under Settings, Account, API, then pass it to the server on your machine:
 
 ```bash
 UD_API_KEY=ud_live_your_key npx -y @uniquedomains/mcp-server
@@ -138,14 +138,14 @@ The hosted connector serves the free tools only and takes no key. Five free tool
 
 - `structuredContent`: the API's `data`, `meta` and `links`, as the tool's output schema describes them.
 - `content`: one line for a reader (the name and its headline fact, or the row count and the first names), then the same JSON as text.
-- `links.details`: the public Unique Domains page about the subject, when there is one (hosted connector).
+- `links.details`: the public Unique.domains page about the subject, when there is one (hosted connector).
 - On the hosted connector, internal ids (catalog ids, row ids, UUIDs) are left out, times become their UTC day (an auction's deadline keeps its hour), and the stamps of when a figure was computed are dropped. The npm server and the API keep them.
 - A list answers 20 rows by default. When `meta.cursor` is set, pass it as `cursor` to read the next page.
 - A refusal is a sentence the assistant can act on: what was wrong, what is accepted, or when a limit resets.
 
 ## Privacy and security
 
-- **What the connector logs.** It passes each tool's input to the Unique Domains API, and the API's request log keeps one line per call for 12 months: the path, which holds the name or word asked about, with its time, its status and how long it took. A monthly job deletes older lines. The connector calls the API under its own name, so the API never sees your address or an account of yours. When your assistant runs on your own machine, it connects to the connector from your IP address. The connector's hosting providers see it, as they see the address behind any web request, and the connector does not store it. Section 8 of the [privacy policy](https://unique.domains/privacy#api-and-connector) says what the API keeps and why.
+- **What the connector logs.** It passes each tool's input to the Unique.domains API, and the API's request log keeps one line per call for 12 months: the path, which holds the name or word asked about, with its time, its status and how long it took. A monthly job deletes older lines. The connector calls the API under its own name, so the API never sees your address or an account of yours. When your assistant runs on your own machine, it connects to the connector from your IP address. The connector's hosting providers see it, as they see the address behind any web request, and the connector does not store it. Section 8 of the [privacy policy](https://unique.domains/privacy#api-and-connector) says what the API keeps and why.
 - **Registry records.** A name's registry answer repeats the registry's public record, which can include the holder's name or organization when the registry publishes it.
 - **Every origin is accepted.** `/mcp` answers any `Origin` with `Access-Control-Allow-Origin: *`. The server is public, needs no sign-in, holds no session and never serves a member key over HTTP, so checking the origin would protect nothing, and strict origin checks break some assistants' own clients.
 - **HTTPS only.** The hosted connector answers over HTTPS and sends `Strict-Transport-Security: max-age=31536000`.
