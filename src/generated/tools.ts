@@ -24,7 +24,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -1068,7 +1068,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -1634,7 +1634,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -1869,7 +1869,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -2183,7 +2183,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -2427,7 +2427,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -2639,7 +2639,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "types": {
                     "type": "string",
@@ -2865,7 +2865,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -3076,7 +3076,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -3259,7 +3259,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -3442,7 +3442,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -3620,7 +3620,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion."
+                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -7593,7 +7593,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "status": {
                                 "type": "string",
-                                "description": "The stored status of the row. One name's own answer groups it for a buyer: `resell` reads `for_sale` there, `premium` reads `free_premium`."
+                                "description": "The stored status of the row. One name's own answer groups it for a buyer: `resell` reads `for_sale` there (`at_auction` at a drop-catch venue), `premium` reads `free_premium`."
                             },
                             "price": {
                                 "description": "Price today, USD.",
@@ -8824,7 +8824,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "status": {
                                 "type": "string",
-                                "description": "The stored status of the row. One name's own answer groups it for a buyer: `resell` reads `for_sale` there, `premium` reads `free_premium`."
+                                "description": "The stored status of the row. One name's own answer groups it for a buyer: `resell` reads `for_sale` there (`at_auction` at a drop-catch venue), `premium` reads `free_premium`."
                             },
                             "price": {
                                 "description": "Price today, USD.",
@@ -9496,7 +9496,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                 },
                 "publicSet": {
                     "type": "boolean",
-                    "description": "`true`: the public set only (v1's `listing=public`)."
+                    "description": "`true`: only the endings with a public page on unique.domains."
                 },
                 "limit": {
                     "type": "integer",
@@ -12324,24 +12324,24 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "homepageUrl": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "description": "Outbound homepage, with the catalog's UTM tags."
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
                                     }
-                                ]
+                                ],
+                                "description": "The registrar's or venue's homepage, with no tracking query."
                             },
                             "siteUrl": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "description": "The same homepage untagged."
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
                                     }
-                                ]
+                                ],
+                                "description": "The same homepage as `homepageUrl`."
                             },
                             "logoUrl": {
                                 "anyOf": [
@@ -14324,24 +14324,24 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "homepageUrl": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "description": "Outbound homepage, with the catalog's UTM tags."
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
                                     }
-                                ]
+                                ],
+                                "description": "The registrar's or venue's homepage, with no tracking query."
                             },
                             "siteUrl": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "description": "The same homepage untagged."
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
                                     }
-                                ]
+                                ],
+                                "description": "The same homepage as `homepageUrl`."
                             },
                             "logoUrl": {
                                 "anyOf": [
@@ -14581,24 +14581,24 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "homepageUrl": {
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "description": "Outbound homepage, with the catalog's UTM tags."
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
                                 }
-                            ]
+                            ],
+                            "description": "The registrar's or venue's homepage, with no tracking query."
                         },
                         "siteUrl": {
                             "anyOf": [
                                 {
-                                    "type": "string",
-                                    "description": "The same homepage untagged."
+                                    "type": "string"
                                 },
                                 {
                                     "type": "null"
                                 }
-                            ]
+                            ],
+                            "description": "The same homepage as `homepageUrl`."
                         },
                         "logoUrl": {
                             "anyOf": [
@@ -19421,7 +19421,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_get_latest_edition",
         "operationId": "get_latest_edition",
         "title": "Latest daily edition of Business Ideas or Trending Domains",
-        "description": "The latest daily edition of Business Ideas or Trending Domains: trends with open names, for founders or for investors. Use it when someone wants today's name ideas from rising topics; it carries the edition's open names only. Pass `persona` (such as founder).",
+        "description": "The latest daily edition of Business Ideas or Trending Domains: trends with open names, for founders or for investors. Use it when someone wants today's name ideas from rising topics; it carries the edition's open names only, and at most 20 trends while `trendCount` counts the whole edition. Pass `persona` (such as founder).",
         "tier": "free",
         "plan": null,
         "metered": null,

@@ -252,11 +252,27 @@ test('every input is described in plain words, on the hosted profile too', async
             assert.ok(typeof schema.description === 'string' && schema.description.length > 0, `${tool.name}.${name}`);
             // `fields` lists the answer's own key names (`lane` among them), which a caller passes back as they are.
             const prose = name === 'fields' ? schema.description.replace(/^Comma-separated top-level keys to keep: .*$/u, '') : schema.description;
-            assert.doesNotMatch(prose, /validation_failed|\b400\b|\b(?:GET|POST) \/|\blanes?\b/u, `${tool.name}.${name}`);
+            assert.doesNotMatch(prose, /validation_failed|\b400\b|\b(?:GET|POST) \/|\blanes?\b|\bv1\b/u, `${tool.name}.${name}`);
         }
     }
     const shape = TOOLS.find((tool) => tool.name === 'ud_list_domains');
-    assert.match(inputSchemaFor(shape, 'hosted', 'none').properties.shape.description, /^Comma list of word shapes/u);
+    const hostedShape = inputSchemaFor(shape, 'hosted', 'none').properties.shape.description;
+    assert.match(hostedShape, /^Comma list of word shapes.* Proper nouns are left out here\.$/u);
+    // AF-3: the hosted connector takes no key, so its tool list never mentions one; the npm text keeps it.
+    assert.doesNotMatch(hostedShape, /\bkey\b/u);
+    assert.match(shape.inputSchema.properties.shape.description, /without a key\.$/u);
+});
+
+// AF-1 of the after-fix check of 2026-11-12: SDK 0.2.0's document still says three answers carry "UTM tags", the one
+// text a directory reviewer reads about the links 2A cleaned. Nothing the hosted connector lists may say it.
+test('no hosted tool names a tracking tag, in its description, inputs or answer schema', async () => {
+    const { inputSchemaFor, outputSchemaFor } = await import('../dist/index.js');
+    for (const tool of TOOLS.filter((entry) => entry.hosted)) {
+        const listed = JSON.stringify([tool.title, tool.description, inputSchemaFor(tool, 'hosted', 'none'), outputSchemaFor(tool, 'hosted')]);
+        assert.doesNotMatch(listed, /\bUTM\b|utm_/u, tool.name);
+    }
+    const venue = TOOLS.find((tool) => tool.name === 'ud_get_venue').outputSchema.properties.data.properties;
+    assert.equal(venue.homepageUrl.description, "The registrar's or venue's homepage, with no tracking query.");
 });
 
 test('the answers explain an edition\'s counts and the two status words', () => {

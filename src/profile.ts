@@ -64,6 +64,8 @@ export const inputSchemaFor = (tool: ToolDefinition, profile: Profile, plan: Key
             kept[name] = { ...schema, maximum: KEYLESS_LIMIT_MAX, description: KEYLESS_LIMIT_DESCRIPTION };
         } else if (profile === 'hosted' && name === 'fields' && isObject(schema) && typeof schema.description === 'string') {
             kept[name] = { ...schema, description: hostedFieldsDescription(tool.operationId, schema.description) };
+        } else if (profile === 'hosted' && isObject(schema) && typeof schema.description === 'string' && KEYLESS_SHAPE_CLAUSE.test(schema.description)) {
+            kept[name] = { ...schema, description: schema.description.replace(KEYLESS_SHAPE_CLAUSE, HOSTED_SHAPE_CLAUSE) };
         } else if (profile === 'hosted' && isObject(schema) && typeof schema.description === 'string' && WORD_ID_CLAUSE.test(schema.description)) {
             // "The catalog slug, the word, or `wrd_<id>`.": no hosted answer carries a `wrd_` id any more (fix round A2).
             kept[name] = { ...schema, description: schema.description.replace(WORD_ID_CLAUSE, ' or the word') };
@@ -220,6 +222,13 @@ const hostedDroppedTopKeys = (operationId: string): Set<string> => {
 };
 
 const WORD_ID_CLAUSE = /, the word, or `wrd_<id>`/u;
+
+/**
+ * The npm text of `shape` says a proper noun is left out "without a key"; the hosted connector takes no key, and the one
+ * mention of a key in its tool list read as a hint to pay (AF-3 of the after-fix check of 2026-11-12).
+ */
+const KEYLESS_SHAPE_CLAUSE = / A proper noun is left out of an answer without a key\./u;
+const HOSTED_SHAPE_CLAUSE = ' Proper nouns are left out here.';
 
 const FIELDS_LIST = /^(Comma-separated top-level keys to keep: )(.+)\.$/u;
 

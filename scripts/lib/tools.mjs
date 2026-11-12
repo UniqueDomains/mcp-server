@@ -318,7 +318,11 @@ const EDITION_COUNTS = {
     trendCount: 'Trends in the whole edition. `trends` lists at most 20, the ones the public page shows, so this count can be larger.',
     nameCount: 'Names in the whole edition; `openCount` of them are open here.',
 };
-const ROW_STATUS = 'The stored status of the row. One name\'s own answer groups it for a buyer: `resell` reads `for_sale` there, `premium` reads `free_premium`.';
+const HOMEPAGE_LINKS = {
+    homepageUrl: 'The registrar\'s or venue\'s homepage, with no tracking query.',
+    siteUrl: 'The same homepage as `homepageUrl`.',
+};
+const ROW_STATUS = 'The stored status of the row. One name\'s own answer groups it for a buyer: `resell` reads `for_sale` there (`at_auction` at a drop-catch venue), `premium` reads `free_premium`.';
 
 /**
  * Field descriptions the platform's API document gains with the release that carries this server's 0.1.5 (the
@@ -333,6 +337,10 @@ export const DESCRIBED_AHEAD_OF_SDK = {
     get_name: { status: 'Where the name stands for a buyer. A list row\'s stored status reads here as: `resell` is `for_sale` (`at_auction` at a drop-catch venue), `premium` is `free_premium`.' },
     list_domains: { status: ROW_STATUS },
     list_domain_hacks: { status: ROW_STATUS },
+    // SDK 0.2.0 says these links carry "the catalog's UTM tags"; the API strips the tag since 2A of 2026-11-11 (AF-1).
+    list_registrars: HOMEPAGE_LINKS,
+    list_venues: HOMEPAGE_LINKS,
+    get_venue: HOMEPAGE_LINKS,
 };
 
 /** `data`'s fields (or its items' fields) named in `DESCRIBED_AHEAD_OF_SDK`, each given its description. */
@@ -345,7 +353,11 @@ export const describeAheadOfSdk = (operationId, data) => {
     const properties = { ...target.properties };
     for (const [name, description] of Object.entries(notes)) {
         if (!properties[name]) throw new Error(`${operationId}: no \`${name}\` to describe`);
-        properties[name] = { ...properties[name], description };
+        // A nullable field arrives as `anyOf` with the document's description on its typed branch: that old sentence goes
+        // too, so the field says one thing (AF-1 of the after-fix check of 2026-11-12).
+        const { anyOf, ...field } = properties[name];
+        const branches = anyOf?.map(({ description: _old, ...branch }) => branch);
+        properties[name] = { ...field, ...(branches ? { anyOf: branches } : {}), description };
     }
     return isList ? { ...data, items: { ...data.items, properties } } : { ...data, properties };
 };

@@ -88,7 +88,7 @@ Claude Code asks you to confirm this repository as a marketplace, then opens the
 /plugin install unique-domains@uniquedomains
 ```
 
-Three other tools read files of this repository. Grok Build reads `plugin/.grok-plugin/plugin.json`, in the same folder. Gemini CLI reads `gemini-extension.json` at the root, which adds the hosted connector without the skill. For Devin, `npm run plugin:devin` builds the folder its marketplace takes.
+Three other tools read files of this repository. Grok Build reads `plugin/.grok-plugin/plugin.json`, in the same folder. Gemini CLI reads `gemini-extension.json` at the root, which adds the hosted connector and loads `GEMINI.md`, the skill's guidance, as its context file. For Devin, `npm run plugin:devin` builds the folder its marketplace takes.
 
 ## Free tools and a member key
 

@@ -121,6 +121,7 @@ export const createMcpServer = (prepared: PreparedServer, overrides: Partial<Pic
     const context: CallContext = {
         client: prepared.client,
         profile: prepared.config.profile,
+        plan: prepared.plan,
         keyless: isKeyless(prepared.config.profile, prepared.plan),
         keyWithoutPlan: prepared.config.apiKey !== null && prepared.plan === 'none',
         ...overrides,

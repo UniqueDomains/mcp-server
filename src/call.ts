@@ -18,13 +18,15 @@ import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import type { Profile } from './config';
 import { CALL_TIMEOUT_MS, RETRY_AFTER_MAX_SECONDS } from './limits';
 import { isObject } from './json';
-import { KEYLESS_LIMIT_MAX, PLAN_TALK, shapeAnswer, textLine } from './profile';
+import { inputSchemaFor, PLAN_TALK, shapeAnswer, textLine, type KeyPlan } from './profile';
 import type { ToolDefinition } from './tool';
 import { InputError, splitInput, type InputView } from './validate';
 
 export type CallContext = {
     readonly client: UniqueDomainsClient;
     readonly profile: Profile;
+    /** The key's plan (`none` without one): with the profile, it decides the input schema the caller was listed. */
+    readonly plan: KeyPlan;
     /** No key behind the calls (the hosted connector, or the npm server without a paid member key). */
     readonly keyless: boolean;
     /** A key was set, but it opens no plan (or its plan could not be read at start), so calls go out without it. */
@@ -157,14 +159,23 @@ const isTimeout = (error: unknown): boolean => error instanceof Error && error.n
 
 /* ---------- The call ---------- */
 
-/** The inputs as the tool shows them: its own descriptions, and the keyless `limit` bound without a key. */
-const inputViewOf = (tool: ToolDefinition, keyless: boolean): InputView => {
+/**
+ * The inputs as the caller was listed them (`inputSchemaFor`, the profile's own schema: AF-2 of the after-fix check of
+ * 2026-11-12, where the hosted `word` refusal still named a `wrd_` id its schema had dropped): their descriptions and
+ * `limit`'s bound.
+ */
+const inputViewOf = (tool: ToolDefinition, profile: Profile, plan: KeyPlan): InputView => {
     const descriptions: Record<string, string> = {};
-    const properties = tool.inputSchema.properties;
+    let limitMaximum: number | undefined;
+    const properties = inputSchemaFor(tool, profile, plan).properties;
     if (isObject(properties)) {
-        for (const [name, schema] of Object.entries(properties)) if (isObject(schema) && typeof schema.description === 'string') descriptions[name] = schema.description;
+        for (const [name, schema] of Object.entries(properties)) {
+            if (!isObject(schema)) continue;
+            if (typeof schema.description === 'string') descriptions[name] = schema.description;
+            if (name === 'limit' && typeof schema.maximum === 'number') limitMaximum = schema.maximum;
+        }
     }
-    return { descriptions, ...(keyless ? { limitMaximum: KEYLESS_LIMIT_MAX } : {}) };
+    return { descriptions, ...(limitMaximum === undefined ? {} : { limitMaximum }) };
 };
 
 const callOnce = (context: CallContext, operationId: OperationId, input: ReturnType<typeof splitInput>) => {
@@ -196,7 +207,7 @@ export const runTool = async (context: CallContext, tool: ToolDefinition, args: 
 
     let input: ReturnType<typeof splitInput>;
     try {
-        input = splitInput(operation, args, inputViewOf(tool, context.keyless));
+        input = splitInput(operation, args, inputViewOf(tool, context.profile, context.plan));
     } catch (error) {
         if (error instanceof InputError) return errorResult(error.message);
         throw error;

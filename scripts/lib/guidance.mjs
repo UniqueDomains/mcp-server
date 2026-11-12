@@ -270,7 +270,8 @@ export const GUIDANCE = {
     },
     get_latest_edition: {
         summary: 'The latest daily edition of Business Ideas or Trending Domains: trends with open names, for founders or for investors.',
-        use: "Use it when someone wants today's name ideas from rising topics; it carries the edition's open names only.",
+        // The trends clause reaches a client that shows the model only descriptions (after-fix note of 2026-11-12).
+        use: "Use it when someone wants today's name ideas from rising topics; it carries the edition's open names only, and at most 20 trends while `trendCount` counts the whole edition.",
     },
     get_edition: {
         // 2026-11-10: a day the founders' page has an edition of its own (some earlier days answer the investors').
@@ -336,7 +337,7 @@ export const GUIDANCE = {
  * `INPUTS` an input of one operation. Like `use`, these reach the server here, not through an SDK release.
  */
 export const SHARED_INPUTS = {
-    name: 'A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason and a suggestion.',
+    name: 'A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one.',
 };
 
 /** @type {Readonly<Record<string, Readonly<Record<string, string>>>>} */
@@ -349,6 +350,8 @@ export const INPUTS = {
         lane: 'How the trend rises: `weekly` for a topic rising now, `yearly` for one rising over the year.',
     },
     list_words: { category: 'A word category slug, as the word categories list names it.' },
+    // The document says "(v1's `listing=public`)", an old API parameter (AF-3 of the after-fix check of 2026-11-12).
+    list_tlds: { publicSet: '`true`: only the endings with a public page on unique.domains.' },
 };
 
 /** The description an input carries in the tool, or null to keep the API document's. */

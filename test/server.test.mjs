@@ -256,5 +256,11 @@ test('a refusal repeats the bound and the words the tool shows, not the API docu
     const missing = await client.callTool({ name: 'ud_get_name', arguments: {} });
     assert.match(missing.content[0].text, /^`name` is required: A full domain name/u);
     assert.doesNotMatch(missing.content[0].text, /validation_failed|\b400\b/u);
+    // AF-2: the refusal repeats the hosted schema, which dropped the `wrd_` id clause.
+    for (const name of ['ud_get_word_endings', 'ud_get_word_notability']) {
+        const word = await client.callTool({ name, arguments: {} });
+        assert.match(word.content[0].text, /^`word` is required: The catalog slug or the word\./u, name);
+        assert.doesNotMatch(word.content[0].text, /wrd_/u, name);
+    }
     await client.close();
 });

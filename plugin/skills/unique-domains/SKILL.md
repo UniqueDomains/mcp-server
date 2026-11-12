@@ -11,7 +11,7 @@ The Unique Domains tools (their names start with `ud_`) read a catalog that is u
 
 One domain name. Pass the full name with its ending, such as `get.plumbing`.
 
-- Is it open, taken or for sale, its price today when the record has one, when it drops: `ud_get_name`. Its `status` groups a list row's stored status for a buyer: a row's `resell` reads `for_sale` here, and `premium` reads `free_premium`
+- Is it open, taken or for sale, its price today when the record has one, when it drops: `ud_get_name`. Its `status` groups a list row's stored status for a buyer: a row's `resell` reads `for_sale` here (`at_auction` at a drop-catch venue), and `premium` reads `free_premium`
 - Its registrar, when it was registered, when it expires, and its holder when the registry publishes one: `ud_get_name_registry`
 - Whether it points anywhere or is parked: `ud_get_name_dns`
 - What similar names sold for, as a count and a median, and on how many endings its word sold: `ud_get_name_comps`. Its `tier` says how close those sales are, from the same word to the wider market
