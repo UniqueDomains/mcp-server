@@ -101,7 +101,7 @@ test('the five manifests agree on the name, the version, the repository and the 
     assert.equal(devin.description, DEVIN_LINE);
     assert.equal(devin.shortDescription, DEVIN_SHORT_LINE);
     // Cursor keeps its own line and homepage (plan section 4.6: only the skill's path is added there).
-    assert.equal(cursor.description, 'Domain names, words, TLDs, registrar prices, the domain market, trends and the agenda, from the Unique Domains API.');
+    assert.equal(cursor.description, 'Domain names, words, TLDs, registrar prices, the domain market, trends and the agenda, from the Unique.domains API.');
     assert.equal(cursor.homepage, 'https://unique.domains/api');
 
     // Anthropic's directory reads these from plugin.json only; the icon is a file inside the plugin.

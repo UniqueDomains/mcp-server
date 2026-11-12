@@ -114,7 +114,7 @@ export const refusalText = (error: ApiProblemError, profile: Profile, now: Date)
             return `${said}${shared} It resets ${resetPhrase(error.retryAfter, now)}.`;
         }
         case 'invalid_key':
-            return `${detail} Check UD_API_KEY: a member key is created in Unique Domains under Settings, Account, API.`;
+            return `${detail} Check UD_API_KEY: a member key is created in Unique.domains under Settings, Account, API.`;
         case 'invalid_proxy_secret':
             return 'The connector could not authenticate with the API. Try again in a minute.';
         case 'not_ready':
@@ -202,7 +202,7 @@ export const runTool = async (context: CallContext, tool: ToolDefinition, args: 
         const names = keyedSent.map((name) => `\`${name}\``).join(', ');
         if (context.profile === 'hosted') return errorResult(`This connector does not take ${names}. Call the tool again without it.`);
         if (context.keyWithoutPlan === true) return errorResult(`${names} needs a member key on a paid plan, and UD_API_KEY opens none (or its plan could not be read when the server started). Call the tool again without it.`);
-        return errorResult(`${names} needs a member key: set UD_API_KEY (Settings, Account, API in Unique Domains), or call the tool again without it.`);
+        return errorResult(`${names} needs a member key: set UD_API_KEY (Settings, Account, API in Unique.domains), or call the tool again without it.`);
     }
 
     let input: ReturnType<typeof splitInput>;
@@ -227,8 +227,8 @@ export const runTool = async (context: CallContext, tool: ToolDefinition, args: 
         }
     } catch (error) {
         if (error instanceof ApiProblemError) return errorResult(refusalText(error, context.profile, now()));
-        if (isNetworkFailure(error)) return errorResult('The Unique Domains API did not answer. Try again in a minute.');
-        if (isTimeout(error)) return errorResult('The Unique Domains API took too long to answer. Try again in a minute.');
+        if (isNetworkFailure(error)) return errorResult('The Unique.domains API did not answer. Try again in a minute.');
+        if (isTimeout(error)) return errorResult('The Unique.domains API took too long to answer. Try again in a minute.');
         throw error;
     }
 

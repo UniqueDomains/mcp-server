@@ -322,9 +322,9 @@ const linksSchema = () => ({
         self: { type: 'string', description: 'This answer on the API.' },
         next: { type: ['string', 'null'], description: 'The next page on the API, when there is one.' },
         register: { type: ['string', 'null'], description: 'Where to register the name, when it can be registered.' },
-        product: { type: ['string', 'null'], description: 'The Unique Domains page that opens what a refusal named.' },
+        product: { type: ['string', 'null'], description: 'The Unique.domains page that opens what a refusal named.' },
         dataset: { type: ['string', 'null'], description: 'The GitHub dataset holding the same rows.' },
-        details: { type: ['string', 'null'], description: 'The public Unique Domains page about the subject.' },
+        details: { type: ['string', 'null'], description: 'The public Unique.domains page about the subject.' },
     },
 });
 
@@ -451,13 +451,13 @@ export const justificationOf = (operation) => {
         const what = operation.id === 'request_word' ? 'queues the word for the catalog intake' : 'runs and stores the appraisal of a stored name';
         return {
             readOnly: `Not read-only: it ${what} and spends one ${unit} unit of the member's month.`,
-            openWorld: 'Closed world: it works on the Unique Domains catalog only.',
+            openWorld: 'Closed world: it works on the Unique.domains catalog only.',
             destructive: 'Not destructive: it adds to the catalog and deletes nothing.',
         };
     }
     return {
-        readOnly: 'Read-only: it reads stored Unique Domains data and changes nothing.',
-        openWorld: 'Closed world: it reads the Unique Domains catalog only, never the open web.',
+        readOnly: 'Read-only: it reads stored Unique.domains data and changes nothing.',
+        openWorld: 'Closed world: it reads the Unique.domains catalog only, never the open web.',
         destructive: 'Not destructive: it writes and deletes nothing.',
     };
 };

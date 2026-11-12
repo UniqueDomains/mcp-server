@@ -426,7 +426,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -448,7 +448,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -469,8 +469,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -1006,7 +1006,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -1028,7 +1028,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -1049,8 +1049,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -1572,7 +1572,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -1594,7 +1594,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -1807,7 +1807,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -1829,7 +1829,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -1850,8 +1850,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -2121,7 +2121,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -2143,7 +2143,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -2164,8 +2164,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -2365,7 +2365,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -2387,7 +2387,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -2408,8 +2408,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -2577,7 +2577,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -2599,7 +2599,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -2620,8 +2620,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -2803,7 +2803,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -2825,7 +2825,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -2846,8 +2846,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -3014,7 +3014,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -3036,7 +3036,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -3057,8 +3057,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -3197,7 +3197,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -3219,7 +3219,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -3240,8 +3240,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -3380,7 +3380,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -3402,7 +3402,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -3424,7 +3424,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         },
         "justification": {
             "readOnly": "Not read-only: it runs and stores the appraisal of a stored name and spends one Appraisal unit of the member's month.",
-            "openWorld": "Closed world: it works on the Unique Domains catalog only.",
+            "openWorld": "Closed world: it works on the Unique.domains catalog only.",
             "destructive": "Not destructive: it adds to the catalog and deletes nothing."
         }
     },
@@ -3558,7 +3558,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -3580,7 +3580,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -3601,8 +3601,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -3761,7 +3761,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -3783,7 +3783,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -3804,8 +3804,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -3988,7 +3988,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -4010,7 +4010,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -4031,8 +4031,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -4148,7 +4148,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -4170,7 +4170,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -4191,8 +4191,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -4697,7 +4697,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -4719,7 +4719,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -4740,8 +4740,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -4995,7 +4995,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -5017,7 +5017,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -5038,8 +5038,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -5523,7 +5523,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -5545,7 +5545,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -5566,8 +5566,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -5749,7 +5749,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -5771,7 +5771,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -5792,8 +5792,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -6007,7 +6007,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -6029,7 +6029,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -6050,8 +6050,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -6296,7 +6296,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -6318,7 +6318,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -6339,8 +6339,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -6497,7 +6497,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -6519,7 +6519,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -6540,8 +6540,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -6675,7 +6675,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -6697,7 +6697,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -6718,8 +6718,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -6863,7 +6863,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -6885,7 +6885,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -6906,8 +6906,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -7037,7 +7037,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -7059,7 +7059,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -7080,8 +7080,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -7218,7 +7218,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -7240,7 +7240,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -7262,7 +7262,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         },
         "justification": {
             "readOnly": "Not read-only: it queues the word for the catalog intake and spends one Intake unit of the member's month.",
-            "openWorld": "Closed world: it works on the Unique Domains catalog only.",
+            "openWorld": "Closed world: it works on the Unique.domains catalog only.",
             "destructive": "Not destructive: it adds to the catalog and deletes nothing."
         }
     },
@@ -7424,7 +7424,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -7446,7 +7446,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -7467,8 +7467,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -7762,7 +7762,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -7784,7 +7784,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -7805,8 +7805,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -8225,7 +8225,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -8247,7 +8247,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -8268,8 +8268,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -8440,7 +8440,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -8462,7 +8462,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -8483,8 +8483,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -8663,7 +8663,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -8685,7 +8685,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -8706,8 +8706,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -8993,7 +8993,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -9015,7 +9015,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -9036,8 +9036,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -9223,7 +9223,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -9245,7 +9245,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -9266,8 +9266,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -9409,7 +9409,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -9431,7 +9431,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -9452,8 +9452,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -9842,7 +9842,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -9864,7 +9864,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -9885,8 +9885,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -10307,7 +10307,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -10329,7 +10329,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -10350,8 +10350,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -10806,7 +10806,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -10828,7 +10828,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -10849,8 +10849,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -10991,7 +10991,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -11013,7 +11013,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -11034,8 +11034,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -11172,7 +11172,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -11194,7 +11194,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -11215,8 +11215,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -11349,7 +11349,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -11371,7 +11371,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -11392,8 +11392,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -11689,7 +11689,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -11711,7 +11711,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -11732,8 +11732,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -11890,7 +11890,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -11912,7 +11912,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -11933,8 +11933,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -12218,7 +12218,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -12240,7 +12240,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -12261,8 +12261,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -12428,7 +12428,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -12450,7 +12450,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -12471,8 +12471,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -12672,7 +12672,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -12694,7 +12694,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -12715,8 +12715,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -12886,7 +12886,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -12908,7 +12908,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -12929,8 +12929,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -13080,7 +13080,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -13102,7 +13102,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -13123,8 +13123,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -13320,7 +13320,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -13342,7 +13342,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -13363,8 +13363,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -13564,7 +13564,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -13586,7 +13586,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -13607,8 +13607,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -13796,7 +13796,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -13818,7 +13818,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -13839,8 +13839,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -13997,7 +13997,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -14019,7 +14019,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -14040,8 +14040,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -14218,7 +14218,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -14240,7 +14240,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -14261,8 +14261,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -14470,7 +14470,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -14492,7 +14492,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -14513,8 +14513,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -14747,7 +14747,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -14769,7 +14769,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -14790,8 +14790,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -14934,7 +14934,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -14956,7 +14956,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -14977,8 +14977,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -15106,7 +15106,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -15128,7 +15128,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -15149,8 +15149,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -15342,7 +15342,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -15364,7 +15364,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -15385,8 +15385,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -15533,7 +15533,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -15555,7 +15555,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -15576,8 +15576,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -15725,7 +15725,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -15747,7 +15747,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -15768,8 +15768,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -16069,7 +16069,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -16091,7 +16091,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -16112,8 +16112,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -16257,7 +16257,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -16279,7 +16279,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -16300,8 +16300,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -16441,7 +16441,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -16463,7 +16463,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -16484,8 +16484,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -16725,7 +16725,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -16747,7 +16747,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -16768,8 +16768,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -16941,7 +16941,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -16963,7 +16963,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -16984,8 +16984,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -17215,7 +17215,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -17237,7 +17237,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -17258,8 +17258,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -17412,7 +17412,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -17434,7 +17434,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -17455,8 +17455,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -17682,7 +17682,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -17704,7 +17704,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -17725,8 +17725,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -18001,7 +18001,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -18023,7 +18023,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -18044,8 +18044,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -18154,7 +18154,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -18176,7 +18176,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -18197,8 +18197,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -18398,7 +18398,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -18420,7 +18420,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -18441,8 +18441,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -18648,7 +18648,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -18670,7 +18670,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -18691,8 +18691,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -18909,7 +18909,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -18931,7 +18931,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -18952,8 +18952,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -19369,7 +19369,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -19391,7 +19391,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -19412,8 +19412,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -19842,7 +19842,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -19864,7 +19864,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -19885,8 +19885,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -20320,7 +20320,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -20342,7 +20342,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -20363,8 +20363,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -20567,7 +20567,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -20589,7 +20589,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -20610,8 +20610,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -20751,7 +20751,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -20773,7 +20773,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -20794,8 +20794,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -20927,7 +20927,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -20949,7 +20949,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -20970,8 +20970,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -21083,7 +21083,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -21105,7 +21105,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -21126,8 +21126,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -21292,7 +21292,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -21314,7 +21314,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -21335,8 +21335,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -21581,7 +21581,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "product": {
-                            "description": "The Unique Domains page that opens what a refusal named.",
+                            "description": "The Unique.domains page that opens what a refusal named.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -21603,7 +21603,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "details": {
-                            "description": "The public Unique Domains page about the subject.",
+                            "description": "The public Unique.domains page about the subject.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -21624,8 +21624,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique Domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique Domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     }

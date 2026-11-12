@@ -28,7 +28,7 @@
       "environmentVariables": [
         {
           "name": "UD_API_KEY",
-          "description": "Optional member key (Settings, Account, API in Unique Domains): adds the tools of the key's plan.",
+          "description": "Optional member key (Settings, Account, API in Unique.domains): adds the tools of the key's plan.",
           "isRequired": false,
           "isSecret": true,
           "format": "string"

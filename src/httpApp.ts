@@ -166,7 +166,7 @@ export const createRequestHandler =
                 return send(res, 404, 'Not found.\n', 'text/plain; charset=utf-8');
             }
             if (path === '/') {
-                return send(res, 200, 'Unique Domains MCP server. Connect an MCP client to /mcp. Documentation: https://github.com/UniqueDomains/mcp-server\n', 'text/plain; charset=utf-8');
+                return send(res, 200, 'Unique.domains MCP server. Connect an MCP client to /mcp. Documentation: https://github.com/UniqueDomains/mcp-server\n', 'text/plain; charset=utf-8');
             }
             return send(res, 404, 'Not found.\n', 'text/plain; charset=utf-8');
         } catch (error) {

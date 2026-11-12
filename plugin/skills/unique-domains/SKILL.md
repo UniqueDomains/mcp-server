@@ -3,9 +3,9 @@ name: unique-domains
 description: Look up stored facts about domain names with the Unique Domains tools. Covers a name's status, price, registry record and DNS, a word's names by ending, TLD facts and launch dates, registrar prices, domain sales and auction totals, naming trends and the domain industry agenda. Use it when someone asks about a domain name, a word as a name, an ending (TLD), a registrar's prices or the domain market.
 ---
 
-# Unique Domains
+# Unique.domains
 
-The Unique Domains tools (their names start with `ud_`) read a catalog that is updated every day. Every answer is stored data as of its day, not a live reading. The tools only read: none registers, buys, renews or changes a name.
+The Unique.domains tools (their names start with `ud_`) read a catalog that is updated every day. The tools only read: none registers, buys, renews or changes a name.
 
 ## Which tool answers what
 

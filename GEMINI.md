@@ -1,6 +1,6 @@
-# Unique Domains
+# Unique.domains
 
-The Unique Domains tools (their names start with `ud_`) read a catalog that is updated every day. Every answer is stored data as of its day, not a live reading. The tools only read: none registers, buys, renews or changes a name.
+The Unique.domains tools (their names start with `ud_`) read a catalog that is updated every day. The tools only read: none registers, buys, renews or changes a name.
 
 ## Which tool answers what
 

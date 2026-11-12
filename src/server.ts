@@ -34,7 +34,7 @@ export const SERVER_VERSION: string = packageJson.version;
  */
 export const instructionsFor = (profile: Profile): string =>
     [
-        'Unique Domains reads its own catalog of domain names, words, TLDs, registrar prices, the domain market, trends and the industry agenda.',
+        'Unique.domains reads its own catalog of domain names, words, TLDs, registrar prices, the domain market, trends and the industry agenda.',
         `Answers are stored data as of their day${profile === 'local' ? ', unless a tool says it reads live' : ''}; \`links.details\` points at the public page about the subject when there is one.`,
         'Pass a full domain name such as get.plumbing to the name tools, and an ending without its dot such as ai to the TLD tools.',
     ].join(' ');
@@ -116,7 +116,7 @@ export const toListedTool = (tool: ToolDefinition, profile: Profile, plan: KeyPl
 });
 
 export const createMcpServer = (prepared: PreparedServer, overrides: Partial<Pick<CallContext, 'sleep' | 'now' | 'timeoutMs'>> = {}): Server => {
-    const server = new Server({ name: SERVER_NAME, title: 'Unique Domains', version: SERVER_VERSION }, { capabilities: { tools: { listChanged: false } }, instructions: instructionsFor(prepared.config.profile) });
+    const server = new Server({ name: SERVER_NAME, title: 'Unique.domains', version: SERVER_VERSION }, { capabilities: { tools: { listChanged: false } }, instructions: instructionsFor(prepared.config.profile) });
     const byName = new Map(prepared.tools.map((tool) => [tool.name, tool]));
     const context: CallContext = {
         client: prepared.client,

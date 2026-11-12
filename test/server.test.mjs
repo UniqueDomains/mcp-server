@@ -227,7 +227,7 @@ test('a hung call: a sentence after the call deadline, not a held request', { ti
     await Promise.all([client.connect(clientSide), server.connect(serverSide)]);
     const result = await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'ai' } });
     assert.equal(result.isError, true);
-    assert.equal(result.content[0].text, 'The Unique Domains API took too long to answer. Try again in a minute.');
+    assert.equal(result.content[0].text, 'The Unique.domains API took too long to answer. Try again in a minute.');
     await client.close();
     hung.closeAllConnections();
     await new Promise((resolve) => hung.close(resolve));
@@ -241,7 +241,7 @@ test('the API unreachable: a sentence, not a crash', async () => {
     await Promise.all([client.connect(clientSide), server.connect(serverSide)]);
     const result = await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'ai' } });
     assert.equal(result.isError, true);
-    assert.equal(result.content[0].text, 'The Unique Domains API did not answer. Try again in a minute.');
+    assert.equal(result.content[0].text, 'The Unique.domains API did not answer. Try again in a minute.');
     await client.close();
 });
 

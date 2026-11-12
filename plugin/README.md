@@ -44,7 +44,7 @@ The tools only read. None registers, buys or changes a name.
 
 ## What it runs, sends and keeps
 
-The plugin runs nothing on your machine and reads none of your files. When the assistant calls a tool, the tool's input (such as a name, a word, an ending or a month) goes to `https://mcp.unique.domains/mcp`, which passes it to the Unique Domains API at `https://api.unique.domains`. No other host is called and no credential of yours is used.
+The plugin runs nothing on your machine and reads none of your files. When the assistant calls a tool, the tool's input (such as a name, a word, an ending or a month) goes to `https://mcp.unique.domains/mcp`, which passes it to the Unique.domains API at `https://api.unique.domains`. No other host is called and no credential of yours is used.
 
 The connector calls the API under its own name, so the API sees the connector, never your address or an account of yours.
 
