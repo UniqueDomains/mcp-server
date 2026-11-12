@@ -1,12 +1,12 @@
 {
   "name": "uniquedomains",
-  "description": "One plugin from Unique Domains. It connects your assistant to stored facts about domain names, TLDs, registrar prices and the domain market, and adds a skill that tells it which tool answers which question.",
+  "description": "One plugin from Unique Domains: 51 read-only tools over a daily record of 37 million domain names, and a skill that tells your assistant which tool answers which question.",
   "owner": { "name": "Unique Domains", "url": "https://unique.domains" },
   "plugins": [
     {
       "name": "unique-domains",
       "source": "./plugin",
-      "description": "Ask about a domain name, an ending (TLD) or a registrar. The answers are stored facts from the record Unique Domains keeps: status, registry record, prices, market totals, naming trends and events."
+      "description": "Ask if a domain name is taken, what nine registrars charge for it and what similar names sold for. 51 read-only tools over a daily record of 37 million names. No account, no key, no sign-in."
     }
   ]
 }

@@ -1,8 +1,10 @@
 # Unique Domains plugin
 
-Unique Domains keeps a daily record of domain names and of the endings they sit on, such as .com or .app. This plugin lets your assistant read that record. Ask about a name, a word, an ending or a registrar in plain words, and you get stored facts back.
+Without a tool, an assistant can only guess whether a domain name is taken. This plugin gives it the record: 37 million one-word names on 505 endings (TLDs), read every day and stored with their dates. Ask "Is get.plumbing taken?" and it answers from one tool call: registered since 2020, listed for sale, 10 similar sales with a median of $2,677 (2026-11-11).
 
-The plugin holds two things. The first is the Unique Domains connector, hosted at `https://mcp.unique.domains/mcp`: there is nothing to install for it, and it asks for no account and no sign-in. The second is one skill, which tells the assistant which tool answers which question.
+The plugin holds two things. The first is the Unique Domains connector, hosted at `https://mcp.unique.domains/mcp`: 51 read-only tools, nothing to install, no account and no sign-in. The second is one skill, which tells the assistant which tool answers which question, so it calls the right one the first time.
+
+You can read the same record yourself on unique.domains: [check a name](https://unique.domains/availability), [look up its WHOIS record](https://unique.domains/whois) or [compare the nine registrars](https://unique.domains/registrars).
 
 ## Add it
 
@@ -44,7 +46,7 @@ The tools only read. None registers, buys or changes a name.
 
 The plugin runs nothing on your machine and reads none of your files. When the assistant calls a tool, the tool's input (such as a name, a word, an ending or a month) goes to `https://mcp.unique.domains/mcp`, which passes it to the Unique Domains API at `https://api.unique.domains`. No other host is called and no credential of yours is used.
 
-The connector keeps no record of the calls it passes on: no question, no answer and no caller. It calls the API under its own name, so the API sees the connector, never your address or an account of yours.
+The connector calls the API under its own name, so the API sees the connector, never your address or an account of yours.
 
 The API's request log keeps one line per call for 12 months. The line holds the path, which includes the name or word asked about, with its time, its status and how long it took. For a refused call, it also holds the refusal's message, which can repeat a value that was sent. Once a month, the lines older than 12 months are deleted.
 

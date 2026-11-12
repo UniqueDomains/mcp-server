@@ -21,13 +21,15 @@ const read = (path) => JSON.parse(readFileSync(join(ROOT, path), 'utf8'));
 const pkg = read('package.json');
 
 /**
- * The listing texts: the shared one-liner and line of 100 of the listing texts file (2026-11-11, Fable 5.2, the review's
- * T4, in place of the plan's section 6 kit lines), and Devin's line of section 6.
+ * The listing texts, v2 in the sales voice (`docs/plans/2026-11-11-listing-texts-v2.md` in the platform repository,
+ * Fable 5.2, Gaetan's decision 4 of 2026-11-11: they ship with 0.1.5): section E's lines for each manifest.
  */
-const ONE_LINER = 'Ask about a domain name, an ending (TLD) or a registrar. The answers are stored facts from the record Unique Domains keeps: status, registry record, prices, market totals, naming trends and events.';
-const GEMINI_LINE = 'Look up domain names, TLDs, registrar prices, market totals, trends and events, from stored data.';
-const MARKETPLACE_LINE = 'One plugin from Unique Domains. It connects your assistant to stored facts about domain names, TLDs, registrar prices and the domain market, and adds a skill that tells it which tool answers which question.';
-const DEVIN_LINE = 'Check domain names, registry records, TLD facts, registrar prices, domain sales and auctions with Unique Domains';
+const ONE_LINER = 'Ask if a domain name is taken, what nine registrars charge for it and what similar names sold for. 51 read-only tools over a daily record of 37 million names. No account, no key, no sign-in.';
+const GEMINI_LINE = 'Domain status, WHOIS records, nine registrars\' daily prices, renewal traps and auctions. No key.';
+const MARKETPLACE_LINE = 'One plugin from Unique Domains: 51 read-only tools over a daily record of 37 million domain names, and a skill that tells your assistant which tool answers which question.';
+const GROK_LINE = 'Ask if a domain name is taken, what nine registrars charge for it and what similar names sold for. 51 read-only tools over a daily record of 37 million names. Hosted: nothing to install, no sign-in, no key.';
+const DEVIN_SHORT_LINE = 'Is that name taken? What does it cost?';
+const DEVIN_LINE = 'Check if a domain name is taken, compare nine registrars\' prices and spot renewal traps, from a daily record of 37 million names';
 
 const claude = read('plugin/.claude-plugin/plugin.json');
 const grok = read('plugin/.grok-plugin/plugin.json');
@@ -64,9 +66,13 @@ const filesOf = (dir) =>
 
 const SKILL = readFileSync(join(PLUGIN, 'skills', 'unique-domains', 'SKILL.md'), 'utf8');
 
-/** No plan, price, key, score or ranking talk in one text of the bundle; a failure names the words it met. */
-const assertCleanText = (text, where) => {
-    assert.deepEqual(bundlePlanTalkIn(text), [], `${where}: plan, price or key talk`);
+/**
+ * No plan, price, key, score or ranking talk in one text of the bundle; a failure names the words it met. `figures`
+ * lets the record's dollar figures through (Gaetan's "A" of 2026-11-12: the plugin README and the OpenAI sheet's
+ * longDescription only).
+ */
+const assertCleanText = (text, where, options) => {
+    assert.deepEqual(bundlePlanTalkIn(text, options), [], `${where}: plan, price or key talk`);
     assert.equal(PLAN_WORDS.test(text), false, `${where}: ${text.match(PLAN_WORDS)?.[0]}`);
     for (const word of FORBIDDEN_WORDS) assert.equal(word.test(text), false, `${where}: ${text.match(word)?.[0]}`);
 };
@@ -83,12 +89,13 @@ test('the five manifests agree on the name, the version, the repository and the 
     assert.equal(devin.displayName, 'Unique Domains');
 
     assert.equal(claude.description, ONE_LINER);
-    assert.equal(grok.description, ONE_LINER);
+    assert.equal(grok.description, GROK_LINE);
     assert.equal(marketplace.plugins[0].description, ONE_LINER);
-    assert.equal(ONE_LINER.length, 197);
+    assert.ok(ONE_LINER.length <= 200);
     assert.equal(gemini.description, GEMINI_LINE);
     assert.ok(GEMINI_LINE.length <= 100);
     assert.equal(devin.description, DEVIN_LINE);
+    assert.equal(devin.shortDescription, DEVIN_SHORT_LINE);
     // Cursor keeps its own line and homepage (plan section 4.6: only the skill's path is added there).
     assert.equal(cursor.description, 'Domain names, words, TLDs, registrar prices, the domain market, trends and the agenda, from the Unique Domains API.');
     assert.equal(cursor.homepage, 'https://unique.domains/api');
@@ -157,7 +164,22 @@ test('the plan, price and key guard refuses a plan pitch and lets ordinary words
     for (const label of ['a price', 'a price per month', 'a key or its variable', 'a key', 'membership', 'a plan name']) assert.ok(met.some((entry) => entry.startsWith(`${label} (`)), `${label} in ${met.join(', ')}`);
     assert.deepEqual(bundlePlanTalkIn('The registry published its launch plans, and registrar pricing follows.'), []);
     assert.deepEqual(bundlePlanTalkIn('Pass `founder` or `investor`. The industry events of a month. Once a month, older lines are deleted.'), []);
-    for (const text of ['Upgrade now', 'Subscribers read more', 'the paid grade', 'set ud_live_123', 'your API key', 'Choose a plan', '19 USD per month']) assert.notDeepEqual(bundlePlanTalkIn(text), [], text);
+    for (const text of ['Upgrade now', 'Subscribers read more', 'the paid grade', 'set ud_live_123', 'your API key', 'Choose a plan', '19 USD per month', 'See our pricing']) assert.notDeepEqual(bundlePlanTalkIn(text), [], text);
+});
+
+test('the two texts that carry the record\'s figures still refuse plan and price words (Gaetan\'s "A" of 2026-11-12)', () => {
+    const readme = readFileSync(join(PLUGIN, 'README.md'), 'utf8');
+    const { longDescription } = read('directories/openai/review.json');
+    for (const [where, text] of [['plugin/README.md', readme], ['review.json longDescription', longDescription]]) {
+        assert.ok(/\$\d/u.test(text), `${where} carries a figure`);
+        assert.deepEqual(bundlePlanTalkIn(text, { figures: true }), [], where);
+        for (const words of ['Choose a plan.', 'The Founder plan.', 'Investor members read more.', 'Billed per month.', 'See our pricing.']) {
+            assert.notDeepEqual(bundlePlanTalkIn(`${text}\n\n${words}`, { figures: true }), [], `${where} + "${words}"`);
+        }
+        assert.notDeepEqual(bundlePlanTalkIn(text), [], `${where}: the amount entries still read its figures`);
+    }
+    // The figures pass only there: any other text still refuses an amount.
+    assert.notDeepEqual(bundlePlanTalkIn('From $19 a month.'), []);
 });
 
 test('the plugin folder holds the files of the plan and meets Anthropic\'s limits', () => {
@@ -183,7 +205,7 @@ test('the plugin folder holds the files of the plan and meets Anthropic\'s limit
     const readme = readFileSync(join(PLUGIN, 'README.md'), 'utf8');
     assert.ok(readme.split(/\s+/u).filter(Boolean).length >= 40);
     assert.ok(readme.includes('https://mcp.unique.domains/mcp') && readme.includes('https://api.unique.domains'));
-    assertCleanText(readme, 'plugin/README.md');
+    assertCleanText(readme, 'plugin/README.md', { figures: true });
 });
 
 test('the marketplace file lists the one plugin of ./plugin', () => {
@@ -194,7 +216,7 @@ test('the marketplace file lists the one plugin of ./plugin', () => {
     for (const [where, text] of Object.entries(texts)) assertCleanText(text, where);
     // The OpenAI sheet ships the same skill and is a listing text too (decision 4).
     const sheet = read('directories/openai/review.json');
-    for (const key of ['displayName', 'shortDescription', 'description', 'longDescription', 'releaseNotes', 'commerceDescription']) assertCleanText(sheet[key], `review.json ${key}`);
+    for (const key of ['displayName', 'shortDescription', 'description', 'longDescription', 'releaseNotes', 'commerceDescription']) assertCleanText(sheet[key], `review.json ${key}`, key === 'longDescription' ? { figures: true } : undefined);
     for (const test of [...sheet.positiveTests, ...sheet.negativeTests]) assertCleanText([test.description, test.prompt, test.expected, test.reason ?? ''].join(' '), `review.json "${test.description}"`);
     assert.equal(marketplace.owner.name, 'Unique Domains');
     assert.equal(marketplace.plugins.length, 1);

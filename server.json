@@ -2,9 +2,9 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "domains.unique/mcp-server",
   "title": "Unique Domains",
-  "description": "Domain names, words, TLDs, registrar prices, the domain market, trends and the agenda.",
+  "description": "Domain status, WHOIS records, nine registrars' daily prices, renewal traps and auctions. No key.",
   "version": "0.1.5",
-  "websiteUrl": "https://unique.domains/api",
+  "websiteUrl": "https://unique.domains/api/mcp",
   "repository": {
     "url": "https://github.com/UniqueDomains/mcp-server",
     "source": "github"

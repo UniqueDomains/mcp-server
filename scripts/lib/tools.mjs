@@ -187,11 +187,18 @@ export const PLAN_WORDS = /\bpaid\b|\bsubscriptions?\b|\bkeyed\b|\bfree (?:tier|
  * skill, the bundle's README, every manifest and marketplace description, and the OpenAI sheet's texts. Each entry
  * names what it refuses, so a failing check says which word it met. It allows "launch plans", "registrar pricing",
  * "the events of a month" and the persona values `founder` and `investor` in lower case.
+ *
+ * An entry marked `amount` refuses a dollar figure. Gaetan's "A" of 2026-11-12: the plugin README and the OpenAI
+ * sheet's `longDescription` carry the record's own figures (a sales median, a renewal price) in the approved listing
+ * texts, so those two pass `{ figures: true }` and skip the amount entries only; every plan, price and key word is
+ * still refused there, and every other text keeps the amount entries too.
  */
 export const BUNDLE_PLAN_TALK = [
-    { pattern: /\$\s?\d[\d.,]*|\b\d+(?:[.,]\d+)?\s?(?:USD|EUR|dollars?)\b/u, label: 'a price' },
+    { pattern: /\$\s?\d[\d.,]*|\b\d+(?:[.,]\d+)?\s?(?:USD|EUR|dollars?)\b/u, label: 'a price', amount: true },
     // "a month" alone is a calendar month in these texts ("the events of a month"); after an amount it is a price.
-    { pattern: /\b\d[\d.,]*\s*(?:USD|EUR|dollars?)?\s*(?:a|\/)\s*(?:month|year)\b|\bper (?:month|year)\b|\bmonthly (?:fee|price|plan)\b/iu, label: 'a price per month' },
+    { pattern: /\b\d[\d.,]*\s*(?:USD|EUR|dollars?)?\s*(?:a|\/)\s*(?:month|year)\b/iu, label: 'a price per month', amount: true },
+    { pattern: /\bper (?:month|year)\b|\bmonthly (?:fee|price|plan)\b/iu, label: 'a price per month' },
+    { pattern: /(?<!registrar )\bpricing\b/iu, label: 'pricing' },
     { pattern: /UD_API_KEY|ud_live_/u, label: 'a key or its variable' },
     { pattern: /\b(?:api|member|a|your) keys?\b/iu, label: 'a key' },
     { pattern: /\bmembers?\b|\bmembership\b/iu, label: 'membership' },
@@ -202,9 +209,12 @@ export const BUNDLE_PLAN_TALK = [
     { pattern: /\b(?:a|our|your|the|paid|free|each|every|any) plans?\b/iu, label: 'a plan' },
 ];
 
-/** The matches of `BUNDLE_PLAN_TALK` in a text, each as `label ("words met")`; empty when the text is clean. */
-export const bundlePlanTalkIn = (text) =>
-    BUNDLE_PLAN_TALK.flatMap(({ pattern, label }) => {
+/**
+ * The matches of `BUNDLE_PLAN_TALK` in a text, each as `label ("words met")`; empty when the text is clean. With
+ * `{ figures: true }` the amount entries are skipped (the two texts that carry the record's figures).
+ */
+export const bundlePlanTalkIn = (text, { figures = false } = {}) =>
+    BUNDLE_PLAN_TALK.filter((entry) => !(figures && entry.amount)).flatMap(({ pattern, label }) => {
         const match = text.match(pattern);
         return match ? [`${label} ("${match[0]}")`] : [];
     });

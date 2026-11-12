@@ -1,10 +1,10 @@
 {
   "name": "@uniquedomains/mcp-server",
   "version": "0.1.5",
-  "description": "MCP server for the Unique Domains API: domain names, words, TLDs, registrar prices, the domain market, trends and the agenda.",
+  "description": "MCP server for domain data: is a name taken, what nine registrars charge, what similar names sold for. A daily record of 37 million names. Runs with npx or hosted, no key.",
   "license": "MIT",
   "author": "Unique Domains (https://unique.domains)",
-  "homepage": "https://unique.domains/api",
+  "homepage": "https://unique.domains/api/mcp",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/UniqueDomains/mcp-server.git"

@@ -37,8 +37,8 @@ const hosted = JSON.parse(await readFile(join(ROOT, 'plugin', '.mcp.json'), 'utf
 const manifest = {
     name: DEVIN_SLUG,
     displayName: claude.displayName,
-    description: 'Check domain names, registry records, TLD facts, registrar prices, domain sales and auctions with Unique Domains',
-    shortDescription: 'Domain names, TLDs and registrar prices',
+    description: "Check if a domain name is taken, compare nine registrars' prices and spot renewal traps, from a daily record of 37 million names",
+    shortDescription: "Is that name taken? What does it cost?",
     homepage: claude.homepage,
     repository: claude.repository,
     logo: 'logo.png',

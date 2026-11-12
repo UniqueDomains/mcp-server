@@ -1,11 +1,41 @@
 # Unique Domains MCP server
 
-An MCP server for the [Unique Domains API](https://unique.domains/api). It lets an AI assistant read domain names, words, TLDs, registrar prices, the domain market, trends and the industry agenda from the Unique Domains catalog.
+Without a tool, an assistant can only guess whether a domain name is taken. This server gives it the record: 37 million one-word names on 505 endings (TLDs), read every day and stored with their dates.
 
-Every tool reads stored data as of its day. None registers, buys or changes a name.
+- Hosted, nothing to install, no key: `https://mcp.unique.domains/mcp` (51 tools)
+- On your machine: `npx -y @uniquedomains/mcp-server` (56 tools without a key)
 
-- Hosted, no install and no key: `https://mcp.unique.domains/mcp`
-- On your machine: `npx -y @uniquedomains/mcp-server`
+One question, one tool call. "Is get.plumbing taken?" on 2026-11-11:
+
+```json
+{
+  "name": "get.plumbing",
+  "status": "for_sale",
+  "registry": {
+    "createdAt": "2020-06-03",
+    "expiresAt": "2027-06-03",
+    "registrar": { "name": "GoDaddy.com, LLC", "ianaId": 146 }
+  },
+  "comps": { "count": 10, "medianUsd": 2677 }
+}
+```
+
+What the tools read:
+
+- **A name:** [status, price today](https://unique.domains/availability), drop day, [the registry record a WHOIS lookup shows](https://unique.domains/whois), DNS, similar sales and its open auction.
+- **A word:** the endings it is still open on. Each word exists once on each ending.
+- **An ending:** [registry facts, launch phases, market figures](https://unique.domains/tld), and [ICANN's 2026 new gTLD applications](https://unique.domains/tld/applications).
+- **Registrar prices:** [nine registrars' lists](https://unique.domains/registrars), read daily, with each confirmed change and over 300 renewal traps (.agency: $3.50 the first year, $28.04 a year after, on 2026-11-11).
+- **The market:** [over 200,000 auctions closing a day](https://unique.domains/auctions) across seven venues, and [12 months of sales](https://unique.domains/sales) as totals.
+- **Trends and the agenda:** the naming trends of two daily editions, [Trending Domains](https://unique.domains/trending-domains) and [Business Ideas](https://unique.domains/business-ideas), and [the month's launch dates](https://unique.domains/agenda).
+
+Doing this yourself means a WHOIS and RDAP client for every registry, nine price readers and seven auction feeds, run every day. Every tool here only reads stored data, as of its day. None registers, buys or changes a name.
+
+Three questions to try:
+
+- What is the registry record of get.plumbing?
+- What are the newest registrar price changes?
+- What is on the domain industry agenda this month?
 
 ## Connect your assistant
 
