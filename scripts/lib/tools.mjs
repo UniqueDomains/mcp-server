@@ -86,6 +86,16 @@ export const WHERE_DATA_COMES_FROM = [
     /\blive from\b/iu,
     /\bcrawl\w*/iu,
     /\bnightly\b/iu,
+    // Gaetan's three rules of 2026-11-13 (plan, "The round of the three rules"): no text gives the age of the data
+    // (17A), and none names a public body as where the data comes from (20A).
+    /\bas of\b/iu,
+    /\bcarries its day\b/iu,
+    /\bthe day it is from\b/iu,
+    /\bon the latest day\b/iu,
+    /\blatest (?:footprint )?day\b/iu,
+    /\bhow (?:current|fresh)\b/iu,
+    /\bchecked (?:on|just now)\b/iu,
+    /\bas (?:ICANN|IANA) (?:publishes|names)\b/iu,
 ];
 
 /** The words of `WHERE_DATA_COMES_FROM` a text carries, each as it reads there; empty when the text is clean. */
@@ -385,6 +395,11 @@ const ROW_STATUS = 'The status of the row. One name\'s own answer groups it for 
 const TRACKED = 'The name is in the catalog.';
 const POS = 'Parts of speech, comma-joined tags.';
 const VENUE_PARKED = { 'footprint.names': 'Tracked names parked at the venue, rounded (to 100, to 10 under 1,000).' };
+// Lane P's texts (Gaetan's 20A of 2026-11-13): IANA and ICANN as the things themselves, not as where the data comes from.
+const IANA_ACCREDITED = { accredited: 'Accredited at IANA.' };
+const IANA_NAME = { name: "The registrar's name on IANA's list." };
+// Lane P's text (Gaetan's 17A and 15B of 2026-11-13): the terms carry no day clause.
+const VENUE_TERMS = { listingTerms: 'The verified listing terms: commission bands, exclusivity, payment plans, fast transfer and payout days.' };
 
 /**
  * Field descriptions the platform's API document gains with a coming release, copied word for word so the declared
@@ -416,11 +431,14 @@ export const DESCRIBED_AHEAD_OF_SDK = {
     list_tld_changes: { seenOn: 'UTC day the change was seen.' },
     // SDK 0.2.0: "Timestamp the import saw it." The platform's new text (plan step P2, `tlds.ts:157`).
     list_tld_application_changes: { seenAt: 'When the change was seen.' },
-    get_tld_application_string: { 'changes.seenAt': 'When the change was seen.' },
+    get_tld_application_string: { 'changes.seenAt': 'When the change was seen.', 'applications.applicant': "The applicant, in ICANN's wording." },
+    list_tld_applications: { applicant: "The applicant, in ICANN's wording." },
+    list_iana_registrars: IANA_NAME,
+    get_iana_registrar: IANA_NAME,
     // SDK 0.2.0 says these links carry "the catalog's UTM tags"; the API strips the tag since 2A of 2026-11-11 (AF-1).
-    list_registrars: HOMEPAGE_LINKS,
-    list_venues: { ...HOMEPAGE_LINKS, ...VENUE_PARKED },
-    get_venue: { ...HOMEPAGE_LINKS, ...VENUE_PARKED },
+    list_registrars: { ...HOMEPAGE_LINKS, ...IANA_ACCREDITED },
+    list_venues: { ...HOMEPAGE_LINKS, ...VENUE_PARKED, ...IANA_ACCREDITED },
+    get_venue: { ...HOMEPAGE_LINKS, ...VENUE_PARKED, ...VENUE_TERMS, ...IANA_ACCREDITED },
 };
 
 /** A field given its description. A nullable field arrives as `anyOf` with the document's description on its typed

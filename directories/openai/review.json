@@ -28,7 +28,7 @@
       "tools": [
         "ud_get_name_registry"
       ],
-      "expected": "Names the registrar (GoDaddy.com, LLC when read on 2026-11-11) and gives the creation and expiry dates, the status codes and the nameservers, with the day the record was read."
+      "expected": "Names the registrar (GoDaddy.com, LLC) and gives the creation and expiry dates, the status codes and the nameservers."
     },
     {
       "description": "A name's status and price",
@@ -80,7 +80,7 @@
       "description": "Change a name's DNS",
       "prompt": "Point get.plumbing at my new web host.",
       "reason": "The tools read a name's DNS and never change it.",
-      "expected": "Says it cannot change DNS and that the change is made at the registrar or the DNS host. May show the current DNS reading from ud_get_name_dns."
+      "expected": "Says it cannot change DNS and that the change is made at the registrar or the DNS host. May show the name's DNS records from ud_get_name_dns."
     }
   ],
   "releaseNotes": "51 read-only tools over a daily record of 37 million domain names. Ask about a name (status, WHOIS record, DNS, similar sales, open auction), a word, an ending, nine registrars' prices with their confirmed changes and renewal traps, the market as totals, naming trends and the industry agenda. No sign-in. An answer carries its day where the record has one.",

@@ -1858,8 +1858,8 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_name_registry",
         "operationId": "get_name_registry",
-        "title": "Latest registry record of one name",
-        "description": "The latest registry record of one name: dates, registrar, status codes, nameservers, DNSSEC and holder. Use it when someone asks who holds a name, when it was registered or when it expires. The record carries its day. Pass `name` (such as get.plumbing).",
+        "title": "Registry record of one name",
+        "description": "The registry record of one name: dates, registrar, status codes, nameservers, DNSSEC and holder. Use it when someone asks who holds a name, when it was registered or when it expires. Pass `name` (such as get.plumbing).",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -2416,8 +2416,8 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_name_dns",
         "operationId": "get_name_dns",
-        "title": "Latest DNS records of one name, with its parking venue",
-        "description": "The latest DNS records of one name, with its parking venue. Use it when someone asks whether a name points anywhere or is parked, and with which parking service. Pass `name` (such as get.plumbing).",
+        "title": "DNS records of one name, with its parking venue",
+        "description": "The DNS records of one name, with its parking venue. Use it when someone asks whether a name points anywhere or is parked, and with which parking service. Pass `name` (such as get.plumbing).",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -5574,8 +5574,8 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_word_endings",
         "operationId": "get_word_endings",
-        "title": "A word's endings on the latest day",
-        "description": "A word's endings on the latest day: counts, the key endings and the open names per ending. Use it when someone has a word and asks which endings are still open for it. A word with no count yet answers null; zeros are real. Pass `word` (such as organic); the other inputs are optional.",
+        "title": "A word's endings",
+        "description": "A word's endings: counts, the key endings and the open names per ending. Use it when someone has a word and asks which endings are still open for it. A word with no count yet answers null; zeros are real. Pass `word` (such as organic); the other inputs are optional.",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -6347,8 +6347,8 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_word_notability",
         "operationId": "get_word_notability",
-        "title": "A word's Wikipedia and Wikidata facts",
-        "description": "A word's Wikipedia and Wikidata facts. Use it when someone asks how widely known a word is as a public topic. Pass `word` (such as harbor).",
+        "title": "A word's Wikipedia page and Wikidata entry",
+        "description": "A word's Wikipedia page and Wikidata entry: title, backlinks, languages and description. Use it when someone asks how widely known a word is as a public topic. Pass `word` (such as harbor).",
         "tier": "free",
         "plan": "investor",
         "metered": null,
@@ -9274,8 +9274,8 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_catalog_stats",
         "operationId": "get_catalog_stats",
-        "title": "Catalog headline totals for the latest day",
-        "description": "Catalog headline totals for the latest day. Use it when someone asks how many names the catalog tracks and how many are open. Takes no input.",
+        "title": "Catalog headline totals",
+        "description": "Catalog headline totals. Use it when someone asks how many names the catalog tracks and how many are open. Takes no input.",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -10358,8 +10358,8 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_tld_stats",
         "operationId": "get_tld_stats",
-        "title": "Ending's latest market figures",
-        "description": "The ending's latest market figures, and with history its last daily rows. Use it when someone asks how one ending's market is doing, such as its registrations or sales over time. Pass `tld` (such as ai); the other inputs are optional.",
+        "title": "Ending's market figures, and with history its daily rows",
+        "description": "The ending's market figures, and with history its daily rows. Use it when someone asks how one ending's market is doing, such as its registrations or sales over time. Pass `tld` (such as ai); the other inputs are optional.",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -11400,8 +11400,8 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_list_tld_applications",
         "operationId": "list_tld_applications",
-        "title": "2026 new gTLD round as ICANN publishes it",
-        "description": "The 2026 new gTLD round as ICANN publishes it, A to Z, with two simple bands. Use it when someone asks who applied for new endings in the 2026 round, or which strings are contested. Every input is optional; `limit` sets the page size.",
+        "title": "ICANN's 2026 new gTLD round, A to Z, with two simple bands",
+        "description": "ICANN's 2026 new gTLD round, A to Z, with two simple bands. Use it when someone asks who applied for new endings in the 2026 round, or which strings are contested. Every input is optional; `limit` sets the page size.",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -11512,7 +11512,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "applicant": {
                                 "type": "string",
-                                "description": "Applicant as ICANN names it."
+                                "description": "The applicant, in ICANN's wording."
                             },
                             "applicantCountryCode": {
                                 "anyOf": [
@@ -11740,8 +11740,8 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_list_tld_application_changes",
         "operationId": "list_tld_application_changes",
-        "title": "Every recorded status or contention change of the round",
-        "description": "Every recorded status or contention change of the round, newest first. Use it when someone asks what moved in the 2026 round lately, such as a withdrawal or a contention change. Every input is optional; `limit` sets the page size.",
+        "title": "Every status or contention change of the round, newest first",
+        "description": "Every status or contention change of the round, newest first. Use it when someone asks what moved in the 2026 round lately, such as a withdrawal or a contention change. Every input is optional; `limit` sets the page size.",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -12000,7 +12000,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     },
                                     "applicant": {
                                         "type": "string",
-                                        "description": "Applicant as ICANN names it."
+                                        "description": "The applicant, in ICANN's wording."
                                     },
                                     "applicantCountryCode": {
                                         "anyOf": [
@@ -12319,7 +12319,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "accredited": {
                                 "type": "boolean",
-                                "description": "The IANA record says accredited."
+                                "description": "Accredited at IANA."
                             },
                             "homepageUrl": {
                                 "anyOf": [
@@ -12937,8 +12937,8 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_registrar_footprint",
         "operationId": "get_registrar_footprint",
-        "title": "Names tracked under the registrar on the latest footprint day",
-        "description": "Names tracked under the registrar on the latest footprint day, rounded, with its top endings. Use it when someone asks how many names a registrar holds and on which endings. Pass `registrar` (such as namecheap).",
+        "title": "Names tracked under the registrar",
+        "description": "Names tracked under the registrar, rounded, with its top endings. Use it when someone asks how many names a registrar holds and on which endings. Pass `registrar` (such as namecheap).",
         "tier": "keyed",
         "plan": null,
         "metered": null,
@@ -14319,7 +14319,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "accredited": {
                                 "type": "boolean",
-                                "description": "The IANA record says accredited."
+                                "description": "Accredited at IANA."
                             },
                             "homepageUrl": {
                                 "anyOf": [
@@ -14576,7 +14576,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         },
                         "accredited": {
                             "type": "boolean",
-                            "description": "The IANA record says accredited."
+                            "description": "Accredited at IANA."
                         },
                         "homepageUrl": {
                             "anyOf": [
@@ -14669,13 +14669,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "listingTerms": {
                             "anyOf": [
                                 {
-                                    "type": "object",
-                                    "description": "The verified listing terms: commission bands, exclusivity, payment plans, fast transfer, payout days, the day a person checked them."
+                                    "type": "object"
                                 },
                                 {
                                     "type": "null"
                                 }
-                            ]
+                            ],
+                            "description": "The verified listing terms: commission bands, exclusivity, payment plans, fast transfer and payout days."
                         }
                     }
                 },
@@ -14849,7 +14849,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "name": {
                                 "type": "string",
-                                "description": "Name as IANA publishes it."
+                                "description": "The registrar's name on IANA's list."
                             },
                             "status": {},
                             "rdapBaseUrl": {
@@ -15022,7 +15022,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         },
                         "name": {
                             "type": "string",
-                            "description": "Name as IANA publishes it."
+                            "description": "The registrar's name on IANA's list."
                         },
                         "status": {},
                         "rdapBaseUrl": {

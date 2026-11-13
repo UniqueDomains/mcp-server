@@ -78,7 +78,6 @@ Reference lists.
 
 ## How to answer
 
-- Say the day the data is from when the answer carries one.
 - Give the reader `links.details` when it is set: it is the public page about the subject, or about its section, on unique.domains.
 - Keep a list in the order the tool returns it, and do not present the first rows as better than the rest.
 - A list that pages answers up to 20 rows at a time. When `meta.cursor` in the answer is set, pass it as `cursor` for the next page. When it is null, there is no next page. A list with no `cursor` input answers once.

@@ -182,13 +182,14 @@ test('a 202 says what is still running, never who runs it', async () => {
     await client.close();
 });
 
-// Step M3: both profiles' guides say one sentence, and neither says where the data comes from.
-test('the guide is the same on both profiles and says only that an answer carries its day', async () => {
+// Step M3: both profiles' guides say the same, and neither says where the data comes from or how old it is (17A).
+test('the guide is the same on both profiles and says neither where the data comes from nor its day', async () => {
     assert.equal(instructionsFor('local'), instructionsFor('hosted'));
     for (const profile of ['local', 'hosted']) {
         const guide = instructionsFor(profile);
         assert.deepEqual(whereDataComesFromIn(guide), [], guide);
-        assert.match(guide, /An answer carries its day where the record has one; `links\.details` points at the public page about the subject when there is one\./u);
+        assert.match(guide, / `links\.details` points at the public page about the subject when there is one\. /u);
+        assert.doesNotMatch(guide, /\bday\b/u);
     }
     const { client } = await connect({});
     assert.equal(client.getInstructions(), instructionsFor('local'));

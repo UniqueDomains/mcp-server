@@ -50,16 +50,16 @@ export const GUIDANCE = {
         use: "Use it when someone wants every registrar's price for one name, or asks whether its renewal jumps after the first year.",
     },
     get_name_registry: {
-        summary: 'The latest registry record of one name: dates, registrar, status codes, nameservers, DNSSEC and holder.',
-        // True as written: the free answer carries `observedOn` (2026-09-23 for get.plumbing on 2026-11-13).
-        use: 'Use it when someone asks who holds a name, when it was registered or when it expires. The record carries its day.',
+        // No word on the record's day (Gaetan's 17A of 2026-11-13): `observedOn` stays in the answer (18A), the text is silent.
+        summary: 'The registry record of one name: dates, registrar, status codes, nameservers, DNSSEC and holder.',
+        use: 'Use it when someone asks who holds a name, when it was registered or when it expires.',
     },
     get_name_registry_history: {
         summary: "The past versions of one name's registry record and what moved between them.",
         use: "Use it when someone asks how a name's registration changed over time, such as a new registrar or a new expiry.",
     },
     get_name_dns: {
-        summary: 'The latest DNS records of one name, with its parking venue.',
+        summary: 'The DNS records of one name, with its parking venue.',
         use: 'Use it when someone asks whether a name points anywhere or is parked, and with which parking service.',
     },
     list_name_changes: {
@@ -107,7 +107,7 @@ export const GUIDANCE = {
         // 2026-11-13: `organic` answered 439 endings counted (154 taken, 113 available, 172 for sale) on the hosted
         // connector; the document's `harbor` answered null counts (plan `never-where-data-comes-from`, section 3).
         examples: { word: 'organic' },
-        summary: "A word's endings on the latest day: counts, the key endings and the open names per ending.",
+        summary: "A word's endings: counts, the key endings and the open names per ending.",
         // The one limit (2026-11-11, decision B; the platform's one sentence of review R-4): null is "no count", never
         // zeros that read as "no names". No "such as harbor.ai" any more: the sample word's `.ai` is taken.
         use: 'Use it when someone has a word and asks which endings are still open for it. A word with no count yet answers null; zeros are real.',
@@ -119,6 +119,8 @@ export const GUIDANCE = {
         use: 'Use it when someone asks whether a word is a registered trademark before choosing a name.',
     },
     get_word_notability: {
+        // Lane P's text ahead of the SDK (Gaetan's 20A of 2026-11-13): the page and the entry are the facts themselves.
+        summary: "A word's Wikipedia page and Wikidata entry: title, backlinks, languages and description.",
         use: 'Use it when someone asks how widely known a word is as a public topic.',
     },
     get_word_market: {
@@ -163,6 +165,8 @@ export const GUIDANCE = {
         use: 'Use it when following what changed across names since a day; it answers one page at a time.',
     },
     get_catalog_stats: {
+        // Lane P's texts ahead of the SDK for this one and the next two (Gaetan's 17A of 2026-11-13): no "latest day".
+        summary: 'Catalog headline totals.',
         use: 'Use it when someone asks how many names the catalog tracks and how many are open.',
     },
 
@@ -174,6 +178,7 @@ export const GUIDANCE = {
         use: 'Use it when someone asks about one ending: who runs it, its launch phases, its market and its prices.',
     },
     get_tld_stats: {
+        summary: "The ending's market figures, and with history its daily rows.",
         use: "Use it when someone asks how one ending's market is doing, such as its registrations or sales over time.",
     },
     list_tld_phases: {
@@ -191,9 +196,13 @@ export const GUIDANCE = {
         use: 'Use it when someone asks which words or topics an ending suits.',
     },
     list_tld_applications: {
+        // Lane P's text ahead of the SDK (Gaetan's 20A of 2026-11-13): ICANN's round is the thing itself, never the origin.
+        summary: "ICANN's 2026 new gTLD round, A to Z, with two simple bands.",
         use: 'Use it when someone asks who applied for new endings in the 2026 round, or which strings are contested.',
     },
     list_tld_application_changes: {
+        // Lane P's text ahead of the SDK: the document says "Every recorded ...".
+        summary: 'Every status or contention change of the round, newest first.',
         use: 'Use it when someone asks what moved in the 2026 round lately, such as a withdrawal or a contention change.',
     },
     get_tld_application_string: {
@@ -212,6 +221,7 @@ export const GUIDANCE = {
         use: "Use it when someone asks how one registrar's prices changed lately.",
     },
     get_registrar_footprint: {
+        summary: 'Names tracked under the registrar, rounded, with its top endings.',
         use: 'Use it when someone asks how many names a registrar holds and on which endings.',
     },
     list_tld_prices: {

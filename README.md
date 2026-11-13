@@ -169,9 +169,9 @@ The hosted connector serves the free tools only and takes no key. Four free tool
 | `ud_batch_names` | Answers for up to 100 domain names in one call | Investor key |
 | `ud_check_name` | Runs a live check of one name and returns the full name answer | member key |
 | `ud_get_name_prices` | Every registrar quote for one name | member key |
-| `ud_get_name_registry` | Latest registry record of one name | free |
+| `ud_get_name_registry` | Registry record of one name | free |
 | `ud_get_name_registry_history` | Past versions of one name's registry record and what moved between them | Investor key |
-| `ud_get_name_dns` | Latest DNS records of one name, with its parking venue | free |
+| `ud_get_name_dns` | DNS records of one name, with its parking venue | free |
 | `ud_list_name_changes` | Change events of one name, newest first | Investor key |
 | `ud_get_name_history` | Web history of one name in bands | Investor key |
 | `ud_get_name_value` | Value estimate of one name and its last 20 estimates | member key |
@@ -183,10 +183,10 @@ The hosted connector serves the free tools only and takes no key. Four free tool
 | `ud_batch_words` | Up to 100 word profiles in one call | Investor key |
 | `ud_list_words` | Searches the catalog's words by text and facets | member key |
 | `ud_get_word` | A word's profile | member key |
-| `ud_get_word_endings` | A word's endings on the latest day | free |
+| `ud_get_word_endings` | A word's endings | free |
 | `ud_list_word_names` | A word's catalog names on the endings that sell, by name | member key |
 | `ud_get_word_trademarks` | A word's trademark counts and its exact-match marks | Investor key |
-| `ud_get_word_notability` | A word's Wikipedia and Wikidata facts | free |
+| `ud_get_word_notability` | A word's Wikipedia page and Wikidata entry | free |
 | `ud_get_word_market` | A word's sales and auction aggregates | free, npm only |
 | `ud_list_related_words` | A word's synonyms then related words | Investor key |
 | `ud_list_word_fits` | How well the word fits each ending whose keywords list it | Investor key |
@@ -198,20 +198,20 @@ The hosted connector serves the free tools only and takes no key. Four free tool
 | `ud_get_domain_drops` | Names dropping on one day, counted by ending | free |
 | `ud_list_domain_hacks` | Domain hacks | free |
 | `ud_list_domain_changes` | Changes across the catalog's names, newest first | Investor key |
-| `ud_get_catalog_stats` | Catalog headline totals for the latest day | free |
+| `ud_get_catalog_stats` | Catalog headline totals | free |
 | `ud_list_tlds` | Every root TLD with its registry facts and launch phases | free |
 | `ud_get_tld` | One TLD in full | free |
-| `ud_get_tld_stats` | Ending's latest market figures | free |
+| `ud_get_tld_stats` | Ending's market figures, and with history its daily rows | free |
 | `ud_list_tld_phases` | Every dated launch phase of the ending, chronological | free |
 | `ud_list_tld_changes` | Ending's public registry changes, newest first | free |
 | `ud_list_tld_keywords` | Keywords the catalog attaches to the ending, by type | free |
-| `ud_list_tld_applications` | 2026 new gTLD round as ICANN publishes it | free |
-| `ud_list_tld_application_changes` | Every recorded status or contention change of the round | free |
+| `ud_list_tld_applications` | ICANN's 2026 new gTLD round, A to Z, with two simple bands | free |
+| `ud_list_tld_application_changes` | Every status or contention change of the round, newest first | free |
 | `ud_get_tld_application_string` | One applied-for string | free |
 | `ud_list_registrars` | Nine registrars whose daily price lists are compared | free |
 | `ud_list_registrar_prices` | A registrar's list prices, alphabetical by ending | free |
 | `ud_list_registrar_changes` | A registrar's confirmed list-price changes, newest first | free |
-| `ud_get_registrar_footprint` | Names tracked under the registrar on the latest footprint day | member key |
+| `ud_get_registrar_footprint` | Names tracked under the registrar | member key |
 | `ud_list_tld_prices` | Every registrar's list price for one ending | free, npm only |
 | `ud_list_tld_price_history` | Change-only price rows of one ending, newest first | Investor key |
 | `ud_list_price_changes` | Confirmed registrar price changes across the nine | free |

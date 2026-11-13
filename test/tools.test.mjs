@@ -145,7 +145,7 @@ test('no description or title carries internal words, outside backticked input n
         }
     }
     // The title follows a replaced summary (`ud_get_word_endings` no longer reads "as the nightly update holds them").
-    assert.equal(TOOLS.find((tool) => tool.name === 'ud_get_word_endings').title, "A word's endings on the latest day");
+    assert.equal(TOOLS.find((tool) => tool.name === 'ud_get_word_endings').title, "A word's endings");
 });
 
 test('no tool text carries a score, a ranking or a sales source, nor an em dash', () => {
@@ -313,10 +313,10 @@ const descriptionsOf = (node) => {
 };
 
 test('the guard catches every form the rule bans, and lets the paid operation and a trademark status through', () => {
-    for (const banned of ['The stored answer.', 'Read from storage.', 'The catalog stores the name.', 'The scanner saw it.', 'Scanned names.', 'The registry sync.', 'Not a live reading.', 'Not live.', 'Never live.', 'A live lookup.', 'A live read.', 'It reads live.', 'Reads one name live from its registry.', 'The catalog scans every ending.', 'Rescanned daily.', 'A crawler.', 'From the nightly update.']) {
+    for (const banned of ['The stored answer.', 'Read from storage.', 'The catalog stores the name.', 'The scanner saw it.', 'Scanned names.', 'The registry sync.', 'Not a live reading.', 'Not live.', 'Never live.', 'A live lookup.', 'A live read.', 'It reads live.', 'Reads one name live from its registry.', 'The catalog scans every ending.', 'Rescanned daily.', 'A crawler.', 'From the nightly update.', 'Totals as of 2026-11-13.', 'The record carries its day.', 'The day it is from.', "A word's endings on the latest day.", 'On the latest footprint day.', 'How current each part of the data is.', 'How fresh it is.', 'Checked on 3 Oct.', 'Checked just now.', 'The list as IANA publishes it.', 'The round as ICANN names it.']) {
         assert.ok(whereDataComesFromIn(banned).length > 0, banned);
     }
-    for (const kept of ['Runs a live check of one name.', 'Each call spends one live check of the month.', 'A mark whose status is `live` or `dead`.', 'The record carries its day.', 'A daily record, read every day.']) {
+    for (const kept of ['Runs a live check of one name.', 'Each call spends one live check of the month.', 'A mark whose status is `live` or `dead`.', 'A daily record, read every day.', "Say the edition's date.", 'The IANA registrar list, by IANA id.', "ICANN's 2026 round."]) {
         assert.deepEqual(whereDataComesFromIn(kept), [], kept);
     }
 });
@@ -334,8 +334,10 @@ test('no tool text says where the data comes from, on either profile, keyed tool
 test('the tool texts of the 0.1.6 round read as the plan words them', () => {
     const tool = (name) => TOOLS.find((entry) => entry.name === name);
     assert.equal(tool('ud_get_name').title, 'Answer for one domain name');
-    assert.equal(tool('ud_get_name_registry').title, 'Latest registry record of one name');
-    assert.match(tool('ud_get_name_registry').description, /The record carries its day\./u);
+    assert.equal(tool('ud_get_name_registry').title, 'Registry record of one name');
+    // Gaetan's 17A of 2026-11-13: no text brings up the record's day; the answer keeps `observedOn` (18A).
+    assert.doesNotMatch(tool('ud_get_name_registry').description, /\bday\b/u);
+    assert.ok('observedOn' in tool('ud_get_name_registry').outputSchema.properties.data.properties);
     assert.match(tool('ud_get_name_value').description, /it runs no new estimate\./u);
     assert.match(tool('ud_check_name').description, /each call spends one live check of the month\./u);
     // Decision 16 (Gaetan's 4C of 2026-11-13): `not_checked` never reads as free, in the tool and in the skill.
@@ -366,8 +368,7 @@ test('the tool texts of the 0.1.6 round read as the plan words them', () => {
  *
  * Not compared, since the server words them for an assistant rather than a developer (plan, step P2): `check_name`
  * ("the full name answer"), `appraise_name` ("the value estimate"), `batch_names` (the platform's summary says
- * "resource"), `get_word_endings` (the plan's tool summary keeps "the open names", its platform summary "open names"),
- * and the list rows' `status`, the server's own longer sentence.
+ * "resource"), and the list rows' `status`, the server's own longer sentence.
  */
 const AHEAD_OF_SDK_0_1_6 = [
     { operationId: 'get_name', field: 'summary', sdk: 'The stored answer for one domain name: status, drop day, price today, registry facts, word facts and similar sales.' },
@@ -375,6 +376,22 @@ const AHEAD_OF_SDK_0_1_6 = [
     { operationId: 'get_name_registry', field: 'summary', sdk: 'The latest stored registry record of one name: dates, registrar, status codes, nameservers, DNSSEC and holder.' },
     { operationId: 'get_name_registry_history', field: 'summary', sdk: 'The stored registry record versions of one name and what moved between them.' },
     { operationId: 'get_name_dns', field: 'summary', sdk: 'The latest stored DNS reading of one name, with its parking venue.' },
+    { operationId: 'get_word_endings', field: 'summary', sdk: "A word's endings as the nightly update holds them: counts, the key endings and open names per ending." },
+    // The round of the three rules (Gaetan's 17A and 20A of 2026-11-13).
+    { operationId: 'get_catalog_stats', field: 'summary', sdk: 'Catalog headline totals for the latest day.' },
+    { operationId: 'get_tld_stats', field: 'summary', sdk: "The ending's latest market figures, and with history its last daily rows." },
+    { operationId: 'get_registrar_footprint', field: 'summary', sdk: 'Names tracked under the registrar on the latest footprint day, rounded, with its top endings.' },
+    { operationId: 'get_word_notability', field: 'summary', sdk: "A word's Wikipedia and Wikidata facts." },
+    { operationId: 'list_tld_application_changes', field: 'summary', sdk: 'Every recorded status or contention change of the round, newest first.' },
+    { operationId: 'list_tld_applications', field: 'summary', sdk: 'The 2026 new gTLD round as ICANN publishes it, A to Z, with two simple bands.' },
+    { operationId: 'list_tld_applications', field: 'applicant', sdk: 'Applicant as ICANN names it.' },
+    { operationId: 'get_tld_application_string', field: 'applications.applicant', sdk: 'Applicant as ICANN names it.' },
+    { operationId: 'list_iana_registrars', field: 'name', sdk: 'Name as IANA publishes it.' },
+    { operationId: 'get_iana_registrar', field: 'name', sdk: 'Name as IANA publishes it.' },
+    { operationId: 'list_registrars', field: 'accredited', sdk: 'The IANA record says accredited.' },
+    { operationId: 'list_venues', field: 'accredited', sdk: 'The IANA record says accredited.' },
+    { operationId: 'get_venue', field: 'accredited', sdk: 'The IANA record says accredited.' },
+    { operationId: 'get_venue', field: 'listingTerms', sdk: 'The verified listing terms: commission bands, exclusivity, payment plans, fast transfer, payout days, the day a person checked them.' },
     { operationId: 'get_name_value', field: 'summary', sdk: 'The stored value estimate of one name and its last 20 estimates.' },
     { operationId: 'get_word_market', field: 'summary', sdk: "A word's sales and auction aggregates from the nightly update." },
     { operationId: 'list_iana_registrars', field: 'summary', sdk: 'The IANA registrar list as the registry sync stores it, by id.' },

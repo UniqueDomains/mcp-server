@@ -25,9 +25,9 @@ There is nothing to set up afterwards. Ask one of the questions under "Try it" a
 
 ## What you can ask about
 
-- A domain name: its status, what it costs to register when it is open, and its drop day, the day an expired name can be registered again. Its latest registry record, the one a WHOIS lookup shows: registrar, dates, status codes and nameservers. Its DNS reading, what similar names sold for (a count and a median), and its open auction if there is one.
-- A word: the catalog word behind what you typed, a count of its names by ending where the catalog has one, and its Wikipedia and Wikidata facts.
-- An ending (TLD): its registry facts, its dated launch phases, its market figures and its registry changes. Also the 2026 new gTLD applications, as ICANN publishes them.
+- A domain name: its status, what it costs to register when it is open, and its drop day, the day an expired name can be registered again. Its registry record, the one a WHOIS lookup shows: registrar, dates, status codes and nameservers. Its DNS records, what similar names sold for (a count and a median), and its open auction if there is one.
+- A word: the catalog word behind what you typed, a count of its names by ending where the catalog has one, and its Wikipedia page and Wikidata entry.
+- An ending (TLD): its registry facts, its dated launch phases, its market figures and its registry changes. Also ICANN's 2026 round of new gTLD applications.
 - Registrars: what one ending costs at each of the nine registrars that sell it, each registrar's list prices for a set of endings that changes every day, the newest confirmed price changes, and examples of endings whose renewal costs far more than the first year.
 - The market: domain sales and today's auctions as totals by ending, by length and by auction site, plus a daily sample of single-word names at auction.
 - Trends and the agenda: naming trends with their dated editions, and the industry events and launch dates of a month.
