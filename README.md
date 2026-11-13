@@ -1,11 +1,11 @@
 # Unique.domains MCP server
 
-Without a tool, an assistant can only guess whether a domain name is taken. This server gives it the record: 34 million one-word names on 505 endings (TLDs), read every day, each with its dates.
+Without a tool, an assistant can only guess whether a domain name is taken. This server gives it the record: 34 million one-word names on 505 endings (TLDs), read every day.
 
 - Hosted, nothing to install, no key: `https://mcp.unique.domains/mcp` (51 tools)
 - On your machine: `npx -y @uniquedomains/mcp-server` (55 tools without a key)
 
-One question, one tool call. "Is get.plumbing taken?" on 2026-11-11:
+One question, one tool call. "Is get.plumbing taken?" gets this answer:
 
 ```json
 {
@@ -25,11 +25,11 @@ What the tools read:
 - **A name:** [status, price today](https://unique.domains/availability), drop day, [the registry record a WHOIS lookup shows](https://unique.domains/whois), DNS, similar sales and its open auction.
 - **A word:** the endings it is still open on. Each word exists once on each ending.
 - **An ending:** [registry facts, launch phases, market figures](https://unique.domains/tld), and [ICANN's 2026 new gTLD applications](https://unique.domains/tld/applications).
-- **Registrar prices:** [nine registrars' lists](https://unique.domains/registrars), read daily, with each confirmed change and over 300 renewal traps (.agency: $3.50 the first year, $28.04 a year after, on 2026-11-11).
+- **Registrar prices:** [nine registrars' lists](https://unique.domains/registrars), read daily, with each confirmed change and over 300 renewal traps (.agency: $3.50 the first year, $28.04 a year after).
 - **The market:** [over 200,000 auctions closing a day](https://unique.domains/auctions) across seven venues, and [12 months of sales](https://unique.domains/sales) as totals.
 - **Trends and the agenda:** the naming trends of two daily editions, [Trending Domains](https://unique.domains/trending-domains) and [Business Ideas](https://unique.domains/business-ideas), and [the month's launch dates](https://unique.domains/agenda).
 
-No tool here registers, buys or changes a name. An answer carries its day where the record has one, so your assistant can say how fresh it is.
+No tool here registers, buys or changes a name.
 
 Three questions to try:
 

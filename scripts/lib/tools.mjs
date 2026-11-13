@@ -96,6 +96,11 @@ export const WHERE_DATA_COMES_FROM = [
     /\bhow (?:current|fresh)\b/iu,
     /\bchecked (?:on|just now)\b/iu,
     /\bas (?:ICANN|IANA) (?:publishes|names)\b/iu,
+    // The listing texts round (Gaetan's "All A" on questions 21 to 26 of 2026-11-13): a dated example loses its day.
+    /\beach with its dates\b/iu,
+    /\bdated by day\b/iu,
+    /\banswered on\b/iu,
+    /\bwith the day (?:of the record|it was read)\b/iu,
 ];
 
 /** The words of `WHERE_DATA_COMES_FROM` a text carries, each as it reads there; empty when the text is clean. */

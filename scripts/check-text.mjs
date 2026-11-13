@@ -55,13 +55,6 @@ const isReaderFile = (file) => file.endsWith('.md') || READER_FILES.includes(fil
 const READER_EXCEPTIONS = [
     { file: join(ROOT, 'README.md'), phrase: 'and the connector does not store it' },
     { file: join(ROOT, 'plugin', 'README.md'), phrase: 'The connector itself does not store it' },
-    // Temporary: the approved listing texts (v2.4) still give the answer's day, which Gaetan's 17A of 2026-11-13 takes
-    // out. Their new wording comes from the outside sweep with his yes, in a last commit before 0.1.6 is released (plan
-    // `never-where-data-comes-from`, "The round of the three rules"); these four entries go with it.
-    { file: join(ROOT, 'README.md'), phrase: 'An answer carries its day where the record has one, so your assistant can say how fresh it is.' },
-    { file: join(ROOT, 'directories', 'openai', 'review.json'), phrase: 'An answer carries its day where the record has one, so your assistant can say how fresh it is.' },
-    { file: join(ROOT, 'directories', 'openai', 'review.json'), phrase: 'An answer carries its day where the record has one.' },
-    { file: join(ROOT, '.zenodo.json'), phrase: 'An answer carries its day where the record has one.' },
 ];
 
 /** A reader line as the check reads it: code spans and the file's kept phrases taken out. */
