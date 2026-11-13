@@ -420,7 +420,7 @@ const VENUE_PARKED = { 'footprint.names': 'Tracked names parked at the venue, ro
 const PHASE_ID = "The phase's id.";
 const CHANGE_ID = "The change's id, as a string.";
 // Lane P's texts (Gaetan's 20A of 2026-11-13): IANA and ICANN as the things themselves, not as where the data comes from.
-const IANA_ACCREDITED = { accredited: 'Accredited at IANA.' };
+const IANA_ACCREDITED = { accredited: "Listed as accredited on IANA's registrar list." };
 const IANA_NAME = { name: "The registrar's name on IANA's list." };
 // Lane P's text (Gaetan's 17A and 15B of 2026-11-13): the terms carry no day clause.
 const VENUE_TERMS = { listingTerms: 'The verified listing terms: commission bands, exclusivity, payment plans, fast transfer and payout days.' };

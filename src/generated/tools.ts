@@ -12319,7 +12319,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "accredited": {
                                 "type": "boolean",
-                                "description": "Accredited at IANA."
+                                "description": "Listed as accredited on IANA's registrar list."
                             },
                             "homepageUrl": {
                                 "anyOf": [
@@ -14319,7 +14319,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "accredited": {
                                 "type": "boolean",
-                                "description": "Accredited at IANA."
+                                "description": "Listed as accredited on IANA's registrar list."
                             },
                             "homepageUrl": {
                                 "anyOf": [
@@ -14576,7 +14576,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         },
                         "accredited": {
                             "type": "boolean",
-                            "description": "Accredited at IANA."
+                            "description": "Listed as accredited on IANA's registrar list."
                         },
                         "homepageUrl": {
                             "anyOf": [
