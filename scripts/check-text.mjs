@@ -42,20 +42,24 @@ const BANNED = [
 ];
 
 /** Whether a file is read by a person or an assistant, not run: checked for the words of `WHERE_DATA_COMES_FROM`. */
-const READER_DIRS = ['directories', 'plugin', '.cursor-plugin'].map((dir) => join(ROOT, dir) + sep);
-const READER_FILES = ['server.json', 'glama.json', 'gemini-extension.json'].map((file) => join(ROOT, file));
+const READER_DIRS = ['directories', 'plugin', '.cursor-plugin', '.claude-plugin'].map((dir) => join(ROOT, dir) + sep);
+const READER_FILES = ['server.json', 'glama.json', 'gemini-extension.json', '.zenodo.json'].map((file) => join(ROOT, file));
 const isReaderFile = (file) => file.endsWith('.md') || READER_FILES.includes(file) || READER_DIRS.some((dir) => file.startsWith(dir));
 
 /**
- * Phrases a reader file keeps although they match, each with its reason. "does not store it": the connector's privacy
- * line about the user's own IP address (README, plugin README), a promise about what the connector keeps, not about
- * where the catalog's data comes from; the rule's reach over a user's own data is the plan's open decision 10, so the
- * line stays as approved until that is answered.
+ * Phrases a reader file keeps although they match, each in the one file that may carry it, with its reason. "does not
+ * store it": the connector's privacy line about the user's own IP address, a promise about what the connector keeps,
+ * not about where the catalog's data comes from; the rule's reach over a user's own data is the plan's open decision
+ * 10, so the line stays as approved until that is answered.
  */
-const READER_EXCEPTIONS = ['does not store it'];
+const READER_EXCEPTIONS = [
+    { file: join(ROOT, 'README.md'), phrase: 'and the connector does not store it' },
+    { file: join(ROOT, 'plugin', 'README.md'), phrase: 'The connector itself does not store it' },
+];
 
-/** A reader line as the check reads it: code spans and the kept phrases taken out. */
-const proseOf = (line) => READER_EXCEPTIONS.reduce((rest, phrase) => rest.split(phrase).join(' '), line.replace(/`[^`]*`/gu, ' '));
+/** A reader line as the check reads it: code spans and the file's kept phrases taken out. */
+const proseOf = (line, file = null) =>
+    READER_EXCEPTIONS.filter((exception) => exception.file === file).reduce((rest, { phrase }) => rest.split(phrase).join(' '), line.replace(/`[^`]*`/gu, ' '));
 
 const walk = async (dir) => {
     const files = [];
@@ -77,7 +81,7 @@ for (const file of await walk(ROOT)) {
     lines.forEach((line, index) => {
         for (const { pattern, label, exempt } of BANNED) if (pattern.test(line) && !exempt?.(file)) problems.push(`${relative(ROOT, file)}:${index + 1}: ${label}`);
         if (isReaderFile(file)) {
-            for (const words of whereDataComesFromIn(proseOf(line))) problems.push(`${relative(ROOT, file)}:${index + 1}: says where the data comes from ("${words}")`);
+            for (const words of whereDataComesFromIn(proseOf(line, file))) problems.push(`${relative(ROOT, file)}:${index + 1}: says where the data comes from ("${words}")`);
         }
     });
 }

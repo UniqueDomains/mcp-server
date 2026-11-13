@@ -920,7 +920,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     },
                                     "tracked": {
                                         "type": "boolean",
-                                        "description": "The name is in the catalog."
+                                        "description": "Always false here."
                                     }
                                 }
                             },
@@ -11817,7 +11817,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "seenAt": {
                                 "type": "string",
-                                "description": "Timestamp the import saw it."
+                                "description": "When the change was seen."
                             }
                         }
                     }
@@ -12143,7 +12143,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     },
                                     "seenAt": {
                                         "type": "string",
-                                        "description": "Timestamp the import saw it."
+                                        "description": "When the change was seen."
                                     }
                                 }
                             }

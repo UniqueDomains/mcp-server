@@ -313,7 +313,7 @@ const descriptionsOf = (node) => {
 };
 
 test('the guard catches every form the rule bans, and lets the paid operation and a trademark status through', () => {
-    for (const banned of ['The stored answer.', 'Read from storage.', 'The catalog stores the name.', 'The scanner saw it.', 'Scanned names.', 'The registry sync.', 'Not a live reading.', 'Not live.', 'Never live.', 'A live lookup.', 'A live read.', 'It reads live.']) {
+    for (const banned of ['The stored answer.', 'Read from storage.', 'The catalog stores the name.', 'The scanner saw it.', 'Scanned names.', 'The registry sync.', 'Not a live reading.', 'Not live.', 'Never live.', 'A live lookup.', 'A live read.', 'It reads live.', 'Reads one name live from its registry.', 'The catalog scans every ending.', 'Rescanned daily.', 'A crawler.', 'From the nightly update.']) {
         assert.ok(whereDataComesFromIn(banned).length > 0, banned);
     }
     for (const kept of ['Runs a live check of one name.', 'Each call spends one live check of the month.', 'A mark whose status is `live` or `dead`.', 'The record carries its day.', 'A daily record, read every day.']) {
@@ -350,6 +350,10 @@ test('the tool texts of the 0.1.6 round read as the plan words them', () => {
     const data = (name) => tool(name).outputSchema.properties.data;
     assert.equal(data('ud_get_venue').properties.footprint.anyOf[0].properties.names.description, 'Tracked names parked at the venue, rounded (to 100, to 10 under 1,000).');
     assert.equal(data('ud_batch_names').items.anyOf[0].properties.tracked.description, 'The name is in the catalog.');
+    // The batch row of a name outside the catalog keeps its own text: one path, two fields (review of 2026-11-13).
+    assert.equal(data('ud_batch_names').items.anyOf[1].properties.tracked.description, 'Always false here.');
+    assert.equal(data('ud_list_tld_application_changes').items.properties.seenAt.description, 'When the change was seen.');
+    assert.equal(data('ud_get_tld_application_string').properties.changes.items.properties.seenAt.description, 'When the change was seen.');
     assert.equal(data('ud_batch_words').items.anyOf[0].properties.pos.description, 'Parts of speech, comma-joined tags.');
     assert.equal(data('ud_list_tld_changes').items.properties.seenOn.description, 'UTC day the change was seen.');
 });
@@ -387,6 +391,8 @@ const AHEAD_OF_SDK_0_1_6 = [
     { operationId: 'list_tld_changes', field: 'seenOn', sdk: 'UTC day the scanner saw the change.' },
     { operationId: 'list_venues', field: 'footprint.names', sdk: 'Scanned names parked at the venue, rounded (to 100, to 10 under 1,000).' },
     { operationId: 'get_venue', field: 'footprint.names', sdk: 'Scanned names parked at the venue, rounded (to 100, to 10 under 1,000).' },
+    { operationId: 'list_tld_application_changes', field: 'seenAt', sdk: 'Timestamp the import saw it.' },
+    { operationId: 'get_tld_application_string', field: 'changes.seenAt', sdk: 'Timestamp the import saw it.' },
 ];
 
 const SDK_DOCUMENT = JSON.parse(readFileSync(join(ROOT, 'node_modules', '@uniquedomains', 'sdk', 'openapi.json'), 'utf8'));

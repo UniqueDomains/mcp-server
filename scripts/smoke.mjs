@@ -59,12 +59,29 @@ const expect = (condition, message) => {
 /** The samples a description shows, as the built tool says them: `Pass \`tld\` (such as web)` gives `{ tld: 'web' }`. */
 const samplesOf = (description) => Object.fromEntries([...description.matchAll(/`([A-Za-z]+)` \(such as ([^)\s]+)\)/gu)].map((match) => [match[1], match[2]]));
 
-/** Nothing to read: null, an empty list, or an object whose every value is null or an empty list. */
-const isEmptyAnswer = (data) =>
-    data === null ||
-    data === undefined ||
-    (Array.isArray(data) && data.length === 0) ||
-    (typeof data === 'object' && !Array.isArray(data) && Object.values(data).every((value) => value === null || (Array.isArray(value) && value.length === 0)));
+/** A value that says nothing: null, false, 0, an empty string or list, or an object of such values. */
+const isBlank = (value) =>
+    value === null ||
+    value === undefined ||
+    value === false ||
+    value === 0 ||
+    value === '' ||
+    (Array.isArray(value) && value.length === 0) ||
+    (typeof value === 'object' && !Array.isArray(value) && Object.values(value).every(isBlank));
+
+/**
+ * Nothing to read: null, an empty list, an answer for a name outside the catalog (`tracked: false`, or `read: false`
+ * on a record), or an object whose every value is blank once the sample it echoes is set aside (`{ string: 'account',
+ * applications: [] }`). A sample name that leaves the catalog turns the smoke red (review of 2026-11-13).
+ */
+const isEmptyAnswer = (data, samples) => {
+    if (data === null || data === undefined) return true;
+    if (Array.isArray(data)) return data.length === 0;
+    if (typeof data !== 'object') return false;
+    if (data.tracked === false || data.read === false) return true;
+    const echoed = new Set(Object.values(samples));
+    return Object.values(data).every((value) => echoed.has(value) || isBlank(value));
+};
 
 /**
  * The one sample tool whose empty answer is the true one: `ud_get_name_auction` answers null for a name not at auction,
@@ -73,7 +90,7 @@ const isEmptyAnswer = (data) =>
 const EMPTY_ANSWER_ALLOWED = ['ud_get_name_auction'];
 
 /** A hosted answer never names how a record was read (Gaetan's 2A of 2026-11-13, step M7b). */
-const carriesTransport = (call) => JSON.stringify(call.structuredContent ?? {}).includes('"transport"');
+const carriesTransport = (call) => JSON.stringify(call.structuredContent ?? {}).includes('"transport":');
 
 const fixture = live ? null : await startApiFixture();
 const apiBase = fixture ? fixture.base : 'https://api.unique.domains/v1';
@@ -120,12 +137,18 @@ try {
     if (live) {
         const sampled = TOOLS.filter((tool) => tool.hosted).map((tool) => ({ tool: tool.name, samples: samplesOf(tool.description) })).filter(({ samples }) => Object.keys(samples).length > 0);
         expect(sampled.length > 0, `${sampled.length} hosted tools show a sample`);
+        // A sample with a space or a bracket would not parse, and its tool would be skipped without a word.
+        for (const tool of TOOLS.filter((entry) => entry.hosted)) {
+            const samples = samplesOf(tool.description);
+            const missing = (tool.inputSchema.required ?? []).filter((name) => !(name in samples));
+            expect(missing.length === 0, `http ${tool.name} shows a sample for every required input${missing.length > 0 ? ` (not ${missing.join(', ')})` : ''}`);
+        }
         for (const { tool, samples } of sampled) {
             const call = await inspector(url, 'tools/call', ['--tool-name', tool, ...Object.entries(samples).flatMap(([name, value]) => ['--tool-arg', `${name}=${value}`])]);
             const data = call.structuredContent?.data;
             const shown = Object.entries(samples).map(([name, value]) => `${name}=${value}`).join(' ');
             expect(!call.isError && call.structuredContent !== undefined, `http ${tool} answers its description's sample (${shown})`);
-            if (!EMPTY_ANSWER_ALLOWED.includes(tool)) expect(!isEmptyAnswer(data), `http ${tool} answers something for ${shown}`);
+            if (!EMPTY_ANSWER_ALLOWED.includes(tool)) expect(!isEmptyAnswer(data, samples), `http ${tool} answers something for ${shown}`);
             if (samples.persona !== undefined) expect(data?.persona === samples.persona, `http ${tool} answers the persona asked`);
             expect(!carriesTransport(call), `http ${tool} carries no "transport"`);
         }

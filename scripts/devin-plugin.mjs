@@ -22,6 +22,7 @@ import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { HOSTED_MCP_URL } from './lib/plugin.mjs';
+import { whereDataComesFromIn } from './lib/tools.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const argument = (name) => {
@@ -54,6 +55,12 @@ check(manifest.shortDescription.length > 0 && manifest.shortDescription.length <
 check(manifest.description.length >= 60 && manifest.description.length <= 130, 'description: 60 to 130 characters');
 check(!manifest.description.endsWith('.'), 'description: no trailing period');
 check(!/integration|mcp server/iu.test(manifest.description), 'description: no "integration" and no "MCP server"');
+// No text says where the data comes from (plan `never-where-data-comes-from`, step M6): this file is code, so
+// `scripts/check-text.mjs` does not read its two texts as reader files.
+for (const field of ['description', 'shortDescription']) {
+    const words = whereDataComesFromIn(manifest[field]);
+    check(words.length === 0, `${field}: says where the data comes from (${words.join(', ')})`);
+}
 check(manifest.mcpServers.uniquedomains.url === HOSTED_MCP_URL, 'mcpServers: the hosted connector');
 if (problems.length > 0) {
     console.error(`The Devin plugin folder does not meet Devin's rules:\n- ${problems.join('\n- ')}`);

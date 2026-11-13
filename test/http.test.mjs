@@ -61,7 +61,7 @@ const connect = async () => {
     return client;
 };
 
-test('initialize and tools/list: 51 tools, never the one-a-day ones nor the two npm-only ones, whatever the key in the environment', async () => {
+test('initialize and tools/list: 51 tools, never the one-a-day ones nor the npm-only one, whatever the key in the environment', async () => {
     const client = await connect();
     assert.equal(client.getServerVersion().name, 'uniquedomains');
     // No hosted tool reads live, so the hosted guide does not mention one (fix round A6); since 0.1.6 neither guide does.

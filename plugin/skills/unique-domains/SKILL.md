@@ -91,5 +91,5 @@ Reference lists.
 - A sample is a sample: the auction examples are a fixed set for the day, and the sales tools answer totals, not single sales.
 - A name outside the catalog answers the status `not_checked`. Say that the catalog has no answer for it and that the name may well be taken, never that it is free.
 - Take a slug, a registrar or an applied-for string from the matching list tool. Do not guess it.
-- When a tool answers a problem, such as a word with no ending, an ending the catalog does not hold or a limit reached, say what it said in plain words and do not call it again in a loop.
+- When a tool answers a problem, such as a word with no ending, an ending outside the catalog or a limit reached, say what it said in plain words and do not call it again in a loop.
 - When someone asks to register, buy, renew or point a name: say these tools cannot do it and that a registrar does, then offer the facts the tools can read.

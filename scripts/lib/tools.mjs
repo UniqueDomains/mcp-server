@@ -9,9 +9,10 @@ import { guidanceOf, inputDescriptionOf } from './guidance.mjs';
  * metering) and the OpenAPI document it ships (the 200 answer's schema). Pure functions: `generate.mjs` writes the
  * result, the tests read it.
  *
- * The tool set (plan decision 4, then Gaetan's 1A of 2026-11-09): every free operation except the six that serve a
- * file, a liveness answer or a redirect, plus every keyed operation, which the server registers only for a member key
- * of the right plan. The hosted connector leaves out five free tools (`HOSTED_EXCLUDED_OPERATIONS`).
+ * The tool set (plan decision 4, then Gaetan's 1A of 2026-11-09 and 3B of 2026-11-13): every free operation except the
+ * six that serve a file, a liveness answer or a redirect and the one the server does not register, plus every keyed
+ * operation, which the server registers only for a member key of the right plan. The hosted connector leaves out four
+ * free tools (`HOSTED_EXCLUDED_OPERATIONS`).
  */
 
 /**
@@ -73,12 +74,18 @@ export const FORBIDDEN_WORDS = [
  */
 export const WHERE_DATA_COMES_FROM = [
     /\bstor(?:e|es|ed|ing|age)\b/iu,
-    /\bscann?(?:er|ed|ing)?\b/iu,
+    // The plan's `\bscann?(?:er|ed|ing)?\b`, widened to "scans", "scanners" and "rescanned" (review of 2026-11-13).
+    /\b(?:re)?scann?(?:s|er|ers|ed|ing)?\b/iu,
     /\bsync\w*/iu,
     /\bnot (?:a )?live\b/iu,
     /\bnever live\b/iu,
     /\blive (?:read|reading|lookup)\b/iu,
     /\bread(?:s)? live\b/iu,
+    // Beyond the plan's list (review of 2026-11-13): 0.1.5's "Reads one name live from its registry" passed the plan's
+    // patterns; "crawl" and "nightly" name how and when the data is gathered.
+    /\blive from\b/iu,
+    /\bcrawl\w*/iu,
+    /\bnightly\b/iu,
 ];
 
 /** The words of `WHERE_DATA_COMES_FROM` a text carries, each as it reads there; empty when the text is clean. */
@@ -407,6 +414,9 @@ export const DESCRIBED_AHEAD_OF_SDK = {
     batch_words: { pos: POS },
     get_word_request: { scan: 'On `ready` with a word: whether every ending of the word has its first status yet.' },
     list_tld_changes: { seenOn: 'UTC day the change was seen.' },
+    // SDK 0.2.0: "Timestamp the import saw it." The platform's new text (plan step P2, `tlds.ts:157`).
+    list_tld_application_changes: { seenAt: 'When the change was seen.' },
+    get_tld_application_string: { 'changes.seenAt': 'When the change was seen.' },
     // SDK 0.2.0 says these links carry "the catalog's UTM tags"; the API strips the tag since 2A of 2026-11-11 (AF-1).
     list_registrars: HOMEPAGE_LINKS,
     list_venues: { ...HOMEPAGE_LINKS, ...VENUE_PARKED },
@@ -421,40 +431,50 @@ const withDescription = (schema, description) => {
     return { ...field, ...(branches ? { anyOf: branches } : {}), description };
 };
 
-/** Describes the field at `path` under `node`, through `items` and `anyOf`; answers the new node and how many fields it reached. */
-const describeAt = (node, path, description) => {
-    if (node === null || typeof node !== 'object') return { node, hits: 0 };
+/** The document's own text for a field: its description, or its typed branch's when it is nullable. */
+const originalTextOf = (schema) => schema.description ?? schema.anyOf?.find((branch) => typeof branch.description === 'string')?.description ?? null;
+
+/** Every field `path` reaches under `node`, through `items` and `anyOf`, in order. */
+const fieldsAt = (node, path) => {
+    if (node === null || typeof node !== 'object') return [];
+    const [head, ...rest] = path;
+    if (node.properties?.[head]) return rest.length === 0 ? [node.properties[head]] : fieldsAt(node.properties[head], rest);
+    if (node.items) return fieldsAt(node.items, path);
+    if (Array.isArray(node.anyOf)) return node.anyOf.flatMap((branch) => fieldsAt(branch, path));
+    return [];
+};
+
+/**
+ * Describes the fields at `path` under `node` whose document text is `original`, through `items` and `anyOf`. A path
+ * that reaches two `anyOf` rows reaches two fields, and only the ones that said the same thing are the same field: the
+ * batch's `tracked` reads "The name is in the catalog." on a catalog row and "Always false here." on the row of a
+ * name outside it (review of 2026-11-13).
+ */
+const describeAt = (node, path, description, original) => {
+    if (node === null || typeof node !== 'object') return node;
     const [head, ...rest] = path;
     if (node.properties?.[head]) {
         const child = node.properties[head];
-        const inner = rest.length === 0 ? { node: withDescription(child, description), hits: 1 } : describeAt(child, rest, description);
-        return { node: { ...node, properties: { ...node.properties, [head]: inner.node } }, hits: inner.hits };
+        const next = rest.length > 0 ? describeAt(child, rest, description, original) : originalTextOf(child) === original ? withDescription(child, description) : child;
+        return { ...node, properties: { ...node.properties, [head]: next } };
     }
-    if (node.items) {
-        const inner = describeAt(node.items, path, description);
-        return { node: { ...node, items: inner.node }, hits: inner.hits };
-    }
-    if (Array.isArray(node.anyOf)) {
-        let hits = 0;
-        const anyOf = node.anyOf.map((branch) => {
-            const inner = describeAt(branch, path, description);
-            hits += inner.hits;
-            return inner.node;
-        });
-        return { node: { ...node, anyOf }, hits };
-    }
-    return { node, hits: 0 };
+    if (node.items) return { ...node, items: describeAt(node.items, path, description, original) };
+    if (Array.isArray(node.anyOf)) return { ...node, anyOf: node.anyOf.map((branch) => describeAt(branch, path, description, original)) };
+    return node;
 };
 
-/** `data`'s fields (or its items' fields, or deeper ones by path) named in `DESCRIBED_AHEAD_OF_SDK`, each given its description. */
+/**
+ * `data`'s fields (or its items' fields, or deeper ones by path) named in `DESCRIBED_AHEAD_OF_SDK`, each given its
+ * description. Where the path reaches several fields, the ones whose document text is the first one's are described.
+ */
 export const describeAheadOfSdk = (operationId, data) => {
     const notes = DESCRIBED_AHEAD_OF_SDK[operationId];
     if (!notes) return data;
     let described = data;
     for (const [path, description] of Object.entries(notes)) {
-        const result = describeAt(described, path.split('.'), description);
-        if (result.hits === 0) throw new Error(`${operationId}: no \`${path}\` to describe`);
-        described = result.node;
+        const reached = fieldsAt(described, path.split('.'));
+        if (reached.length === 0) throw new Error(`${operationId}: no \`${path}\` to describe`);
+        described = describeAt(described, path.split('.'), description, originalTextOf(reached[0]));
     }
     return described;
 };

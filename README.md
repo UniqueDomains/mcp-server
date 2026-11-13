@@ -299,7 +299,7 @@ npm run smoke
 - `npm run smoke` runs the MCP Inspector against both transports and a fixture API; `-- --live` uses the live API.
 - `npm run plugin` builds `dist/chatgpt-plugin.zip` from `directories/openai/review.json` (the review texts, the test cases, the release notes) and checks it against OpenAI's limits and categories; `npm run plugin:test` also builds a sheet marked as a placeholder.
 - `npm run plugin:devin` builds `dist/devin/plugins/unique-domains/` (the manifest Devin's validator accepts, a 256 px logo and a copy of the skill) for a pull request to Devin's marketplace.
-- The nightly contract workflow opens its pull request with the workflow token, which needs the repository setting "Allow GitHub Actions to create and approve pull requests" (Settings, Actions, General).
+- The daily contract workflow opens its pull request with the workflow token, which needs the repository setting "Allow GitHub Actions to create and approve pull requests" (Settings, Actions, General).
 
 ## License
 
