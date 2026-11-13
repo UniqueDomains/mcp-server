@@ -8,7 +8,8 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { createServer } from 'node:http';
 
-import { createMcpServer, prepareServer, readConfig, ConfigError } from '../dist/index.js';
+import { createMcpServer, instructionsFor, prepareServer, readConfig, ConfigError } from '../dist/index.js';
+import { whereDataComesFromIn } from '../scripts/lib/tools.mjs';
 import { FOUNDER_KEY, INVESTOR_KEY, REFUSED_KEY, UNPAID_KEY, problem, startApiFixture } from './support/api-fixture.mjs';
 
 let fixture;
@@ -28,6 +29,9 @@ before(async () => {
         'GET /tlds/badshape': { status: 200, body: { data: 'not an object', meta: { asOf: 12 }, links: {} } },
         'GET /tlds/second': [problem(429, 'rate_limited', 'Too many calls this second.', { headers: { 'Retry-After': '1' } }), problem(429, 'rate_limited', 'Too many calls this second.', { headers: { 'Retry-After': '1' } }), { status: 200, body: { data: { tld: 'second' }, meta: {}, links: {} } }],
         'POST /words/fresh/request': { status: 202, headers: { 'Content-Type': 'application/json', 'Retry-After': '600' }, body: { data: { status: 'accepted', requestId: '7f1c2d3e-0000-4000-8000-000000000001' }, meta: {}, links: {} } },
+        'POST /names/slow.io/appraise': { status: 202, headers: { 'Content-Type': 'application/json', 'Retry-After': '30', Location: '/v1/names/slow.io/value' }, body: { data: { name: 'slow.io', current: null }, meta: {}, links: {} } },
+        // A registry record with its format (Gaetan's 2A of 2026-11-13): the hosted profile drops `transport`, the local one keeps it.
+        'GET /names/rdap.io/registry': { status: 200, body: { data: { read: true, observedOn: '2026-09-23', registrar: { name: 'GoDaddy.com, LLC', ianaId: 146 }, transport: 'rdap' }, meta: { asOf: '2026-09-23' }, links: {} } },
         'POST /names/slow.io/check': { status: 202, headers: { 'Content-Type': 'application/json', 'Retry-After': '30', Location: '/v1/names/slow.io' }, body: { data: { name: 'slow.io', status: 'checking' }, meta: {}, links: {} } },
     });
 });
@@ -44,10 +48,10 @@ const connect = async (env, overrides = {}) => {
 
 const names = async (client) => (await client.listTools()).tools.map((tool) => tool.name);
 
-test('without a key: the 56 free tools, and no get_key call', async () => {
+test('without a key: the 55 free tools, and no get_key call', async () => {
     const before = fixture.requests.length;
     const { client } = await connect({});
-    assert.equal((await names(client)).length, 56);
+    assert.equal((await names(client)).length, 55);
     assert.equal(fixture.requests.slice(before).filter((request) => request.path === '/meta/key').length, 0);
     await client.close();
 });
@@ -58,19 +62,19 @@ test('a Founder key adds the keyed tools without the Investor set', async () => 
     assert.ok(list.includes('ud_get_name_prices') && list.includes('ud_get_key') && list.includes('ud_check_name'));
     assert.ok(!list.includes('ud_batch_names') && !list.includes('ud_appraise_name'));
     assert.ok(list.includes('ud_get_word_notability') && list.includes('ud_get_word_market'));
-    assert.equal(list.length, 66);
+    assert.equal(list.length, 65);
     await client.close();
 });
 
 test('an Investor key shows every tool', async () => {
     const { client } = await connect({ UD_API_KEY: INVESTOR_KEY });
-    assert.equal((await names(client)).length, 81);
+    assert.equal((await names(client)).length, 80);
     await client.close();
 });
 
 test('a key with no paid plan keeps the free tools; a refused key stops the start', async () => {
     const { client } = await connect({ UD_API_KEY: UNPAID_KEY });
-    assert.equal((await names(client)).length, 56);
+    assert.equal((await names(client)).length, 55);
     // The key that opens no plan goes no further than the start: calls leave without it, and a keyed input says why.
     const before = fixture.requests.length;
     assert.equal((await client.callTool({ name: 'ud_get_name', arguments: { name: 'harbor.io' } })).isError, undefined);
@@ -97,7 +101,7 @@ test('a call answers structuredContent, one line, then the same JSON as text', a
     const result = await client.callTool({ name: 'ud_get_name', arguments: { name: 'harbor.io' } });
     assert.equal(result.isError, undefined);
     assert.equal(result.structuredContent.data.name, 'harbor.io');
-    assert.match(result.content[0].text, /^Stored answer for one domain name: harbor\.io/u);
+    assert.match(result.content[0].text, /^Answer for one domain name: harbor\.io/u);
     assert.deepEqual(JSON.parse(result.content[1].text), result.structuredContent);
     assert.ok('register' in result.structuredContent.links, 'the local profile keeps the links');
     await client.close();
@@ -167,6 +171,39 @@ test('a 202 never advises a call that spends another unit', async () => {
     await client.close();
 });
 
+// Plan `never-where-data-comes-from`, step M4: neither "Not ready yet" sentence names the scanner.
+test('a 202 says what is still running, never who runs it', async () => {
+    const { client } = await connect({ UD_API_KEY: INVESTOR_KEY });
+    const check = await client.callTool({ name: 'ud_check_name', arguments: { name: 'slow.io' } });
+    assert.match(check.content[0].text, /^Not ready yet: the check of the name is still running\. Read it with ud_get_name in about 30 seconds/u);
+    const appraisal = await client.callTool({ name: 'ud_appraise_name', arguments: { name: 'slow.io' } });
+    assert.match(appraisal.content[0].text, /^Not ready yet: the answer is still being prepared\. Call this tool again in about 30 seconds\./u);
+    for (const result of [check, appraisal]) assert.deepEqual(whereDataComesFromIn(result.content[0].text), []);
+    await client.close();
+});
+
+// Step M3: both profiles' guides say one sentence, and neither says where the data comes from.
+test('the guide is the same on both profiles and says only that an answer carries its day', async () => {
+    assert.equal(instructionsFor('local'), instructionsFor('hosted'));
+    for (const profile of ['local', 'hosted']) {
+        const guide = instructionsFor(profile);
+        assert.deepEqual(whereDataComesFromIn(guide), [], guide);
+        assert.match(guide, /An answer carries its day where the record has one; `links\.details` points at the public page about the subject when there is one\./u);
+    }
+    const { client } = await connect({});
+    assert.equal(client.getInstructions(), instructionsFor('local'));
+    await client.close();
+});
+
+// Step M7b: only the hosted connector drops `transport`; the npm server answers what the API answers.
+test('the local profile keeps the registry record\'s transport', async () => {
+    const { client } = await connect({});
+    const result = await client.callTool({ name: 'ud_get_name_registry', arguments: { name: 'rdap.io' } });
+    assert.equal(result.isError, undefined);
+    assert.equal(result.structuredContent.data.transport, 'rdap');
+    await client.close();
+});
+
 test('a one-second 429 is not retried again by the server (the SDK retried it once)', async () => {
     const waits = [];
     const { client } = await connect({}, { sleep: async (ms) => void waits.push(ms) });
@@ -211,7 +248,7 @@ test('the start does not wait on a hung API for the key: free tools after the ti
     const lines = [];
     const prepared = await prepareServer(readConfig({ UD_API_BASE: `http://127.0.0.1:${hung.address().port}/v1`, UD_API_KEY: FOUNDER_KEY }), { log: (line) => lines.push(line) });
     assert.equal(prepared.plan, 'none');
-    assert.equal(prepared.tools.length, 56);
+    assert.equal(prepared.tools.length, 55);
     assert.match(lines[0], /Starting with the free tools only/u);
     hung.closeAllConnections();
     await new Promise((resolve) => hung.close(resolve));

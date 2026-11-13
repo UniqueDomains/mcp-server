@@ -21,6 +21,14 @@ import { guidanceOf, inputDescriptionOf } from './guidance.mjs';
 export const TRANSPORT_OPERATIONS = ['get_openapi', 'get_llms_txt', 'get_health', 'get_events_ics', 'get_agenda_ics', 'get_meta_tlds'];
 
 /**
+ * Free operations the server does not register at all, on either profile. `get_meta_freshness`: its whole answer
+ * describes the passes that update the data, which words cannot fix, and an assistant has no use for it; the day of
+ * every answer already sits in its `meta` (Gaetan's 3B of 2026-11-13, plan `never-where-data-comes-from`, decision 3).
+ * The endpoint stays in the API until v2.
+ */
+export const UNREGISTERED_OPERATIONS = ['get_meta_freshness'];
+
+/**
  * Free tools the hosted connector leaves out:
  *
  * - `get_market_sales_word`, `get_word_market`, `list_tld_prices`: one word or one ending a caller a day, and the
@@ -28,10 +36,8 @@ export const TRANSPORT_OPERATIONS = ['get_openapi', 'get_llms_txt', 'get_health'
  * - `get_domain`: without a key it answers the same data as `get_name` (the same `data` keys), and its one difference,
  *   the lookup by a `dom_` id, goes with the hosted trim of internal ids. Two tools with one purpose confuse the model,
  *   and OpenAI's guidelines ask for distinct tools (fix round P-1). It stays on npm, for parity with the API.
- * - `get_meta_freshness`: the state of the data pipeline, not an answer to a user's question; the day of every answer
- *   already sits in its `meta` (fix round P-2). It stays on npm.
  */
-export const HOSTED_EXCLUDED_OPERATIONS = ['get_market_sales_word', 'get_word_market', 'list_tld_prices', 'get_domain', 'get_meta_freshness'];
+export const HOSTED_EXCLUDED_OPERATIONS = ['get_market_sales_word', 'get_word_market', 'list_tld_prices', 'get_domain'];
 
 /**
  * Free answers that are the website's fixed cut: the API refuses `limit` (400) and `cursor` (403) without a key, though
@@ -43,7 +49,7 @@ const FIXED_CUT_PARAMETERS = ['limit', 'cursor'];
 /** The default page size the input schema shows (plan section 2). It is the API's own: the server fills nothing in. */
 export const DEFAULT_LIMIT = 20;
 
-/** Tools that spend a metered unit or write: not read-only. `check_name` alone reads the open registries live. */
+/** Tools that spend a metered unit or write: not read-only. `check_name` alone reaches beyond the catalog. */
 const WRITE_OPERATIONS = new Set(['check_name', 'appraise_name', 'request_word']);
 const OPEN_WORLD_OPERATIONS = new Set(['check_name']);
 
@@ -58,6 +64,25 @@ export const FORBIDDEN_WORDS = [
     // Built from parts, so `scripts/check-text.mjs` can ban the names in this file too.
     ...[['name', 'bio'], ['dn', 'journal'], ['humble', 'worth']].map((parts) => new RegExp(parts.join(''), 'i')),
 ];
+
+/**
+ * Words that say where the data comes from (Gaetan's rule of 2026-11-12, plan `never-where-data-comes-from`, section 2
+ * and step M6): "stored" in every form, the scanner and its scans, a sync, and any claim of which answers are live. "A
+ * live check", the name of the paid operation, passes by construction, and so does a trademark's `live` status. Read
+ * by `test/tools.test.mjs` over every tool text and by `scripts/check-text.mjs` over the reader files.
+ */
+export const WHERE_DATA_COMES_FROM = [
+    /\bstor(?:e|es|ed|ing|age)\b/iu,
+    /\bscann?(?:er|ed|ing)?\b/iu,
+    /\bsync\w*/iu,
+    /\bnot (?:a )?live\b/iu,
+    /\bnever live\b/iu,
+    /\blive (?:read|reading|lookup)\b/iu,
+    /\bread(?:s)? live\b/iu,
+];
+
+/** The words of `WHERE_DATA_COMES_FROM` a text carries, each as it reads there; empty when the text is clean. */
+export const whereDataComesFromIn = (text) => WHERE_DATA_COMES_FROM.flatMap((pattern) => text.match(pattern)?.[0] ?? []);
 
 const toolName = (operationId) => `ud_${operationId}`;
 
@@ -349,44 +374,89 @@ const HOMEPAGE_LINKS = {
     homepageUrl: 'The registrar\'s or venue\'s homepage, with no tracking query.',
     siteUrl: 'The same homepage as `homepageUrl`.',
 };
-const ROW_STATUS = 'The stored status of the row. One name\'s own answer groups it for a buyer: `resell` reads `for_sale` there (`at_auction` at a drop-catch venue), `premium` reads `free_premium`.';
+const ROW_STATUS = 'The status of the row. One name\'s own answer groups it for a buyer: `resell` reads `for_sale` there (`at_auction` at a drop-catch venue), `premium` reads `free_premium`.';
+const TRACKED = 'The name is in the catalog.';
+const POS = 'Parts of speech, comma-joined tags.';
+const VENUE_PARKED = { 'footprint.names': 'Tracked names parked at the venue, rounded (to 100, to 10 under 1,000).' };
 
 /**
- * Field descriptions the platform's API document gains with the release that carries this server's 0.1.5 (the
- * directory quality audit of 2026-11-11, Gaetan's 3A), copied word for word so the declared output schema explains
- * the answer now: an edition's counts beside its public cut, and the two status vocabularies (`for_sale` on one name,
- * `resell` on a list row). Applied to `data`'s properties, or to its items' for a list. Like `NULLABLE_AHEAD_OF_SDK`,
- * a no-op once the SDK's document carries the same text, and removed with it.
+ * Field descriptions the platform's API document gains with a coming release, copied word for word so the declared
+ * output schema explains the answer now. The 0.1.5 round (the directory quality audit of 2026-11-11, Gaetan's 3A): an
+ * edition's counts beside its public cut, and the two status vocabularies (`for_sale` on one name, `resell` on a list
+ * row). The 0.1.6 round (Gaetan's rule of 2026-11-12, plan `never-where-data-comes-from`, step M2): the field texts
+ * that said where the data comes from, in the platform's new words (lane P of the plan). `test/tools.test.mjs` fails
+ * the day the SDK's document carries another text for one of them.
+ *
+ * A key names a field of `data`, or of its items for a list; a dotted key (`footprint.names`) names a deeper field,
+ * followed through `items` and `anyOf` branches. Like `NULLABLE_AHEAD_OF_SDK`, a no-op once the SDK's document carries
+ * the same text, and removed with it.
  */
 export const DESCRIBED_AHEAD_OF_SDK = {
     get_latest_edition: EDITION_COUNTS,
     get_edition: EDITION_COUNTS,
-    get_name: { status: 'Where the name stands for a buyer. A list row\'s stored status reads here as: `resell` is `for_sale` (`at_auction` at a drop-catch venue), `premium` is `free_premium`.' },
+    get_name: {
+        tracked: TRACKED,
+        status: 'Where the name stands for a buyer. A list row\'s status reads here as: `resell` is `for_sale` (`at_auction` at a drop-catch venue), `premium` is `free_premium`.',
+    },
+    batch_names: { tracked: TRACKED },
+    check_name: { tracked: TRACKED, checked: 'The live check answered.' },
+    get_domain: { tracked: TRACKED },
     list_domains: { status: ROW_STATUS },
     list_domain_hacks: { status: ROW_STATUS },
+    get_word: { pos: POS },
+    batch_words: { pos: POS },
+    get_word_request: { scan: 'On `ready` with a word: whether every ending of the word has its first status yet.' },
+    list_tld_changes: { seenOn: 'UTC day the change was seen.' },
     // SDK 0.2.0 says these links carry "the catalog's UTM tags"; the API strips the tag since 2A of 2026-11-11 (AF-1).
     list_registrars: HOMEPAGE_LINKS,
-    list_venues: HOMEPAGE_LINKS,
-    get_venue: HOMEPAGE_LINKS,
+    list_venues: { ...HOMEPAGE_LINKS, ...VENUE_PARKED },
+    get_venue: { ...HOMEPAGE_LINKS, ...VENUE_PARKED },
 };
 
-/** `data`'s fields (or its items' fields) named in `DESCRIBED_AHEAD_OF_SDK`, each given its description. */
+/** A field given its description. A nullable field arrives as `anyOf` with the document's description on its typed
+ * branch: that old sentence goes too, so the field says one thing (AF-1 of the after-fix check of 2026-11-12). */
+const withDescription = (schema, description) => {
+    const { anyOf, ...field } = schema;
+    const branches = anyOf?.map(({ description: _old, ...branch }) => branch);
+    return { ...field, ...(branches ? { anyOf: branches } : {}), description };
+};
+
+/** Describes the field at `path` under `node`, through `items` and `anyOf`; answers the new node and how many fields it reached. */
+const describeAt = (node, path, description) => {
+    if (node === null || typeof node !== 'object') return { node, hits: 0 };
+    const [head, ...rest] = path;
+    if (node.properties?.[head]) {
+        const child = node.properties[head];
+        const inner = rest.length === 0 ? { node: withDescription(child, description), hits: 1 } : describeAt(child, rest, description);
+        return { node: { ...node, properties: { ...node.properties, [head]: inner.node } }, hits: inner.hits };
+    }
+    if (node.items) {
+        const inner = describeAt(node.items, path, description);
+        return { node: { ...node, items: inner.node }, hits: inner.hits };
+    }
+    if (Array.isArray(node.anyOf)) {
+        let hits = 0;
+        const anyOf = node.anyOf.map((branch) => {
+            const inner = describeAt(branch, path, description);
+            hits += inner.hits;
+            return inner.node;
+        });
+        return { node: { ...node, anyOf }, hits };
+    }
+    return { node, hits: 0 };
+};
+
+/** `data`'s fields (or its items' fields, or deeper ones by path) named in `DESCRIBED_AHEAD_OF_SDK`, each given its description. */
 export const describeAheadOfSdk = (operationId, data) => {
     const notes = DESCRIBED_AHEAD_OF_SDK[operationId];
     if (!notes) return data;
-    const isList = !data?.properties && data?.items?.properties;
-    const target = isList ? data.items : data;
-    if (!target?.properties) throw new Error(`${operationId}: no fields to describe`);
-    const properties = { ...target.properties };
-    for (const [name, description] of Object.entries(notes)) {
-        if (!properties[name]) throw new Error(`${operationId}: no \`${name}\` to describe`);
-        // A nullable field arrives as `anyOf` with the document's description on its typed branch: that old sentence goes
-        // too, so the field says one thing (AF-1 of the after-fix check of 2026-11-12).
-        const { anyOf, ...field } = properties[name];
-        const branches = anyOf?.map(({ description: _old, ...branch }) => branch);
-        properties[name] = { ...field, ...(branches ? { anyOf: branches } : {}), description };
+    let described = data;
+    for (const [path, description] of Object.entries(notes)) {
+        const result = describeAt(described, path.split('.'), description);
+        if (result.hits === 0) throw new Error(`${operationId}: no \`${path}\` to describe`);
+        described = result.node;
     }
-    return isList ? { ...data, items: { ...data.items, properties } } : { ...data, properties };
+    return described;
 };
 
 /** `data`'s fields named in `NULLABLE_AHEAD_OF_SDK`, each widened to also accept null. */
@@ -442,13 +512,13 @@ export const justificationOf = (operation) => {
     const unit = operation.metered;
     if (operation.id === 'check_name') {
         return {
-            readOnly: `Not read-only: it stores the fresh reading in the catalog and spends one ${unit} unit of the member's month.`,
-            openWorld: 'Open world: it reads the name live from its public registry and a registrar.',
+            readOnly: `Not read-only: it updates the name's record in the catalog and spends one ${unit} unit of the member's month.`,
+            openWorld: 'Open world: the check reaches beyond the Unique.domains catalog.',
             destructive: 'Not destructive: it adds a reading and deletes or overwrites nothing the member made.',
         };
     }
     if (WRITE_OPERATIONS.has(operation.id)) {
-        const what = operation.id === 'request_word' ? 'queues the word for the catalog intake' : 'runs and stores the appraisal of a stored name';
+        const what = operation.id === 'request_word' ? 'queues the word for the catalog intake' : 'runs the appraisal of a catalog name';
         return {
             readOnly: `Not read-only: it ${what} and spends one ${unit} unit of the member's month.`,
             openWorld: 'Closed world: it works on the Unique.domains catalog only.',
@@ -456,8 +526,8 @@ export const justificationOf = (operation) => {
         };
     }
     return {
-        readOnly: 'Read-only: it reads stored Unique.domains data and changes nothing.',
-        openWorld: 'Closed world: it reads the Unique.domains catalog only, never the open web.',
+        readOnly: 'Read-only: it reads the Unique.domains catalog and changes nothing.',
+        openWorld: 'Closed world: it reads the Unique.domains catalog only.',
         destructive: 'Not destructive: it writes and deletes nothing.',
     };
 };
@@ -488,7 +558,7 @@ export const descriptionOf = (operation) => `${summaryOf(operation)} ${guidanceO
 export const buildTools = (operations, document) => {
     const tools = [];
     for (const operation of Object.values(operations)) {
-        if (TRANSPORT_OPERATIONS.includes(operation.id)) continue;
+        if (TRANSPORT_OPERATIONS.includes(operation.id) || UNREGISTERED_OPERATIONS.includes(operation.id)) continue;
         if (operation.answer !== 'json') throw new Error(`${operation.id}: a file answer outside the transport list`);
         tools.push({
             name: toolName(operation.id),
@@ -511,7 +581,10 @@ export const buildTools = (operations, document) => {
     return tools;
 };
 
-/** Every text a tool carries, for the forbidden-word check: title, description and each input's description. */
+/**
+ * Every text a tool carries, for the forbidden-word checks: title, description, each input's description, the
+ * annotation reasons and every output field description.
+ */
 export const textsOf = (tool) => [
     tool.title,
     tool.description,

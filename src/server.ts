@@ -29,13 +29,15 @@ export const SERVER_NAME = 'uniquedomains';
 export const SERVER_VERSION: string = packageJson.version;
 
 /**
- * The short guide a client may show the assistant (MCP `instructions`). The hosted connector has no tool that reads
- * live, so its guide does not mention one (fix round A6); a member key on npm may open `ud_check_name`, which does.
+ * The short guide a client may show the assistant (MCP `instructions`). Both profiles say the same sentence since
+ * 0.1.6: no text says where the data comes from (Gaetan's rule of 2026-11-12, plan `never-where-data-comes-from`,
+ * step M3), so the guide no longer sets stored answers against live ones. The profile stays a parameter: it is
+ * exported, and a later guide may differ again.
  */
-export const instructionsFor = (profile: Profile): string =>
+export const instructionsFor = (_profile: Profile): string =>
     [
         'Unique.domains reads its own catalog of domain names, words, TLDs, registrar prices, the domain market, trends and the industry agenda.',
-        `Answers are stored data as of their day${profile === 'local' ? ', unless a tool says it reads live' : ''}; \`links.details\` points at the public page about the subject when there is one.`,
+        'An answer carries its day where the record has one; `links.details` points at the public page about the subject when there is one.',
         'Pass a full domain name such as get.plumbing to the name tools, and an ending without its dot such as ai to the TLD tools.',
     ].join(' ');
 

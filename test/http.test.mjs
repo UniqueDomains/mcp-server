@@ -31,6 +31,8 @@ before(async () => {
         // What the API really answers for `limit` on a fixed cut: a 400, whose detail the validation handler would repeat.
         'GET /tlds/fixedcut': problem(400, 'validation_failed', 'The free answer of this endpoint is a fixed cut: `limit` and `cursor` need a paid subscription.'),
         'GET /tlds/badvalue': problem(400, 'validation_failed', 'The `since` value is not a date.'),
+        // A registry record with its format (Gaetan's 2A of 2026-11-13): the hosted profile drops `transport`, the local one keeps it.
+        'GET /names/rdap.io/registry': { status: 200, body: { data: { read: true, observedOn: '2026-09-23', registrar: { name: 'GoDaddy.com, LLC', ianaId: 146 }, transport: 'rdap' }, meta: { asOf: '2026-09-23' }, links: {} } },
     });
     const env = {
         UD_MCP_PROFILE: 'hosted',
@@ -62,7 +64,7 @@ const connect = async () => {
 test('initialize and tools/list: 51 tools, never the one-a-day ones nor the two npm-only ones, whatever the key in the environment', async () => {
     const client = await connect();
     assert.equal(client.getServerVersion().name, 'uniquedomains');
-    // No hosted tool reads live, so the hosted guide does not mention one (fix round A6).
+    // No hosted tool reads live, so the hosted guide does not mention one (fix round A6); since 0.1.6 neither guide does.
     assert.ok(!/reads live/u.test(client.getInstructions()), client.getInstructions());
     const { tools } = await client.listTools();
     assert.equal(tools.length, 51);
@@ -85,6 +87,26 @@ test('a call: details set, no register or product, the connector secret sent and
     const sent = fixture.requests.slice(before).find((request) => request.path === '/names/harbor.io');
     assert.equal(sent.headers['x-ud-connector-secret'], SECRET);
     assert.equal(sent.headers.authorization, undefined);
+    await client.close();
+});
+
+// Gaetan's 2A of 2026-11-13 (plan `never-where-data-comes-from`, step M7b): `transport` says how the record was read, so
+// the hosted connector neither offers it in `fields` nor answers it, even when asked by name.
+test('the hosted registry record carries no transport, asked or not, and its fields input does not offer it', async () => {
+    const client = await connect();
+    const { tools } = await client.listTools();
+    const registry = tools.find((tool) => tool.name === 'ud_get_name_registry');
+    assert.match(registry.inputSchema.properties.fields.description, /^Comma-separated top-level keys to keep: .*holder\.$/u);
+    assert.doesNotMatch(registry.inputSchema.properties.fields.description, /\btransport\b/u);
+    assert.equal(registry.outputSchema.properties.data.properties.transport, undefined);
+    for (const args of [{ name: 'rdap.io' }, { name: 'rdap.io', fields: 'transport' }]) {
+        const result = await client.callTool({ name: 'ud_get_name_registry', arguments: args });
+        assert.equal(result.isError, undefined, JSON.stringify(args));
+        assert.ok(!('transport' in result.structuredContent.data), JSON.stringify(args));
+        assert.ok(!result.content[1].text.includes('"transport"'), JSON.stringify(args));
+    }
+    const plain = await client.callTool({ name: 'ud_get_name_registry', arguments: { name: 'rdap.io' } });
+    assert.equal(plain.structuredContent.data.observedOn, '2026-09-23');
     await client.close();
 });
 

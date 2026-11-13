@@ -152,6 +152,24 @@ export const HOSTED_PUBLIC_ID_PATHS: Readonly<Record<string, readonly string[]>>
     get_meta_providers: ['data.registrars[].ianaId', 'data.auctionVenues[].id', 'data.parkingServices[].id'],
 };
 
+/**
+ * Top-level `data` fields a hosted answer leaves out, per operation: `transport` of the registry record names how the
+ * record was read (`rdap` or `whois`), the one field whose value says where the data comes from (Gaetan's 2A of
+ * 2026-11-13, plan `never-where-data-comes-from`, step M7b). The API keeps it, and so does the local profile.
+ */
+export const HOSTED_DROPPED_FIELDS: Readonly<Record<string, readonly string[]>> = {
+    get_name_registry: ['transport'],
+};
+
+/** The hosted answer's `data` without the fields `HOSTED_DROPPED_FIELDS` names for the operation. */
+const dropHostedFields = (operationId: string, data: JsonValue): JsonValue => {
+    const dropped = HOSTED_DROPPED_FIELDS[operationId];
+    if (!dropped || !isObject(data)) return data;
+    const out: Record<string, JsonValue> = {};
+    for (const [name, child] of Object.entries(data)) if (child !== undefined && !dropped.includes(name)) out[name] = child;
+    return out;
+};
+
 /** The hosted answer's `data` or `meta`: internal ids and computing stamps out, times to their UTC day. */
 export const trimHosted = (value: JsonValue | undefined, key: string | null = null): JsonValue | undefined => {
     if (Array.isArray(value)) return value.map((item: JsonValue) => trimHosted(item, key) ?? null);
@@ -199,7 +217,7 @@ export const outputSchemaFor = (tool: ToolDefinition, profile: Profile): JsonSch
     if (profile === 'local') return tool.outputSchema;
     const properties = tool.outputSchema.properties;
     if (!isObject(properties)) return tool.outputSchema;
-    const dropped = new Set(HOSTED_INTERNAL_ID_PATHS[tool.operationId] ?? []);
+    const dropped = new Set([...(HOSTED_INTERNAL_ID_PATHS[tool.operationId] ?? []), ...(HOSTED_DROPPED_FIELDS[tool.operationId] ?? []).map((name) => `data.${name}`)]);
     const data = properties.data === undefined ? undefined : dropSchemaPaths(properties.data, 'data', dropped);
     const meta = properties.meta === undefined ? undefined : dropSchemaPaths(properties.meta, 'meta', dropped);
     const trimmed: Record<string, JsonValue> = { ...properties, ...(data !== undefined ? { data } : {}), ...(meta !== undefined ? { meta } : {}) };
@@ -213,7 +231,7 @@ export const outputSchemaFor = (tool: ToolDefinition, profile: Profile): JsonSch
 
 /** The top-level keys a hosted answer never carries, so the hosted `fields` description does not offer them. */
 const hostedDroppedTopKeys = (operationId: string): Set<string> => {
-    const keys = new Set(HOSTED_DROPPED_STAMPS);
+    const keys = new Set([...HOSTED_DROPPED_STAMPS, ...(HOSTED_DROPPED_FIELDS[operationId] ?? [])]);
     for (const path of HOSTED_INTERNAL_ID_PATHS[operationId] ?? []) {
         const match = /^data(?:\[\])?\.([A-Za-z]+)$/u.exec(path);
         if (match?.[1]) keys.add(match[1]);
@@ -269,7 +287,7 @@ export const shapeAnswer = (
     envelope: { readonly data: JsonValue; readonly meta: JsonObject; readonly links: JsonObject },
 ): StructuredAnswer => {
     if (profile === 'local') return { data: envelope.data, meta: envelope.meta, links: envelope.links };
-    const data = trimHosted(stripLinks(envelope.data)) ?? null;
+    const data = trimHosted(stripLinks(dropHostedFields(operationId, envelope.data))) ?? null;
     const links: Record<string, JsonValue> = {};
     for (const [name, link] of Object.entries(envelope.links)) if (!STRIPPED_LINKS.includes(name) && link !== undefined) links[name] = link;
     links.details = detailsFor(operationId, input, envelope.data, envelope.links.details);

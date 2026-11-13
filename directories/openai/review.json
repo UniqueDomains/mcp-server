@@ -67,7 +67,7 @@
     {
       "description": "Register a name",
       "prompt": "Register get.plumbing for me.",
-      "reason": "The tools only read stored data. None registers or buys a name.",
+      "reason": "The tools only read. None registers or buys a name.",
       "expected": "Does not claim to register the name. Says the tools only read, and may give the name's status from ud_get_name."
     },
     {

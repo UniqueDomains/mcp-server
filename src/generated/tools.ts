@@ -13,8 +13,8 @@ export const TOOLS: readonly ToolDefinition[] = [
     {
         "name": "ud_get_name",
         "operationId": "get_name",
-        "title": "Stored answer for one domain name",
-        "description": "The stored answer for one domain name: status, drop day, price today, registry facts, word facts and similar sales. Use it when someone asks about one specific domain name: whether it is open or for sale, what it costs, when it drops. Stored data as of its day, not a live reading. Pass `name` (such as get.plumbing).",
+        "title": "Answer for one domain name",
+        "description": "The answer for one domain name: status, drop day, price today, registry facts, word facts and similar sales. Use it when someone asks about one specific domain name: whether it is open or for sale, what it costs, when it drops. Pass `name` (such as get.plumbing).",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -24,7 +24,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
+                    "description": "A full domain name on an ending in the catalog, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -62,11 +62,11 @@ export const TOOLS: readonly ToolDefinition[] = [
                         },
                         "tracked": {
                             "type": "boolean",
-                            "description": "The catalog stores the name."
+                            "description": "The name is in the catalog."
                         },
                         "status": {
                             "type": "string",
-                            "description": "Where the name stands for a buyer. A list row's stored status reads here as: `resell` is `for_sale` (`at_auction` at a drop-catch venue), `premium` is `free_premium`."
+                            "description": "Where the name stands for a buyer. A list row's status reads here as: `resell` is `for_sale` (`at_auction` at a drop-catch venue), `premium` is `free_premium`."
                         },
                         "lifecycle": {
                             "anyOf": [
@@ -469,16 +469,16 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
     {
         "name": "ud_batch_names",
         "operationId": "batch_names",
-        "title": "Stored answers for up to 100 domain names in one call",
-        "description": "The stored answers for up to 100 domain names in one call. Use it when screening a list of names at once; each name is read as stored, not live. Pass `names` (a list).",
+        "title": "Answers for up to 100 domain names in one call",
+        "description": "The answers for up to 100 domain names in one call. Use it when screening a list of names at once. Pass `names` (a list).",
         "tier": "keyed",
         "plan": "investor",
         "metered": null,
@@ -532,7 +532,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     },
                                     "tracked": {
                                         "type": "boolean",
-                                        "description": "The catalog stores the name."
+                                        "description": "The name is in the catalog."
                                     },
                                     "status": {
                                         "type": "string"
@@ -920,7 +920,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     },
                                     "tracked": {
                                         "type": "boolean",
-                                        "description": "Always false here."
+                                        "description": "The name is in the catalog."
                                     }
                                 }
                             },
@@ -1049,16 +1049,16 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
     {
         "name": "ud_check_name",
         "operationId": "check_name",
-        "title": "Reads one name live from its registry and a registrar",
-        "description": "Reads one name live from its registry and a registrar, stores the reading and returns the full name answer. Use it when the stored answer is too old for a decision about one name; each call spends one live check of the month. Pass `name` (such as get.plumbing).",
+        "title": "Runs a live check of one name and returns the full name answer",
+        "description": "Runs a live check of one name and returns the full name answer. Use it when a decision about one name needs today's answer; each call spends one live check of the month. Pass `name` (such as get.plumbing).",
         "tier": "keyed",
         "plan": null,
         "metered": "Live",
@@ -1068,7 +1068,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
+                    "description": "A full domain name on an ending in the catalog, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -1120,7 +1120,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         },
                         "tracked": {
                             "type": "boolean",
-                            "description": "The catalog stores the name."
+                            "description": "The name is in the catalog."
                         },
                         "status": {
                             "type": "string"
@@ -1500,7 +1500,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         },
                         "checked": {
                             "type": "boolean",
-                            "description": "The live read answered."
+                            "description": "The live check answered."
                         }
                     }
                 },
@@ -1615,16 +1615,16 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": true
         },
         "justification": {
-            "readOnly": "Not read-only: it stores the fresh reading in the catalog and spends one Live unit of the member's month.",
-            "openWorld": "Open world: it reads the name live from its public registry and a registrar.",
+            "readOnly": "Not read-only: it updates the name's record in the catalog and spends one Live unit of the member's month.",
+            "openWorld": "Open world: the check reaches beyond the Unique.domains catalog.",
             "destructive": "Not destructive: it adds a reading and deletes or overwrites nothing the member made."
         }
     },
     {
         "name": "ud_get_name_prices",
         "operationId": "get_name_prices",
-        "title": "Every stored registrar quote for one name",
-        "description": "Every stored registrar quote for one name, and the renewal-trap flag. Use it when someone wants every registrar's price for one name, or asks whether its renewal jumps after the first year. Pass `name` (such as get.plumbing).",
+        "title": "Every registrar quote for one name",
+        "description": "Every registrar quote for one name, and the renewal-trap flag. Use it when someone wants every registrar's price for one name, or asks whether its renewal jumps after the first year. Pass `name` (such as get.plumbing).",
         "tier": "keyed",
         "plan": null,
         "metered": null,
@@ -1634,7 +1634,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
+                    "description": "A full domain name on an ending in the catalog, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -1850,16 +1850,16 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
     {
         "name": "ud_get_name_registry",
         "operationId": "get_name_registry",
-        "title": "Latest stored registry record of one name",
-        "description": "The latest stored registry record of one name: dates, registrar, status codes, nameservers, DNSSEC and holder. Use it when someone asks who holds a name, when it was registered or when it expires. A stored record, not a live lookup. Pass `name` (such as get.plumbing).",
+        "title": "Latest registry record of one name",
+        "description": "The latest registry record of one name: dates, registrar, status codes, nameservers, DNSSEC and holder. Use it when someone asks who holds a name, when it was registered or when it expires. The record carries its day. Pass `name` (such as get.plumbing).",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -1869,7 +1869,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
+                    "description": "A full domain name on an ending in the catalog, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -2164,16 +2164,16 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
     {
         "name": "ud_get_name_registry_history",
         "operationId": "get_name_registry_history",
-        "title": "Stored registry record versions of one name and what moved between them",
-        "description": "The stored registry record versions of one name and what moved between them. Use it when someone asks how a name's registration changed over time, such as a new registrar or a new expiry. Pass `name` (such as get.plumbing).",
+        "title": "Past versions of one name's registry record and what moved between them",
+        "description": "The past versions of one name's registry record and what moved between them. Use it when someone asks how a name's registration changed over time, such as a new registrar or a new expiry. Pass `name` (such as get.plumbing).",
         "tier": "keyed",
         "plan": "investor",
         "metered": null,
@@ -2183,7 +2183,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
+                    "description": "A full domain name on an ending in the catalog, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -2408,16 +2408,16 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
     {
         "name": "ud_get_name_dns",
         "operationId": "get_name_dns",
-        "title": "Latest stored DNS reading of one name",
-        "description": "The latest stored DNS reading of one name, with its parking venue. Use it when someone asks whether a name points anywhere or is parked, and with which parking service. Pass `name` (such as get.plumbing).",
+        "title": "Latest DNS records of one name, with its parking venue",
+        "description": "The latest DNS records of one name, with its parking venue. Use it when someone asks whether a name points anywhere or is parked, and with which parking service. Pass `name` (such as get.plumbing).",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -2427,7 +2427,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
+                    "description": "A full domain name on an ending in the catalog, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -2620,8 +2620,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -2639,7 +2639,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
+                    "description": "A full domain name on an ending in the catalog, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "types": {
                     "type": "string",
@@ -2846,8 +2846,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -2865,7 +2865,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
+                    "description": "A full domain name on an ending in the catalog, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -3057,16 +3057,16 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
     {
         "name": "ud_get_name_value",
         "operationId": "get_name_value",
-        "title": "Stored value estimate of one name and its last 20 estimates",
-        "description": "The stored value estimate of one name and its last 20 estimates. Use it when someone asks what a name is worth; it reads the stored estimate and runs no new one. Pass `name` (such as get.plumbing).",
+        "title": "Value estimate of one name and its last 20 estimates",
+        "description": "The value estimate of one name and its last 20 estimates. Use it when someone asks what a name is worth; it runs no new estimate. Pass `name` (such as get.plumbing).",
         "tier": "keyed",
         "plan": null,
         "metered": null,
@@ -3076,7 +3076,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
+                    "description": "A full domain name on an ending in the catalog, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -3240,16 +3240,16 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
     {
         "name": "ud_appraise_name",
         "operationId": "appraise_name",
-        "title": "Runs the appraisal of one stored name when its estimate is missing",
-        "description": "Runs the appraisal of one stored name when its estimate is missing, and returns the value estimate. Use it when a name has no stored estimate yet; each call spends one appraisal of the month. Pass `name` (such as get.plumbing).",
+        "title": "Runs the appraisal of one catalog name when its estimate is missing",
+        "description": "Runs the appraisal of one catalog name when its estimate is missing, and returns the value estimate. Use it when a name has no estimate yet; each call spends one appraisal of the month. Pass `name` (such as get.plumbing).",
         "tier": "keyed",
         "plan": "investor",
         "metered": "Appraisal",
@@ -3259,7 +3259,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
+                    "description": "A full domain name on an ending in the catalog, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -3423,7 +3423,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Not read-only: it runs and stores the appraisal of a stored name and spends one Appraisal unit of the member's month.",
+            "readOnly": "Not read-only: it runs the appraisal of a catalog name and spends one Appraisal unit of the member's month.",
             "openWorld": "Closed world: it works on the Unique.domains catalog only.",
             "destructive": "Not destructive: it adds to the catalog and deletes nothing."
         }
@@ -3442,7 +3442,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
+                    "description": "A full domain name on an ending in the catalog, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -3601,8 +3601,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -3620,7 +3620,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
+                    "description": "A full domain name on an ending in the catalog, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one."
                 },
                 "fields": {
                     "type": "string",
@@ -3804,8 +3804,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -4031,8 +4031,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -4191,8 +4191,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -4263,7 +4263,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         ]
                                     },
                                     "pos": {
-                                        "description": "Parts of speech as stored, comma-joined tags.",
+                                        "description": "Parts of speech, comma-joined tags.",
                                         "anyOf": [
                                             {
                                                 "type": "string"
@@ -4740,8 +4740,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -4767,7 +4767,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                 },
                 "pos": {
                     "type": "string",
-                    "description": "A part-of-speech tag as stored (`noun`, `verb`, `adjective`, ...)."
+                    "description": "A part-of-speech tag (`noun`, `verb`, `adjective`, ...)."
                 },
                 "shape": {
                     "type": "string",
@@ -5038,8 +5038,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -5104,7 +5104,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             ]
                         },
                         "pos": {
-                            "description": "Parts of speech as stored, comma-joined tags.",
+                            "description": "Parts of speech, comma-joined tags.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -5566,16 +5566,16 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
     {
         "name": "ud_get_word_endings",
         "operationId": "get_word_endings",
-        "title": "A word's endings as stored on the latest day",
-        "description": "A word's endings as stored on the latest day: counts, the key endings and the open names per ending. Use it when someone has a word and asks which endings are still open for it, such as harbor.ai. A word with no count (not scanned, or not counted yet) answers null; zeros are real. Pass `word` (such as harbor); the other inputs are optional.",
+        "title": "A word's endings on the latest day",
+        "description": "A word's endings on the latest day: counts, the key endings and the open names per ending. Use it when someone has a word and asks which endings are still open for it. A word with no count yet answers null; zeros are real. Pass `word` (such as organic); the other inputs are optional.",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -5792,8 +5792,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -6050,8 +6050,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -6339,8 +6339,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -6540,16 +6540,16 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
     {
         "name": "ud_get_word_market",
         "operationId": "get_word_market",
-        "title": "A word's stored sales and auction aggregates",
-        "description": "A word's stored sales and auction aggregates. Use it when someone asks how a word sells across endings: counts, prices and auctions. Pass `word` (such as harbor).",
+        "title": "A word's sales and auction aggregates",
+        "description": "A word's sales and auction aggregates. Use it when someone asks how a word sells across endings: counts, prices and auctions. Pass `word` (such as harbor).",
         "tier": "free",
         "plan": "investor",
         "metered": null,
@@ -6718,8 +6718,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -6906,8 +6906,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -7080,8 +7080,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -7334,7 +7334,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         },
                         "scan": {
                             "type": "string",
-                            "description": "On `ready` with a word: whether the first scan of every ending ran."
+                            "description": "On `ready` with a word: whether every ending of the word has its first status yet."
                         },
                         "reason": {
                             "type": "string",
@@ -7467,8 +7467,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -7593,7 +7593,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "status": {
                                 "type": "string",
-                                "description": "The stored status of the row. One name's own answer groups it for a buyer: `resell` reads `for_sale` there (`at_auction` at a drop-catch venue), `premium` reads `free_premium`."
+                                "description": "The status of the row. One name's own answer groups it for a buyer: `resell` reads `for_sale` there (`at_auction` at a drop-catch venue), `premium` reads `free_premium`."
                             },
                             "price": {
                                 "description": "Price today, USD.",
@@ -7805,8 +7805,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -7862,7 +7862,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         },
                         "tracked": {
                             "type": "boolean",
-                            "description": "The catalog stores the name."
+                            "description": "The name is in the catalog."
                         },
                         "status": {
                             "type": "string"
@@ -8268,8 +8268,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -8483,8 +8483,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -8706,8 +8706,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -8824,7 +8824,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "status": {
                                 "type": "string",
-                                "description": "The stored status of the row. One name's own answer groups it for a buyer: `resell` reads `for_sale` there (`at_auction` at a drop-catch venue), `premium` reads `free_premium`."
+                                "description": "The status of the row. One name's own answer groups it for a buyer: `resell` reads `for_sale` there (`at_auction` at a drop-catch venue), `premium` reads `free_premium`."
                             },
                             "price": {
                                 "description": "Price today, USD.",
@@ -9036,8 +9036,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -9266,8 +9266,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -9452,8 +9452,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -9885,8 +9885,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -10350,8 +10350,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -10849,8 +10849,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -10858,7 +10858,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_list_tld_phases",
         "operationId": "list_tld_phases",
         "title": "Every dated launch phase of the ending, chronological",
-        "description": "Every dated launch phase of the ending, chronological. Use it when someone asks when an ending opens, such as its sunrise or general availability dates. Pass `tld` (such as ai).",
+        "description": "Every dated launch phase of the ending, chronological. Use it when someone asks when an ending opens, such as its sunrise or general availability dates. Pass `tld` (such as web).",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -11034,8 +11034,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -11043,7 +11043,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_list_tld_changes",
         "operationId": "list_tld_changes",
         "title": "Ending's public registry changes, newest first",
-        "description": "The ending's public registry changes, newest first. Use it when someone asks what changed at an ending's registry lately. Pass `tld` (such as ai); the other inputs are optional.",
+        "description": "The ending's public registry changes, newest first. Use it when someone asks what changed at an ending's registry lately. Pass `tld` (such as web); the other inputs are optional.",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -11099,7 +11099,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "seenOn": {
                                 "type": "string",
-                                "description": "UTC day the scanner saw the change."
+                                "description": "UTC day the change was seen."
                             }
                         }
                     }
@@ -11215,8 +11215,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -11392,8 +11392,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -11732,8 +11732,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -11933,8 +11933,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -12261,8 +12261,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -12471,8 +12471,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -12715,8 +12715,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -12929,8 +12929,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -13123,8 +13123,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -13363,8 +13363,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -13607,8 +13607,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -13839,8 +13839,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -14040,8 +14040,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -14261,8 +14261,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -14360,7 +14360,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "properties": {
                                             "names": {
                                                 "type": "integer",
-                                                "description": "Scanned names parked at the venue, rounded (to 100, to 10 under 1,000)."
+                                                "description": "Tracked names parked at the venue, rounded (to 100, to 10 under 1,000)."
                                             },
                                             "listed": {
                                                 "anyOf": [
@@ -14513,8 +14513,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -14617,7 +14617,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "properties": {
                                         "names": {
                                             "type": "integer",
-                                            "description": "Scanned names parked at the venue, rounded (to 100, to 10 under 1,000)."
+                                            "description": "Tracked names parked at the venue, rounded (to 100, to 10 under 1,000)."
                                         },
                                         "listed": {
                                             "anyOf": [
@@ -14790,16 +14790,16 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
     {
         "name": "ud_list_iana_registrars",
         "operationId": "list_iana_registrars",
-        "title": "IANA registrar list as stored, by IANA id",
-        "description": "The IANA registrar list as stored, by IANA id. Use it when someone asks for accredited registrars beyond the nine compared; it answers one page at a time. Every input is optional; `limit` sets the page size.",
+        "title": "IANA registrar list, by IANA id",
+        "description": "The IANA registrar list, by IANA id. Use it when someone asks for accredited registrars beyond the nine compared; it answers one page at a time. Every input is optional; `limit` sets the page size.",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -14977,8 +14977,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -15149,8 +15149,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -15385,8 +15385,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -15576,8 +15576,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -15768,8 +15768,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -16112,8 +16112,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -16300,8 +16300,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -16484,8 +16484,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -16768,8 +16768,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -16984,8 +16984,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -17258,8 +17258,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -17455,8 +17455,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -17725,8 +17725,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -18044,8 +18044,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -18197,8 +18197,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -18441,8 +18441,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -18691,8 +18691,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -18952,8 +18952,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -19412,8 +19412,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -19885,8 +19885,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -20363,8 +20363,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -20610,192 +20610,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
-            "destructive": "Not destructive: it writes and deletes nothing."
-        }
-    },
-    {
-        "name": "ud_get_meta_freshness",
-        "operationId": "get_meta_freshness",
-        "title": "How current each part of the stored data is",
-        "description": "How current each part of the stored data is, with the day's counts. Use it when someone asks how fresh the stored data is. Takes no input.",
-        "tier": "free",
-        "plan": null,
-        "metered": null,
-        "hosted": false,
-        "inputSchema": {
-            "type": "object",
-            "properties": {
-                "fields": {
-                    "type": "string",
-                    "description": "Comma-separated top-level keys to keep: asOf, scannedToday, checkedLast24h, lanes."
-                }
-            },
-            "additionalProperties": false
-        },
-        "keyedParameters": [],
-        "outputSchema": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "object",
-                    "properties": {
-                        "asOf": {
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        },
-                        "scannedToday": {
-                            "type": "integer"
-                        },
-                        "checkedLast24h": {
-                            "type": "integer"
-                        },
-                        "lanes": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "lane": {
-                                        "type": "string"
-                                    },
-                                    "scanned": {
-                                        "anyOf": [
-                                            {
-                                                "type": "integer"
-                                            },
-                                            {
-                                                "type": "null"
-                                            }
-                                        ]
-                                    },
-                                    "state": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "meta": {
-                    "type": "object",
-                    "properties": {
-                        "asOf": {
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        },
-                        "cursor": {
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        },
-                        "limit": {
-                            "anyOf": [
-                                {
-                                    "type": "integer"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        }
-                    },
-                    "additionalProperties": true,
-                    "description": "The day of the answer, and the page cursor of a list."
-                },
-                "links": {
-                    "type": "object",
-                    "description": "Links of the answer.",
-                    "properties": {
-                        "self": {
-                            "type": "string",
-                            "description": "This answer on the API."
-                        },
-                        "next": {
-                            "description": "The next page on the API, when there is one.",
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        },
-                        "register": {
-                            "description": "Where to register the name, when it can be registered.",
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        },
-                        "product": {
-                            "description": "The Unique.domains page that opens what a refusal named.",
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        },
-                        "dataset": {
-                            "description": "The GitHub dataset holding the same rows.",
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        },
-                        "details": {
-                            "description": "The public Unique.domains page about the subject.",
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "null"
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "annotations": {
-            "readOnlyHint": true,
-            "destructiveHint": false,
-            "idempotentHint": true,
-            "openWorldHint": false
-        },
-        "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -20970,8 +20786,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -21126,8 +20942,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -21335,8 +21151,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     },
@@ -21624,8 +21440,8 @@ export const TOOLS: readonly ToolDefinition[] = [
             "openWorldHint": false
         },
         "justification": {
-            "readOnly": "Read-only: it reads stored Unique.domains data and changes nothing.",
-            "openWorld": "Closed world: it reads the Unique.domains catalog only, never the open web.",
+            "readOnly": "Read-only: it reads the Unique.domains catalog and changes nothing.",
+            "openWorld": "Closed world: it reads the Unique.domains catalog only.",
             "destructive": "Not destructive: it writes and deletes nothing."
         }
     }

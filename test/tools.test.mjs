@@ -10,7 +10,18 @@ import { fileURLToPath } from 'node:url';
 import { OPERATIONS } from '@uniquedomains/sdk';
 
 import { TOOLS, selectTools } from '../dist/index.js';
-import { DESCRIPTION_MAX_LENGTH, FORBIDDEN_WORDS, HOSTED_EXCLUDED_OPERATIONS, TRANSPORT_OPERATIONS, textsOf } from '../scripts/lib/tools.mjs';
+import { readFileSync } from 'node:fs';
+
+import {
+    DESCRIBED_AHEAD_OF_SDK,
+    DESCRIPTION_MAX_LENGTH,
+    FORBIDDEN_WORDS,
+    HOSTED_EXCLUDED_OPERATIONS,
+    TRANSPORT_OPERATIONS,
+    UNREGISTERED_OPERATIONS,
+    textsOf,
+    whereDataComesFromIn,
+} from '../scripts/lib/tools.mjs';
 import { GUIDANCE } from '../scripts/lib/guidance.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -18,24 +29,28 @@ const free = TOOLS.filter((tool) => tool.tier === 'free');
 const hosted = TOOLS.filter((tool) => tool.hosted);
 const keyed = TOOLS.filter((tool) => tool.tier === 'keyed');
 
-test('56 free tools, 51 on the hosted connector, every keyed operation as a keyed tool', () => {
-    assert.equal(free.length, 56);
+test('55 free tools, 51 on the hosted connector, every keyed operation as a keyed tool', () => {
+    assert.equal(free.length, 55);
     assert.equal(hosted.length, 51);
     assert.equal(keyed.length, Object.values(OPERATIONS).filter((operation) => operation.tier === 'keyed').length);
-    assert.equal(TOOLS.length, Object.keys(OPERATIONS).length - TRANSPORT_OPERATIONS.length);
+    assert.equal(TOOLS.length, 80);
+    assert.equal(TOOLS.length, Object.keys(OPERATIONS).length - TRANSPORT_OPERATIONS.length - UNREGISTERED_OPERATIONS.length);
 });
 
-test('the five transport operations and the hosted exclusions', () => {
-    for (const id of TRANSPORT_OPERATIONS) assert.ok(!TOOLS.some((tool) => tool.operationId === id), id);
+test('the transport operations, the unregistered ones and the hosted exclusions', () => {
+    for (const id of [...TRANSPORT_OPERATIONS, ...UNREGISTERED_OPERATIONS]) assert.ok(!TOOLS.some((tool) => tool.operationId === id), id);
+    // Gaetan's 3B of 2026-11-13: the freshness endpoint stays in the API, and the server registers no tool for it.
+    assert.ok(OPERATIONS.get_meta_freshness, 'the API still has the endpoint');
+    assert.ok(!TOOLS.some((tool) => tool.name === 'ud_get_meta_freshness'));
     for (const id of HOSTED_EXCLUDED_OPERATIONS) {
         const tool = TOOLS.find((candidate) => candidate.operationId === id);
         assert.equal(tool.tier, 'free', id);
         assert.equal(tool.hosted, false, id);
     }
     assert.ok(hosted.every((tool) => tool.tier === 'free'));
-    // P-1 and P-2: the same data as ud_get_name, and the pipeline's state, stay on npm only.
-    assert.ok(!hosted.some((tool) => tool.name === 'ud_get_domain' || tool.name === 'ud_get_meta_freshness'));
-    assert.ok(free.some((tool) => tool.name === 'ud_get_domain') && free.some((tool) => tool.name === 'ud_get_meta_freshness'));
+    // P-1: the same data as ud_get_name stays on npm only.
+    assert.ok(!hosted.some((tool) => tool.name === 'ud_get_domain'));
+    assert.ok(free.some((tool) => tool.name === 'ud_get_domain'));
 });
 
 test('names: ud_<operationId>, under 64 characters, unique', () => {
@@ -130,7 +145,7 @@ test('no description or title carries internal words, outside backticked input n
         }
     }
     // The title follows a replaced summary (`ud_get_word_endings` no longer reads "as the nightly update holds them").
-    assert.equal(TOOLS.find((tool) => tool.name === 'ud_get_word_endings').title, "A word's endings as stored on the latest day");
+    assert.equal(TOOLS.find((tool) => tool.name === 'ud_get_word_endings').title, "A word's endings on the latest day");
 });
 
 test('no tool text carries a score, a ranking or a sales source, nor an em dash', () => {
@@ -184,7 +199,7 @@ test('output schemas: the envelope, no required key, no closed object, details d
 });
 
 test('the profiles and plans select the expected sets', () => {
-    assert.equal(selectTools(TOOLS, 'local', 'none').length, 56);
+    assert.equal(selectTools(TOOLS, 'local', 'none').length, 55);
     assert.equal(selectTools(TOOLS, 'hosted', 'investor').length, 51);
     const founder = selectTools(TOOLS, 'local', 'founder');
     const investor = selectTools(TOOLS, 'local', 'investor');
@@ -223,7 +238,7 @@ test('the word endings tool declares null counts and says so', async () => {
     for (const field of [byGroup, openByEnding]) assert.ok(field.anyOf.some((branch) => branch.type === 'null'), JSON.stringify(field));
     assert.equal(byGroup.anyOf[0].type, 'object');
     // The platform's one null sentence (review R-4 of 2026-11-11), the same in the plugin skill.
-    assert.match(tool.description, /A word with no count \(not scanned, or not counted yet\) answers null; zeros are real\./u);
+    assert.match(tool.description, /A word with no count yet answers null; zeros are real\./u);
 
     const { widenAheadOfSdk } = await import('../scripts/lib/tools.mjs');
     const already = { properties: { byGroup: { anyOf: [{ type: 'object' }, { type: 'null' }] }, openByEnding: { type: 'null' } } };
@@ -237,7 +252,7 @@ test('the word endings tool declares null counts and says so', async () => {
 test('the plugin skill and the enums tool say what null and the venue list mean', async () => {
     const { readFile } = await import('node:fs/promises');
     const skill = await readFile(join(ROOT, 'plugin', 'skills', 'unique-domains', 'SKILL.md'), 'utf8');
-    assert.ok(skill.includes('A word with no count (not scanned, or not counted yet) answers null; zeros are real'));
+    assert.ok(skill.includes('A word with no count yet answers null; zeros are real'));
     assert.ok(!/All zeros mean/u.test(skill));
     const enums = TOOLS.find((tool) => tool.operationId === 'get_meta_enums').description;
     assert.match(enums, /may be one this list leaves out/u);
@@ -280,4 +295,128 @@ test('the answers explain an edition\'s counts and the two status words', () => 
     for (const name of ['ud_get_latest_edition', 'ud_get_edition']) assert.match(data(name).properties.trendCount.description, /lists at most 20/u);
     assert.match(data('ud_get_name').properties.status.description, /`resell` is `for_sale`/u);
     for (const name of ['ud_list_domains', 'ud_list_domain_hacks']) assert.match(data(name).items.properties.status.description, /`resell` reads `for_sale`/u);
+});
+
+/* ---------- No text says where the data comes from (plan `never-where-data-comes-from`, step M6) ---------- */
+
+/**
+ * `fields` lists the answer's own key names (`scan` among them): field names are the API's contract and stay in v1
+ * (Gaetan's 2A of 2026-11-13), so that list is not prose.
+ */
+const proseOfTool = (text) => text.replace(/Comma-separated top-level keys to keep: [^.]*\./u, '');
+
+/** Every `description` inside a schema. */
+const descriptionsOf = (node) => {
+    if (Array.isArray(node)) return node.flatMap(descriptionsOf);
+    if (node === null || typeof node !== 'object') return [];
+    return [...(typeof node.description === 'string' ? [node.description] : []), ...Object.values(node).flatMap(descriptionsOf)];
+};
+
+test('the guard catches every form the rule bans, and lets the paid operation and a trademark status through', () => {
+    for (const banned of ['The stored answer.', 'Read from storage.', 'The catalog stores the name.', 'The scanner saw it.', 'Scanned names.', 'The registry sync.', 'Not a live reading.', 'Not live.', 'Never live.', 'A live lookup.', 'A live read.', 'It reads live.']) {
+        assert.ok(whereDataComesFromIn(banned).length > 0, banned);
+    }
+    for (const kept of ['Runs a live check of one name.', 'Each call spends one live check of the month.', 'A mark whose status is `live` or `dead`.', 'The record carries its day.', 'A daily record, read every day.']) {
+        assert.deepEqual(whereDataComesFromIn(kept), [], kept);
+    }
+});
+
+test('no tool text says where the data comes from, on either profile, keyed tools included', async () => {
+    const { inputSchemaFor, outputSchemaFor } = await import('../dist/index.js');
+    for (const tool of TOOLS) {
+        const texts = [...textsOf(tool)];
+        // The hosted profile rewrites some input texts: its descriptions are read too (field names are not text).
+        if (tool.hosted) texts.push(...descriptionsOf([inputSchemaFor(tool, 'hosted', 'none'), outputSchemaFor(tool, 'hosted')]));
+        for (const text of texts) assert.deepEqual(whereDataComesFromIn(proseOfTool(text)), [], `${tool.name}: "${text}"`);
+    }
+});
+
+test('the tool texts of the 0.1.6 round read as the plan words them', () => {
+    const tool = (name) => TOOLS.find((entry) => entry.name === name);
+    assert.equal(tool('ud_get_name').title, 'Answer for one domain name');
+    assert.equal(tool('ud_get_name_registry').title, 'Latest registry record of one name');
+    assert.match(tool('ud_get_name_registry').description, /The record carries its day\./u);
+    assert.match(tool('ud_get_name_value').description, /it runs no new estimate\./u);
+    assert.match(tool('ud_check_name').description, /each call spends one live check of the month\./u);
+    assert.equal(tool('ud_get_name').justification.readOnly, 'Read-only: it reads the Unique.domains catalog and changes nothing.');
+    assert.equal(tool('ud_get_name').justification.openWorld, 'Closed world: it reads the Unique.domains catalog only.');
+    assert.equal(tool('ud_check_name').justification.openWorld, 'Open world: the check reaches beyond the Unique.domains catalog.');
+    // Deeper fields reached by path, through `items` and `anyOf`.
+    const data = (name) => tool(name).outputSchema.properties.data;
+    assert.equal(data('ud_get_venue').properties.footprint.anyOf[0].properties.names.description, 'Tracked names parked at the venue, rounded (to 100, to 10 under 1,000).');
+    assert.equal(data('ud_batch_names').items.anyOf[0].properties.tracked.description, 'The name is in the catalog.');
+    assert.equal(data('ud_batch_words').items.anyOf[0].properties.pos.description, 'Parts of speech, comma-joined tags.');
+    assert.equal(data('ud_list_tld_changes').items.properties.seenOn.description, 'UTC day the change was seen.');
+});
+
+/**
+ * The texts this server carries ahead of the SDK in the 0.1.6 round, each with the SDK 0.2.0 document's text it
+ * replaces. The day the SDK's document says something else for one of them without the old words, the platform has
+ * shipped its own text: if it equals the copy, `npm run generate` shows no change and the copy goes; if it differs, this
+ * test fails, so the two never drift apart (plan `never-where-data-comes-from`, decision D-a).
+ *
+ * Not compared, since the server words them for an assistant rather than a developer (plan, step P2): `check_name`
+ * ("the full name answer"), `appraise_name` ("the value estimate"), `batch_names` (the platform's summary says
+ * "resource"), `get_word_endings` (the plan's tool summary keeps "the open names", its platform summary "open names"),
+ * and the list rows' `status`, the server's own longer sentence.
+ */
+const AHEAD_OF_SDK_0_1_6 = [
+    { operationId: 'get_name', field: 'summary', sdk: 'The stored answer for one domain name: status, drop day, price today, registry facts, word facts and similar sales.' },
+    { operationId: 'get_name_prices', field: 'summary', sdk: 'Every stored registrar quote for one name, and the renewal-trap flag.' },
+    { operationId: 'get_name_registry', field: 'summary', sdk: 'The latest stored registry record of one name: dates, registrar, status codes, nameservers, DNSSEC and holder.' },
+    { operationId: 'get_name_registry_history', field: 'summary', sdk: 'The stored registry record versions of one name and what moved between them.' },
+    { operationId: 'get_name_dns', field: 'summary', sdk: 'The latest stored DNS reading of one name, with its parking venue.' },
+    { operationId: 'get_name_value', field: 'summary', sdk: 'The stored value estimate of one name and its last 20 estimates.' },
+    { operationId: 'get_word_market', field: 'summary', sdk: "A word's sales and auction aggregates from the nightly update." },
+    { operationId: 'list_iana_registrars', field: 'summary', sdk: 'The IANA registrar list as the registry sync stores it, by id.' },
+    { operationId: 'get_name', field: 'tracked', sdk: 'The catalog stores the name.' },
+    { operationId: 'batch_names', field: 'tracked', sdk: 'The catalog stores the name.' },
+    { operationId: 'check_name', field: 'tracked', sdk: 'The catalog stores the name.' },
+    { operationId: 'get_domain', field: 'tracked', sdk: 'The catalog stores the name.' },
+    // SDK 0.2.0 gives this field no description; the platform's text is the 0.1.5 round's, reworded in this one.
+    { operationId: 'get_name', field: 'status', sdk: null },
+    { operationId: 'check_name', field: 'checked', sdk: 'The live read answered.' },
+    { operationId: 'get_word', field: 'pos', sdk: 'Parts of speech as stored, comma-joined tags.' },
+    { operationId: 'batch_words', field: 'pos', sdk: 'Parts of speech as stored, comma-joined tags.' },
+    { operationId: 'get_word_request', field: 'scan', sdk: 'On `ready` with a word: whether the first scan of every ending ran.' },
+    { operationId: 'list_tld_changes', field: 'seenOn', sdk: 'UTC day the scanner saw the change.' },
+    { operationId: 'list_venues', field: 'footprint.names', sdk: 'Scanned names parked at the venue, rounded (to 100, to 10 under 1,000).' },
+    { operationId: 'get_venue', field: 'footprint.names', sdk: 'Scanned names parked at the venue, rounded (to 100, to 10 under 1,000).' },
+];
+
+const SDK_DOCUMENT = JSON.parse(readFileSync(join(ROOT, 'node_modules', '@uniquedomains', 'sdk', 'openapi.json'), 'utf8'));
+
+const operationIn = (document, operationId) =>
+    Object.values(document.paths)
+        .flatMap((item) => Object.values(item))
+        .find((candidate) => candidate && candidate.operationId === operationId);
+
+/** The description the document gives a field of the 200 answer's `data`, by dotted path, through refs, items and branches. */
+const documentFieldText = (document, operationId, path) => {
+    const resolve = (node) => (node && typeof node.$ref === 'string' ? resolve(document.components.schemas[node.$ref.replace('#/components/schemas/', '')]) : node);
+    const find = (node, segments) => {
+        node = resolve(node);
+        if (!node || typeof node !== 'object') return null;
+        if (segments.length === 0) return node.description ?? (node.oneOf ?? node.anyOf ?? []).map(resolve).find((branch) => branch?.description)?.description ?? null;
+        const [head, ...rest] = segments;
+        if (node.properties?.[head]) return find(node.properties[head], rest);
+        if (node.items) return find(node.items, segments);
+        for (const branch of node.oneOf ?? node.anyOf ?? node.allOf ?? []) {
+            const found = find(branch, segments);
+            if (found !== null) return found;
+        }
+        return null;
+    };
+    const schema = operationIn(document, operationId).responses['200'].content['application/json'].schema;
+    return find(resolve(schema).properties.data, path.split('.'));
+};
+
+test('each copy ahead of the SDK still replaces the SDK text it names, and matches the SDK the day it ships its own', () => {
+    for (const { operationId, field, sdk } of AHEAD_OF_SDK_0_1_6) {
+        const copy = field === 'summary' ? GUIDANCE[operationId].summary : DESCRIBED_AHEAD_OF_SDK[operationId][field];
+        assert.ok(typeof copy === 'string' && whereDataComesFromIn(copy).length === 0, `${operationId}.${field}: the server's copy`);
+        const text = field === 'summary' ? operationIn(SDK_DOCUMENT, operationId).summary : documentFieldText(SDK_DOCUMENT, operationId, field);
+        if (text === sdk || (text !== null && whereDataComesFromIn(text).length > 0)) continue;
+        assert.equal(text, copy, `${operationId}.${field}: the SDK's document now says another text; take it here, or drop the copy when they are equal`);
+    }
 });

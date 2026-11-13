@@ -1,6 +1,6 @@
 {
   "name": "@uniquedomains/mcp-server",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "MCP server for domain data: is a name taken, what nine registrars charge, what similar names sold for. A daily record of 37 million names. Runs with npx or hosted, no key.",
   "license": "MIT",
   "author": "Unique.domains (https://unique.domains)",

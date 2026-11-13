@@ -132,19 +132,19 @@ export const refusalText = (error: ApiProblemError, profile: Profile, now: Date)
 
 /**
  * What to do after a 202, per operation (review finding 1). Calling a metered tool again is never the advice when it
- * would spend another unit: `check_name` bills a Live unit whenever the registry was asked, so the stored resource is
- * read with `ud_get_name`; a word request is followed with `ud_get_word_request`, since a new request counts against
+ * would spend another unit: `check_name` bills a Live unit whenever the check ran, so the name's answer is read with
+ * `ud_get_name`; a word request is followed with `ud_get_word_request`, since a new request counts against
  * the day's intake. `appraise_name` bills nothing while another run holds the name, so it may be called again.
  */
 export const acceptedLine = (operationId: string, wait: number, data: JsonValue): string => {
     const seconds = `about ${Math.max(1, Math.round(wait))} seconds`;
-    if (operationId === 'check_name') return `Not ready yet: the scanner is still reading the name. Read it with ud_get_name in ${seconds}; calling ud_check_name again spends another live check.`;
+    if (operationId === 'check_name') return `Not ready yet: the check of the name is still running. Read it with ud_get_name in ${seconds}; calling ud_check_name again spends another live check.`;
     if (operationId === 'request_word') {
         const requestId = isObject(data) && typeof data.requestId === 'string' ? data.requestId : null;
         const follow = requestId === null ? 'ud_get_word_request' : `ud_get_word_request with requestId ${requestId}`;
         return `Queued: the word joins the catalog's intake. Follow it with ${follow} in ${seconds}.`;
     }
-    return `Not ready yet: the scanner is still working on it. Call this tool again in ${seconds}.`;
+    return `Not ready yet: the answer is still being prepared. Call this tool again in ${seconds}.`;
 };
 
 /**

@@ -65,8 +65,8 @@ test('every hosted tool has a details rule, and the rules point at the website',
 });
 
 test('the text line names the subject and its fact, or the count and the first three, never an id or a cursor', () => {
-    const one = textLine('Stored answer for one domain name', { data: { id: 'dom_123', name: 'harbor.io', status: 'taken' }, meta: { cursor: null }, links: {} });
-    assert.equal(one, 'Stored answer for one domain name: harbor.io, status taken.');
+    const one = textLine('Answer for one domain name', { data: { id: 'dom_123', name: 'harbor.io', status: 'taken' }, meta: { cursor: null }, links: {} });
+    assert.equal(one, 'Answer for one domain name: harbor.io, status taken.');
     assert.equal(textLine('One name', { data: { name: 'harbor.io', status: 'not_checked' }, meta: {}, links: {} }), 'One name: harbor.io, status not checked.');
     const list = textLine('Every root TLD', { data: [{ tld: '.aaa' }, { tld: '.abb' }, { tld: '.abc' }, { tld: '.able' }], meta: { cursor: 'eyJ2Ijox' }, links: {} });
     assert.equal(list, 'Every root TLD. 4 rows on this page, more on the next: .aaa, .abb, .abc and more.');

@@ -3,7 +3,7 @@
   "name": "domains.unique/mcp-server",
   "title": "Unique.domains",
   "description": "Domain status, WHOIS records, nine registrars' daily prices, renewal traps and auctions. No key.",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "websiteUrl": "https://unique.domains/api/mcp",
   "repository": {
     "url": "https://github.com/UniqueDomains/mcp-server",
@@ -21,7 +21,7 @@
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "@uniquedomains/mcp-server",
-      "version": "0.1.5",
+      "version": "0.1.6",
       "transport": {
         "type": "stdio"
       },

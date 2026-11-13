@@ -6,7 +6,7 @@ The Unique.domains tools (their names start with `ud_`) read a catalog that is u
 
 One domain name. Pass the full name with its ending, such as `get.plumbing`.
 
-- Is it open, taken or for sale, its price today when the record has one, when it drops: `ud_get_name`. Its `status` groups a list row's stored status for a buyer: a row's `resell` reads `for_sale` here (`at_auction` at a drop-catch venue), and `premium` reads `free_premium`
+- Is it open, taken or for sale, its price today when the record has one, when it drops: `ud_get_name`. Its `status` groups a list row's status for a buyer: a row's `resell` reads `for_sale` here (`at_auction` at a drop-catch venue), and `premium` reads `free_premium`
 - Its registrar, when it was registered, when it expires, and its holder when the registry publishes one: `ud_get_name_registry`
 - Whether it points anywhere or is parked: `ud_get_name_dns`
 - What similar names sold for, as a count and a median, and on how many endings its word sold: `ud_get_name_comps`. Its `tier` says how close those sales are, from the same word to the wider market
@@ -15,7 +15,7 @@ One domain name. Pass the full name with its ending, such as `get.plumbing`.
 A word as a name.
 
 - Start with `ud_resolve_word` when the word is misspelled, plural or unclear, and use the word it answers.
-- How many of its names are open, taken or for sale, by ending: `ud_get_word_endings`. A word with no count (not scanned, or not counted yet) answers null; zeros are real: a counted word with zeros has no open name. For one ending, ask `ud_get_name` with the full name
+- How many of its names are open, taken or for sale, by ending: `ud_get_word_endings`. A word with no count yet answers null; zeros are real: a counted word with zeros has no open name. For one ending, ask `ud_get_name` with the full name
 - How widely known it is: `ud_get_word_notability`
 - The word categories: `ud_list_word_categories`
 
@@ -78,13 +78,13 @@ Reference lists.
 
 ## How to answer
 
-- Say the day the data is from when the answer carries one, and never present it as checked live.
+- Say the day the data is from when the answer carries one.
 - Give the reader `links.details` when it is set: it is the public page about the subject, or about its section, on unique.domains.
 - Keep a list in the order the tool returns it, and do not present the first rows as better than the rest.
 - A list that pages answers up to 20 rows at a time. When `meta.cursor` in the answer is set, pass it as `cursor` for the next page. When it is null, there is no next page. A list with no `cursor` input answers once.
 - No next page does not always mean the whole list. Some tools answer a fixed cut of a longer one: `ud_list_domains` and `ud_list_domain_hacks` give at most 20 names, even when many more match; `ud_list_price_changes` and `ud_list_registrar_changes` give the newest changes only; `ud_list_price_traps` gives a few rows, with the full count in `meta.trapCount`; `ud_list_registrar_prices` gives that day's set of endings, not every ending the registrar sells. Present a cut as a cut: say "here are 20 of them", never "these are all of them", and never conclude that something does not exist because a cut leaves it out.
 - A sample is a sample: the auction examples are a fixed set for the day, and the sales tools answer totals, not single sales.
-- A name the catalog has not checked answers the status `not_checked`. Say that there is no stored reading for it, never that it is free or taken.
+- A name outside the catalog answers the status `not_checked`. Say that the catalog has no answer for it yet, never that it is free or taken.
 - Take a slug, a registrar or an applied-for string from the matching list tool. Do not guess it.
 - When a tool answers a problem, such as a word with no ending, an ending the catalog does not hold or a limit reached, say what it said in plain words and do not call it again in a loop.
 - When someone asks to register, buy, renew or point a name: say these tools cannot do it and that a registrar does, then offer the facts the tools can read.

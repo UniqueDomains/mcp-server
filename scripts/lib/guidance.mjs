@@ -6,47 +6,59 @@
  * One entry per operation `buildTools` emits, keyed ones included (Glama and npm users read them too): `use`, the
  * sentence that tells an assistant when the tool is the right one (Anthropic's directory policy 2.A; OpenAI's
  * optimize-metadata page: purpose, when to use, limits), and optionally `summary`, which replaces the API document's
- * summary where that one carries words a reader outside the team would not know (the nightly update, the registry
- * sync, an HTTP route, a key's grade).
+ * summary where that one carries words a reader outside the team would not know (the nightly update, an HTTP route, a
+ * key's grade), or says where the data comes from (Gaetan's rule of 2026-11-12, plan `never-where-data-comes-from`,
+ * section 2). A replaced summary is the platform's new text word for word, ahead of the SDK (`test/tools.test.mjs`
+ * fails the day the SDK's document says something else).
  *
  * Hand-written here, not in the API document (fix round P-3): the document feeds the SDK, the website reference and
  * RapidAPI, and a change there reaches this server only after an SDK release. Rewording the document's own summaries
  * is a later round.
  *
  * A `use` sentence starts "Use it when" (or "Use it first when", "Use it to") and names at most the one limit an
- * assistant must know: stored data, not a live reading; a fixed daily sample; one page at a time; a spent allowance.
+ * assistant must know: a fixed daily sample; one page at a time; a spent allowance.
  * It names no other tool, compares nothing and carries no plan talk (`test/tools.test.mjs`).
  *
  * Optionally `examples`, the sample value the description shows for a required input, in place of the API document's
  * (review M1 of 2026-11-11). Each one answered on production on 2026-11-11 and is chosen to keep answering: a frozen
  * edition day, a slug of a dated event row, a published trend and an applied-for string (none of these lookups is
- * bounded by date). `npm run smoke -- --live` calls each on the hosted profile, so one that stops answering shows.
+ * bounded by date); `web` and `organic` were added on 2026-11-13, where the document's samples answered empty.
+ * `npm run smoke -- --live` calls every sample a hosted description shows, these and the document's, and fails on an
+ * empty answer, so one that stops answering shows.
  */
 
 /** @type {Readonly<Record<string, { use: string, summary?: string, examples?: Readonly<Record<string, string>> }>>} */
 export const GUIDANCE = {
     /* ---------- One name ---------- */
     get_name: {
-        use: 'Use it when someone asks about one specific domain name: whether it is open or for sale, what it costs, when it drops. Stored data as of its day, not a live reading.',
+        summary: 'The answer for one domain name: status, drop day, price today, registry facts, word facts and similar sales.',
+        // No day promised (decision D-b): the name's answer carries none, by the "never show a checked time" rule.
+        use: 'Use it when someone asks about one specific domain name: whether it is open or for sale, what it costs, when it drops.',
     },
     batch_names: {
-        summary: 'The stored answers for up to 100 domain names in one call.',
-        use: 'Use it when screening a list of names at once; each name is read as stored, not live.',
+        summary: 'The answers for up to 100 domain names in one call.',
+        use: 'Use it when screening a list of names at once.',
     },
     check_name: {
-        summary: 'Reads one name live from its registry and a registrar, stores the reading and returns the full name answer.',
-        use: 'Use it when the stored answer is too old for a decision about one name; each call spends one live check of the month.',
+        // "A live check" is the paid operation's name (decision D-c), never described by what it reads.
+        summary: 'Runs a live check of one name and returns the full name answer.',
+        use: "Use it when a decision about one name needs today's answer; each call spends one live check of the month.",
     },
     get_name_prices: {
+        summary: 'Every registrar quote for one name, and the renewal-trap flag.',
         use: "Use it when someone wants every registrar's price for one name, or asks whether its renewal jumps after the first year.",
     },
     get_name_registry: {
-        use: 'Use it when someone asks who holds a name, when it was registered or when it expires. A stored record, not a live lookup.',
+        summary: 'The latest registry record of one name: dates, registrar, status codes, nameservers, DNSSEC and holder.',
+        // True as written: the free answer carries `observedOn` (2026-09-23 for get.plumbing on 2026-11-13).
+        use: 'Use it when someone asks who holds a name, when it was registered or when it expires. The record carries its day.',
     },
     get_name_registry_history: {
+        summary: "The past versions of one name's registry record and what moved between them.",
         use: "Use it when someone asks how a name's registration changed over time, such as a new registrar or a new expiry.",
     },
     get_name_dns: {
+        summary: 'The latest DNS records of one name, with its parking venue.',
         use: 'Use it when someone asks whether a name points anywhere or is parked, and with which parking service.',
     },
     list_name_changes: {
@@ -57,11 +69,13 @@ export const GUIDANCE = {
         use: 'Use it when someone asks whether a name carried a website before and how established it was.',
     },
     get_name_value: {
-        use: 'Use it when someone asks what a name is worth; it reads the stored estimate and runs no new one.',
+        summary: 'The value estimate of one name and its last 20 estimates.',
+        // True as written: `GET /names/{name}/value` never starts an appraisal.
+        use: 'Use it when someone asks what a name is worth; it runs no new estimate.',
     },
     appraise_name: {
-        summary: 'Runs the appraisal of one stored name when its estimate is missing, and returns the value estimate.',
-        use: 'Use it when a name has no stored estimate yet; each call spends one appraisal of the month.',
+        summary: 'Runs the appraisal of one catalog name when its estimate is missing, and returns the value estimate.',
+        use: 'Use it when a name has no estimate yet; each call spends one appraisal of the month.',
     },
     get_name_comps: {
         // After-fix check AF-1 of 2026-11-11: `endingsSoldOn` is a count, never the endings themselves.
@@ -89,10 +103,13 @@ export const GUIDANCE = {
         use: 'Use it when someone asks what a word means, where it comes from or how it is used.',
     },
     get_word_endings: {
-        summary: "A word's endings as stored on the latest day: counts, the key endings and the open names per ending.",
+        // 2026-11-13: `organic` answered 439 endings counted (154 taken, 113 available, 172 for sale) on the hosted
+        // connector; the document's `harbor` answered null counts (plan `never-where-data-comes-from`, section 3).
+        examples: { word: 'organic' },
+        summary: "A word's endings on the latest day: counts, the key endings and the open names per ending.",
         // The one limit (2026-11-11, decision B; the platform's one sentence of review R-4): null is "no count", never
-        // zeros that read as "no names"; an unscanned word keeps its null for good, so the sentence names both cases.
-        use: 'Use it when someone has a word and asks which endings are still open for it, such as harbor.ai. A word with no count (not scanned, or not counted yet) answers null; zeros are real.',
+        // zeros that read as "no names". No "such as harbor.ai" any more: the sample word's `.ai` is taken.
+        use: 'Use it when someone has a word and asks which endings are still open for it. A word with no count yet answers null; zeros are real.',
     },
     list_word_names: {
         use: 'Use it when someone wants every catalog name built on one word; it answers one page at a time.',
@@ -104,7 +121,7 @@ export const GUIDANCE = {
         use: 'Use it when someone asks how widely known a word is as a public topic.',
     },
     get_word_market: {
-        summary: "A word's stored sales and auction aggregates.",
+        summary: "A word's sales and auction aggregates.",
         use: 'Use it when someone asks how a word sells across endings: counts, prices and auctions.',
     },
     list_related_words: {
@@ -159,9 +176,14 @@ export const GUIDANCE = {
         use: "Use it when someone asks how one ending's market is doing, such as its registrations or sales over time.",
     },
     list_tld_phases: {
+        // 2026-11-13: `web` answered 5 phases, from 2026-11-20 to general availability on 2027-04-06; the document's `ai`
+        // answers an empty list (a country ending has no launch phases).
+        examples: { tld: 'web' },
         use: 'Use it when someone asks when an ending opens, such as its sunrise or general availability dates.',
     },
     list_tld_changes: {
+        // 2026-11-13: `web` answered 5 changes seen on 2026-11-11; the change log starts on 2026-10-03 and `ai` has none.
+        examples: { tld: 'web' },
         use: "Use it when someone asks what changed at an ending's registry lately.",
     },
     list_tld_keywords: {
@@ -213,7 +235,7 @@ export const GUIDANCE = {
         use: "Use it when someone asks about one marketplace's or parking service's terms, such as its commission.",
     },
     list_iana_registrars: {
-        summary: 'The IANA registrar list as stored, by IANA id.',
+        summary: 'The IANA registrar list, by IANA id.',
         use: 'Use it when someone asks for accredited registrars beyond the nine compared; it answers one page at a time.',
     },
     get_iana_registrar: {
@@ -301,10 +323,6 @@ export const GUIDANCE = {
         // The providers' venue sentence (review R-5 of 2026-11-11): this list leaves out the guarded venue too.
         use: 'Use it when an answer holds a code and someone needs its meaning. An auction answer names its own venue on each row, which may be one this list leaves out.',
     },
-    get_meta_freshness: {
-        summary: "How current each part of the stored data is, with the day's counts.",
-        use: 'Use it when someone asks how fresh the stored data is.',
-    },
     list_meta_datasets: {
         summary: 'The free GitHub datasets that hold the same rows as these answers.',
         use: 'Use it when someone wants the data in bulk, as files.',
@@ -337,7 +355,7 @@ export const GUIDANCE = {
  * `INPUTS` an input of one operation. Like `use`, these reach the server here, not through an SDK release.
  */
 export const SHARED_INPUTS = {
-    name: 'A full domain name on an ending the catalog holds, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one.',
+    name: 'A full domain name on an ending in the catalog, such as harbor.io: lowercase, an internationalized name as punycode. A bare word, a subdomain, an email address or an unknown ending is refused with the reason, and a suggestion when there is one.',
 };
 
 /** @type {Readonly<Record<string, Readonly<Record<string, string>>>>} */
@@ -349,7 +367,11 @@ export const INPUTS = {
         category: 'A trend category slug, as the trend categories list names it.',
         lane: 'How the trend rises: `weekly` for a topic rising now, `yearly` for one rising over the year.',
     },
-    list_words: { category: 'A word category slug, as the word categories list names it.' },
+    list_words: {
+        category: 'A word category slug, as the word categories list names it.',
+        // The platform's new text (plan `never-where-data-comes-from`, step M2): the document says "as stored".
+        pos: 'A part-of-speech tag (`noun`, `verb`, `adjective`, ...).',
+    },
     // The document says "(v1's `listing=public`)", an old API parameter (AF-3 of the after-fix check of 2026-11-12).
     list_tlds: { publicSet: '`true`: only the endings with a public page on unique.domains.' },
 };
