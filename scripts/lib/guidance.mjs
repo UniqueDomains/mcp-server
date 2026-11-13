@@ -33,7 +33,8 @@ export const GUIDANCE = {
     get_name: {
         summary: 'The answer for one domain name: status, drop day, price today, registry facts, word facts and similar sales.',
         // No day promised (decision D-b): the name's answer carries none, by the "never show a checked time" rule.
-        use: 'Use it when someone asks about one specific domain name: whether it is open or for sale, what it costs, when it drops.',
+        // Decision 16 (Gaetan's 4C of 2026-11-13): `not_checked` also covers a taken name the catalog does not track.
+        use: 'Use it when someone asks about one specific domain name: whether it is open or for sale, what it costs, when it drops. The status `not_checked` means no answer: the name may be taken.',
     },
     batch_names: {
         summary: 'The answers for up to 100 domain names in one call.',

@@ -89,7 +89,7 @@ Reference lists.
 - A list that pages answers up to 20 rows at a time. When `meta.cursor` in the answer is set, pass it as `cursor` for the next page. When it is null, there is no next page. A list with no `cursor` input answers once.
 - No next page does not always mean the whole list. Some tools answer a fixed cut of a longer one: `ud_list_domains` and `ud_list_domain_hacks` give at most 20 names, even when many more match; `ud_list_price_changes` and `ud_list_registrar_changes` give the newest changes only; `ud_list_price_traps` gives a few rows, with the full count in `meta.trapCount`; `ud_list_registrar_prices` gives that day's set of endings, not every ending the registrar sells. Present a cut as a cut: say "here are 20 of them", never "these are all of them", and never conclude that something does not exist because a cut leaves it out.
 - A sample is a sample: the auction examples are a fixed set for the day, and the sales tools answer totals, not single sales.
-- A name outside the catalog answers the status `not_checked`. Say that the catalog has no answer for it yet, never that it is free or taken.
+- A name outside the catalog answers the status `not_checked`. Say that the catalog has no answer for it and that the name may well be taken, never that it is free.
 - Take a slug, a registrar or an applied-for string from the matching list tool. Do not guess it.
 - When a tool answers a problem, such as a word with no ending, an ending the catalog does not hold or a limit reached, say what it said in plain words and do not call it again in a loop.
 - When someone asks to register, buy, renew or point a name: say these tools cannot do it and that a registrar does, then offer the facts the tools can read.

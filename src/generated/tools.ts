@@ -14,7 +14,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_get_name",
         "operationId": "get_name",
         "title": "Answer for one domain name",
-        "description": "The answer for one domain name: status, drop day, price today, registry facts, word facts and similar sales. Use it when someone asks about one specific domain name: whether it is open or for sale, what it costs, when it drops. Pass `name` (such as get.plumbing).",
+        "description": "The answer for one domain name: status, drop day, price today, registry facts, word facts and similar sales. Use it when someone asks about one specific domain name: whether it is open or for sale, what it costs, when it drops. The status `not_checked` means no answer: the name may be taken. Pass `name` (such as get.plumbing).",
         "tier": "free",
         "plan": null,
         "metered": null,

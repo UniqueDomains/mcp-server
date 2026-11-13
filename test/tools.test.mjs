@@ -338,6 +338,11 @@ test('the tool texts of the 0.1.6 round read as the plan words them', () => {
     assert.match(tool('ud_get_name_registry').description, /The record carries its day\./u);
     assert.match(tool('ud_get_name_value').description, /it runs no new estimate\./u);
     assert.match(tool('ud_check_name').description, /each call spends one live check of the month\./u);
+    // Decision 16 (Gaetan's 4C of 2026-11-13): `not_checked` never reads as free, in the tool and in the skill.
+    assert.match(tool('ud_get_name').description, /The status `not_checked` means no answer: the name may be taken\./u);
+    for (const file of [join(ROOT, 'plugin', 'skills', 'unique-domains', 'SKILL.md'), join(ROOT, 'GEMINI.md')]) {
+        assert.ok(readFileSync(file, 'utf8').includes('- A name outside the catalog answers the status `not_checked`. Say that the catalog has no answer for it and that the name may well be taken, never that it is free.'), file);
+    }
     assert.equal(tool('ud_get_name').justification.readOnly, 'Read-only: it reads the Unique.domains catalog and changes nothing.');
     assert.equal(tool('ud_get_name').justification.openWorld, 'Closed world: it reads the Unique.domains catalog only.');
     assert.equal(tool('ud_check_name').justification.openWorld, 'Open world: the check reaches beyond the Unique.domains catalog.');
