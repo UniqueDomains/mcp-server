@@ -90,17 +90,33 @@ export const WHERE_DATA_COMES_FROM = [
     // (17A), and none names a public body as where the data comes from (20A).
     /\bas of\b/iu,
     /\bcarries its day\b/iu,
-    /\bthe day it is from\b/iu,
-    /\bon the latest day\b/iu,
+    /\bthe day (?:it|the data) is from\b/iu,
     /\blatest (?:footprint )?day\b/iu,
     /\bhow (?:current|fresh)\b/iu,
-    /\bchecked (?:on|just now)\b/iu,
+    /\bchecked (?:on \d|just now)/iu,
+    /\bjust now\b/iu,
     /\bas (?:ICANN|IANA) (?:publishes|names)\b/iu,
     // The listing texts round (Gaetan's "All A" on questions 21 to 26 of 2026-11-13): a dated example loses its day.
     /\beach with its dates\b/iu,
     /\bdated by day\b/iu,
-    /\banswered on\b/iu,
-    /\bwith the day (?:of the record|it was read)\b/iu,
+    /\banswered on \d/iu,
+    /\bwith its day\b/iu,
+    /\bwith the day (?:of the record|it was read|the record was read)\b/iu,
+    /\bwhen read on\b/iu,
+    // A dated example's day, as the texts of 0.1.5 wrote it: "(2026-11-11)", "taken?\" on 2026-11-11", ", on 2026-11-11)".
+    /\(\d{4}-\d{2}-\d{2}\)/u,
+    /[?"] on \d{4}-\d{2}-\d{2}\b/u,
+    /, on \d{4}-\d{2}-\d{2}\)/u,
+    // The wordings this round removed from the tool texts, so a revert shows (review of 2026-11-13).
+    /\blatest (?:stored )?(?:registry record|DNS (?:records?|reading)|market figures)\b/iu,
+    /\bWikipedia and Wikidata facts\b/iu,
+    // An internal table named as where a field comes from (`TLDs.category`, `TldLaunchPhase.id`).
+    /`[A-Z][A-Za-z]+\.[a-z][A-Za-z]*`/u,
+    // G1 (2026-11-13): no text says something was made by AI, and none names Claude as its writer. "AI assistant" and
+    // the Claude apps a reader installs into stay.
+    /\b(?:written|generated|made|drafted) by (?:an? )?(?:AI|Claude)\b/iu,
+    /\bAI (?:editor|estimate|valuation|model|written|generated)\b/iu,
+    /\bClaude models?\b/iu,
 ];
 
 /** The words of `WHERE_DATA_COMES_FROM` a text carries, each as it reads there; empty when the text is clean. */
@@ -400,6 +416,9 @@ const ROW_STATUS = 'The status of the row. One name\'s own answer groups it for 
 const TRACKED = 'The name is in the catalog.';
 const POS = 'Parts of speech, comma-joined tags.';
 const VENUE_PARKED = { 'footprint.names': 'Tracked names parked at the venue, rounded (to 100, to 10 under 1,000).' };
+// Lane P's texts (plan step P1: no internal table named as where a field comes from).
+const PHASE_ID = "The phase's id.";
+const CHANGE_ID = "The change's id, as a string.";
 // Lane P's texts (Gaetan's 20A of 2026-11-13): IANA and ICANN as the things themselves, not as where the data comes from.
 const IANA_ACCREDITED = { accredited: 'Accredited at IANA.' };
 const IANA_NAME = { name: "The registrar's name on IANA's list." };
@@ -434,6 +453,11 @@ export const DESCRIBED_AHEAD_OF_SDK = {
     batch_words: { pos: POS },
     get_word_request: { scan: 'On `ready` with a word: whether every ending of the word has its first status yet.' },
     list_tld_changes: { seenOn: 'UTC day the change was seen.' },
+    list_tlds: { rdapServer: "The registry's RDAP server.", category: "The catalog's category word.", 'phases.id': PHASE_ID },
+    get_tld: { 'phases.id': PHASE_ID },
+    list_tld_phases: { id: PHASE_ID },
+    list_registrar_changes: { id: CHANGE_ID },
+    list_price_changes: { id: CHANGE_ID },
     // SDK 0.2.0: "Timestamp the import saw it." The platform's new text (plan step P2, `tlds.ts:157`).
     list_tld_application_changes: { seenAt: 'When the change was seen.' },
     get_tld_application_string: { 'changes.seenAt': 'When the change was seen.', 'applications.applicant': "The applicant, in ICANN's wording." },

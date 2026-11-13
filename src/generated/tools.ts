@@ -9616,24 +9616,24 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "rdapServer": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "description": "`TLDs.rdapServer`, the registry's RDAP server."
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
                                     }
-                                ]
+                                ],
+                                "description": "The registry's RDAP server."
                             },
                             "category": {
                                 "anyOf": [
                                     {
-                                        "type": "string",
-                                        "description": "`TLDs.category`, the catalog's category word."
+                                        "type": "string"
                                     },
                                     {
                                         "type": "null"
                                     }
-                                ]
+                                ],
+                                "description": "The catalog's category word."
                             },
                             "phases": {
                                 "type": "array",
@@ -9642,7 +9642,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     "properties": {
                                         "id": {
                                             "type": "string",
-                                            "description": "`TldLaunchPhase.id`."
+                                            "description": "The phase's id."
                                         },
                                         "phase": {},
                                         "startsOn": {
@@ -10021,7 +10021,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 "properties": {
                                     "id": {
                                         "type": "string",
-                                        "description": "`TldLaunchPhase.id`."
+                                        "description": "The phase's id."
                                     },
                                     "phase": {},
                                     "startsOn": {
@@ -10891,7 +10891,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "properties": {
                             "id": {
                                 "type": "string",
-                                "description": "`TldLaunchPhase.id`."
+                                "description": "The phase's id."
                             },
                             "phase": {},
                             "startsOn": {
@@ -12782,7 +12782,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "properties": {
                             "id": {
                                 "type": "string",
-                                "description": "`TldPriceChange.id` as a string."
+                                "description": "The change's id, as a string."
                             },
                             "extension": {
                                 "type": "string",
@@ -13692,7 +13692,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "properties": {
                             "id": {
                                 "type": "string",
-                                "description": "`TldPriceChange.id` as a string."
+                                "description": "The change's id, as a string."
                             },
                             "extension": {
                                 "type": "string",

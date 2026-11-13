@@ -312,11 +312,13 @@ const descriptionsOf = (node) => {
     return [...(typeof node.description === 'string' ? [node.description] : []), ...Object.values(node).flatMap(descriptionsOf)];
 };
 
-test('the guard catches every form the rule bans, and lets the paid operation and a trademark status through', () => {
-    for (const banned of ['The stored answer.', 'Read from storage.', 'The catalog stores the name.', 'The scanner saw it.', 'Scanned names.', 'The registry sync.', 'Not a live reading.', 'Not live.', 'Never live.', 'A live lookup.', 'A live read.', 'It reads live.', 'Reads one name live from its registry.', 'The catalog scans every ending.', 'Rescanned daily.', 'A crawler.', 'From the nightly update.', 'Totals as of 2026-11-13.', 'The record carries its day.', 'The day it is from.', "A word's endings on the latest day.", 'On the latest footprint day.', 'How current each part of the data is.', 'How fresh it is.', 'Checked on 3 Oct.', 'Checked just now.', 'The list as IANA publishes it.', 'The round as ICANN names it.', 'Names read every day, each with its dates.', 'Answers are dated by day.', '"Is it taken?" answered on 2026-11-11.', 'With the day of the record.', 'With the day it was read.']) {
+test('the guard catches the forms the rules ban and the wordings this release removed, and lets the kept phrases through', () => {
+    for (const banned of ['The stored answer.', 'Read from storage.', 'The catalog stores the name.', 'The scanner saw it.', 'Scanned names.', 'The registry sync.', 'Not a live reading.', 'Not live.', 'Never live.', 'A live lookup.', 'A live read.', 'It reads live.', 'Reads one name live from its registry.', 'The catalog scans every ending.', 'Rescanned daily.', 'A crawler.', 'From the nightly update.', 'Totals as of 2026-11-13.', 'The record carries its day.', 'The day it is from.', "A word's endings on the latest day.", 'On the latest footprint day.', 'How current each part of the data is.', 'How fresh it is.', 'Checked on 3 Oct.', 'Checked just now.', 'The list as IANA publishes it.', 'The round as ICANN names it.', 'Names read every day, each with its dates.', 'Answers are dated by day.', '"Is it taken?" answered on 2026-11-11.', 'With the day of the record.', 'With the day it was read.',
+        // The exact wordings the three rules removed (review of 2026-11-13), so a revert shows.
+        'Say the day the data is from when the answer carries one.', 'One question, one tool call. "Is get.plumbing taken?" on 2026-11-11:', 'over 300 renewal traps (.agency: $3.50 the first year, $28.04 a year after, on 2026-11-11).', '10 similar sales with a median of $2,677 (2026-11-11).', 'Names the registrar (GoDaddy.com, LLC when read on 2026-11-11) and gives the nameservers, with the day the record was read.', 'Latest registry record of one name', 'Latest DNS records of one name, with its parking venue', "Ending's latest market figures", "A word's Wikipedia and Wikidata facts.", 'Its latest registry record, the one a WHOIS lookup shows.', 'Each answer with its day.', 'Checked just now.', '`TLDs.category`, the catalog\'s category word.', '`TldLaunchPhase.id`.', 'Written by an AI editor from the sources above.', 'An AI estimate.', 'Written by Claude models from a research corpus.']) {
         assert.ok(whereDataComesFromIn(banned).length > 0, banned);
     }
-    for (const kept of ['Runs a live check of one name.', 'Each call spends one live check of the month.', 'A mark whose status is `live` or `dead`.', 'A daily record, read every day.', "Say the edition's date.", 'The IANA registrar list, by IANA id.', "ICANN's 2026 round."]) {
+    for (const kept of ['Runs a live check of one name.', 'Each call spends one live check of the month.', 'A mark whose status is `live` or `dead`.', 'A daily record, read every day.', "Say the edition's date.", 'The IANA registrar list, by IANA id.', "ICANN's 2026 round.", 'The newest confirmed changes (NameSilo\'s .com renewal went from $17.29 to $19.99 on 2026-11-05).', 'A plugin for the AI assistants that take one.', 'In Claude Code, run this line.', 'A 202 is answered on the next call.', 'Its launch phases, each with the day it starts.', '`links.details` points at the public page.']) {
         assert.deepEqual(whereDataComesFromIn(kept), [], kept);
     }
 });
@@ -391,6 +393,13 @@ const AHEAD_OF_SDK_0_1_6 = [
     { operationId: 'list_registrars', field: 'accredited', sdk: 'The IANA record says accredited.' },
     { operationId: 'list_venues', field: 'accredited', sdk: 'The IANA record says accredited.' },
     { operationId: 'get_venue', field: 'accredited', sdk: 'The IANA record says accredited.' },
+    { operationId: 'list_tlds', field: 'rdapServer', sdk: "`TLDs.rdapServer`, the registry's RDAP server." },
+    { operationId: 'list_tlds', field: 'category', sdk: "`TLDs.category`, the catalog's category word." },
+    { operationId: 'list_tlds', field: 'phases.id', sdk: '`TldLaunchPhase.id`.' },
+    { operationId: 'get_tld', field: 'phases.id', sdk: '`TldLaunchPhase.id`.' },
+    { operationId: 'list_tld_phases', field: 'id', sdk: '`TldLaunchPhase.id`.' },
+    { operationId: 'list_registrar_changes', field: 'id', sdk: '`TldPriceChange.id` as a string.' },
+    { operationId: 'list_price_changes', field: 'id', sdk: '`TldPriceChange.id` as a string.' },
     { operationId: 'get_venue', field: 'listingTerms', sdk: 'The verified listing terms: commission bands, exclusivity, payment plans, fast transfer, payout days, the day a person checked them.' },
     { operationId: 'get_name_value', field: 'summary', sdk: 'The stored value estimate of one name and its last 20 estimates.' },
     { operationId: 'get_word_market', field: 'summary', sdk: "A word's sales and auction aggregates from the nightly update." },
