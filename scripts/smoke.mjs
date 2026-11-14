@@ -122,8 +122,10 @@ try {
     expect(!httpCall.isError && links.details === 'https://unique.domains/availability/get.plumbing', 'http ud_get_name carries links.details');
     expect(!('register' in links) && !('product' in links), 'http answers carry no register or product link');
 
-    // The hosted trim (fix round A2): no internal id, no computing stamp, no time but an auction's deadline.
-    for (const [tool, args] of [['ud_get_name', ['name=get.plumbing']], ['ud_get_agenda', []], ['ud_list_price_changes', []]]) {
+    // The hosted trim (fix round A2): no internal id, no computing stamp, no time but an auction's deadline. The registry
+    // record is the one answer that carries `transport` (its recording does), so its "no transport" line can fail (review
+    // m3 of 2026-11-14).
+    for (const [tool, args] of [['ud_get_name', ['name=get.plumbing']], ['ud_get_name_registry', ['name=get.plumbing']], ['ud_get_agenda', []], ['ud_list_price_changes', []]]) {
         const call = await inspector(url, 'tools/call', ['--tool-name', tool, ...args.flatMap((arg) => ['--tool-arg', arg])]);
         const text = JSON.stringify(call.structuredContent);
         expect(!call.isError, `http ${tool} answers`);

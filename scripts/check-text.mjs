@@ -49,17 +49,24 @@ const isReaderFile = (file) => file.endsWith('.md') || READER_FILES.includes(fil
 /**
  * Phrases a reader file keeps although they match, each in the one file that may carry it, with its reason. "does not
  * store it": the connector's privacy line about the user's own IP address, a promise about what the connector keeps,
- * not about where the catalog's data comes from; the rule's reach over a user's own data is the plan's open decision
- * 10, so the line stays as approved until that is answered.
+ * not about where the catalog's data comes from. The plan's decision 10 is answered (Gaetan's 10A): "stored" about a
+ * user's own things is outside the rule, so the line stays.
  */
 const READER_EXCEPTIONS = [
     { file: join(ROOT, 'README.md'), phrase: 'and the connector does not store it' },
     { file: join(ROOT, 'plugin', 'README.md'), phrase: 'The connector itself does not store it' },
 ];
 
-/** A reader line as the check reads it: code spans and the file's kept phrases taken out. */
-const proseOf = (line, file = null) =>
-    READER_EXCEPTIONS.filter((exception) => exception.file === file).reduce((rest, { phrase }) => rest.split(phrase).join(' '), line.replace(/`[^`]*`/gu, ' '));
+/**
+ * A reader line as the check reads it: code spans and the file's kept phrases taken out, and a JSON string's escaped
+ * break or tab (`\n`, `\r`, `\t`) read as a space, so a paragraph that opens a string after `\n\n` is read
+ * from its first word (review M4 of 2026-11-14).
+ */
+export const proseOf = (line, file = null) =>
+    READER_EXCEPTIONS.filter((exception) => exception.file === file).reduce(
+        (rest, { phrase }) => rest.split(phrase).join(' '),
+        line.replace(/\\[nrt]/gu, ' ').replace(/`[^`]*`/gu, ' '),
+    );
 
 const walk = async (dir) => {
     const files = [];
@@ -75,24 +82,32 @@ const walk = async (dir) => {
     return files;
 };
 
-const problems = [];
-for (const file of await walk(ROOT)) {
-    const lines = (await readFile(file, 'utf8')).split('\n');
-    lines.forEach((line, index) => {
-        for (const { pattern, label, exempt } of BANNED) if (pattern.test(line) && !exempt?.(file)) problems.push(`${relative(ROOT, file)}:${index + 1}: ${label}`);
-        if (isReaderFile(file)) {
-            for (const words of whereDataComesFromIn(proseOf(line, file))) problems.push(`${relative(ROOT, file)}:${index + 1}: says where the data comes from ("${words}")`);
-        }
-    });
-}
+/** Every problem of the repository's files, one line each. */
+const check = async () => {
+    const problems = [];
+    for (const file of await walk(ROOT)) {
+        const lines = (await readFile(file, 'utf8')).split('\n');
+        lines.forEach((line, index) => {
+            for (const { pattern, label, exempt } of BANNED) if (pattern.test(line) && !exempt?.(file)) problems.push(`${relative(ROOT, file)}:${index + 1}: ${label}`);
+            if (isReaderFile(file)) {
+                for (const words of whereDataComesFromIn(proseOf(line, file))) problems.push(`${relative(ROOT, file)}:${index + 1}: says where the data comes from ("${words}")`);
+            }
+        });
+    }
 
-// `package.json` is code but for its description, which npm and the registries show.
-const { description } = JSON.parse(await readFile(join(ROOT, 'package.json'), 'utf8'));
-for (const words of whereDataComesFromIn(proseOf(description))) problems.push(`package.json: description says where the data comes from ("${words}")`);
+    // `package.json` is code but for its description, which npm and the registries show.
+    const { description } = JSON.parse(await readFile(join(ROOT, 'package.json'), 'utf8'));
+    for (const words of whereDataComesFromIn(proseOf(description))) problems.push(`package.json: description says where the data comes from ("${words}")`);
+    return problems;
+};
 
-if (problems.length > 0) {
-    console.error(problems.join('\n'));
-    process.exitCode = 1;
-} else {
-    console.log('The text rules hold.');
+// Run as a script; the tests import `proseOf` alone.
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+    const problems = await check();
+    if (problems.length > 0) {
+        console.error(problems.join('\n'));
+        process.exitCode = 1;
+    } else {
+        console.log('The text rules hold.');
+    }
 }

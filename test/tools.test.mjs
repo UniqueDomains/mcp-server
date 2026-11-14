@@ -22,7 +22,8 @@ import {
     textsOf,
     whereDataComesFromIn,
 } from '../scripts/lib/tools.mjs';
-import { GUIDANCE } from '../scripts/lib/guidance.mjs';
+import { GUIDANCE, INPUTS } from '../scripts/lib/guidance.mjs';
+import { proseOf } from '../scripts/check-text.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const free = TOOLS.filter((tool) => tool.tier === 'free');
@@ -315,12 +316,24 @@ const descriptionsOf = (node) => {
 test('the guard catches the forms the rules ban and the wordings this release removed, and lets the kept phrases through', () => {
     for (const banned of ['The stored answer.', 'Read from storage.', 'The catalog stores the name.', 'The scanner saw it.', 'Scanned names.', 'The registry sync.', 'Not a live reading.', 'Not live.', 'Never live.', 'A live lookup.', 'A live read.', 'It reads live.', 'Reads one name live from its registry.', 'The catalog scans every ending.', 'Rescanned daily.', 'A crawler.', 'From the nightly update.', 'Totals as of 2026-11-13.', 'The record carries its day.', 'The day it is from.', "A word's endings on the latest day.", 'On the latest footprint day.', 'How current each part of the data is.', 'How fresh it is.', 'Checked on 3 Oct.', 'Checked just now.', 'The list as IANA publishes it.', 'The round as ICANN names it.', 'Names read every day, each with its dates.', 'Answers are dated by day.', '"Is it taken?" answered on 2026-11-11.', 'With the day of the record.', 'With the day it was read.',
         // The exact wordings the three rules removed (review of 2026-11-13), so a revert shows.
-        'Say the day the data is from when the answer carries one.', 'One question, one tool call. "Is get.plumbing taken?" on 2026-11-11:', 'over 300 renewal traps (.agency: $3.50 the first year, $28.04 a year after, on 2026-11-11).', '10 similar sales with a median of $2,677 (2026-11-11).', 'Names the registrar (GoDaddy.com, LLC when read on 2026-11-11) and gives the nameservers, with the day the record was read.', 'Latest registry record of one name', 'Latest DNS records of one name, with its parking venue', "Ending's latest market figures", "A word's Wikipedia and Wikidata facts.", 'Its latest registry record, the one a WHOIS lookup shows.', 'Each answer with its day.', 'Checked just now.', '`TLDs.category`, the catalog\'s category word.', '`TldLaunchPhase.id`.', 'Written by an AI editor from the sources above.', 'An AI estimate.', 'Written by Claude models from a research corpus.']) {
+        'Say the day the data is from when the answer carries one.', 'One question, one tool call. "Is get.plumbing taken?" on 2026-11-11:', 'over 300 renewal traps (.agency: $3.50 the first year, $28.04 a year after, on 2026-11-11).', '10 similar sales with a median of $2,677 (2026-11-11).', 'Names the registrar (GoDaddy.com, LLC when read on 2026-11-11) and gives the nameservers, with the day the record was read.', 'Latest registry record of one name', 'Latest DNS records of one name, with its parking venue', "Ending's latest market figures", "A word's Wikipedia and Wikidata facts.", 'Its latest registry record, the one a WHOIS lookup shows.', 'Each answer with its day.', 'Checked just now.', '`TLDs.category`, the catalog\'s category word.', '`TldLaunchPhase.id`.', 'Written by an AI editor from the sources above.', 'An AI estimate.', 'Written by Claude models from a research corpus.',
+        // The review of 2026-11-14: lane P's "latest" pattern (B1), decision 1's own wording (M3), the plan's "checked on"
+        // (m1), and one probe for each pattern that had none (m2).
+        'One trend: its latest row, its head words, its figures at every edition and its latest observations.', 'Its latest readings.', 'The latest record.', 'Never present an answer as checked live.', 'Checked on Monday.', 'Updated just now.', 'When read on Monday.', 'Made by Claude.', 'The Claude model family.']) {
         assert.ok(whereDataComesFromIn(banned).length > 0, banned);
     }
-    for (const kept of ['Runs a live check of one name.', 'Each call spends one live check of the month.', 'A mark whose status is `live` or `dead`.', 'A daily record, read every day.', "Say the edition's date.", 'The IANA registrar list, by IANA id.', "ICANN's 2026 round.", 'The newest confirmed changes (NameSilo\'s .com renewal went from $17.29 to $19.99 on 2026-11-05).', 'A plugin for the AI assistants that take one.', 'In Claude Code, run this line.', 'A 202 is answered on the next call.', 'Its launch phases, each with the day it starts.', '`links.details` points at the public page.']) {
+    for (const kept of ['Runs a live check of one name.', 'Each call spends one live check of the month.', 'A mark whose status is `live` or `dead`.', 'A daily record, read every day.', "Say the edition's date.", 'The IANA registrar list, by IANA id.', "ICANN's 2026 round.", 'The newest confirmed changes (NameSilo\'s .com renewal went from $17.29 to $19.99 on 2026-11-05).', 'A plugin for the AI assistants that take one.', 'In Claude Code, run this line.', 'A 202 is answered on the next call.', 'Its launch phases, each with the day it starts.', '`links.details` points at the public page.', 'One trend: its latest row, its head words, its figures at every edition and its observations.']) {
         assert.deepEqual(whereDataComesFromIn(kept), [], kept);
     }
+});
+
+// Review M4 of 2026-11-14: a reader `.json` file holds a paragraph as `\n\nStored ...` on one raw line, where the `n`
+// before the word hid it from every `\b` pattern.
+test('the text check reads a JSON string past its escaped breaks', () => {
+    const raw = '"longDescription": "One question, one tool call.\\n\\nStored answers.\\tSynced daily."';
+    assert.deepEqual(whereDataComesFromIn(raw), [], 'the raw line hides the words, which is why proseOf turns the escapes into spaces');
+    assert.deepEqual(whereDataComesFromIn(proseOf(raw)), ['Stored', 'Synced']);
+    assert.deepEqual(whereDataComesFromIn(proseOf('"text": "A plugin.\\r\\nRead every day."')), []);
 });
 
 test('no tool text says where the data comes from, on either profile, keyed tools included', async () => {
@@ -360,6 +373,15 @@ test('the tool texts of the 0.1.6 round read as the plan words them', () => {
     assert.equal(data('ud_get_tld_application_string').properties.changes.items.properties.seenAt.description, 'When the change was seen.');
     assert.equal(data('ud_batch_words').items.anyOf[0].properties.pos.description, 'Parts of speech, comma-joined tags.');
     assert.equal(data('ud_list_tld_changes').items.properties.seenOn.description, 'UTC day the change was seen.');
+    // The review of 2026-11-14 (B1, M1, M2, m4): lane P's texts and the two sentences the review rewrote.
+    assert.match(tool('ud_get_trend').description, /^One trend: its latest row, its head words, its figures at every edition and its observations\. /u);
+    assert.equal(tool('ud_get_trend').title, 'One trend');
+    assert.equal(data('ud_list_tld_price_history').items.properties.observations.description, 'How many times this price set was observed.');
+    assert.equal(data('ud_get_word').properties.addedAt.description, 'When the intake added it; null for a dictionary word.');
+    assert.equal(data('ud_batch_words').items.anyOf[0].properties.addedAt.description, 'When the intake added it; null for a dictionary word.');
+    assert.equal(tool('ud_list_registrar_prices').inputSchema.properties.delisted.description, "`true`: the endings the registrar's price list no longer carries. Paid subscriptions only.");
+    assert.match(tool('ud_get_word').description, /Use it when someone asks what a word means or how it is used\./u);
+    assert.equal(tool('ud_check_name').justification.destructive, 'Not destructive: it runs a check and deletes or overwrites nothing the member made.');
 });
 
 /**
@@ -419,6 +441,12 @@ const AHEAD_OF_SDK_0_1_6 = [
     { operationId: 'get_venue', field: 'footprint.names', sdk: 'Scanned names parked at the venue, rounded (to 100, to 10 under 1,000).' },
     { operationId: 'list_tld_application_changes', field: 'seenAt', sdk: 'Timestamp the import saw it.' },
     { operationId: 'get_tld_application_string', field: 'changes.seenAt', sdk: 'Timestamp the import saw it.' },
+    // The review of 2026-11-14: B1 (lane P's B2) and M1, lane P's texts.
+    { operationId: 'get_trend', field: 'summary', sdk: 'One trend: its latest row, its head words, its figures at every edition and its latest observations.' },
+    { operationId: 'list_tld_price_history', field: 'observations', sdk: 'Reads that saw it.' },
+    { operationId: 'get_word', field: 'addedAt', sdk: 'When the intake added it; null means the dictionary load.' },
+    { operationId: 'batch_words', field: 'addedAt', sdk: 'When the intake added it; null means the dictionary load.' },
+    { operationId: 'list_registrar_prices', input: 'delisted', sdk: '`true`: the endings its last complete list no longer carries. Paid subscriptions only.' },
 ];
 
 const SDK_DOCUMENT = JSON.parse(readFileSync(join(ROOT, 'node_modules', '@uniquedomains', 'sdk', 'openapi.json'), 'utf8'));
@@ -449,11 +477,15 @@ const documentFieldText = (document, operationId, path) => {
 };
 
 test('each copy ahead of the SDK still replaces the SDK text it names, and matches the SDK the day it ships its own', () => {
-    for (const { operationId, field, sdk } of AHEAD_OF_SDK_0_1_6) {
-        const copy = field === 'summary' ? GUIDANCE[operationId].summary : DESCRIBED_AHEAD_OF_SDK[operationId][field];
-        assert.ok(typeof copy === 'string' && whereDataComesFromIn(copy).length === 0, `${operationId}.${field}: the server's copy`);
-        const text = field === 'summary' ? operationIn(SDK_DOCUMENT, operationId).summary : documentFieldText(SDK_DOCUMENT, operationId, field);
+    for (const { operationId, field, input, sdk } of AHEAD_OF_SDK_0_1_6) {
+        const copy = input ? INPUTS[operationId][input] : field === 'summary' ? GUIDANCE[operationId].summary : DESCRIBED_AHEAD_OF_SDK[operationId][field];
+        assert.ok(typeof copy === 'string' && whereDataComesFromIn(copy).length === 0, `${operationId}.${field ?? input}: the server's copy`);
+        const text = input
+            ? (operationIn(SDK_DOCUMENT, operationId).parameters ?? []).find((parameter) => parameter.name === input)?.description ?? null
+            : field === 'summary'
+              ? operationIn(SDK_DOCUMENT, operationId).summary
+              : documentFieldText(SDK_DOCUMENT, operationId, field);
         if (text === sdk || (text !== null && whereDataComesFromIn(text).length > 0)) continue;
-        assert.equal(text, copy, `${operationId}.${field}: the SDK's document now says another text; take it here, or drop the copy when they are equal`);
+        assert.equal(text, copy, `${operationId}.${field ?? input}: the SDK's document now says another text; take it here, or drop the copy when they are equal`);
     }
 });

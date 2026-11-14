@@ -139,7 +139,7 @@ The hosted connector serves the free tools only and takes no key. Four free tool
 - `structuredContent`: the API's `data`, `meta` and `links`, as the tool's output schema describes them.
 - `content`: one line for a reader (the name and its headline fact, or the row count and the first names), then the same JSON as text.
 - `links.details`: the public Unique.domains page about the subject, when there is one (hosted connector).
-- On the hosted connector, internal ids (catalog ids, row ids, UUIDs) are left out, times become their UTC day (an auction's deadline keeps its hour), and the stamps of when a figure was computed are dropped. The npm server and the API keep them.
+- On the hosted connector, internal ids (catalog ids, row ids, UUIDs) are left out, times become their UTC day (an auction's deadline keeps its hour), the stamps of when a figure was computed are dropped, and a registry record comes without its `transport` field. The npm server and the API keep them.
 - A list answers 20 rows by default. When `meta.cursor` is set, pass it as `cursor` to read the next page.
 - A refusal is a sentence the assistant can act on: what was wrong, what is accepted, or when a limit resets.
 

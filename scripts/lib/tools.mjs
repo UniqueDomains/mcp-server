@@ -93,7 +93,10 @@ export const WHERE_DATA_COMES_FROM = [
     /\bthe day (?:it|the data) is from\b/iu,
     /\blatest (?:footprint )?day\b/iu,
     /\bhow (?:current|fresh)\b/iu,
-    /\bchecked (?:on \d|just now)/iu,
+    // The plan's pattern (review m1 of 2026-11-14): "Checked on Monday." too, not only a dated "checked on".
+    /\bchecked (?:on|just now)\b/iu,
+    // Decision 1's own wording (review M3 of 2026-11-14).
+    /\bchecked live\b/iu,
     /\bjust now\b/iu,
     /\bas (?:ICANN|IANA) (?:publishes|names)\b/iu,
     // The listing texts round (Gaetan's "All A" on questions 21 to 26 of 2026-11-13): a dated example loses its day.
@@ -109,6 +112,8 @@ export const WHERE_DATA_COMES_FROM = [
     /, on \d{4}-\d{2}-\d{2}\)/u,
     // The wordings this round removed from the tool texts, so a revert shows (review of 2026-11-13).
     /\blatest (?:stored )?(?:registry record|DNS (?:records?|reading)|market figures)\b/iu,
+    // Lane P's pattern (review B1 of 2026-11-14): "latest" said of our own readings, as in 0.1.5's "its latest observations".
+    /\blatest (?:readings?|records?|observations?|measurements?|figures)\b/iu,
     /\bWikipedia and Wikidata facts\b/iu,
     // An internal table named as where a field comes from (`TLDs.category`, `TldLaunchPhase.id`).
     /`[A-Z][A-Za-z]+\.[a-z][A-Za-z]*`/u,
@@ -415,6 +420,8 @@ const HOMEPAGE_LINKS = {
 const ROW_STATUS = 'The status of the row. One name\'s own answer groups it for a buyer: `resell` reads `for_sale` there (`at_auction` at a drop-catch venue), `premium` reads `free_premium`.';
 const TRACKED = 'The name is in the catalog.';
 const POS = 'Parts of speech, comma-joined tags.';
+// Lane P's text (review M1 of 2026-11-14): SDK 0.2.0 says "null means the dictionary load".
+const WORD_ADDED_AT = 'When the intake added it; null for a dictionary word.';
 const VENUE_PARKED = { 'footprint.names': 'Tracked names parked at the venue, rounded (to 100, to 10 under 1,000).' };
 // Lane P's texts (plan step P1: no internal table named as where a field comes from).
 const PHASE_ID = "The phase's id.";
@@ -449,8 +456,10 @@ export const DESCRIBED_AHEAD_OF_SDK = {
     get_domain: { tracked: TRACKED },
     list_domains: { status: ROW_STATUS },
     list_domain_hacks: { status: ROW_STATUS },
-    get_word: { pos: POS },
-    batch_words: { pos: POS },
+    get_word: { pos: POS, addedAt: WORD_ADDED_AT },
+    batch_words: { pos: POS, addedAt: WORD_ADDED_AT },
+    // Lane P's text (review M1 of 2026-11-14): SDK 0.2.0 says "Reads that saw it."
+    list_tld_price_history: { observations: 'How many times this price set was observed.' },
     get_word_request: { scan: 'On `ready` with a word: whether every ending of the word has its first status yet.' },
     list_tld_changes: { seenOn: 'UTC day the change was seen.' },
     list_tlds: { rdapServer: "The registry's RDAP server.", category: "The catalog's category word.", 'phases.id': PHASE_ID },
@@ -581,7 +590,7 @@ export const justificationOf = (operation) => {
         return {
             readOnly: `Not read-only: it updates the name's record in the catalog and spends one ${unit} unit of the member's month.`,
             openWorld: 'Open world: the check reaches beyond the Unique.domains catalog.',
-            destructive: 'Not destructive: it adds a reading and deletes or overwrites nothing the member made.',
+            destructive: 'Not destructive: it runs a check and deletes or overwrites nothing the member made.',
         };
     }
     if (WRITE_OPERATIONS.has(operation.id)) {

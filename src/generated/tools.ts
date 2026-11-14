@@ -1617,7 +1617,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "justification": {
             "readOnly": "Not read-only: it updates the name's record in the catalog and spends one Live unit of the member's month.",
             "openWorld": "Open world: the check reaches beyond the Unique.domains catalog.",
-            "destructive": "Not destructive: it adds a reading and deletes or overwrites nothing the member made."
+            "destructive": "Not destructive: it runs a check and deletes or overwrites nothing the member made."
         }
     },
     {
@@ -4381,7 +4381,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "type": "string"
                                     },
                                     "addedAt": {
-                                        "description": "When the intake added it; null means the dictionary load.",
+                                        "description": "When the intake added it; null for a dictionary word.",
                                         "anyOf": [
                                             {
                                                 "type": "string"
@@ -5047,7 +5047,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_get_word",
         "operationId": "get_word",
         "title": "A word's profile",
-        "description": "A word's profile: definition, facets, categories, origin and linguistics. Use it when someone asks what a word means, where it comes from or how it is used. Pass `word` (such as harbor).",
+        "description": "A word's profile: definition, facets, categories, origin and linguistics. Use it when someone asks what a word means or how it is used. Pass `word` (such as harbor).",
         "tier": "keyed",
         "plan": null,
         "metered": null,
@@ -5222,7 +5222,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "string"
                         },
                         "addedAt": {
-                            "description": "When the intake added it; null means the dictionary load.",
+                            "description": "When the intake added it; null for a dictionary word.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -12505,7 +12505,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                 },
                 "delisted": {
                     "type": "boolean",
-                    "description": "`true`: the endings its last complete list no longer carries. Paid subscriptions only."
+                    "description": "`true`: the endings the registrar's price list no longer carries. Paid subscriptions only."
                 },
                 "limit": {
                     "type": "integer",
@@ -13491,7 +13491,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             },
                             "observations": {
                                 "type": "integer",
-                                "description": "Reads that saw it."
+                                "description": "How many times this price set was observed."
                             }
                         }
                     }
@@ -17734,7 +17734,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_get_trend",
         "operationId": "get_trend",
         "title": "One trend",
-        "description": "One trend: its latest row, its head words, its figures at every edition and its latest observations. Use it when someone asks about one trend: how it grew and its key words. Pass `slug` (such as ambient-lights).",
+        "description": "One trend: its latest row, its head words, its figures at every edition and its observations. Use it when someone asks about one trend: how it grew and its key words. Pass `slug` (such as ambient-lights).",
         "tier": "free",
         "plan": null,
         "metered": null,

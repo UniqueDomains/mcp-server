@@ -101,7 +101,8 @@ export const GUIDANCE = {
         use: 'Use it when looking for words by meaning, length, style or category; it answers one page at a time.',
     },
     get_word: {
-        use: 'Use it when someone asks what a word means, where it comes from or how it is used.',
+        // The answer carries no etymology (review M2 of 2026-11-14): `origin` says how the word entered the catalog.
+        use: 'Use it when someone asks what a word means or how it is used.',
     },
     get_word_endings: {
         // 2026-11-13: `organic` answered 439 endings counted (154 taken, 113 available, 172 for sale) on the hosted
@@ -290,6 +291,9 @@ export const GUIDANCE = {
         use: 'Use it when someone looks for rising topics to name a project after; it answers one page at a time.',
     },
     get_trend: {
+        // Lane P's text word for word (review B1 of 2026-11-14; lane P's B2, Gaetan's 17A): SDK 0.2.0 says "its latest
+        // observations", "latest" said of our own readings.
+        summary: 'One trend: its latest row, its head words, its figures at every edition and its observations.',
         examples: { slug: 'ambient-lights' },
         use: 'Use it when someone asks about one trend: how it grew and its key words.',
     },
@@ -384,6 +388,9 @@ export const INPUTS = {
         pos: 'A part-of-speech tag (`noun`, `verb`, `adjective`, ...).',
     },
     // The document says "(v1's `listing=public`)", an old API parameter (AF-3 of the after-fix check of 2026-11-12).
+    // Lane P's text (review M1 of 2026-11-14), with the " Paid subscriptions only." the API document adds to a keyed
+    // input: SDK 0.2.0 says "the endings its last complete list no longer carries".
+    list_registrar_prices: { delisted: "`true`: the endings the registrar's price list no longer carries. Paid subscriptions only." },
     list_tlds: { publicSet: '`true`: only the endings with a public page on unique.domains.' },
 };
 
