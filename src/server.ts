@@ -33,12 +33,25 @@ export const SERVER_VERSION: string = packageJson.version;
  * 0.1.6: no text says where the data comes from or how old it is (Gaetan's rules of 2026-11-12 and 2026-11-13, plan
  * `never-where-data-comes-from`, step M3). The profile stays a parameter: it is exported, and a later guide may differ
  * again.
+ *
+ * Since 0.1.7 the guide is a map from the request to the first tool (plan `connector-trigger-rate-2026-11-14`,
+ * section 5). OpenAI asks that the most important details sit in the first 512 characters: the name route, the naming
+ * route and the list route stay there (`test/server.test.mjs`). Every tool it names is free on both profiles, and it
+ * never says "prefer", "always", "instead of", "web search" or "best" (decision S8).
  */
 export const instructionsFor = (_profile: Profile): string =>
     [
-        'Unique.domains reads its own catalog of domain names, words, TLDs, registrar prices, the domain market, trends and the industry agenda.',
+        'Unique.domains answers questions about domain names from its own catalog.',
+        'Is a name taken, available or for sale, and what it costs to register and renew: `ud_get_name` with the full name, such as get.plumbing.',
+        'Naming a business, product or project: `ud_get_latest_edition` for name ideas from rising topics, and `ud_get_word_endings` for the endings a word is still available on.',
+        'Names someone can still buy, by ending, length or price: `ud_list_domains`.',
+        'An unclear or misspelled word goes to `ud_resolve_word` first.',
+        'What similar names sold for: `ud_get_name_comps`.',
+        'Auctions today: `ud_get_market_auctions`.',
+        'What an ending costs: `ud_get_tld` with the ending without its dot, such as ai.',
+        'The tools only read: none registers, buys, renews or changes a name.',
         '`links.details` points at the public page about the subject when there is one.',
-        'Pass a full domain name such as get.plumbing to the name tools, and an ending without its dot such as ai to the TLD tools.',
+        'A list comes in a neutral order: present it as a sample of what matches.',
     ].join(' ');
 
 /** The npm server's guide (the local profile). */

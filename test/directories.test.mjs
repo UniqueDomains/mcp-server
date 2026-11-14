@@ -122,3 +122,39 @@ test('a field over its limit, an unknown category or a hidden tool fails the bui
     assert.equal(openai.review.demo_recording_url, 'https://example.com/demo');
     assert.deepEqual(openai.publication.countries, []);
 });
+
+// Plan `connector-trigger-rate-2026-11-14` (0.1.7): the starter prompts Gaetan chose (G3 = A), a founder's, an
+// investor's and one for both; the manifest builder already refuses one over 128 characters, with an @ or repeated.
+test('the ChatGPT starter prompts are the three decided lines, each one line under 128 characters with no @', () => {
+    const prompts = read('directories/openai/review.json').defaultPrompt;
+    assert.deepEqual(prompts, [
+        'I am naming a skincare brand. Is organic.com taken, and which endings is organic still available on?',
+        'Is get.plumbing for sale, and what did similar names sell for?',
+        'Which endings are cheap the first year and cost much more to renew?',
+    ]);
+    for (const prompt of prompts) assert.ok(prompt.length <= 128 && !prompt.includes('@') && !prompt.includes('\n'), prompt);
+});
+
+// The golden set (decision S14 of that plan): the prompts the before and after runs replay in Claude and ChatGPT.
+test('the golden prompt set: 32 prompts, unique, each tool a free hosted tool, no prompt naming the connector', async () => {
+    const { TOOLS } = await import('../dist/index.js');
+    const hosted = new Set(TOOLS.filter((tool) => tool.hosted && tool.tier === 'free').map((tool) => tool.name));
+    const { prompts } = read('directories/golden-prompts.json');
+    assert.equal(prompts.length, 32);
+    assert.equal(new Set(prompts.map((entry) => entry.id)).size, 32);
+    assert.equal(new Set(prompts.map((entry) => entry.prompt.toLowerCase())).size, 32);
+    const kinds = { D: 'direct', F: 'founder', I: 'investor', N: 'negative' };
+    for (const entry of prompts) {
+        assert.deepEqual(Object.keys(entry), ['id', 'kind', 'prompt', 'tools', 'note'], entry.id);
+        assert.match(entry.id, /^[DFIN]\d$/u);
+        assert.equal(entry.kind, kinds[entry.id[0]], entry.id);
+        assert.ok(entry.note.length > 0, entry.id);
+        // A negative expects no call (N1 and N2 allow a read call, which their note says); every other prompt names its right tools.
+        assert.equal(entry.tools.length === 0, entry.kind === 'negative', entry.id);
+        for (const name of entry.tools) assert.ok(hosted.has(name), `${entry.id}: ${name} is not a free hosted tool`);
+        // No mention of the connector: the set measures the calls an assistant makes unasked. A social handle's @ (N6) is
+        // not one.
+        assert.doesNotMatch(entry.prompt, /unique\s*\.?\s*domains|@\s*unique|\bud_/iu, entry.id);
+    }
+    assert.deepEqual(prompts.map((entry) => entry.kind).reduce((counts, kind) => ({ ...counts, [kind]: (counts[kind] ?? 0) + 1 }), {}), { direct: 7, founder: 9, investor: 8, negative: 8 });
+});

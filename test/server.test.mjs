@@ -8,7 +8,7 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { createServer } from 'node:http';
 
-import { createMcpServer, instructionsFor, prepareServer, readConfig, ConfigError } from '../dist/index.js';
+import { TOOLS, createMcpServer, instructionsFor, prepareServer, readConfig, ConfigError } from '../dist/index.js';
 import { whereDataComesFromIn } from '../scripts/lib/tools.mjs';
 import { FOUNDER_KEY, INVESTOR_KEY, REFUSED_KEY, UNPAID_KEY, problem, startApiFixture } from './support/api-fixture.mjs';
 
@@ -206,6 +206,21 @@ test('the guide is the same on both profiles and says neither where the data com
     const { client } = await connect({});
     assert.equal(client.getInstructions(), instructionsFor('local'));
     await client.close();
+});
+
+// Plan `connector-trigger-rate-2026-11-14`, section 5 (0.1.7): the guide maps a request to its first tool. OpenAI asks
+// for the most important details in the first 512 characters, so a client that keeps only those still has the routes.
+test('the guide maps a request to its first tool: the main routes in its first 512 characters, hosted tools only', () => {
+    const guide = instructionsFor('hosted');
+    const head = guide.slice(0, 512);
+    for (const name of ['ud_get_name', 'ud_get_word_endings', 'ud_list_domains', 'ud_get_latest_edition']) assert.ok(head.includes(`\`${name}\``), name);
+    const hosted = new Set(TOOLS.filter((tool) => tool.hosted && tool.tier === 'free').map((tool) => tool.name));
+    const named = guide.match(/\bud_[a-z_]+/gu);
+    assert.ok(named.length >= 8, named.join());
+    for (const name of named) assert.ok(hosted.has(name), `${name} is not a free hosted tool`);
+    // Decision S8: no line that steers the assistant away from other tools or services.
+    assert.doesNotMatch(guide, /\b(prefer\w*|always|instead of|web search|best|official)\b/iu);
+    assert.match(guide, / The tools only read: none registers, buys, renews or changes a name\. /u);
 });
 
 // Step M7b: only the hosted connector drops `transport`; the npm server answers what the API answers.

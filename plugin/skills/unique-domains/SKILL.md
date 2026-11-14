@@ -1,11 +1,19 @@
 ---
 name: unique-domains
-description: Look up facts about domain names with the Unique.domains tools. Covers a name's status, price, registry record and DNS, a word's names by ending, TLD facts and launch dates, registrar prices, domain sales and auction totals, naming trends and the domain industry agenda. Use it when someone asks about a domain name, a word as a name, an ending (TLD), a registrar's prices or the domain market.
+description: "Answer questions about domain names with the Unique.domains tools: whether a name is taken, available or for sale, what it costs to register and renew, which endings a word is still available on, what similar names sold for, auctions, drops, registrar prices, naming trends and the domain industry agenda. Use it when someone asks about a domain name, wants a name for a business, product or project, or asks about an ending (TLD), a registrar's prices or the domain market."
 ---
 
 # Unique.domains
 
 The Unique.domains tools (their names start with `ud_`) read a catalog that is updated every day. The tools only read: none registers, buys, renews or changes a name.
+
+## Start from the request
+
+- Someone gives a full name: `ud_get_name` first. Its `price` holds the first year and the renewal.
+- Someone is naming a business, a product or a project and has words in mind: `ud_get_word_endings` for each word, then `ud_get_name` for the names they like.
+- Someone wants a name for a business, a product or a project and has no word yet, whether or not they mention a domain: `ud_get_latest_edition` with `founder` for ideas from rising topics, or `ud_list_domains` by ending, length and price. It cannot search by topic.
+- Someone wants names to buy and resell: `ud_get_latest_edition` with `investor`, `ud_list_market_auctions_sample` for names at auction today, `ud_get_name_comps` for what similar names sold for.
+- A made-up name or a two-word name answers `not_checked`: the catalog holds one-word names. Say there is no answer for it, never that it is free.
 
 ## Which tool answers what
 

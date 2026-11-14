@@ -162,7 +162,47 @@ test('no description steers to another tool or compares', () => {
     for (const tool of TOOLS) {
         assert.ok(!/\bud_[a-z]/u.test(tool.description), tool.name);
         assert.ok(!/\b(best|better|cheaper than|unlike|instead of)\b/iu.test(tool.description), tool.name);
+        // Decision S8 of plan `connector-trigger-rate-2026-11-14`: the lines both directories reject.
+        assert.ok(!/\b(prefer\w*|always use|official|web search|searching the web)\b/iu.test(tool.description), tool.name);
+        // Side path of that plan: a client may show the model the descriptions and not the guide, so none leans on it.
+        assert.ok(!/\b(guide|see)\b/iu.test(tool.description), tool.name);
     }
+});
+
+/**
+ * The 14 entry points of plan `connector-trigger-rate-2026-11-14` (0.1.7, section 4): each `use` sentence carries the
+ * words of the ask an assistant matches when it picks a tool, such as "taken, available or for sale".
+ */
+const ENTRY_POINTS = {
+    ud_get_name: 'taken, available or for sale',
+    ud_get_word_endings: 'naming a business, product or project',
+    ud_list_domains: 'domain names they can still buy',
+    ud_get_latest_edition: 'name ideas for a new business',
+    ud_get_tld: 'what registrars charge for it, the first year and to renew',
+    ud_list_price_traps: 'cost much more to renew than to register',
+    ud_get_name_comps: 'a price reference before buying or selling a name',
+    ud_get_name_registry: 'the record a WHOIS lookup shows',
+    ud_get_name_dns: 'a website behind it',
+    ud_get_market_auctions: 'at auction or closing today',
+    ud_list_market_auctions_sample: 'what is at auction today',
+    ud_get_domain_drops: 'expiring or dropping domain names',
+    ud_get_market_sales: 'how domain names are selling overall',
+    ud_list_market_sales_endings: 'what .ai or .io names sell for',
+};
+
+test('the 14 entry points carry the words of the ask, free and the same on every profile', () => {
+    assert.equal(DESCRIPTION_MAX_LENGTH, 380);
+    const hostedSet = selectTools(TOOLS, 'hosted', 'none');
+    const investorSet = selectTools(TOOLS, 'local', 'investor');
+    for (const [name, words] of Object.entries(ENTRY_POINTS)) {
+        const tool = TOOLS.find((entry) => entry.name === name);
+        assert.ok(tool?.hosted && tool.tier === 'free', name);
+        assert.ok(tool.description.includes(words), `${name}: "${words}" in "${tool.description}"`);
+        // A member key changes no free tool's sentence: the npm server with a key reads what the hosted connector reads.
+        assert.equal(investorSet.find((entry) => entry.name === name).description, hostedSet.find((entry) => entry.name === name).description, name);
+    }
+    // `ud_get_name` is the first stop for one name (decision S6 gave it the room).
+    assert.match(TOOLS.find((tool) => tool.name === 'ud_get_name').description, / Use it first when someone asks if a domain name is taken, available or for sale, /u);
 });
 
 test('input schemas follow the parameters: required path parameters, enums kept, limit shows 20, closed', () => {

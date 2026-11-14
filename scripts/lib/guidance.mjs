@@ -17,7 +17,12 @@
  *
  * A `use` sentence starts "Use it when" (or "Use it first when", "Use it to") and names at most the one limit an
  * assistant must know: a fixed daily sample; one page at a time; a spent allowance.
- * It names no other tool, compares nothing and carries no plan talk (`test/tools.test.mjs`).
+ * It may open with the request in a user's words ("taken, available or for sale", "naming a business, product or
+ * project", "the record a WHOIS lookup shows") and close with the tool's limit, which doubles as OpenAI's "do not use
+ * for" ("Totals, not single sales"): an assistant finds a tool by the words of the ask (plan
+ * `connector-trigger-rate-2026-11-14`, section 4; 14 entry points carry such a sentence since 0.1.7).
+ * It names no other tool, compares nothing and carries no plan talk (`test/tools.test.mjs`); it never says "prefer",
+ * "always use", "instead of searching the web", "best" or "official" (decision S8 of that plan).
  *
  * Optionally `examples`, the sample value the description shows for a required input, in place of the API document's
  * (review M1 of 2026-11-11). Each one answered on production on 2026-11-11 and is chosen to keep answering: a frozen
@@ -34,7 +39,7 @@ export const GUIDANCE = {
         summary: 'The answer for one domain name: status, drop day, price today, registry facts, word facts and similar sales.',
         // No day promised (decision D-b): the name's answer carries none, by the "never show a checked time" rule.
         // Decision 16 (Gaetan's 4C of 2026-11-13): `not_checked` also covers a taken name the catalog does not track.
-        use: 'Use it when someone asks about one specific domain name: whether it is open or for sale, what it costs, when it drops. The status `not_checked` means no answer: the name may be taken.',
+        use: 'Use it first when someone asks if a domain name is taken, available or for sale, what it costs to register and to renew, or wants a name idea checked before buying it. The status `not_checked` means no answer: the name may be taken.',
     },
     batch_names: {
         summary: 'The answers for up to 100 domain names in one call.',
@@ -52,7 +57,7 @@ export const GUIDANCE = {
     get_name_registry: {
         // No word on the record's day (Gaetan's 17A of 2026-11-13): `observedOn` stays in the answer (18A), the text is silent.
         summary: 'The registry record of one name: dates, registrar, status codes, nameservers, DNSSEC and holder.',
-        use: 'Use it when someone asks who holds a name, when it was registered or when it expires.',
+        use: 'Use it when someone asks who holds a name, which registrar it is at, when it was registered or when it expires: the record a WHOIS lookup shows.',
     },
     get_name_registry_history: {
         summary: "The past versions of one name's registry record and what moved between them.",
@@ -60,7 +65,7 @@ export const GUIDANCE = {
     },
     get_name_dns: {
         summary: 'The DNS records of one name, with its parking venue.',
-        use: 'Use it when someone asks whether a name points anywhere or is parked, and with which parking service.',
+        use: 'Use it when someone asks whether a name has a website behind it, points anywhere or is parked, and with which parking service.',
     },
     list_name_changes: {
         use: "Use it when someone wants the timeline of one name's events; it answers one page at a time.",
@@ -81,7 +86,7 @@ export const GUIDANCE = {
     get_name_comps: {
         // After-fix check AF-1 of 2026-11-11: `endingsSoldOn` is a count, never the endings themselves.
         summary: 'The similar-sales aggregate of one name and how many endings its word sold on.',
-        use: 'Use it when someone asks what similar names sold for, or on how many endings the word sold.',
+        use: 'Use it when someone asks what similar names sold for, or wants a price reference before buying or selling a name. It answers a count and a median of similar sales, not a value for the name itself.',
     },
     get_name_auction: {
         use: 'Use it when someone asks whether a name is at auction now, its current bid or its deadline.',
@@ -111,7 +116,7 @@ export const GUIDANCE = {
         summary: "A word's endings: counts, the key endings and the open names per ending.",
         // The one limit (2026-11-11, decision B; the platform's one sentence of review R-4): null is "no count", never
         // zeros that read as "no names". No "such as harbor.ai" any more: the sample word's `.ai` is taken.
-        use: 'Use it when someone has a word and asks which endings are still open for it. A word with no count yet answers null; zeros are real.',
+        use: 'Use it when someone is naming a business, product or project and has a word in mind: it shows which endings, such as .com, .io or .ai, are still available for that word. A word with no count yet answers null; zeros are real.',
     },
     list_word_names: {
         use: 'Use it when someone wants every catalog name built on one word; it answers one page at a time.',
@@ -143,7 +148,7 @@ export const GUIDANCE = {
 
     /* ---------- Catalog names ---------- */
     list_domains: {
-        use: 'Use it when someone wants one-word names matching filters such as ending, length or price. Neutral order, one page at a time.',
+        use: 'Use it when someone looks for domain names they can still buy: one-word names that are available or for sale, filtered by ending, length, price or style, not by topic. Neutral order, one page at a time.',
     },
     get_domain: {
         summary: 'One catalog name, by name or catalog id.',
@@ -156,7 +161,7 @@ export const GUIDANCE = {
         // Review n10 of 2026-11-11: the document's summary ("Names dropping on one day") titled a tool whose keyless
         // answer is a count by ending and never a name. Worded for both forms: the hosted profile carries no key talk.
         summary: 'The names dropping on one day, counted by ending.',
-        use: 'Use it when someone asks how many names drop on a given day, and on which endings.',
+        use: 'Use it when someone asks about expiring or dropping domain names: how many drop on a day, from today to 6 days ahead, and on which endings. It answers counts, not the names.',
     },
     list_domain_hacks: {
         use: 'Use it when someone wants a short name in which the ending spells the last letters of the word.',
@@ -176,7 +181,7 @@ export const GUIDANCE = {
         use: 'Use it when someone wants to browse endings by type, country or status; it answers one page at a time.',
     },
     get_tld: {
-        use: 'Use it when someone asks about one ending: who runs it, its launch phases, its market and its prices.',
+        use: 'Use it when someone weighs one ending, such as .ai or .io, or asks what it costs: who runs it, its launch phases, its market and what registrars charge for it, the first year and to renew.',
     },
     get_tld_stats: {
         summary: "The ending's market figures, and with history its daily rows.",
@@ -235,7 +240,7 @@ export const GUIDANCE = {
         use: 'Use it when someone asks which registrar prices changed lately.',
     },
     list_price_traps: {
-        use: 'Use it when someone wants to avoid endings that are cheap the first year and costly to renew.',
+        use: 'Use it when someone asks which endings cost much more to renew than to register, or wants to avoid a cheap first year followed by a costly renewal.',
     },
     list_cheapest_prices: {
         use: 'Use it when comparing where a list of endings is cheapest, all at once.',
@@ -256,13 +261,13 @@ export const GUIDANCE = {
 
     /* ---------- The market ---------- */
     get_market_sales: {
-        use: 'Use it when someone asks how the domain sales market is doing overall.',
+        use: 'Use it when someone asks how domain names are selling overall: how many sold lately, at what median and in which price bands. Totals, not single sales.',
     },
     list_market_sales_series: {
         use: 'Use it when someone wants sales over time, to chart them or compare periods.',
     },
     list_market_sales_endings: {
-        use: 'Use it when someone asks which endings sell and at what median price.',
+        use: 'Use it when someone asks which endings sell and for how much, such as what .ai or .io names sell for: a count and a median per ending.',
     },
     get_market_sales_lengths: {
         use: 'Use it when someone asks how the length of a name relates to its sale price.',
@@ -274,10 +279,10 @@ export const GUIDANCE = {
         use: 'Use it when someone asks how one word has sold over the last year.',
     },
     get_market_auctions: {
-        use: "Use it when someone asks about today's auction market as a whole.",
+        use: 'Use it when someone asks how many domain names are at auction or closing today, by venue, ending and length. Totals, not a list of names.',
     },
     list_market_auctions_sample: {
-        use: 'Use it when someone wants examples of single-word names at auction today. A fixed daily sample, not every auction.',
+        use: 'Use it when someone asks what is at auction today or wants auction names to look at. A fixed daily sample of single-word names, not every auction.',
     },
     list_market_auction_venues: {
         use: 'Use it when someone asks how an auction venue works, or how many auctions it runs today.',
@@ -308,7 +313,7 @@ export const GUIDANCE = {
     get_latest_edition: {
         summary: 'The latest daily edition of Business Ideas or Trending Domains: trends with open names, for founders or for investors.',
         // The trends clause reaches a client that shows the model only descriptions (after-fix note of 2026-11-12).
-        use: "Use it when someone wants today's name ideas from rising topics; it carries the edition's open names only, and at most 20 trends while `trendCount` counts the whole edition.",
+        use: "Use it when someone wants name ideas for a new business, or names to buy around rising topics; it carries the edition's open names only, and at most 20 trends while `trendCount` counts the whole edition.",
     },
     get_edition: {
         // 2026-11-10: a day the founders' page has an edition of its own (some earlier days answer the investors').

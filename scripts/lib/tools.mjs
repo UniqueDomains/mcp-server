@@ -624,8 +624,12 @@ export const summaryOf = (operation) => {
     return tail.length > 0 && PLAN_WORDS.test(tail.join(': ')) ? `${head.replace(/\.$/u, '')}.` : summary;
 };
 
-/** A description's bound in characters: room for the summary, the use sentence and what to pass, under a screen line or three. */
-export const DESCRIPTION_MAX_LENGTH = 350;
+/**
+ * A description's bound in characters: room for the summary, the use sentence and what to pass, under a screen line or
+ * three. 380 since 0.1.7 (decision S6 of plan `connector-trigger-rate-2026-11-14`): `ud_get_name` reaches 377, as it
+ * carries the words of a founder's ask and the `not_checked` sentence a test pins.
+ */
+export const DESCRIPTION_MAX_LENGTH = 380;
 
 /** What the tool reads, when to use it, then what to pass (fix round A1). */
 export const descriptionOf = (operation) => `${summaryOf(operation)} ${guidanceOf(operation.id).use} ${usageOf(operation)}`;

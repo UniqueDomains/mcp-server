@@ -15,9 +15,9 @@
   "termsOfServiceURL": "https://unique.domains/terms",
   "supportURL": "https://unique.domains/api#faq",
   "defaultPrompt": [
-    "What is the registry record of get.plumbing?",
-    "What are the newest registrar price changes?",
-    "What is on the domain industry agenda this month?"
+    "I am naming a skincare brand. Is organic.com taken, and which endings is organic still available on?",
+    "Is get.plumbing for sale, and what did similar names sell for?",
+    "Which endings are cheap the first year and cost much more to renew?"
   ],
   "brandColor": "#121314",
   "brandColorDark": "#f2e97e",

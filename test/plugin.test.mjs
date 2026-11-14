@@ -148,7 +148,19 @@ test('the skill names every hosted tool and no other, and holds no plan, price, 
     assert.equal(lines[0], 'name: unique-domains');
     assert.equal(lines.length, 2);
     assert.match(lines[1], /^description: \S/u);
-    assert.equal(lines[1].slice('description: '.length).includes(': '), false, 'no ": " inside the description (YAML)');
+    // Plain YAML ends a value at ": "; since 0.1.7 the description holds one ("the Unique.domains tools: whether"), so
+    // it is double-quoted, with no quote or backslash inside that YAML would read as an escape.
+    const value = lines[1].slice('description: '.length);
+    const quoted = /^"[^"\\]+"$/u.test(value);
+    assert.ok(quoted || !value.includes(': '), 'a ": " inside the description needs the double-quoted form (YAML)');
+    const description = quoted ? value.slice(1, -1) : value;
+    // Plan `connector-trigger-rate-2026-11-14`, section 6 (G2 = B): the words of the asks the skill answers.
+    for (const words of ['whether a name is taken, available or for sale', 'which endings a word is still available on', 'wants a name for a business, product or project']) assert.ok(description.includes(words), words);
+    assert.ok(description.length <= 1024, 'a skill description fits 1,024 characters');
+    // The new section maps a request to its first tool, ahead of the full map, and ends on the `not_checked` rule.
+    const start = SKILL.indexOf('\n## Start from the request\n');
+    assert.ok(start > 0 && start < SKILL.indexOf('\n## Which tool answers what\n'), 'the request section comes first');
+    assert.ok(SKILL.includes('- A made-up name or a two-word name answers `not_checked`: the catalog holds one-word names. Say there is no answer for it, never that it is free.\n\n## Which tool answers what\n'));
 
     const named = new Set(SKILL.match(/\bud_[a-z_]+/gu));
     const hosted = new Set(TOOLS.filter((tool) => tool.hosted).map((tool) => tool.name));

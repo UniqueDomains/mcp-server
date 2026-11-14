@@ -1,0 +1,299 @@
+{
+  "since": "0.1.7",
+  "plan": "connector-trigger-rate-2026-11-14",
+  "prompts": [
+    {
+      "id": "D1",
+      "kind": "direct",
+      "prompt": "Is get.plumbing for sale?",
+      "tools": [
+        "ud_get_name"
+      ],
+      "note": "The one tool that counts as right."
+    },
+    {
+      "id": "D2",
+      "kind": "direct",
+      "prompt": "Who owns get.plumbing and when does it expire?",
+      "tools": [
+        "ud_get_name_registry",
+        "ud_get_name"
+      ],
+      "note": "Either answers who holds the name and when it expires."
+    },
+    {
+      "id": "D3",
+      "kind": "direct",
+      "prompt": "Is harbor.io taken?",
+      "tools": [
+        "ud_get_name"
+      ],
+      "note": "The one tool that counts as right."
+    },
+    {
+      "id": "D4",
+      "kind": "direct",
+      "prompt": "Which domain endings is the word organic still available on?",
+      "tools": [
+        "ud_get_word_endings"
+      ],
+      "note": "The one tool that counts as right."
+    },
+    {
+      "id": "D5",
+      "kind": "direct",
+      "prompt": "What does Namecheap charge for a .io domain, first year and renewal?",
+      "tools": [
+        "ud_list_registrar_prices",
+        "ud_get_tld"
+      ],
+      "note": "Either answers the first year and the renewal."
+    },
+    {
+      "id": "D6",
+      "kind": "direct",
+      "prompt": "Which domain endings are cheap the first year but expensive to renew?",
+      "tools": [
+        "ud_list_price_traps"
+      ],
+      "note": "The one tool that counts as right."
+    },
+    {
+      "id": "D7",
+      "kind": "direct",
+      "prompt": "How many domain names are closing at auction today?",
+      "tools": [
+        "ud_get_market_auctions"
+      ],
+      "note": "The one tool that counts as right."
+    },
+    {
+      "id": "F1",
+      "kind": "founder",
+      "prompt": "I'm naming my skincare brand. What domain should I get?",
+      "tools": [
+        "ud_get_word_endings",
+        "ud_get_name",
+        "ud_list_domains",
+        "ud_get_latest_edition"
+      ],
+      "note": "Any of these tools counts as right."
+    },
+    {
+      "id": "F2",
+      "kind": "founder",
+      "prompt": "I want to call my app Harbor. Can I still get a domain for it?",
+      "tools": [
+        "ud_get_word_endings",
+        "ud_get_name"
+      ],
+      "note": "Any of these tools counts as right."
+    },
+    {
+      "id": "F3",
+      "kind": "founder",
+      "prompt": "Is the .com for organic gone? What else could I use?",
+      "tools": [
+        "ud_get_name",
+        "ud_get_word_endings"
+      ],
+      "note": "Any of these tools counts as right."
+    },
+    {
+      "id": "F4",
+      "kind": "founder",
+      "prompt": "I'm starting a plumbing company. Give me five domain names I can register today.",
+      "tools": [
+        "ud_get_name",
+        "ud_get_word_endings",
+        "ud_list_domains"
+      ],
+      "note": "Any of these tools counts as right."
+    },
+    {
+      "id": "F5",
+      "kind": "founder",
+      "prompt": "What would it cost me to keep a .ai domain for five years?",
+      "tools": [
+        "ud_get_tld",
+        "ud_list_registrar_prices"
+      ],
+      "note": "Any of these tools counts as right."
+    },
+    {
+      "id": "F6",
+      "kind": "founder",
+      "prompt": "Show me short one-word .io names under $50 that nobody has registered.",
+      "tools": [
+        "ud_list_domains"
+      ],
+      "note": "The one tool that counts as right."
+    },
+    {
+      "id": "F7",
+      "kind": "founder",
+      "prompt": "Give me a name idea for a new business around something that is trending right now, with a domain I can get.",
+      "tools": [
+        "ud_get_latest_edition",
+        "ud_list_trends"
+      ],
+      "note": "Any of these tools counts as right."
+    },
+    {
+      "id": "F8",
+      "kind": "founder",
+      "prompt": "Before I print business cards: is lumen.studio free?",
+      "tools": [
+        "ud_get_name"
+      ],
+      "note": "The one tool that counts as right."
+    },
+    {
+      "id": "F9",
+      "kind": "founder",
+      "prompt": "Help me name my skincare brand.",
+      "tools": [
+        "ud_get_latest_edition",
+        "ud_get_word_endings",
+        "ud_get_name",
+        "ud_list_domains"
+      ],
+      "note": "The one prompt with no word about a domain: scored since Gaetan's G2 = B of 2026-11-14."
+    },
+    {
+      "id": "I1",
+      "kind": "investor",
+      "prompt": "What are names like get.plumbing selling for?",
+      "tools": [
+        "ud_get_name_comps",
+        "ud_get_name"
+      ],
+      "note": "Any of these tools counts as right."
+    },
+    {
+      "id": "I2",
+      "kind": "investor",
+      "prompt": "Any one-word domains at auction today worth a look?",
+      "tools": [
+        "ud_list_market_auctions_sample",
+        "ud_get_market_auctions"
+      ],
+      "note": "Any of these tools counts as right."
+    },
+    {
+      "id": "I3",
+      "kind": "investor",
+      "prompt": "How many domains drop tomorrow, and on which extensions?",
+      "tools": [
+        "ud_get_domain_drops"
+      ],
+      "note": "The one tool that counts as right."
+    },
+    {
+      "id": "I4",
+      "kind": "investor",
+      "prompt": "Do .ai names actually sell? For how much?",
+      "tools": [
+        "ud_list_market_sales_endings",
+        "ud_get_tld_stats",
+        "ud_get_tld"
+      ],
+      "note": "Any of these tools counts as right."
+    },
+    {
+      "id": "I5",
+      "kind": "investor",
+      "prompt": "Did any registrar raise its renewal prices lately?",
+      "tools": [
+        "ud_list_price_changes"
+      ],
+      "note": "The one tool that counts as right."
+    },
+    {
+      "id": "I6",
+      "kind": "investor",
+      "prompt": "Is get.plumbing parked, or is there a real site on it?",
+      "tools": [
+        "ud_get_name_dns",
+        "ud_get_name"
+      ],
+      "note": "Any of these tools counts as right."
+    },
+    {
+      "id": "I7",
+      "kind": "investor",
+      "prompt": "Which trending topics still have domain names available?",
+      "tools": [
+        "ud_get_latest_edition",
+        "ud_list_trends"
+      ],
+      "note": "Any of these tools counts as right."
+    },
+    {
+      "id": "I8",
+      "kind": "investor",
+      "prompt": "What is happening in the domain industry this month?",
+      "tools": [
+        "ud_get_agenda",
+        "ud_list_events"
+      ],
+      "note": "Any of these tools counts as right."
+    },
+    {
+      "id": "N1",
+      "kind": "negative",
+      "prompt": "Register get.plumbing for me.",
+      "tools": [],
+      "note": "It never says it registered anything. A read call is allowed."
+    },
+    {
+      "id": "N2",
+      "kind": "negative",
+      "prompt": "Point get.plumbing at my new web host.",
+      "tools": [],
+      "note": "It never says it changed anything. A read call is allowed."
+    },
+    {
+      "id": "N3",
+      "kind": "negative",
+      "prompt": "Write a tagline for my skincare brand.",
+      "tools": [],
+      "note": "No Unique.domains call."
+    },
+    {
+      "id": "N4",
+      "kind": "negative",
+      "prompt": "What is DNS and how does it work?",
+      "tools": [],
+      "note": "No Unique.domains call."
+    },
+    {
+      "id": "N5",
+      "kind": "negative",
+      "prompt": "Which web hosting company should I use for a WordPress site?",
+      "tools": [],
+      "note": "No Unique.domains call."
+    },
+    {
+      "id": "N6",
+      "kind": "negative",
+      "prompt": "Is the Instagram handle @harborapp free?",
+      "tools": [],
+      "note": "No Unique.domains call: a social handle, not a domain name."
+    },
+    {
+      "id": "N7",
+      "kind": "negative",
+      "prompt": "Is Harbor a registered trademark in the US?",
+      "tools": [],
+      "note": "No Unique.domains call: the connector has no trademark tool."
+    },
+    {
+      "id": "N8",
+      "kind": "negative",
+      "prompt": "Suggest a name for my cat.",
+      "tools": [],
+      "note": "No Unique.domains call: a naming ask that is not about a business, a product or a project, the counterweight of F9."
+    }
+  ]
+}
