@@ -136,12 +136,28 @@ jobs:
     needs: npm
     runs-on: ubuntu-latest
     steps:
+      # Plan `connector-trigger-rate-2026-11-14`, decision S15: with no key the job ends green with a notice, and the
+      # hand publish (`mcp-publisher login dns`, then `mcp-publisher publish`) stays the path until the secret exists.
+      - name: Look for the registry key
+        id: key
+        env:
+          MCP_REGISTRY_PRIVATE_KEY: ${{ secrets.MCP_REGISTRY_PRIVATE_KEY }}
+        run: |
+          if [ -z "$MCP_REGISTRY_PRIVATE_KEY" ]; then
+            echo "::notice title=Registry not published::No registry key in this repository: publish server.json by hand"
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/checkout@v5
+        if: steps.key.outputs.present == 'true'
       - name: Install mcp-publisher
+        if: steps.key.outputs.present == 'true'
         run: |
           curl -fsSL "https://github.com/modelcontextprotocol/registry/releases/download/v1.8.4/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
           ./mcp-publisher --help >/dev/null
       - name: Publish server.json
+        if: steps.key.outputs.present == 'true'
         env:
           MCP_REGISTRY_PRIVATE_KEY: ${{ secrets.MCP_REGISTRY_PRIVATE_KEY }}
         run: |

@@ -3,7 +3,7 @@
   "name": "domains.unique/mcp-server",
   "title": "Unique.domains",
   "description": "Analyse any domain name in depth and find the right ones to buy among 34 million. No key.",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "websiteUrl": "https://unique.domains/api/mcp",
   "repository": {
     "url": "https://github.com/UniqueDomains/mcp-server",
@@ -21,7 +21,7 @@
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "@uniquedomains/mcp-server",
-      "version": "0.1.6",
+      "version": "0.1.7",
       "transport": {
         "type": "stdio"
       },
