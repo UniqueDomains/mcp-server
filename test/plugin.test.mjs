@@ -22,14 +22,16 @@ const pkg = read('package.json');
 
 /**
  * The listing texts, v2 in the sales voice (`docs/plans/2026-11-11-listing-texts-v2.md` in the platform repository,
- * Fable 5.2, Gaetan's decision 4 of 2026-11-11: they ship with 0.1.5): section E's lines for each manifest.
+ * Fable 5.2, Gaetan's decision 4 of 2026-11-11: they ship with 0.1.5): section E's lines for each manifest. The short
+ * lines of v2.6 replace them in 0.1.6 (`never-where-data-comes-from-2026-11-13.v26-preview.md`, approved by Gaetan on
+ * 2026-11-14, decision 43 of that plan); the Devin short line is still v2's.
  */
-const ONE_LINER = 'Ask if a domain name is taken, what nine registrars charge for it and what similar names sold for. 51 read-only tools over a daily record of 37 million names. No account, no key, no sign-in.';
-const GEMINI_LINE = 'Domain status, WHOIS records, nine registrars\' daily prices, renewal traps and auctions. No key.';
-const MARKETPLACE_LINE = 'One plugin from Unique.domains: 51 read-only tools over a daily record of 37 million domain names, and a skill that tells your assistant which tool answers which question.';
-const GROK_LINE = 'Ask if a domain name is taken, what nine registrars charge for it and what similar names sold for. 51 read-only tools over a daily record of 37 million names. Hosted: nothing to install, no sign-in, no key.';
+const ONE_LINER = 'Analyse any domain name in depth: is it taken, what nine registrars charge for it, what similar names sold for. Find the right ones to buy among 34 million one-word names. No account, no key.';
+const GEMINI_LINE = 'Analyse any domain name in depth and find the right ones to buy among 34 million. No key.';
+const MARKETPLACE_LINE = 'One plugin from Unique.domains: 51 tools to analyse any domain name in depth and find the right ones to buy, and a skill that tells your assistant which tool answers which question.';
+const GROK_LINE = 'Analyse any domain name in depth: is it taken, what nine registrars charge for it, what similar names sold for. Find the right ones to buy among 34 million one-word names. Hosted: nothing to install, no sign-in, no key.';
 const DEVIN_SHORT_LINE = 'Is that name taken? What does it cost?';
-const DEVIN_LINE = 'Check if a domain name is taken, compare nine registrars\' prices and spot renewal traps, from a daily record of 37 million names';
+const DEVIN_LINE = 'Analyse any domain name in depth (taken or free, nine registrars\' prices, similar sales) and find the right ones to buy';
 
 const claude = read('plugin/.claude-plugin/plugin.json');
 const grok = read('plugin/.grok-plugin/plugin.json');

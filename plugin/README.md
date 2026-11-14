@@ -2,7 +2,7 @@
 
 Without a tool, an assistant can only guess whether a domain name is taken. This plugin gives it the record: 34 million one-word names on 505 endings (TLDs), read every day. Ask "Is get.plumbing taken?" and it answers from one tool call: registered since 2020, listed for sale, 10 similar sales with a median of $2,677.
 
-The plugin holds two things. The first is the Unique.domains connector, hosted at `https://mcp.unique.domains/mcp`: 51 read-only tools, nothing to install, no account and no sign-in. The second is one skill, which tells the assistant which tool answers which question, so it calls the right one the first time.
+The plugin holds two things. The first is the Unique.domains connector, hosted at `https://mcp.unique.domains/mcp`: 51 tools, nothing to install, no account and no sign-in. The second is one skill, which tells the assistant which tool answers which question, so it calls the right one the first time.
 
 You can read the same record yourself on unique.domains: [check a name](https://unique.domains/availability), [look up its WHOIS record](https://unique.domains/whois) or [compare the nine registrars](https://unique.domains/registrars).
 

@@ -1,7 +1,7 @@
 {
   "name": "unique-domains",
   "version": "0.1.6",
-  "description": "Domain status, WHOIS records, nine registrars' daily prices, renewal traps and auctions. No key.",
+  "description": "Analyse any domain name in depth and find the right ones to buy among 34 million. No key.",
   "contextFileName": "GEMINI.md",
   "mcpServers": {
     "uniquedomains": { "httpUrl": "https://mcp.unique.domains/mcp" }

@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "domains.unique/mcp-server",
   "title": "Unique.domains",
-  "description": "Domain status, WHOIS records, nine registrars' daily prices, renewal traps and auctions. No key.",
+  "description": "Analyse any domain name in depth and find the right ones to buy among 34 million. No key.",
   "version": "0.1.6",
   "websiteUrl": "https://unique.domains/api/mcp",
   "repository": {
