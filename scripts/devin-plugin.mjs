@@ -39,7 +39,7 @@ const manifest = {
     name: DEVIN_SLUG,
     displayName: claude.displayName,
     description: "Analyse any domain name in depth (taken or free, nine registrars' prices, similar sales) and find the right ones to buy",
-    shortDescription: "Is that name taken? What does it cost?",
+    shortDescription: "Analyse any domain, find the one to buy",
     homepage: claude.homepage,
     repository: claude.repository,
     logo: 'logo.png',

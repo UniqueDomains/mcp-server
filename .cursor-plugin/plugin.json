@@ -1,6 +1,6 @@
 {
   "name": "unique-domains",
-  "description": "Domain names, words, TLDs, registrar prices, the domain market, trends and the agenda, from the Unique.domains API.",
+  "description": "Analyse any domain name in depth: is it taken, what nine registrars charge for it, what similar names sold for. Find the right ones to buy among 34 million one-word names. No account, no key.",
   "version": "0.1.6",
   "author": {
     "name": "Unique.domains"

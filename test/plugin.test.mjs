@@ -24,13 +24,13 @@ const pkg = read('package.json');
  * The listing texts, v2 in the sales voice (`docs/plans/2026-11-11-listing-texts-v2.md` in the platform repository,
  * Fable 5.2, Gaetan's decision 4 of 2026-11-11: they ship with 0.1.5): section E's lines for each manifest. The short
  * lines of v2.6 replace them in 0.1.6 (`never-where-data-comes-from-2026-11-13.v26-preview.md`, approved by Gaetan on
- * 2026-11-14, decision 43 of that plan); the Devin short line is still v2's.
+ * 2026-11-14, decision 43 of that plan); the Devin short line, npm's description and Cursor's take v2.6's lines too.
  */
 const ONE_LINER = 'Analyse any domain name in depth: is it taken, what nine registrars charge for it, what similar names sold for. Find the right ones to buy among 34 million one-word names. No account, no key.';
 const GEMINI_LINE = 'Analyse any domain name in depth and find the right ones to buy among 34 million. No key.';
 const MARKETPLACE_LINE = 'One plugin from Unique.domains: 51 tools to analyse any domain name in depth and find the right ones to buy, and a skill that tells your assistant which tool answers which question.';
 const GROK_LINE = 'Analyse any domain name in depth: is it taken, what nine registrars charge for it, what similar names sold for. Find the right ones to buy among 34 million one-word names. Hosted: nothing to install, no sign-in, no key.';
-const DEVIN_SHORT_LINE = 'Is that name taken? What does it cost?';
+const DEVIN_SHORT_LINE = 'Analyse any domain, find the one to buy';
 const DEVIN_LINE = 'Analyse any domain name in depth (taken or free, nine registrars\' prices, similar sales) and find the right ones to buy';
 
 const claude = read('plugin/.claude-plugin/plugin.json');
@@ -103,7 +103,7 @@ test('the five manifests agree on the name, the version, the repository and the 
     assert.equal(devin.description, DEVIN_LINE);
     assert.equal(devin.shortDescription, DEVIN_SHORT_LINE);
     // Cursor keeps its own line and homepage (plan section 4.6: only the skill's path is added there).
-    assert.equal(cursor.description, 'Domain names, words, TLDs, registrar prices, the domain market, trends and the agenda, from the Unique.domains API.');
+    assert.equal(cursor.description, ONE_LINER);
     assert.equal(cursor.homepage, 'https://unique.domains/api');
 
     // Anthropic's directory reads these from plugin.json only; the icon is a file inside the plugin.
