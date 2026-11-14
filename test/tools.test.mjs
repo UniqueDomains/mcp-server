@@ -9,7 +9,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { OPERATIONS } from '@uniquedomains/sdk';
 
-import { TOOLS, selectTools } from '../dist/index.js';
+import { TOOLS, selectTools, toListedTool } from '../dist/index.js';
 import { readFileSync } from 'node:fs';
 
 import {
@@ -192,14 +192,16 @@ const ENTRY_POINTS = {
 
 test('the 14 entry points carry the words of the ask, free and the same on every profile', () => {
     assert.equal(DESCRIPTION_MAX_LENGTH, 380);
-    const hostedSet = selectTools(TOOLS, 'hosted', 'none');
-    const investorSet = selectTools(TOOLS, 'local', 'investor');
+    const listed = (profile, plan) => new Map(selectTools(TOOLS, profile, plan).map((tool) => [tool.name, toListedTool(tool, profile, plan)]));
+    const hostedList = listed('hosted', 'none');
+    const sets = [listed('local', 'none'), listed('local', 'founder'), listed('local', 'investor')];
     for (const [name, words] of Object.entries(ENTRY_POINTS)) {
         const tool = TOOLS.find((entry) => entry.name === name);
         assert.ok(tool?.hosted && tool.tier === 'free', name);
-        assert.ok(tool.description.includes(words), `${name}: "${words}" in "${tool.description}"`);
-        // A member key changes no free tool's sentence: the npm server with a key reads what the hosted connector reads.
-        assert.equal(investorSet.find((entry) => entry.name === name).description, hostedSet.find((entry) => entry.name === name).description, name);
+        // What `tools/list` shows, on the hosted connector and on the npm server with no key, a Founder or an Investor key.
+        const shown = hostedList.get(name)?.description;
+        assert.ok(shown?.includes(words), `${name}: "${words}" in "${shown}"`);
+        for (const set of sets) assert.equal(set.get(name)?.description, shown, name);
     }
     // `ud_get_name` is the first stop for one name (decision S6 gave it the room).
     assert.match(TOOLS.find((tool) => tool.name === 'ud_get_name').description, / Use it first when someone asks if a domain name is taken, available or for sale, /u);

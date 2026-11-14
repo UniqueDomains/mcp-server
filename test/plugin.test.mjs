@@ -161,6 +161,9 @@ test('the skill names every hosted tool and no other, and holds no plan, price, 
     const start = SKILL.indexOf('\n## Start from the request\n');
     assert.ok(start > 0 && start < SKILL.indexOf('\n## Which tool answers what\n'), 'the request section comes first');
     assert.ok(SKILL.includes('- A made-up name or a two-word name answers `not_checked`: the catalog holds one-word names. Say there is no answer for it, never that it is free.\n\n## Which tool answers what\n'));
+    // Decision S8 of that plan: no field steers the assistant away from other tools or services.
+    const section = SKILL.slice(start, SKILL.indexOf('\n## Which tool answers what\n'));
+    for (const text of [description, section]) assert.doesNotMatch(text, /\b(prefer\w*|always use|instead of|web search|searching the web|best|official)\b/iu);
 
     const named = new Set(SKILL.match(/\bud_[a-z_]+/gu));
     const hosted = new Set(TOOLS.filter((tool) => tool.hosted).map((tool) => tool.name));
@@ -241,6 +244,9 @@ test('the marketplace file lists the one plugin of ./plugin', () => {
     // The OpenAI sheet ships the same skill and is a listing text too (decision 4).
     const sheet = read('directories/openai/review.json');
     for (const key of ['displayName', 'shortDescription', 'description', 'longDescription', 'releaseNotes', 'commerceDescription']) assertCleanText(sheet[key], `review.json ${key}`, key === 'longDescription' ? 'longDescription' : undefined);
+    // The starter prompts are model-readable too (plan `connector-trigger-rate-2026-11-14`, decision S8).
+    assertCleanText(sheet.defaultPrompt.join(' '), 'review.json defaultPrompt');
+    assert.doesNotMatch(sheet.defaultPrompt.join(' '), /\b(prefer\w*|always use|instead of|web search|searching the web|best|official)\b/iu);
     for (const test of [...sheet.positiveTests, ...sheet.negativeTests]) assertCleanText([test.description, test.prompt, test.expected, test.reason ?? ''].join(' '), `review.json "${test.description}"`);
     assert.equal(marketplace.owner.name, 'Unique.domains');
     assert.equal(marketplace.plugins.length, 1);
