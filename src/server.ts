@@ -49,7 +49,7 @@ export const instructionsFor = (_profile: Profile): string =>
         'What similar names sold for: `ud_get_name_comps`.',
         'Auctions today: `ud_get_market_auctions`.',
         'What an ending costs: `ud_get_tld` with the ending without its dot, such as ai.',
-        'The tools only read: none registers, buys, renews or changes a name.',
+        'None of the tools registers, buys, renews or changes a name.',
         '`links.details` points at the public page about the subject when there is one.',
         'A list comes in a neutral order: present it as a sample of what matches.',
     ].join(' ');

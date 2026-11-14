@@ -220,7 +220,9 @@ test('the guide maps a request to its first tool: the main routes in its first 5
     for (const name of named) assert.ok(hosted.has(name), `${name} is not a free hosted tool`);
     // Decision S8: no line that steers the assistant away from other tools or services.
     assert.doesNotMatch(guide, /\b(prefer\w*|always|instead of|web search|best|official)\b/iu);
-    assert.match(guide, / The tools only read: none registers, buys, renews or changes a name\. /u);
+    // Gaetan's B of 2026-11-14: true on every profile, the npm server with a member key included (its three metered tools write).
+    assert.match(guide, / None of the tools registers, buys, renews or changes a name\. /u);
+    assert.doesNotMatch(guide, /The tools only read/u);
 });
 
 // Step M7b: only the hosted connector drops `transport`; the npm server answers what the API answers.
