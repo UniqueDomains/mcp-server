@@ -314,10 +314,17 @@ const labelOf = (row: JsonValue): string | null => {
     return null;
 };
 
+/**
+ * The status `not_checked` is no answer, never a free name (decision 16): read as "status not checked" it looked like
+ * one, so it reads in the catalog's words (Gaetan's 8A of 2026-11-14, decision 34). Every other value keeps its form.
+ */
+const NOT_CHECKED_FACT = 'no answer in the catalog; the name may be taken';
+
 const factOf = (row: JsonObject): string | null => {
     for (const key of FACT_KEYS) {
         const value = row[key];
-        // A reader's words, not the raw value: "status not checked".
+        if (key === 'status' && value === 'not_checked') return NOT_CHECKED_FACT;
+        // A reader's words, not the raw value: "status for sale".
         if (typeof value === 'string' && value !== '' && value.length <= 40) return `${key} ${value.replace(/_/gu, ' ')}`;
         if (typeof value === 'boolean') return `${key} ${value ? 'yes' : 'no'}`;
     }

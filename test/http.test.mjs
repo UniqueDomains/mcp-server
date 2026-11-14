@@ -90,6 +90,18 @@ test('a call: details set, no register or product, the connector secret sent and
     await client.close();
 });
 
+// Gaetan's 8A of 2026-11-14 (decision 34): a name outside the catalog never reads "status not checked".
+test('the text line of a name outside the catalog says there is no answer; a tracked name keeps its status (hosted)', async () => {
+    const client = await connect();
+    const outside = await client.callTool({ name: 'ud_get_name', arguments: { name: 'harbor.io' } });
+    assert.equal(outside.structuredContent.data.tracked, false);
+    assert.equal(outside.content[0].text, 'Answer for one domain name: harbor.io, no answer in the catalog; the name may be taken.');
+    const tracked = await client.callTool({ name: 'ud_get_name', arguments: { name: 'get.plumbing' } });
+    assert.equal(tracked.structuredContent.data.tracked, true);
+    assert.equal(tracked.content[0].text, 'Answer for one domain name: get.plumbing, status for sale.');
+    await client.close();
+});
+
 // Gaetan's 2A of 2026-11-13 (plan `never-where-data-comes-from`, step M7b): `transport` says how the record was read, so
 // the hosted connector neither offers it in `fields` nor answers it, even when asked by name.
 test('the hosted registry record carries no transport, asked or not, and its fields input does not offer it', async () => {

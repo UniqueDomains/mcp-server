@@ -67,7 +67,10 @@ test('every hosted tool has a details rule, and the rules point at the website',
 test('the text line names the subject and its fact, or the count and the first three, never an id or a cursor', () => {
     const one = textLine('Answer for one domain name', { data: { id: 'dom_123', name: 'harbor.io', status: 'taken' }, meta: { cursor: null }, links: {} });
     assert.equal(one, 'Answer for one domain name: harbor.io, status taken.');
-    assert.equal(textLine('One name', { data: { name: 'harbor.io', status: 'not_checked' }, meta: {}, links: {} }), 'One name: harbor.io, status not checked.');
+    // Gaetan's 8A of 2026-11-14 (decision 34): `not_checked` never reads "status not checked"; other values keep their form.
+    assert.equal(textLine('One name', { data: { name: 'harbor.io', status: 'not_checked' }, meta: {}, links: {} }), 'One name: harbor.io, no answer in the catalog; the name may be taken.');
+    assert.equal(textLine('One name', { data: { name: 'get.plumbing', status: 'for_sale' }, meta: {}, links: {} }), 'One name: get.plumbing, status for sale.');
+    assert.equal(textLine('One event', { data: { title: 'Launch', state: 'not_checked' }, meta: {}, links: {} }), 'One event: Launch, state not checked.');
     const list = textLine('Every root TLD', { data: [{ tld: '.aaa' }, { tld: '.abb' }, { tld: '.abc' }, { tld: '.able' }], meta: { cursor: 'eyJ2Ijox' }, links: {} });
     assert.equal(list, 'Every root TLD. 4 rows on this page, more on the next: .aaa, .abb, .abc and more.');
     assert.ok(!list.includes('eyJ'));

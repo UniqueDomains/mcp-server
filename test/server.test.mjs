@@ -107,6 +107,18 @@ test('a call answers structuredContent, one line, then the same JSON as text', a
     await client.close();
 });
 
+// Gaetan's 8A of 2026-11-14 (decision 34): a name outside the catalog never reads "status not checked".
+test('the text line of a name outside the catalog says there is no answer; a tracked name keeps its status (local)', async () => {
+    const { client } = await connect({});
+    const outside = await client.callTool({ name: 'ud_get_name', arguments: { name: 'harbor.io' } });
+    assert.equal(outside.structuredContent.data.tracked, false);
+    assert.equal(outside.content[0].text, 'Answer for one domain name: harbor.io, no answer in the catalog; the name may be taken.');
+    const tracked = await client.callTool({ name: 'ud_get_name', arguments: { name: 'get.plumbing' } });
+    assert.equal(tracked.structuredContent.data.tracked, true);
+    assert.equal(tracked.content[0].text, 'Answer for one domain name: get.plumbing, status for sale.');
+    await client.close();
+});
+
 test('the recorded answers validate against their output schemas, both profiles (the client checks each)', async () => {
     // The MCP Client validates structuredContent only for the tools its listTools() cached (review finding 5).
     for (const profile of ['local', 'hosted']) {
