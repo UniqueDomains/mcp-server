@@ -93,8 +93,8 @@ test('the ChatGPT plugin package builds from the committed sheet, with the revie
     for (const test of openai.review.test_cases.negative) for (const key of ['description', 'prompt', 'expected_behavior']) assert.ok(test[key], key);
     assert.equal(openai.review.commerce, false);
     assert.ok(openai.publication.release_notes.includes('51 tools over a daily record'));
-    // No demo recording yet, and no country list: both keys stay out, so the portal keeps its own values.
-    assert.equal('demo_recording_url' in openai.review, false);
+    // The demo recording (unlisted, set in 0.1.8); no country list, so the portal keeps its own.
+    assert.equal(openai.review.demo_recording_url, 'https://youtu.be/yJ7yj8aZb_o');
     assert.equal('countries' in openai.publication, false);
     assert.equal(read('directories/openai/review.json').placeholder, false);
 });
