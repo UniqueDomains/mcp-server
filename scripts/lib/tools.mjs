@@ -178,6 +178,10 @@ export const usageOf = (operation) => {
     }
     if (optional.some((parameter) => parameter.name === 'limit')) return 'Every input is optional; `limit` sets the page size.';
     if (optional.length > 0 || fixedCut) return 'Every input is optional.';
+    // "Takes no input." was false where the one input is the optional `fields` (D5 = A of 2026-11-15, plan
+    // `connector-answer-fixes-2026-11-15`, lane 1 step 4).
+    const onlyFields = operation.parameters.length === 1 && operation.parameters[0].name === 'fields' && !operation.parameters[0].required && !operation.body;
+    if (onlyFields) return 'Its one input, `fields`, is optional.';
     return 'Takes no input.';
 };
 

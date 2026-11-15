@@ -21,6 +21,7 @@ import {
     TRANSPORT_OPERATIONS,
     UNREGISTERED_OPERATIONS,
     textsOf,
+    usageOf,
     whereDataComesFromIn,
 } from '../scripts/lib/tools.mjs';
 import { GUIDANCE, INPUTS } from '../scripts/lib/guidance.mjs';
@@ -88,9 +89,46 @@ test('titles are short; descriptions say what the tool reads, when to use it, th
         const sentences = tool.description.split(/(?<=[.?!])\s+(?=[A-Z`])/u);
         assert.ok(sentences.length >= 3 && sentences.length <= 5, `${tool.name}: ${sentences.length} sentences`);
         assert.match(tool.description, /\bUse it (?:when|first when|to)\b/u, tool.name);
-        assert.match(tool.description, /(Pass |Every input is optional|Takes no input)[^]*\.$/u, tool.name);
+        assert.match(tool.description, /(Pass |Every input is optional|Its one input, `fields`, is optional|Takes no input)[^]*\.$/u, tool.name);
         assert.ok(tool.description.length <= DESCRIPTION_MAX_LENGTH, `${tool.name}: ${tool.description.length} characters`);
     }
+});
+
+// D5 = A of 2026-11-15 (plan `connector-answer-fixes-2026-11-15`, lane 1 step 4): "Takes no input." was false on the
+// 17 tools whose one input is the optional `fields`.
+const ONE_FIELDS = 'Its one input, `fields`, is optional.';
+
+test('a description\'s last clause matches its input schema: "Takes no input." only when the schema has no property', () => {
+    for (const tool of TOOLS) {
+        const properties = Object.keys(tool.inputSchema.properties ?? {});
+        const required = tool.inputSchema.required ?? [];
+        const onlyFields = properties.length === 1 && properties[0] === 'fields' && !required.includes('fields');
+        assert.equal(tool.description.endsWith('Takes no input.'), properties.length === 0, tool.name);
+        assert.equal(tool.description.endsWith(ONE_FIELDS), onlyFields, tool.name);
+    }
+    const withSentence = TOOLS.filter((tool) => tool.description.endsWith(ONE_FIELDS));
+    assert.equal(withSentence.length, 17);
+    assert.deepEqual(
+        withSentence.filter((tool) => tool.hosted).map((tool) => tool.name),
+        ['ud_list_word_categories', 'ud_get_catalog_stats', 'ud_list_registrars', 'ud_list_venues', 'ud_get_market_sales', 'ud_list_market_sales_endings', 'ud_get_market_sales_lengths', 'ud_list_market_sales_movers', 'ud_get_market_auctions', 'ud_list_market_auctions_sample', 'ud_list_market_auction_venues', 'ud_list_trend_categories', 'ud_get_meta_enums', 'ud_list_meta_datasets', 'ud_list_meta_trademark_classes', 'ud_get_meta_providers'],
+    );
+    // The 17th is keyed, on the npm server only, and takes the same sentence there.
+    const keyed = withSentence.filter((tool) => !tool.hosted);
+    assert.deepEqual(keyed.map((tool) => tool.name), ['ud_get_key']);
+    const listed = selectTools(TOOLS, 'local', 'founder').find((tool) => tool.name === 'ud_get_key');
+    assert.ok(toListedTool(listed, 'local', 'founder').description.endsWith(ONE_FIELDS));
+    for (const tool of withSentence.filter((entry) => entry.hosted)) assert.ok(toListedTool(tool, 'hosted', 'none').description.endsWith(ONE_FIELDS), tool.name);
+});
+
+test('the four closing clauses: no input, only fields, fields and limit, a required input', () => {
+    const parameter = (name, required = false) => ({ name, required, type: 'string' });
+    assert.equal(usageOf({ id: 'synthetic_none', parameters: [] }), 'Takes no input.');
+    assert.equal(usageOf({ id: 'synthetic_fields', parameters: [parameter('fields')] }), ONE_FIELDS);
+    assert.equal(usageOf({ id: 'synthetic_page', parameters: [parameter('fields'), parameter('limit')] }), 'Every input is optional; `limit` sets the page size.');
+    // A required input looks its example up in the guidance table, so a real operation id (here with no example).
+    assert.equal(usageOf({ id: 'get_name', parameters: [parameter('name', true), parameter('fields')] }), 'Pass `name`.');
+    // A required `fields` is not optional: no claim that it is.
+    assert.notEqual(usageOf({ id: 'get_name', parameters: [parameter('fields', true)] }), ONE_FIELDS);
 });
 
 test('the guidance table names every emitted operation and nothing else, each with a use sentence', () => {
