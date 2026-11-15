@@ -13,9 +13,10 @@
  *   profile keep them.
  *
  * The hosted connector's answers leave out internal ids, links to buy and the fields that say when a record was read.
- * The last are `meta.asOf`, a registry record's `observedOn` and a venue's `listingTerms.checkedOn` (Gaetan's D1 = B of
- * 2026-11-15, plan `connector-answer-fixes-2026-11-15`: assistants repeat whatever an answer carries). On the same
- * plan's D3 = B, the auctions answer names its three counts (`data.trackedNames`, `HOSTED_RENAMES`).
+ * The last are `meta.asOf`, a registry record's `observedOn` (and its keyed `observedAt`) and a venue's
+ * `listingTerms.checkedOn` (Gaetan's D1 = B of 2026-11-15, plan `connector-answer-fixes-2026-11-15`: assistants repeat
+ * whatever an answer carries). On the same plan's D3 = B, the auctions answer names its three counts
+ * (`data.trackedNames`, `HOSTED_RENAMES`).
  *
  * The tool selection (which tools a profile and a key's plan register) is here too.
  */
