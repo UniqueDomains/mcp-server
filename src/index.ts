@@ -14,7 +14,7 @@ export type { Logger, PreparedServer, PrepareOptions } from './server';
 export { runTool, refusalText, resetPhrase } from './call';
 export type { CallContext } from './call';
 export { isObject } from './json';
-export { PLAN_TALK, selectTools, shapeAnswer, textLine, outputSchemaFor, inputSchemaFor, trimHosted, isInternalId, HOSTED_DROPPED_STAMPS, HOSTED_KEPT_TIMES, HOSTED_INTERNAL_ID_PATHS, HOSTED_PUBLIC_ID_PATHS, KEYLESS_LIMIT_MAX } from './profile';
+export { PLAN_TALK, selectTools, shapeAnswer, textLine, outputSchemaFor, inputSchemaFor, trimHosted, isInternalId, apiFieldsFor, HOSTED_DROPPED_FIELDS, HOSTED_DROPPED_META, HOSTED_RENAMES, HOSTED_DROPPED_STAMPS, HOSTED_KEPT_TIMES, HOSTED_INTERNAL_ID_PATHS, HOSTED_PUBLIC_ID_PATHS, KEYLESS_LIMIT_MAX } from './profile';
 export type { KeyPlan, StructuredAnswer } from './profile';
 export { splitInput, InputError } from './validate';
 export { detailsFor, registrarSlug, DETAILS_RULES, DETAILS_SAMPLES, WEBSITE } from './details';

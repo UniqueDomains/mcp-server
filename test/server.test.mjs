@@ -32,6 +32,10 @@ before(async () => {
         'POST /names/slow.io/appraise': { status: 202, headers: { 'Content-Type': 'application/json', 'Retry-After': '30', Location: '/v1/names/slow.io/value' }, body: { data: { name: 'slow.io', current: null }, meta: {}, links: {} } },
         // A registry record with its format (Gaetan's 2A of 2026-11-13): the hosted profile drops `transport`, the local one keeps it.
         'GET /names/rdap.io/registry': { status: 200, body: { data: { read: true, observedOn: '2026-09-23', registrar: { name: 'GoDaddy.com, LLC', ianaId: 146 }, transport: 'rdap' }, meta: { asOf: '2026-09-23' }, links: {} } },
+        // D1 = B of 2026-11-15 (plan `connector-answer-fixes-2026-11-15`): a dated `meta` on a 202, a page and an empty list.
+        'GET /tlds/warming': { status: 202, headers: { 'Content-Type': 'application/json', 'Retry-After': '30' }, body: { data: { tld: 'warming' }, meta: { asOf: '2026-11-14', cursor: null, limit: null }, links: {} } },
+        'GET /tlds/paged/phases': { status: 200, body: { data: [{ name: 'Sunrise' }, { name: 'Landrush' }], meta: { asOf: '2026-11-14', cursor: 'eyJ2Ijox', limit: 2 }, links: {} } },
+        'GET /tlds/none/phases': { status: 200, body: { data: [], meta: { asOf: '2026-11-14', cursor: null, limit: 20 }, links: {} } },
         'POST /names/slow.io/check': { status: 202, headers: { 'Content-Type': 'application/json', 'Retry-After': '30', Location: '/v1/names/slow.io' }, body: { data: { name: 'slow.io', status: 'checking' }, meta: {}, links: {} } },
     });
 });
@@ -224,6 +228,30 @@ test('the guide maps a request to its first tool: the main routes in its first 5
     // Gaetan's B of 2026-11-14: true on every profile, the npm server with a member key included (its three metered tools write).
     assert.match(guide, / None of the tools registers, buys, renews or changes a name\. /u);
     assert.doesNotMatch(guide, /The tools only read/u);
+});
+
+// D1 = B of 2026-11-15: the hosted `meta` loses `asOf` only; `cursor` and `limit` stay, and the text line still reads the cursor.
+test('hosted: a 202, a refusal, a page and an empty list keep cursor and limit, and carry no day the data was read', async () => {
+    const { client } = await connect({ UD_MCP_PROFILE: 'hosted' });
+    const accepted = await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'warming' } });
+    assert.equal(accepted.isError, undefined);
+    assert.deepEqual(accepted.structuredContent.meta, { cursor: null, limit: null });
+    assert.match(accepted.content[0].text, /^Not ready yet: the answer is still being prepared\./u);
+    const page = await client.callTool({ name: 'ud_list_tld_phases', arguments: { tld: 'paged' } });
+    assert.deepEqual(page.structuredContent.meta, { cursor: 'eyJ2Ijox', limit: 2 });
+    assert.match(page.content[0].text, /2 rows on this page, more on the next: Sunrise, Landrush\./u);
+    const empty = await client.callTool({ name: 'ud_list_tld_phases', arguments: { tld: 'none' } });
+    assert.deepEqual(empty.structuredContent.meta, { cursor: null, limit: 20 });
+    assert.match(empty.content[0].text, /\. No rows\.$/u);
+    for (const result of [accepted, page, empty]) assert.ok(!result.content[1].text.includes('2026-11-14'));
+    const refused = await client.callTool({ name: 'ud_get_tld', arguments: { tld: 'down' } });
+    assert.equal(refused.isError, true);
+    assert.equal(refused.content[0].text, 'The API is restarting. Try again in a minute.');
+    await client.close();
+    // The npm server keeps the day.
+    const local = await connect({});
+    assert.equal((await local.client.callTool({ name: 'ud_list_tld_phases', arguments: { tld: 'paged' } })).structuredContent.meta.asOf, '2026-11-14');
+    await local.client.close();
 });
 
 // Step M7b: only the hosted connector drops `transport`; the npm server answers what the API answers.

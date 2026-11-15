@@ -18,7 +18,7 @@ import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import type { Profile } from './config';
 import { CALL_TIMEOUT_MS, RETRY_AFTER_MAX_SECONDS } from './limits';
 import { isObject } from './json';
-import { inputSchemaFor, PLAN_TALK, shapeAnswer, textLine, type KeyPlan } from './profile';
+import { apiFieldsFor, inputSchemaFor, PLAN_TALK, shapeAnswer, textLine, type KeyPlan } from './profile';
 import type { ToolDefinition } from './tool';
 import { InputError, splitInput, type InputView } from './validate';
 
@@ -212,6 +212,9 @@ export const runTool = async (context: CallContext, tool: ToolDefinition, args: 
         if (error instanceof InputError) return errorResult(error.message);
         throw error;
     }
+    // A key the hosted answer renames is asked for by its API name (`trackedNames` is `counts`, D3 = B of 2026-11-15).
+    const fields = input.query.fields;
+    if (typeof fields === 'string') input = { ...input, query: { ...input.query, fields: apiFieldsFor(context.profile, operationId, fields) } };
 
     let answer;
     try {

@@ -394,7 +394,8 @@ test('the tool texts of the 0.1.6 round read as the plan words them', () => {
     const tool = (name) => TOOLS.find((entry) => entry.name === name);
     assert.equal(tool('ud_get_name').title, 'Answer for one domain name');
     assert.equal(tool('ud_get_name_registry').title, 'Registry record of one name');
-    // Gaetan's 17A of 2026-11-13: no text brings up the record's day; the answer keeps `observedOn` (18A).
+    // Gaetan's 17A of 2026-11-13: no text brings up the record's day; the npm answer keeps `observedOn` (18A), the hosted one
+    // drops it (D1 = B of 2026-11-15, `test/profile.test.mjs`).
     assert.doesNotMatch(tool('ud_get_name_registry').description, /\bday\b/u);
     assert.ok('observedOn' in tool('ud_get_name_registry').outputSchema.properties.data.properties);
     assert.match(tool('ud_get_name_value').description, /it runs no new estimate\./u);

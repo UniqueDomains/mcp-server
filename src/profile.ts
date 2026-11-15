@@ -12,6 +12,11 @@
  *   `data` and `meta` (Gaetan's 2A of 2026-11-10, fix round P-7 and P-8). The API's public contract and the local
  *   profile keep them.
  *
+ * The hosted connector's answers leave out internal ids, links to buy and the fields that say when a record was read.
+ * The last are `meta.asOf`, a registry record's `observedOn` and a venue's `listingTerms.checkedOn` (Gaetan's D1 = B of
+ * 2026-11-15, plan `connector-answer-fixes-2026-11-15`: assistants repeat whatever an answer carries). On the same
+ * plan's D3 = B, the auctions answer names its three counts (`data.trackedNames`, `HOSTED_RENAMES`).
+ *
  * The tool selection (which tools a profile and a key's plan register) is here too.
  */
 
@@ -153,21 +158,103 @@ export const HOSTED_PUBLIC_ID_PATHS: Readonly<Record<string, readonly string[]>>
 };
 
 /**
- * Top-level `data` fields a hosted answer leaves out, per operation: `transport` of the registry record names how the
- * record was read (`rdap` or `whois`), the one field whose value says where the data comes from (Gaetan's 2A of
- * 2026-11-13, plan `never-where-data-comes-from`, step M7b). The API keeps it, and so does the local profile.
+ * `data` fields a hosted answer leaves out, per operation, as paths under `data` (`listingTerms.checkedOn`):
+ * - `transport` of the registry record names how the record was read (`rdap` or `whois`), the one field whose value says
+ *   where the data comes from (Gaetan's 2A of 2026-11-13, plan `never-where-data-comes-from`, step M7b).
+ * - `observedOn` of the registry record, its keyed `observedAt`, and `listingTerms.checkedOn` of a venue say when a
+ *   record was read (Gaetan's D1 = B of 2026-11-15).
+ * The API keeps them, and so does the local profile.
  */
 export const HOSTED_DROPPED_FIELDS: Readonly<Record<string, readonly string[]>> = {
-    get_name_registry: ['transport'],
+    get_name_registry: ['transport', 'observedOn', 'observedAt'],
+    get_venue: ['listingTerms.checkedOn'],
+};
+
+/** `meta` fields a hosted answer leaves out: `asOf`, the day the answer's newest row was written (D1 = B of 2026-11-15). */
+export const HOSTED_DROPPED_META: readonly string[] = ['asOf'];
+
+/** `value` without the key at `path` (dotted, objects only); anything else on the way is left as it is. */
+const dropPath = (value: JsonValue, path: readonly string[]): JsonValue => {
+    const [head, ...rest] = path;
+    if (head === undefined || !isObject(value)) return value;
+    const out: Record<string, JsonValue> = {};
+    for (const [name, child] of Object.entries(value)) {
+        if (child === undefined) continue;
+        if (name !== head) out[name] = child;
+        else if (rest.length > 0) out[name] = dropPath(child, rest);
+    }
+    return out;
 };
 
 /** The hosted answer's `data` without the fields `HOSTED_DROPPED_FIELDS` names for the operation. */
-const dropHostedFields = (operationId: string, data: JsonValue): JsonValue => {
-    const dropped = HOSTED_DROPPED_FIELDS[operationId];
-    if (!dropped || !isObject(data)) return data;
+const dropHostedFields = (operationId: string, data: JsonValue): JsonValue =>
+    (HOSTED_DROPPED_FIELDS[operationId] ?? []).reduce((value, path) => dropPath(value, path.split('.')), data);
+
+/** The hosted answer's `meta` without the fields `HOSTED_DROPPED_META` names. */
+const dropHostedMeta = (meta: JsonObject): JsonObject => {
     const out: Record<string, JsonValue> = {};
-    for (const [name, child] of Object.entries(data)) if (child !== undefined && !dropped.includes(name)) out[name] = child;
+    for (const [name, child] of Object.entries(meta)) if (child !== undefined && !HOSTED_DROPPED_META.includes(name)) out[name] = child;
     return out;
+};
+
+/**
+ * Top-level `data` fields the hosted answer renames, with their keys (D3 = B of 2026-11-15): the auctions answer's
+ * `counts` read as three bare numbers, and an assistant reads the answer, not the API document. The API's own keys do
+ * not change; the connector asks the API for `from` when a caller's `fields` names `to` (`apiFieldsFor`).
+ */
+export type HostedRename = {
+    readonly from: string;
+    readonly to: string;
+    readonly description: string;
+    readonly keys: Readonly<Record<string, { readonly to: string; readonly description: string }>>;
+};
+
+export const HOSTED_RENAMES: Readonly<Record<string, HostedRename>> = {
+    get_market_auctions: {
+        from: 'counts',
+        to: 'trackedNames',
+        description: 'The names we track at auction: one-word catalog names on the endings the catalog covers.',
+        keys: {
+            today: { to: 'closingWithin24hWithBid', description: 'Tracked names that close within 24 hours and have a bid.' },
+            results: { to: 'closedYesterdayWithResult', description: 'Tracked names that closed yesterday (UTC) with a recorded result.' },
+            all: { to: 'openNow', description: 'Tracked names whose auction is open.' },
+        },
+    },
+};
+
+/** The hosted answer's `data` with the field `HOSTED_RENAMES` names renamed, in its place. */
+const renameHostedFields = (operationId: string, data: JsonValue): JsonValue => {
+    const rename = HOSTED_RENAMES[operationId];
+    if (!rename || !isObject(data)) return data;
+    const out: Record<string, JsonValue> = {};
+    for (const [name, child] of Object.entries(data)) {
+        if (child === undefined) continue;
+        if (name !== rename.from) {
+            out[name] = child;
+            continue;
+        }
+        if (!isObject(child)) {
+            out[rename.to] = child;
+            continue;
+        }
+        const renamed: Record<string, JsonValue> = {};
+        for (const [key, value] of Object.entries(child)) if (value !== undefined) renamed[rename.keys[key]?.to ?? key] = value;
+        out[rename.to] = renamed;
+    }
+    return out;
+};
+
+/**
+ * The `fields` query the API is sent: on the hosted profile a renamed field is asked for by its API name
+ * (`trackedNames` is the API's `counts`). Every other value goes as the caller sent it.
+ */
+export const apiFieldsFor = (profile: Profile, operationId: string, fields: string): string => {
+    const rename = HOSTED_RENAMES[operationId];
+    if (profile !== 'hosted' || !rename) return fields;
+    return fields
+        .split(',')
+        .map((key) => (key.trim() === rename.to ? rename.from : key))
+        .join(',');
 };
 
 /** The hosted answer's `data` or `meta`: internal ids and computing stamps out, times to their UTC day. */
@@ -209,17 +296,52 @@ const dropSchemaPaths = (node: JsonValue, path: string, dropped: ReadonlySet<str
     return out;
 };
 
+/** The hosted `data` schema with the field `HOSTED_RENAMES` names renamed and described, keys included. */
+const renameSchema = (operationId: string, data: JsonValue): JsonValue => {
+    const rename = HOSTED_RENAMES[operationId];
+    if (!rename || !isObject(data) || !isObject(data.properties)) return data;
+    const properties: Record<string, JsonValue> = {};
+    for (const [name, schema] of Object.entries(data.properties)) {
+        if (schema === undefined) continue;
+        if (name !== rename.from || !isObject(schema)) {
+            properties[name] = schema;
+            continue;
+        }
+        const keys: Record<string, JsonValue> = {};
+        if (isObject(schema.properties)) {
+            for (const [key, child] of Object.entries(schema.properties)) {
+                if (child === undefined) continue;
+                const renamed = rename.keys[key];
+                keys[renamed?.to ?? key] = renamed && isObject(child) ? { ...child, description: renamed.description } : child;
+            }
+        }
+        properties[rename.to] = { ...schema, description: rename.description, ...(isObject(schema.properties) ? { properties: keys } : {}) };
+    }
+    return { ...data, properties };
+};
+
 /**
- * The output schema a profile declares: the hosted one names no `register` or `product` link, no internal id and no
- * computing stamp.
+ * The output schema a profile declares: the hosted one names no `register` or `product` link, no internal id, no
+ * computing stamp and no field that says when a record was read; its `meta` drops `asOf` and the description that
+ * named it, and the auctions answer's counts carry their names.
  */
 export const outputSchemaFor = (tool: ToolDefinition, profile: Profile): JsonSchema => {
     if (profile === 'local') return tool.outputSchema;
     const properties = tool.outputSchema.properties;
     if (!isObject(properties)) return tool.outputSchema;
-    const dropped = new Set([...(HOSTED_INTERNAL_ID_PATHS[tool.operationId] ?? []), ...(HOSTED_DROPPED_FIELDS[tool.operationId] ?? []).map((name) => `data.${name}`)]);
-    const data = properties.data === undefined ? undefined : dropSchemaPaths(properties.data, 'data', dropped);
-    const meta = properties.meta === undefined ? undefined : dropSchemaPaths(properties.meta, 'meta', dropped);
+    const dropped = new Set([
+        ...(HOSTED_INTERNAL_ID_PATHS[tool.operationId] ?? []),
+        ...(HOSTED_DROPPED_FIELDS[tool.operationId] ?? []).map((path) => `data.${path}`),
+        ...HOSTED_DROPPED_META.map((name) => `meta.${name}`),
+    ]);
+    const data = properties.data === undefined ? undefined : renameSchema(tool.operationId, dropSchemaPaths(properties.data, 'data', dropped));
+    const metaKept = properties.meta === undefined ? undefined : dropSchemaPaths(properties.meta, 'meta', dropped);
+    // The generated description reads "The day of the answer, and the page cursor of a list.": its day is gone here.
+    let meta: JsonValue | undefined = metaKept;
+    if (isObject(metaKept)) {
+        const { description: _day, ...rest } = metaKept;
+        meta = rest;
+    }
     const trimmed: Record<string, JsonValue> = { ...properties, ...(data !== undefined ? { data } : {}), ...(meta !== undefined ? { meta } : {}) };
     const links = properties.links;
     if (isObject(links) && isObject(links.properties)) {
@@ -231,7 +353,7 @@ export const outputSchemaFor = (tool: ToolDefinition, profile: Profile): JsonSch
 
 /** The top-level keys a hosted answer never carries, so the hosted `fields` description does not offer them. */
 const hostedDroppedTopKeys = (operationId: string): Set<string> => {
-    const keys = new Set([...HOSTED_DROPPED_STAMPS, ...(HOSTED_DROPPED_FIELDS[operationId] ?? [])]);
+    const keys = new Set([...HOSTED_DROPPED_STAMPS, ...(HOSTED_DROPPED_FIELDS[operationId] ?? []).filter((path) => !path.includes('.'))]);
     for (const path of HOSTED_INTERNAL_ID_PATHS[operationId] ?? []) {
         const match = /^data(?:\[\])?\.([A-Za-z]+)$/u.exec(path);
         if (match?.[1]) keys.add(match[1]);
@@ -250,12 +372,19 @@ const HOSTED_SHAPE_CLAUSE = ' Proper nouns are left out here.';
 
 const FIELDS_LIST = /^(Comma-separated top-level keys to keep: )(.+)\.$/u;
 
-/** `fields`'s description on the hosted profile: the list of keys without the ones the trim drops (`id`, `computedAt`). */
+/**
+ * `fields`'s description on the hosted profile: the list of keys without the ones the trim drops (`id`, `computedAt`,
+ * `observedOn`), a renamed key under its hosted name (`trackedNames`).
+ */
 const hostedFieldsDescription = (operationId: string, description: string): string => {
     const match = FIELDS_LIST.exec(description);
     if (!match?.[1] || !match[2]) return description;
     const dropped = hostedDroppedTopKeys(operationId);
-    const kept = match[2].split(', ').filter((key) => !dropped.has(key));
+    const rename = HOSTED_RENAMES[operationId];
+    const kept = match[2]
+        .split(', ')
+        .filter((key) => !dropped.has(key))
+        .map((key) => (rename && key === rename.from ? rename.to : key));
     return `${match[1]}${kept.join(', ')}.`;
 };
 
@@ -287,12 +416,12 @@ export const shapeAnswer = (
     envelope: { readonly data: JsonValue; readonly meta: JsonObject; readonly links: JsonObject },
 ): StructuredAnswer => {
     if (profile === 'local') return { data: envelope.data, meta: envelope.meta, links: envelope.links };
-    const data = trimHosted(stripLinks(dropHostedFields(operationId, envelope.data))) ?? null;
+    const data = trimHosted(stripLinks(renameHostedFields(operationId, dropHostedFields(operationId, envelope.data)))) ?? null;
     const links: Record<string, JsonValue> = {};
     for (const [name, link] of Object.entries(envelope.links)) if (!STRIPPED_LINKS.includes(name) && link !== undefined) links[name] = link;
     links.details = detailsFor(operationId, input, envelope.data, envelope.links.details);
     // `meta` holds no links today; walked so one added there later cannot carry an upsell.
-    const meta = trimHosted(stripLinks(envelope.meta));
+    const meta = trimHosted(stripLinks(dropHostedMeta(envelope.meta)));
     return { data, meta: isObject(meta) ? meta : {}, links };
 };
 

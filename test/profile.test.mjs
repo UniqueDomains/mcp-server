@@ -308,3 +308,157 @@ test('the hosted fields list offers no key the trim removes; limit is bounded at
         if (limit) assert.equal(limit.maximum, 20, tool.name);
     }
 });
+
+/* ---------- The day our data was read, and the auction counts (plan `connector-answer-fixes-2026-11-15`, lane 1) ---------- */
+
+import { apiFieldsFor, runTool, HOSTED_RENAMES } from '../dist/index.js';
+
+// The plan's three fields (section 2.1); the registry record's keyed `observedAt` is checked on its own tool.
+const READ_DAY = /"(?:asOf|observedOn|checkedOn)"/u;
+const recordingOf = (path) => recordings.find((recording) => recording.path === path);
+const envelopeOf = (recording) => ({ data: recording.body.data, meta: recording.body.meta ?? {}, links: recording.body.links ?? {} });
+const toolOf = (name) => TOOLS.find((tool) => tool.name === name);
+
+test('D1 = B: no hosted output schema declares a field that says when a record was read, and the hosted meta names no day', () => {
+    for (const tool of TOOLS.filter((candidate) => candidate.hosted)) {
+        const hosted = outputSchemaFor(tool, 'hosted');
+        assert.doesNotMatch(JSON.stringify(hosted), READ_DAY, tool.name);
+        if (tool.name === 'ud_get_name_registry') assert.doesNotMatch(JSON.stringify(hosted), /"observedAt"/u);
+        assert.equal(hosted.properties.meta.description, undefined, tool.name);
+        assert.ok(hosted.properties.meta.properties.cursor && hosted.properties.meta.properties.limit, tool.name);
+    }
+});
+
+test('D1 = B: the local profile keeps meta.asOf, observedOn and checkedOn, in the answer and the schema', () => {
+    const registry = recordingOf('/names/get.plumbing/registry');
+    const dated = { ...envelopeOf(registry), meta: { asOf: '2026-11-14', cursor: null, limit: null } };
+    const local = shapeAnswer('local', 'get_name_registry', { name: 'get.plumbing' }, dated);
+    assert.equal(local.data.observedOn, '2026-09-23');
+    assert.equal(local.meta.asOf, '2026-11-14');
+    const venue = shapeAnswer('local', 'get_venue', { slug: 'afternic' }, envelopeOf(recordingOf('/venues/afternic')));
+    assert.equal(venue.data.listingTerms.checkedOn, '2026-10-10');
+    assert.ok('observedOn' in outputSchemaFor(toolOf('ud_get_name_registry'), 'local').properties.data.properties);
+    assert.ok('asOf' in outputSchemaFor(toolOf('ud_get_word_endings'), 'local').properties.meta.properties);
+    assert.equal(outputSchemaFor(toolOf('ud_get_word_endings'), 'local').properties.meta.description, 'The day of the answer, and the page cursor of a list.');
+    assert.match(inputSchemaFor(toolOf('ud_get_name_registry'), 'local', 'none').properties.fields.description, /\bobservedOn\b/u);
+});
+
+test('D1 = B: the hosted registry record and venue come without their read days; the rest of the record is kept', () => {
+    const registry = recordingOf('/names/get.plumbing/registry');
+    const hosted = shapeAnswer('hosted', 'get_name_registry', { name: 'get.plumbing' }, { ...envelopeOf(registry), meta: { asOf: '2026-11-14', cursor: null, limit: null } });
+    assert.doesNotMatch(JSON.stringify(hosted), READ_DAY);
+    assert.deepEqual(Object.keys(hosted.data), ['read', 'createdAt', 'updatedAt', 'expiresAt', 'registryUpdatedAt', 'registrar', 'eppStatuses', 'nameservers', 'dnssec', 'holder']);
+    assert.deepEqual(hosted.meta, { cursor: null, limit: null });
+    const venue = shapeAnswer('hosted', 'get_venue', { slug: 'afternic' }, envelopeOf(recordingOf('/venues/afternic')));
+    assert.equal(venue.data.listingTerms.checkedOn, undefined);
+    assert.deepEqual(venue.data.listingTerms.commission, recordingOf('/venues/afternic').body.data.listingTerms.commission);
+    assert.equal(venue.data.footprintDay, '2026-11-09');
+    // A venue with no verified terms keeps its null.
+    assert.equal(shapeAnswer('hosted', 'get_venue', { slug: 'x' }, envelope({ slug: 'x', listingTerms: null })).data.listingTerms, null);
+});
+
+test('D1 = B: a hosted caller who sends fields=observedOn gets no observedOn, and the hosted fields text offers neither read time', () => {
+    const fields = inputSchemaFor(toolOf('ud_get_name_registry'), 'hosted', 'none').properties.fields.description;
+    assert.doesNotMatch(fields, /\bobservedOn\b|\bobservedAt\b|\btransport\b/u);
+    assert.equal(fields, 'Comma-separated top-level keys to keep: read, createdAt, updatedAt, expiresAt, registryUpdatedAt, registrar, eppStatuses, nameservers, dnssec, holder.');
+    // What the API answers to `fields=observedOn`: the one key.
+    const asked = shapeAnswer('hosted', 'get_name_registry', { name: 'get.plumbing', fields: 'observedOn' }, { data: { observedOn: '2026-09-23' }, meta: { asOf: '2026-11-14', cursor: null, limit: null }, links: {} });
+    assert.deepEqual(asked.data, {});
+    assert.doesNotMatch(JSON.stringify(asked), READ_DAY);
+    const exact = shapeAnswer('hosted', 'get_name_registry', { name: 'get.plumbing', fields: 'observedAt' }, { data: { observedAt: '2026-09-23T04:10:00.000Z' }, meta: {}, links: {} });
+    assert.deepEqual(exact.data, {});
+});
+
+test('D1 = B: an answer whose meta.asOf is already null loses the key, not just its value', () => {
+    for (const recording of recordings) {
+        const operation = operationOf(recording.path);
+        if (!TOOLS.find((tool) => tool.operationId === operation.id)?.hosted) continue;
+        const hosted = shapeAnswer('hosted', operation.id, echoedOf(operation, recording.path), envelopeOf(recording));
+        assert.ok(!('asOf' in hosted.meta), recording.path);
+        assert.doesNotMatch(JSON.stringify(hosted), READ_DAY, recording.path);
+    }
+    const nulled = shapeAnswer('hosted', 'get_name', { name: 'harbor.io' }, envelope({ name: 'harbor.io' }));
+    assert.deepEqual(nulled.meta, { cursor: null, limit: null });
+});
+
+const AUCTIONS = '/market/auctions';
+const TRACKED = { closingWithin24hWithBid: 41, closedYesterdayWithResult: 58, openNow: 44891 };
+
+test('D3 = B: the hosted auctions answer names its counts trackedNames, in place; the local one keeps counts', () => {
+    const recording = recordingOf(AUCTIONS);
+    const hosted = shapeAnswer('hosted', 'get_market_auctions', {}, envelopeOf(recording));
+    assert.deepEqual(Object.keys(hosted.data), ['day', 'closing', 'withBid', 'trackedNames', 'byVenue', 'byEnding', 'byLength', 'next7Days']);
+    assert.deepEqual(hosted.data.trackedNames, TRACKED);
+    assert.equal(hosted.data.counts, undefined);
+    assert.deepEqual(shapeAnswer('local', 'get_market_auctions', {}, envelopeOf(recording)).data.counts, { today: 41, results: 58, all: 44891 });
+});
+
+test('D3 = B: the hosted auctions schema describes trackedNames and its three keys in the words of the plan', () => {
+    const tool = toolOf('ud_get_market_auctions');
+    const data = outputSchemaFor(tool, 'hosted').properties.data;
+    assert.equal(data.properties.counts, undefined);
+    const tracked = data.properties.trackedNames;
+    assert.equal(tracked.description, 'The names we track at auction: one-word catalog names on the endings the catalog covers.');
+    assert.deepEqual(Object.keys(tracked.properties), ['closingWithin24hWithBid', 'closedYesterdayWithResult', 'openNow']);
+    assert.equal(tracked.properties.closingWithin24hWithBid.description, 'Tracked names that close within 24 hours and have a bid.');
+    assert.equal(tracked.properties.closedYesterdayWithResult.description, 'Tracked names that closed yesterday (UTC) with a recorded result.');
+    assert.equal(tracked.properties.openNow.description, 'Tracked names whose auction is open.');
+    assert.equal(tracked.properties.openNow.type, 'integer');
+    assert.ok(outputSchemaFor(tool, 'local').properties.data.properties.counts);
+    assert.equal(inputSchemaFor(tool, 'hosted', 'none').properties.fields.description, 'Comma-separated top-level keys to keep: day, closing, withBid, trackedNames, byVenue, byEnding, byLength, next7Days.');
+    assert.match(inputSchemaFor(tool, 'local', 'none').properties.fields.description, /\bcounts\b/u);
+    assert.deepEqual(Object.keys(HOSTED_RENAMES), ['get_market_auctions']);
+});
+
+/** Runs the hosted auctions tool against a stub client that answers the API's `fields` cut of the recorded pulse. */
+const runAuctions = async (args, profile = 'hosted') => {
+    const recording = recordingOf(AUCTIONS);
+    const sent = [];
+    const client = {
+        requestOperation: async (operationId, options) => {
+            sent.push({ operationId, query: options.query ?? {} });
+            const keys = typeof options.query?.fields === 'string' ? options.query.fields.split(',') : null;
+            const data = keys === null ? recording.body.data : Object.fromEntries(Object.entries(recording.body.data).filter(([key]) => keys.includes(key)));
+            return { status: 200, notModified: false, data, meta: recording.body.meta, links: recording.body.links };
+        },
+    };
+    const result = await runTool({ client, profile, plan: 'none', keyless: true }, toolOf('ud_get_market_auctions'), args);
+    return { result, sent };
+};
+
+test('D3 = B: fields=trackedNames asks the API for counts and answers trackedNames', async () => {
+    const { result, sent } = await runAuctions({ fields: 'trackedNames' });
+    assert.equal(sent[0].query.fields, 'counts');
+    assert.deepEqual(result.structuredContent.data, { trackedNames: TRACKED });
+    assert.equal(apiFieldsFor('hosted', 'get_market_auctions', 'day,trackedNames'), 'day,counts');
+    assert.equal(apiFieldsFor('local', 'get_market_auctions', 'trackedNames'), 'trackedNames');
+    assert.equal(apiFieldsFor('hosted', 'get_name', 'trackedNames'), 'trackedNames');
+});
+
+test('D3 = B: fields=counts on the hosted profile answers trackedNames too', async () => {
+    const { result, sent } = await runAuctions({ fields: 'counts' });
+    assert.equal(sent[0].query.fields, 'counts');
+    assert.deepEqual(result.structuredContent.data, { trackedNames: TRACKED });
+    assert.ok(!result.content[1].text.includes('"counts"'));
+});
+
+test('D3 = B: without fields the hosted answer is whole, with trackedNames and no day it was read', async () => {
+    const { result, sent } = await runAuctions({});
+    assert.equal(sent[0].query.fields, undefined);
+    assert.deepEqual(result.structuredContent.data.trackedNames, TRACKED);
+    assert.equal(result.structuredContent.data.day, '2026-11-15');
+    assert.ok(!('asOf' in result.structuredContent.meta));
+    const local = await runAuctions({}, 'local');
+    assert.deepEqual(local.result.structuredContent.data.counts, { today: 41, results: 58, all: 44891 });
+});
+
+test('D3 = B: a pulse not ready yet (figures null, lists empty) still names its counts, and fits the hosted schema', () => {
+    // The API document: "Figures are null and lists empty until the first figures are ready"; the counts are read apart.
+    const recording = recordingOf(AUCTIONS);
+    const empty = { ...envelopeOf(recording), data: { day: null, closing: null, withBid: null, counts: { today: 0, results: 0, all: 0 }, byVenue: [], byEnding: [], byLength: [], next7Days: [] } };
+    const hosted = shapeAnswer('hosted', 'get_market_auctions', {}, empty);
+    assert.deepEqual(hosted.data, { day: null, closing: null, withBid: null, trackedNames: { closingWithin24hWithBid: 0, closedYesterdayWithResult: 0, openNow: 0 }, byVenue: [], byEnding: [], byLength: [], next7Days: [] });
+    const validate = new Ajv({ strict: false, allErrors: true }).compile(outputSchemaFor(toolOf('ud_get_market_auctions'), 'hosted'));
+    assert.ok(validate(hosted), JSON.stringify(validate.errors));
+    assert.equal(textLine('Auctions today', hosted), 'Auctions today.');
+});

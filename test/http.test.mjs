@@ -117,8 +117,12 @@ test('the hosted registry record carries no transport, asked or not, and its fie
         assert.ok(!('transport' in result.structuredContent.data), JSON.stringify(args));
         assert.ok(!result.content[1].text.includes('"transport"'), JSON.stringify(args));
     }
+    // D1 = B of 2026-11-15: the day the record was read leaves the hosted answer, in `data` and in `meta`.
     const plain = await client.callTool({ name: 'ud_get_name_registry', arguments: { name: 'rdap.io' } });
-    assert.equal(plain.structuredContent.data.observedOn, '2026-09-23');
+    assert.ok(!('observedOn' in plain.structuredContent.data));
+    assert.ok(!('asOf' in plain.structuredContent.meta));
+    assert.ok(!plain.content[1].text.includes('2026-09-23'));
+    assert.equal(plain.structuredContent.data.registrar.name, 'GoDaddy.com, LLC');
     await client.close();
 });
 

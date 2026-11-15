@@ -39,6 +39,8 @@ const REQUESTS = [
     '/events',
     '/domains/drops',
     '/market/auctions/sample',
+    // The auctions pulse, whose `counts` the hosted profile names `trackedNames` (plan `connector-answer-fixes-2026-11-15`, D3).
+    '/market/auctions',
 ];
 
 /** `node scripts/record-fixtures.mjs /agenda /events` records only the paths named (the keyless grade allows 60 calls an hour). */

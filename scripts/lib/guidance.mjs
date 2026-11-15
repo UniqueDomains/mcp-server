@@ -55,7 +55,8 @@ export const GUIDANCE = {
         use: "Use it when someone wants every registrar's price for one name, or asks whether its renewal jumps after the first year.",
     },
     get_name_registry: {
-        // No word on the record's day (Gaetan's 17A of 2026-11-13): `observedOn` stays in the answer (18A), the text is silent.
+        // No word on the record's day (Gaetan's 17A of 2026-11-13): `observedOn` stays in the npm answer (18A) and leaves the
+        // hosted one (D1 = B of 2026-11-15, plan `connector-answer-fixes-2026-11-15`); the text is silent.
         summary: 'The registry record of one name: dates, registrar, status codes, nameservers, DNSSEC and holder.',
         use: 'Use it when someone asks who holds a name, which registrar it is at, when it was registered or when it expires: the record a WHOIS lookup shows.',
     },
