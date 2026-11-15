@@ -67,6 +67,14 @@ export const FORBIDDEN_WORDS = [
 ];
 
 /**
+ * The lines both directories reject in a model-readable text (decision S8 of plan `connector-trigger-rate-2026-11-14`):
+ * "prefer", "always use", "instead of searching the web", "best", "official". One list for every text that reaches an
+ * assistant: the tools' texts, the guide, the skill and the starter prompts (review m1). The guide also refuses a bare
+ * "always" (`test/server.test.mjs`); the descriptions also refuse comparisons (`test/tools.test.mjs`).
+ */
+export const STEERING_WORDS = /\b(prefer\w*|always use|instead of|web search|searching the web|best|official)\b/iu;
+
+/**
  * Words that say where the data comes from (Gaetan's rule of 2026-11-12, plan `never-where-data-comes-from`, section 2
  * and step M6): "stored" in every form, the scanner and its scans, a sync, and any claim of which answers are live. "A
  * live check", the name of the paid operation, passes by construction, and so does a trademark's `live` status. Read

@@ -43,7 +43,7 @@ export const instructionsFor = (_profile: Profile): string =>
     [
         'Unique.domains answers questions about domain names from its own catalog.',
         'Is a name taken, available or for sale, and what it costs to register and renew: `ud_get_name` with the full name, such as get.plumbing.',
-        'Naming a business, product or project: `ud_get_latest_edition` for name ideas from rising topics, and `ud_get_word_endings` for the endings a word is still available on.',
+        'Naming a business, product or project: `ud_get_latest_edition` for name ideas from rising topics, and `ud_get_word_endings` for the endings a word is still available or for sale on.',
         'Names someone can still buy, by ending, length or price: `ud_list_domains`.',
         'An unclear or misspelled word goes to `ud_resolve_word` first.',
         'What similar names sold for: `ud_get_name_comps`.',

@@ -15,8 +15,8 @@
  * RapidAPI, and a change there reaches this server only after an SDK release. Rewording the document's own summaries
  * is a later round.
  *
- * A `use` sentence starts "Use it when" (or "Use it first when", "Use it to") and names at most the one limit an
- * assistant must know: a fixed daily sample; one page at a time; a spent allowance.
+ * A `use` sentence starts "Use it when" (or "Use it first when", "Use it to") and names only the limits an assistant
+ * must know: a fixed daily sample; one page at a time; a spent allowance.
  * It may open with the request in a user's words ("taken, available or for sale", "naming a business, product or
  * project", "the record a WHOIS lookup shows") and close with the tool's limit, which doubles as OpenAI's "do not use
  * for" ("Totals, not single sales"): an assistant finds a tool by the words of the ask (plan
@@ -116,7 +116,7 @@ export const GUIDANCE = {
         summary: "A word's endings: counts, the key endings and the open names per ending.",
         // The one limit (2026-11-11, decision B; the platform's one sentence of review R-4): null is "no count", never
         // zeros that read as "no names". No "such as harbor.ai" any more: the sample word's `.ai` is taken.
-        use: 'Use it when someone is naming a business, product or project and has a word in mind: it shows which endings, such as .com, .io or .ai, are still available for that word. A word with no count yet answers null; zeros are real.',
+        use: 'Use it when someone is naming a business, product or project and has a word in mind: it shows which endings, such as .com, .io or .ai, are still available or for sale for that word. A word with no count yet answers null; zeros are real.',
     },
     list_word_names: {
         use: 'Use it when someone wants every catalog name built on one word; it answers one page at a time.',
@@ -161,7 +161,7 @@ export const GUIDANCE = {
         // Review n10 of 2026-11-11: the document's summary ("Names dropping on one day") titled a tool whose keyless
         // answer is a count by ending and never a name. Worded for both forms: the hosted profile carries no key talk.
         summary: 'The names dropping on one day, counted by ending.',
-        use: 'Use it when someone asks about expiring or dropping domain names: how many drop on a day, from today to 6 days ahead, and on which endings. It answers counts, not the names.',
+        use: 'Use it when someone asks about expiring or dropping domain names: how many drop on a day, from today to 6 days ahead, and on which endings.',
     },
     list_domain_hacks: {
         use: 'Use it when someone wants a short name in which the ending spells the last letters of the word.',

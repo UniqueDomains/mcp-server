@@ -16,6 +16,7 @@ import {
     DESCRIBED_AHEAD_OF_SDK,
     DESCRIPTION_MAX_LENGTH,
     FORBIDDEN_WORDS,
+    STEERING_WORDS,
     HOSTED_EXCLUDED_OPERATIONS,
     TRANSPORT_OPERATIONS,
     UNREGISTERED_OPERATIONS,
@@ -162,8 +163,9 @@ test('no description steers to another tool or compares', () => {
     for (const tool of TOOLS) {
         assert.ok(!/\bud_[a-z]/u.test(tool.description), tool.name);
         assert.ok(!/\b(best|better|cheaper than|unlike|instead of)\b/iu.test(tool.description), tool.name);
-        // Decision S8 of plan `connector-trigger-rate-2026-11-14`: the lines both directories reject.
-        assert.ok(!/\b(prefer\w*|always use|official|web search|searching the web)\b/iu.test(tool.description), tool.name);
+        // Decision S8 of plan `connector-trigger-rate-2026-11-14`: the lines both directories reject, in every text of
+        // the tool: its title, its description and its schema texts (review m3).
+        for (const text of textsOf(tool)) assert.doesNotMatch(text, STEERING_WORDS, tool.name);
         // Side path of that plan: a client may show the model the descriptions and not the guide, so none leans on it.
         assert.ok(!/\b(guide|see)\b/iu.test(tool.description), tool.name);
     }

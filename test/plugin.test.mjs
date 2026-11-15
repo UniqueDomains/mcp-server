@@ -11,7 +11,7 @@ import { basename, dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { TOOLS } from '../dist/index.js';
-import { FIXED_CUT_OPERATIONS, FORBIDDEN_WORDS, PLAN_WORDS, RECORD_PHRASES, bundlePlanTalkIn, dollarAmountsIn } from '../scripts/lib/tools.mjs';
+import { FIXED_CUT_OPERATIONS, FORBIDDEN_WORDS, PLAN_WORDS, RECORD_PHRASES, STEERING_WORDS, bundlePlanTalkIn, dollarAmountsIn } from '../scripts/lib/tools.mjs';
 import { DEVIN_PLUGIN_KEYS, HOSTED_MCP_URL } from '../scripts/lib/plugin.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -148,22 +148,23 @@ test('the skill names every hosted tool and no other, and holds no plan, price, 
     assert.equal(lines[0], 'name: unique-domains');
     assert.equal(lines.length, 2);
     assert.match(lines[1], /^description: \S/u);
-    // Plain YAML ends a value at ": "; since 0.1.7 the description holds one ("the Unique.domains tools: whether"), so
-    // it is double-quoted, with no quote or backslash inside that YAML would read as an escape.
+    // Plain YAML ends a value at ": " and cuts it at " #"; since 0.1.7 the description holds a ": " ("the
+    // Unique.domains tools: whether"), so it is double-quoted, with no quote or backslash inside that YAML would read as
+    // an escape. A value that opens with a quote is the quoted form, whole (review m4).
     const value = lines[1].slice('description: '.length);
-    const quoted = /^"[^"\\]+"$/u.test(value);
-    assert.ok(quoted || !value.includes(': '), 'a ": " inside the description needs the double-quoted form (YAML)');
+    const quoted = value.startsWith('"');
+    if (quoted) assert.match(value, /^"[^"\\]+"$/u, 'a double-quoted description holds no quote or backslash');
+    else assert.ok(!value.includes(': ') && !value.includes(' #'), 'a ": " or a " #" inside the description needs the double-quoted form (YAML)');
     const description = quoted ? value.slice(1, -1) : value;
     // Plan `connector-trigger-rate-2026-11-14`, section 6 (G2 = B): the words of the asks the skill answers.
-    for (const words of ['whether a name is taken, available or for sale', 'which endings a word is still available on', 'wants a name for a business, product or project']) assert.ok(description.includes(words), words);
+    for (const words of ['whether a name is taken, available or for sale', 'which endings a word is still available or for sale on', 'wants a name for a business, product or project']) assert.ok(description.includes(words), words);
     assert.ok(description.length <= 1024, 'a skill description fits 1,024 characters');
     // The new section maps a request to its first tool, ahead of the full map, and ends on the `not_checked` rule.
     const start = SKILL.indexOf('\n## Start from the request\n');
     assert.ok(start > 0 && start < SKILL.indexOf('\n## Which tool answers what\n'), 'the request section comes first');
-    assert.ok(SKILL.includes('- A made-up name or a two-word name answers `not_checked`: the catalog holds one-word names. Say there is no answer for it, never that it is free.\n\n## Which tool answers what\n'));
-    // Decision S8 of that plan: no field steers the assistant away from other tools or services.
-    const section = SKILL.slice(start, SKILL.indexOf('\n## Which tool answers what\n'));
-    for (const text of [description, section]) assert.doesNotMatch(text, /\b(prefer\w*|always use|instead of|web search|searching the web|best|official)\b/iu);
+    assert.ok(SKILL.includes('- A name the catalog does not hold, such as a made-up word, answers `not_checked`. Say there is no answer for it, never that it is free.\n\n## Which tool answers what\n'));
+    // Decision S8 of that plan: no line of the skill steers the assistant away from other tools or services (review m3).
+    assert.doesNotMatch(SKILL, STEERING_WORDS);
 
     const named = new Set(SKILL.match(/\bud_[a-z_]+/gu));
     const hosted = new Set(TOOLS.filter((tool) => tool.hosted).map((tool) => tool.name));
@@ -246,7 +247,7 @@ test('the marketplace file lists the one plugin of ./plugin', () => {
     for (const key of ['displayName', 'shortDescription', 'description', 'longDescription', 'releaseNotes', 'commerceDescription']) assertCleanText(sheet[key], `review.json ${key}`, key === 'longDescription' ? 'longDescription' : undefined);
     // The starter prompts are model-readable too (plan `connector-trigger-rate-2026-11-14`, decision S8).
     assertCleanText(sheet.defaultPrompt.join(' '), 'review.json defaultPrompt');
-    assert.doesNotMatch(sheet.defaultPrompt.join(' '), /\b(prefer\w*|always use|instead of|web search|searching the web|best|official)\b/iu);
+    assert.doesNotMatch(sheet.defaultPrompt.join(' '), STEERING_WORDS);
     for (const test of [...sheet.positiveTests, ...sheet.negativeTests]) assertCleanText([test.description, test.prompt, test.expected, test.reason ?? ''].join(' '), `review.json "${test.description}"`);
     assert.equal(marketplace.owner.name, 'Unique.domains');
     assert.equal(marketplace.plugins.length, 1);

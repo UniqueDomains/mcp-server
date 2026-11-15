@@ -9,7 +9,7 @@ import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { createServer } from 'node:http';
 
 import { TOOLS, createMcpServer, instructionsFor, prepareServer, readConfig, ConfigError } from '../dist/index.js';
-import { whereDataComesFromIn } from '../scripts/lib/tools.mjs';
+import { STEERING_WORDS, whereDataComesFromIn } from '../scripts/lib/tools.mjs';
 import { FOUNDER_KEY, INVESTOR_KEY, REFUSED_KEY, UNPAID_KEY, problem, startApiFixture } from './support/api-fixture.mjs';
 
 let fixture;
@@ -218,8 +218,9 @@ test('the guide maps a request to its first tool: the main routes in its first 5
     const named = guide.match(/\bud_[a-z_]+/gu);
     assert.ok(named.length >= 8, named.join());
     for (const name of named) assert.ok(hosted.has(name), `${name} is not a free hosted tool`);
-    // Decision S8: no line that steers the assistant away from other tools or services.
-    assert.doesNotMatch(guide, /\b(prefer\w*|always|instead of|web search|best|official)\b/iu);
+    // Decision S8: no line that steers the assistant away from other tools or services, no bare "always", no comparison.
+    assert.doesNotMatch(guide, STEERING_WORDS);
+    assert.doesNotMatch(guide, /\b(always|better|cheaper than|unlike)\b/iu);
     // Gaetan's B of 2026-11-14: true on every profile, the npm server with a member key included (its three metered tools write).
     assert.match(guide, / None of the tools registers, buys, renews or changes a name\. /u);
     assert.doesNotMatch(guide, /The tools only read/u);

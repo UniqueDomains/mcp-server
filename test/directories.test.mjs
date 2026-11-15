@@ -115,6 +115,16 @@ test('a field over its limit, an unknown category or a hidden tool fails the bui
     const hidden = { ...review.positiveTests[0], tools: ['ud_get_domain'] };
     assert.throws(() => build({ ...review, positiveTests: [hidden, ...review.positiveTests.slice(1)] }), (error) => /ud_get_domain is not a hosted tool/u.test(String(error.stderr)));
     assert.throws(() => build({ ...review, placeholder: true }), (error) => /placeholder texts/u.test(String(error.stderr)));
+    // The starter prompts' side path (plan `connector-trigger-rate-2026-11-14`, review m2): too long, an @mention, a repeat.
+    const prompts = review.defaultPrompt;
+    const cases = [
+        ['x'.repeat(129), /defaultPrompt: one line of 128 characters each/u],
+        ['Ask @unique about get.plumbing', /defaultPrompt: one line of 128 characters each/u],
+        [prompts[0].toUpperCase(), /defaultPrompt: unique/u],
+    ];
+    for (const [last, message] of cases) {
+        assert.throws(() => build({ ...review, defaultPrompt: [prompts[0], prompts[1], last] }), (error) => message.test(String(error.stderr)), last);
+    }
     build({ ...review, placeholder: true }, ['--allow-placeholder']);
     // A recorded demo and an explicit country list reach the zip.
     build({ ...review, demoRecordingURL: 'https://example.com/demo', countries: [] });
@@ -154,7 +164,7 @@ test('the golden prompt set: 32 prompts, unique, each tool a free hosted tool, n
         for (const name of entry.tools) assert.ok(hosted.has(name), `${entry.id}: ${name} is not a free hosted tool`);
         // No mention of the connector: the set measures the calls an assistant makes unasked. A social handle's @ (N6) is
         // not one.
-        assert.doesNotMatch(entry.prompt, /unique\s*\.?\s*domains|@\s*unique|\bud_/iu, entry.id);
+        assert.doesNotMatch(entry.prompt, /unique[\s._-]*domains|@\s*unique|\bud_/iu, entry.id);
     }
     assert.deepEqual(prompts.map((entry) => entry.kind).reduce((counts, kind) => ({ ...counts, [kind]: (counts[kind] ?? 0) + 1 }), {}), { direct: 7, founder: 9, investor: 8, negative: 8 });
 });
