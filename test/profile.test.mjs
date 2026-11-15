@@ -313,8 +313,8 @@ test('the hosted fields list offers no key the trim removes; limit is bounded at
 
 import { apiFieldsFor, runTool, HOSTED_RENAMES } from '../dist/index.js';
 
-// The plan's three fields (section 2.1); the registry record's keyed `observedAt` is checked on its own tool.
-const READ_DAY = /"(?:asOf|observedOn|checkedOn)"/u;
+// The plan's three fields (section 2.1) and the ones Gaetan's "A" of 2026-11-15 adds (report entry 16).
+const READ_DAY = /"(?:asOf|observedOn|observedAt|checkedOn|footprintDay|freshness|verifiedOn)"/u;
 const recordingOf = (path) => recordings.find((recording) => recording.path === path);
 const envelopeOf = (recording) => ({ data: recording.body.data, meta: recording.body.meta ?? {}, links: recording.body.links ?? {} });
 const toolOf = (name) => TOOLS.find((tool) => tool.name === name);
@@ -323,7 +323,6 @@ test('D1 = B: no hosted output schema declares a field that says when a record w
     for (const tool of TOOLS.filter((candidate) => candidate.hosted)) {
         const hosted = outputSchemaFor(tool, 'hosted');
         assert.doesNotMatch(JSON.stringify(hosted), READ_DAY, tool.name);
-        if (tool.name === 'ud_get_name_registry') assert.doesNotMatch(JSON.stringify(hosted), /"observedAt"/u);
         assert.equal(hosted.properties.meta.description, undefined, tool.name);
         assert.ok(hosted.properties.meta.properties.cursor && hosted.properties.meta.properties.limit, tool.name);
     }
@@ -352,7 +351,8 @@ test('D1 = B: the hosted registry record and venue come without their read days;
     const venue = shapeAnswer('hosted', 'get_venue', { slug: 'afternic' }, envelopeOf(recordingOf('/venues/afternic')));
     assert.equal(venue.data.listingTerms.checkedOn, undefined);
     assert.deepEqual(venue.data.listingTerms.commission, recordingOf('/venues/afternic').body.data.listingTerms.commission);
-    assert.equal(venue.data.footprintDay, '2026-11-09');
+    assert.equal(venue.data.footprintDay, undefined);
+    assert.deepEqual(venue.data.footprint, recordingOf('/venues/afternic').body.data.footprint);
     // A venue with no verified terms keeps its null.
     assert.equal(shapeAnswer('hosted', 'get_venue', { slug: 'x' }, envelope({ slug: 'x', listingTerms: null })).data.listingTerms, null);
 });
@@ -461,4 +461,67 @@ test('D3 = B: a pulse not ready yet (figures null, lists empty) still names its 
     const validate = new Ajv({ strict: false, allErrors: true }).compile(outputSchemaFor(toolOf('ud_get_market_auctions'), 'hosted'));
     assert.ok(validate(hosted), JSON.stringify(validate.errors));
     assert.equal(textLine('Auctions today', hosted), 'Auctions today.');
+});
+
+/* ---------- D1 widened (Gaetan's "A" of 2026-11-15, report entry 16) ---------- */
+
+test('D1 widened: the hosted sales answer comes without freshness, and its fields text does not offer it; the local one keeps it', () => {
+    const recording = recordingOf('/market/sales');
+    const hosted = shapeAnswer('hosted', 'get_market_sales', {}, envelopeOf(recording));
+    assert.equal(hosted.data.freshness, undefined);
+    assert.deepEqual(Object.keys(hosted.data), Object.keys(recording.body.data).filter((key) => key !== 'freshness'));
+    assert.deepEqual(shapeAnswer('local', 'get_market_sales', {}, envelopeOf(recording)).data.freshness, recording.body.data.freshness);
+    assert.doesNotMatch(inputSchemaFor(toolOf('ud_get_market_sales'), 'hosted', 'none').properties.fields.description, /\bfreshness\b/u);
+    assert.match(inputSchemaFor(toolOf('ud_get_market_sales'), 'local', 'none').properties.fields.description, /\bfreshness\b/u);
+    // `fields=freshness`: what the API answers is the one key, which the hosted answer then leaves out.
+    assert.deepEqual(shapeAnswer('hosted', 'get_market_sales', { fields: 'freshness' }, { data: { freshness: recording.body.data.freshness }, meta: {}, links: {} }).data, {});
+    assert.doesNotMatch(inputSchemaFor(toolOf('ud_get_venue'), 'hosted', 'none').properties.fields.description, /\bfootprintDay\b/u);
+});
+
+test('D1 widened: every auction venue rule and first-year rule comes without verifiedOn, whatever the row holds', () => {
+    const rows = [
+        {
+            id: 'godaddy',
+            closeRule: { value: '7 days', verifiedOn: '2026-11-01' },
+            paymentRule: null,
+            bidderRule: { value: 'Any account', verifiedOn: '2026-10-01' },
+            firstYear: { com: { value: { flatFee: 12 }, verifiedOn: '2026-11-02' }, net: null },
+            today: null,
+        },
+        { id: 'parkio', closeRule: null, paymentRule: null, bidderRule: null, firstYear: {}, today: { closing: 3, withBid: 3, medianBidUsd: 99 } },
+    ];
+    const hosted = shapeAnswer('hosted', 'list_market_auction_venues', {}, { data: rows, meta: { asOf: '2026-11-14', cursor: null, limit: null }, links: {} });
+    assert.deepEqual(hosted.data, [
+        { id: 'godaddy', closeRule: { value: '7 days' }, paymentRule: null, bidderRule: { value: 'Any account' }, firstYear: { com: { value: { flatFee: 12 } }, net: null }, today: null },
+        rows[1],
+    ]);
+    assert.doesNotMatch(JSON.stringify(hosted), READ_DAY);
+    assert.deepEqual(shapeAnswer('local', 'list_market_auction_venues', {}, { data: rows, meta: {}, links: {} }).data, rows);
+    assert.deepEqual(shapeAnswer('hosted', 'list_market_auction_venues', {}, { data: [], meta: {}, links: {} }).data, []);
+    const schema = outputSchemaFor(toolOf('ud_list_market_auction_venues'), 'hosted').properties.data;
+    assert.ok(schema.items.properties.firstYear.additionalProperties, 'the map stays declared');
+    assert.ok(schema.items.properties.closeRule.anyOf[0].properties.value, 'the rule keeps its value');
+});
+
+test('D1 widened: a trend observation comes without observedAt and keeps its figures', () => {
+    const data = { slug: 'ambient-lights', observations: [{ volume: 246000, growth: 87, growthWindow: '1y', observedAt: '2026-11-01T04:12:00.000Z' }] };
+    const hosted = shapeAnswer('hosted', 'get_trend', { slug: 'ambient-lights' }, { data, meta: {}, links: {} });
+    assert.deepEqual(hosted.data.observations, [{ volume: 246000, growth: 87, growthWindow: '1y' }]);
+    assert.equal(shapeAnswer('local', 'get_trend', { slug: 'ambient-lights' }, { data, meta: {}, links: {} }).data.observations[0].observedAt, '2026-11-01T04:12:00.000Z');
+    assert.ok(outputSchemaFor(toolOf('ud_get_trend'), 'hosted').properties.data.properties.observations.items.properties.volume);
+});
+
+test('D1 widened: the day a change was seen is the change\'s own date and stays on the hosted connector', () => {
+    assert.ok(outputSchemaFor(toolOf('ud_list_tld_changes'), 'hosted').properties.data.items.properties.seenOn);
+    assert.ok(outputSchemaFor(toolOf('ud_list_tld_application_changes'), 'hosted').properties.data.items.properties.seenAt);
+    assert.deepEqual(shapeAnswer('hosted', 'list_tld_changes', {}, { data: [{ tld: '.ai', seenOn: '2026-11-03' }], meta: {}, links: {} }).data, [{ tld: '.ai', seenOn: '2026-11-03' }]);
+});
+
+test('D1 widened: the README names every field the hosted answers drop, and the ones that stay', async () => {
+    const { HOSTED_DROPPED_FIELDS, HOSTED_DROPPED_META } = await import('../dist/index.js');
+    const bullet = readFileSync(new URL('../README.md', import.meta.url), 'utf8').split('\n').find((line) => line.startsWith("- The hosted connector's answers leave out"));
+    assert.ok(bullet);
+    const leaves = new Set([...HOSTED_DROPPED_META.map((name) => `meta.${name}`), ...Object.values(HOSTED_DROPPED_FIELDS).flat().map((path) => path.split(/\[\]|\{\}|\./u).at(-1))]);
+    for (const name of leaves) assert.ok(bullet.includes(`\`${name}\``), name);
+    assert.ok(bullet.includes('`seenOn`, `seenAt`) stays'));
 });

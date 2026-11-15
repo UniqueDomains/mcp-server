@@ -12,11 +12,10 @@
  *   `data` and `meta` (Gaetan's 2A of 2026-11-10, fix round P-7 and P-8). The API's public contract and the local
  *   profile keep them.
  *
- * The hosted connector's answers leave out internal ids, links to buy and the fields that say when a record was read.
- * The last are `meta.asOf`, a registry record's `observedOn` (and its keyed `observedAt`) and a venue's
- * `listingTerms.checkedOn` (Gaetan's D1 = B of 2026-11-15, plan `connector-answer-fixes-2026-11-15`: assistants repeat
- * whatever an answer carries). On the same plan's D3 = B, the auctions answer names its three counts
- * (`data.trackedNames`, `HOSTED_RENAMES`).
+ * The hosted connector's answers leave out internal ids, links to buy and the days a record was read: `meta.asOf` and
+ * the fields `HOSTED_DROPPED_FIELDS` names (Gaetan's D1 = B of 2026-11-15, widened by his
+ * "A" of the same day, plan `connector-answer-fixes-2026-11-15`: assistants repeat whatever an answer carries). On the
+ * same plan's D3 = B, the auctions answer names its three counts (`data.trackedNames`, `HOSTED_RENAMES`).
  *
  * The tool selection (which tools a profile and a key's plan register) is here too.
  */
@@ -159,25 +158,45 @@ export const HOSTED_PUBLIC_ID_PATHS: Readonly<Record<string, readonly string[]>>
 };
 
 /**
- * `data` fields a hosted answer leaves out, per operation, as paths under `data` (`listingTerms.checkedOn`):
+ * `data` fields a hosted answer leaves out, per operation, as paths under `data` in the schema's notation
+ * (`listingTerms.checkedOn`, `observations[].observedAt`; `[].closeRule.verifiedOn` for the rows of a list; `{}` for
+ * every value of a map, `[].firstYear{}.verifiedOn`):
  * - `transport` of the registry record names how the record was read (`rdap` or `whois`), the one field whose value says
  *   where the data comes from (Gaetan's 2A of 2026-11-13, plan `never-where-data-comes-from`, step M7b).
- * - `observedOn` of the registry record, its keyed `observedAt`, and `listingTerms.checkedOn` of a venue say when a
- *   record was read (Gaetan's D1 = B of 2026-11-15).
+ * - The fields that say when a record was read (Gaetan's D1 = B of 2026-11-15, widened by his "A" of the same day): the
+ *   registry record's `observedOn` and keyed `observedAt`, a venue's `listingTerms.checkedOn` and `footprintDay`, the
+ *   sales pulse's `freshness`, the `verifiedOn` of an auction venue's rules, a trend observation's `observedAt`. The
+ *   day a change was seen (`seenOn`, `seenAt`) is the change's own date and stays.
  * The API keeps them, and so does the local profile.
  */
 export const HOSTED_DROPPED_FIELDS: Readonly<Record<string, readonly string[]>> = {
     get_name_registry: ['transport', 'observedOn', 'observedAt'],
-    get_venue: ['listingTerms.checkedOn'],
+    get_venue: ['listingTerms.checkedOn', 'footprintDay'],
+    get_market_sales: ['freshness'],
+    list_market_auction_venues: ['[].closeRule.verifiedOn', '[].paymentRule.verifiedOn', '[].bidderRule.verifiedOn', '[].firstYear{}.verifiedOn'],
+    get_trend: ['observations[].observedAt'],
 };
+
+/** A path of `HOSTED_DROPPED_FIELDS` as steps: a key, `[]` for every item of a list, `{}` for every value of a map. */
+const pathSteps = (path: string): string[] => path.split(/(\[\]|\{\})|\./u).filter((step): step is string => step !== undefined && step !== '');
+
+/** The path under `data` as `outputSchemaFor` names it (`data.footprintDay`, `data[].closeRule.verifiedOn`). */
+const schemaPathOf = (path: string): string => (path.startsWith('[') ? `data${path}` : `data.${path}`);
 
 /** `meta` fields a hosted answer leaves out: `asOf`, the day the answer's newest row was written (D1 = B of 2026-11-15). */
 export const HOSTED_DROPPED_META: readonly string[] = ['asOf'];
 
-/** `value` without the key at `path` (dotted, objects only); anything else on the way is left as it is. */
+/** `value` without the key at `path` (`pathSteps`); a value of another shape on the way is left as it is. */
 const dropPath = (value: JsonValue, path: readonly string[]): JsonValue => {
     const [head, ...rest] = path;
-    if (head === undefined || !isObject(value)) return value;
+    if (head === undefined) return value;
+    if (head === '[]') return Array.isArray(value) ? value.map((item: JsonValue) => dropPath(item, rest)) : value;
+    if (!isObject(value)) return value;
+    if (head === '{}') {
+        const out: Record<string, JsonValue> = {};
+        for (const [name, child] of Object.entries(value)) if (child !== undefined) out[name] = dropPath(child, rest);
+        return out;
+    }
     const out: Record<string, JsonValue> = {};
     for (const [name, child] of Object.entries(value)) {
         if (child === undefined) continue;
@@ -189,7 +208,7 @@ const dropPath = (value: JsonValue, path: readonly string[]): JsonValue => {
 
 /** The hosted answer's `data` without the fields `HOSTED_DROPPED_FIELDS` names for the operation. */
 const dropHostedFields = (operationId: string, data: JsonValue): JsonValue =>
-    (HOSTED_DROPPED_FIELDS[operationId] ?? []).reduce((value, path) => dropPath(value, path.split('.')), data);
+    (HOSTED_DROPPED_FIELDS[operationId] ?? []).reduce((value, path) => dropPath(value, pathSteps(path)), data);
 
 /** The hosted answer's `meta` without the fields `HOSTED_DROPPED_META` names. */
 const dropHostedMeta = (meta: JsonObject): JsonObject => {
@@ -288,6 +307,8 @@ const dropSchemaPaths = (node: JsonValue, path: string, dropped: ReadonlySet<str
             out[key] = kept;
         } else if (key === 'items') {
             out[key] = dropSchemaPaths(child, `${path}[]`, dropped);
+        } else if (key === 'additionalProperties' && isObject(child)) {
+            out[key] = dropSchemaPaths(child, `${path}{}`, dropped);
         } else if ((key === 'anyOf' || key === 'allOf') && Array.isArray(child)) {
             out[key] = child.map((branch: JsonValue) => dropSchemaPaths(branch, path, dropped));
         } else {
@@ -332,7 +353,7 @@ export const outputSchemaFor = (tool: ToolDefinition, profile: Profile): JsonSch
     if (!isObject(properties)) return tool.outputSchema;
     const dropped = new Set([
         ...(HOSTED_INTERNAL_ID_PATHS[tool.operationId] ?? []),
-        ...(HOSTED_DROPPED_FIELDS[tool.operationId] ?? []).map((path) => `data.${path}`),
+        ...(HOSTED_DROPPED_FIELDS[tool.operationId] ?? []).map(schemaPathOf),
         ...HOSTED_DROPPED_META.map((name) => `meta.${name}`),
     ]);
     const data = properties.data === undefined ? undefined : renameSchema(tool.operationId, dropSchemaPaths(properties.data, 'data', dropped));
@@ -354,7 +375,7 @@ export const outputSchemaFor = (tool: ToolDefinition, profile: Profile): JsonSch
 
 /** The top-level keys a hosted answer never carries, so the hosted `fields` description does not offer them. */
 const hostedDroppedTopKeys = (operationId: string): Set<string> => {
-    const keys = new Set([...HOSTED_DROPPED_STAMPS, ...(HOSTED_DROPPED_FIELDS[operationId] ?? []).filter((path) => !path.includes('.'))]);
+    const keys = new Set([...HOSTED_DROPPED_STAMPS, ...(HOSTED_DROPPED_FIELDS[operationId] ?? []).filter((path) => pathSteps(path).length === 1)]);
     for (const path of HOSTED_INTERNAL_ID_PATHS[operationId] ?? []) {
         const match = /^data(?:\[\])?\.([A-Za-z]+)$/u.exec(path);
         if (match?.[1]) keys.add(match[1]);
