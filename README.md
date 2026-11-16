@@ -1,6 +1,8 @@
 # Unique.domains MCP server
 
-Without a tool, an assistant can only guess whether a domain name is taken. This server gives it the record: 34 million one-word names on 505 endings (TLDs), read every day.
+Ask your assistant to find the strongest domain names you can still buy. This server lets it search 34 million one-word names on 505 endings (TLDs), read every day, for the ones still available: by ending, length, price and style. It reads what each one costs and what similar names sold for, so its pick comes with reasons you can check.
+
+Or ask about one name. Without a tool, an assistant can only guess whether a domain name is taken.
 
 - Hosted, nothing to install, no key: `https://mcp.unique.domains/mcp` (51 tools)
 - On your machine: `npx -y @uniquedomains/mcp-server` (55 tools without a key)
