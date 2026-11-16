@@ -346,7 +346,7 @@ test('D1 = B: the hosted registry record and venue come without their read days;
     const registry = recordingOf('/names/get.plumbing/registry');
     const hosted = shapeAnswer('hosted', 'get_name_registry', { name: 'get.plumbing' }, { ...envelopeOf(registry), meta: { asOf: '2026-11-14', cursor: null, limit: null } });
     assert.doesNotMatch(JSON.stringify(hosted), READ_DAY);
-    assert.deepEqual(Object.keys(hosted.data), ['read', 'createdAt', 'updatedAt', 'expiresAt', 'registryUpdatedAt', 'registrar', 'eppStatuses', 'nameservers', 'dnssec', 'holder']);
+    assert.deepEqual(Object.keys(hosted.data), ['read', 'createdAt', 'updatedAt', 'expiresAt', 'registrar', 'eppStatuses', 'nameservers', 'dnssec', 'holder']);
     assert.deepEqual(hosted.meta, { cursor: null, limit: null });
     const venue = shapeAnswer('hosted', 'get_venue', { slug: 'afternic' }, envelopeOf(recordingOf('/venues/afternic')));
     assert.equal(venue.data.listingTerms.checkedOn, undefined);
@@ -360,7 +360,7 @@ test('D1 = B: the hosted registry record and venue come without their read days;
 test('D1 = B: a hosted caller who sends fields=observedOn gets no observedOn, and the hosted fields text offers neither read time', () => {
     const fields = inputSchemaFor(toolOf('ud_get_name_registry'), 'hosted', 'none').properties.fields.description;
     assert.doesNotMatch(fields, /\bobservedOn\b|\bobservedAt\b|\btransport\b/u);
-    assert.equal(fields, 'Comma-separated top-level keys to keep: read, createdAt, updatedAt, expiresAt, registryUpdatedAt, registrar, eppStatuses, nameservers, dnssec, holder.');
+    assert.equal(fields, 'Comma-separated top-level keys to keep: read, createdAt, updatedAt, expiresAt, registrar, eppStatuses, nameservers, dnssec, holder.');
     // What the API answers to `fields=observedOn`: the one key.
     const asked = shapeAnswer('hosted', 'get_name_registry', { name: 'get.plumbing', fields: 'observedOn' }, { data: { observedOn: '2026-09-23' }, meta: { asOf: '2026-11-14', cursor: null, limit: null }, links: {} });
     assert.deepEqual(asked.data, {});
@@ -431,6 +431,8 @@ test('D3 = B: fields=trackedNames asks the API for counts and answers trackedNam
     assert.equal(sent[0].query.fields, 'counts');
     assert.deepEqual(result.structuredContent.data, { trackedNames: TRACKED });
     assert.equal(apiFieldsFor('hosted', 'get_market_auctions', 'day,trackedNames'), 'day,counts');
+    // The comma-space form the hosted `fields` text itself shows (review finding l1-f2).
+    assert.equal(apiFieldsFor('hosted', 'get_market_auctions', 'day, trackedNames'), 'day,counts');
     assert.equal(apiFieldsFor('local', 'get_market_auctions', 'trackedNames'), 'trackedNames');
     assert.equal(apiFieldsFor('hosted', 'get_name', 'trackedNames'), 'trackedNames');
 });
@@ -523,5 +525,59 @@ test('D1 widened: the README names every field the hosted answers drop, and the 
     assert.ok(bullet);
     const leaves = new Set([...HOSTED_DROPPED_META.map((name) => `meta.${name}`), ...Object.values(HOSTED_DROPPED_FIELDS).flat().map((path) => path.split(/\[\]|\{\}|\./u).at(-1))]);
     for (const name of leaves) assert.ok(bullet.includes(`\`${name}\``), name);
-    assert.ok(bullet.includes('`seenOn`, `seenAt`) stays'));
+    assert.ok(bullet.includes("The day a change was seen (`seenOn`, `seenAt`) and the days of an ending's daily history stay."));
+});
+
+/* ---------- D1 widened again (Gaetan's "2A" of 2026-11-16, review of lane 1, section 6) ---------- */
+
+test('2A: a name\'s registry block comes without registryUpdatedAt and keeps the rest; a name with no record keeps its null', () => {
+    const recording = recordingOf('/names/get.plumbing');
+    const hosted = shapeAnswer('hosted', 'get_name', { name: 'get.plumbing' }, envelopeOf(recording));
+    assert.equal(hosted.data.registry.registryUpdatedAt, undefined);
+    assert.deepEqual(Object.keys(hosted.data.registry), Object.keys(recording.body.data.registry).filter((key) => key !== 'registryUpdatedAt'));
+    assert.equal(hosted.data.registry.registrar.name, 'GoDaddy.com, LLC');
+    assert.equal(shapeAnswer('local', 'get_name', { name: 'get.plumbing' }, envelopeOf(recording)).data.registry.registryUpdatedAt, '2026-10-22T13:39:28.000Z');
+    assert.equal(shapeAnswer('hosted', 'get_name', { name: 'harbor.io' }, envelope({ name: 'harbor.io', registry: null })).data.registry, null);
+    // `ud_get_name`'s `fields` text names `registry`, not its keys: it does not change.
+    assert.match(inputSchemaFor(toolOf('ud_get_name'), 'hosted', 'none').properties.fields.description, /\bregistry\b/u);
+});
+
+test('2A: the hosted registry record comes without registryUpdatedAt; the local one keeps it', () => {
+    const recording = recordingOf('/names/get.plumbing/registry');
+    assert.equal(shapeAnswer('hosted', 'get_name_registry', { name: 'get.plumbing' }, envelopeOf(recording)).data.registryUpdatedAt, undefined);
+    assert.equal(shapeAnswer('local', 'get_name_registry', { name: 'get.plumbing' }, envelopeOf(recording)).data.registryUpdatedAt, '2026-10-22');
+});
+
+test('2A: the catalog totals come without their day; fields=day answers nothing on the hosted connector', () => {
+    const data = { day: '2026-11-15', domains: 37000000, words: 133829, tlds: 505 };
+    assert.deepEqual(shapeAnswer('hosted', 'get_catalog_stats', {}, { data, meta: {}, links: {} }).data, { domains: 37000000, words: 133829, tlds: 505 });
+    assert.equal(shapeAnswer('local', 'get_catalog_stats', {}, { data, meta: {}, links: {} }).data.day, '2026-11-15');
+    assert.deepEqual(shapeAnswer('hosted', 'get_catalog_stats', { fields: 'day' }, { data: { day: '2026-11-15' }, meta: {}, links: {} }).data, {});
+    assert.equal(inputSchemaFor(toolOf('ud_get_catalog_stats'), 'hosted', 'none').properties.fields.description, 'Comma-separated top-level keys to keep: domains, words, tlds.');
+    assert.match(inputSchemaFor(toolOf('ud_get_catalog_stats'), 'local', 'none').properties.fields.description, /\bday\b/u);
+});
+
+test('2A: an ending\'s figures come without their day, and each day of the daily history stays', () => {
+    const recording = recordingOf('/tlds/ai/stats');
+    const hosted = shapeAnswer('hosted', 'get_tld_stats', { tld: 'ai' }, envelopeOf(recording));
+    assert.equal(hosted.data.day, undefined);
+    assert.equal(hosted.data.tracked, recording.body.data.tracked);
+    assert.equal(shapeAnswer('local', 'get_tld_stats', { tld: 'ai' }, envelopeOf(recording)).data.day, '2026-11-10');
+    const withHistory = { ...recording.body.data, history: [{ tld: 'ai', day: '2026-11-09', tracked: 1 }, { tld: 'ai', day: '2026-11-10', tracked: 2 }] };
+    const both = shapeAnswer('hosted', 'get_tld_stats', { tld: 'ai' }, { data: withHistory, meta: {}, links: {} });
+    assert.equal(both.data.day, undefined);
+    assert.deepEqual(both.data.history.map((row) => row.day), ['2026-11-09', '2026-11-10']);
+    assert.doesNotMatch(inputSchemaFor(toolOf('ud_get_tld_stats'), 'hosted', 'none').properties.fields.description, /\bday\b/u);
+});
+
+test('2A: the hosted schemas drop the four paths, keep the history axis, and the local ones keep all of it', () => {
+    for (const name of ['ud_get_name', 'ud_get_name_registry']) {
+        assert.doesNotMatch(JSON.stringify(outputSchemaFor(toolOf(name), 'hosted')), /"registryUpdatedAt"/u, name);
+        assert.match(JSON.stringify(outputSchemaFor(toolOf(name), 'local')), /"registryUpdatedAt"/u, name);
+    }
+    for (const name of ['ud_get_catalog_stats', 'ud_get_tld_stats']) {
+        assert.equal(outputSchemaFor(toolOf(name), 'hosted').properties.data.properties.day, undefined, name);
+        assert.ok(outputSchemaFor(toolOf(name), 'local').properties.data.properties.day, name);
+    }
+    assert.ok(outputSchemaFor(toolOf('ud_get_tld_stats'), 'hosted').properties.data.properties.history.items.properties.day);
 });

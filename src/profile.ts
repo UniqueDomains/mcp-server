@@ -12,10 +12,11 @@
  *   `data` and `meta` (Gaetan's 2A of 2026-11-10, fix round P-7 and P-8). The API's public contract and the local
  *   profile keep them.
  *
- * The hosted connector's answers leave out internal ids, links to buy and the days a record was read: `meta.asOf` and
- * the fields `HOSTED_DROPPED_FIELDS` names (Gaetan's D1 = B of 2026-11-15, widened by his
- * "A" of the same day, plan `connector-answer-fixes-2026-11-15`: assistants repeat whatever an answer carries). On the
- * same plan's D3 = B, the auctions answer names its three counts (`data.trackedNames`, `HOSTED_RENAMES`).
+ * The hosted connector's answers leave out internal ids, links to buy and the fields that say when a record was read:
+ * `meta.asOf` and the read-day fields of `HOSTED_DROPPED_FIELDS`, which also holds the registry record's `transport`
+ * (Gaetan's D1 = B of 2026-11-15, widened by his "A" of the same day and his "2A" of 2026-11-16, plan
+ * `connector-answer-fixes-2026-11-15`: assistants repeat whatever an answer carries). On the same plan's D3 = B, the
+ * auctions answer names its three counts (`data.trackedNames`, `HOSTED_RENAMES`).
  *
  * The tool selection (which tools a profile and a key's plan register) is here too.
  */
@@ -163,14 +164,19 @@ export const HOSTED_PUBLIC_ID_PATHS: Readonly<Record<string, readonly string[]>>
  * every value of a map, `[].firstYear{}.verifiedOn`):
  * - `transport` of the registry record names how the record was read (`rdap` or `whois`), the one field whose value says
  *   where the data comes from (Gaetan's 2A of 2026-11-13, plan `never-where-data-comes-from`, step M7b).
- * - The fields that say when a record was read (Gaetan's D1 = B of 2026-11-15, widened by his "A" of the same day): the
- *   registry record's `observedOn` and keyed `observedAt`, a venue's `listingTerms.checkedOn` and `footprintDay`, the
- *   sales pulse's `freshness`, the `verifiedOn` of an auction venue's rules, a trend observation's `observedAt`. The
- *   day a change was seen (`seenOn`, `seenAt`) is the change's own date and stays.
+ * - The fields that say when a record was read (Gaetan's D1 = B of 2026-11-15, widened by his "A" of the same day and his
+ *   "2A" of 2026-11-16): the registry record's `observedOn`, keyed `observedAt` and `registryUpdatedAt` (the registry's
+ *   database stamp, rewritten at each of our reads; in a name's `registry` block too), the `day` of the catalog totals
+ *   and of an ending's figures, a venue's `listingTerms.checkedOn` and `footprintDay`, the sales answer's `freshness`,
+ *   the `verifiedOn` of an auction venue's rules, a trend observation's `observedAt`. The day a change was seen
+ *   (`seenOn`, `seenAt`) and the days of an ending's daily history (`history[].day`) stay.
  * The API keeps them, and so does the local profile.
  */
 export const HOSTED_DROPPED_FIELDS: Readonly<Record<string, readonly string[]>> = {
-    get_name_registry: ['transport', 'observedOn', 'observedAt'],
+    get_name: ['registry.registryUpdatedAt'],
+    get_name_registry: ['transport', 'observedOn', 'observedAt', 'registryUpdatedAt'],
+    get_catalog_stats: ['day'],
+    get_tld_stats: ['day'],
     get_venue: ['listingTerms.checkedOn', 'footprintDay'],
     get_market_sales: ['freshness'],
     list_market_auction_venues: ['[].closeRule.verifiedOn', '[].paymentRule.verifiedOn', '[].bidderRule.verifiedOn', '[].firstYear{}.verifiedOn'],
