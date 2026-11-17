@@ -1,6 +1,6 @@
 {
   "name": "unique-domains",
-  "description": "Analyse any domain name in depth: is it taken, what nine registrars charge for it, what similar names sold for. Find the right ones to buy among 34 million one-word names. No account, no key.",
+  "description": "Ask your assistant to find the strongest domain names you can still buy, or to check any one: taken or not, what nine registrars charge for it, what similar names sold for. No account, no key.",
   "version": "0.1.8",
   "author": {
     "name": "Unique.domains"

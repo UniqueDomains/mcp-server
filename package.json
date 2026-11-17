@@ -1,7 +1,7 @@
 {
   "name": "@uniquedomains/mcp-server",
   "version": "0.1.8",
-  "description": "MCP server to analyse any domain name in depth and find the right ones to buy: is a name taken, what nine registrars charge, what similar names sold for. A daily record of 37 million names. Runs with npx or hosted, no key.",
+  "description": "MCP server that lets your assistant find the strongest domain names you can still buy, and check any one: is it taken, what nine registrars charge, what similar names sold for. A daily record of 37 million names. Runs with npx or hosted, no key.",
   "license": "MIT",
   "author": "Unique.domains (https://unique.domains)",
   "homepage": "https://unique.domains/api/mcp",

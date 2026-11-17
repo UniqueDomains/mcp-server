@@ -1,6 +1,6 @@
 # Unique.domains plugin
 
-Without a tool, an assistant can only guess whether a domain name is taken. This plugin gives it the record: 34 million one-word names on 505 endings (TLDs), read every day. Ask "Is get.plumbing taken?" and it answers from one tool call: registered since 2020, listed for sale, 10 similar sales with a median of $2,677.
+Ask your assistant to find the strongest domain names you can still buy, or to check any one. Without a tool, an assistant can only guess whether a domain name is taken. This plugin gives it the record: 34 million one-word names on 505 endings (TLDs), read every day. Ask "Is get.plumbing taken?" and it answers from one tool call: registered since 2020, listed for sale, 10 similar sales with a median of $2,677.
 
 The plugin holds two things. The first is the Unique.domains connector, hosted at `https://mcp.unique.domains/mcp`: 51 tools, nothing to install, no account and no sign-in. The second is one skill, which tells the assistant which tool answers which question, so it calls the right one the first time.
 

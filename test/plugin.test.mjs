@@ -25,10 +25,12 @@ const pkg = read('package.json');
  * Fable 5.2, Gaetan's decision 4 of 2026-11-11: they ship with 0.1.5): section E's lines for each manifest. The short
  * lines of v2.6 replace them in 0.1.6 (`never-where-data-comes-from-2026-11-13.v26-preview.md`, approved by Gaetan on
  * 2026-11-14, decision 43 of that plan); the Devin short line, npm's description and Cursor's take v2.6's lines too.
+ * In 0.1.9 the v2.7 lines (section 11 of that file, Gaetan's "6A" of 2026-11-16) replace the one-liner of 200 (A6), the
+ * line of 100 (A4) and the marketplace line (E1); Grok's and Devin's lines are still proposed there and stay at v2.6.
  */
-const ONE_LINER = 'Analyse any domain name in depth: is it taken, what nine registrars charge for it, what similar names sold for. Find the right ones to buy among 34 million one-word names. No account, no key.';
-const GEMINI_LINE = 'Analyse any domain name in depth and find the right ones to buy among 34 million. No key.';
-const MARKETPLACE_LINE = 'One plugin from Unique.domains: 51 tools to analyse any domain name in depth and find the right ones to buy, and a skill that tells your assistant which tool answers which question.';
+const ONE_LINER = 'Ask your assistant to find the strongest domain names you can still buy, or to check any one: taken or not, what nine registrars charge for it, what similar names sold for. No account, no key.';
+const GEMINI_LINE = 'Ask your assistant for the strongest domain names you can still buy, or to check one. No key.';
+const MARKETPLACE_LINE = 'One plugin from Unique.domains: 51 tools for your assistant to find the strongest domain names you can still buy and to check any one, and a skill that tells it which tool answers which question.';
 const GROK_LINE = 'Analyse any domain name in depth: is it taken, what nine registrars charge for it, what similar names sold for. Find the right ones to buy among 34 million one-word names. Hosted: nothing to install, no sign-in, no key.';
 const DEVIN_SHORT_LINE = 'Analyse any domain, find the one to buy';
 const DEVIN_LINE = 'Analyse any domain name in depth (taken or free, nine registrars\' prices, similar sales) and find the right ones to buy';
