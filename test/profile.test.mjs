@@ -581,3 +581,63 @@ test('2A: the hosted schemas drop the four paths, keep the history axis, and the
     }
     assert.ok(outputSchemaFor(toolOf('ud_get_tld_stats'), 'hosted').properties.data.properties.history.items.properties.day);
 });
+
+/* ---------- Lane 3c: the endings split on the hosted connector (plan `connector-answer-fixes-2026-11-15`, D2 = A) ---------- */
+
+const ENDINGS = (lists) => ({
+    data: {
+        byGroup: { scanned: 5, taken: 2, available: 2, forSale: 1 },
+        keyEndings: [{ ending: 'io', status: 'available', priceUsd: 32 }],
+        openByEnding: { co: 1, io: 1, studio: 1 },
+        ...lists,
+    },
+    meta: { asOf: '2026-11-16', cursor: null, limit: null },
+    links: { self: 'https://api.unique.domains/v1/words/harbor/endings', next: null, register: null, product: null, dataset: null },
+});
+
+test('lane 3c: the hosted endings answer passes the two lists through, null before the word is rolled up again, and fits its schema', () => {
+    const validate = new Ajv({ strict: false, allErrors: true }).compile(outputSchemaFor(toolOf('ud_get_word_endings'), 'hosted'));
+    // Side path "the hosted connector before a word is rolled up again": the counts are filled, the two lists still null.
+    const before = shapeAnswer('hosted', 'get_word_endings', { word: 'harbor' }, ENDINGS({ availableOn: null, forSaleOn: null }));
+    assert.equal(before.data.availableOn, null);
+    assert.equal(before.data.forSaleOn, null);
+    assert.deepEqual(before.data.openByEnding, { co: 1, io: 1, studio: 1 });
+    assert.ok(validate(before), JSON.stringify(validate.errors));
+    const after = shapeAnswer('hosted', 'get_word_endings', { word: 'harbor' }, ENDINGS({ availableOn: ['co', 'io'], forSaleOn: ['studio'] }));
+    assert.deepEqual([after.data.availableOn, after.data.forSaleOn], [['co', 'io'], ['studio']]);
+    assert.ok(validate(after), JSON.stringify(validate.errors));
+    // A word with no count yet: every count and list null; a counted word with no open name: two empty lists.
+    const none = shapeAnswer('hosted', 'get_word_endings', { word: 'harbor' }, { ...ENDINGS({}), data: { byGroup: null, keyEndings: [], openByEnding: null, availableOn: null, forSaleOn: null } });
+    assert.ok(validate(none), JSON.stringify(validate.errors));
+    const closed = shapeAnswer('hosted', 'get_word_endings', { word: 'harbor' }, { ...ENDINGS({}), data: { byGroup: { scanned: 3, taken: 3, available: 0, forSale: 0 }, keyEndings: [], openByEnding: {}, availableOn: [], forSaleOn: [] } });
+    assert.deepEqual([closed.data.availableOn, closed.data.forSaleOn], [[], []]);
+    assert.ok(validate(closed), JSON.stringify(validate.errors));
+    for (const answer of [before, after, none, closed]) assert.deepEqual(answer.meta, { cursor: null, limit: null });
+    // The text line and the two lists' schema texts on the hosted connector: the document's words, with no day in them.
+    const { availableOn, forSaleOn, byGroup } = outputSchemaFor(toolOf('ud_get_word_endings'), 'hosted').properties.data.properties;
+    assert.equal(availableOn.description, '`availableOn` names the endings where the word is unregistered at the standard price.');
+    assert.match(forSaleOn.description, /^`forSaleOn` names the endings where it can be bought another way/u);
+    assert.equal(byGroup.description, 'Null for a word with no count yet; zeros are real.');
+    assert.match(inputSchemaFor(toolOf('ud_get_word_endings'), 'hosted', 'none').properties.fields.description, /\bavailableOn, forSaleOn\b/u);
+});
+
+test('lane 3c: the hosted trackedNames carry the texts the API document now gives counts', () => {
+    const document = JSON.parse(readFileSync(new URL('../node_modules/@uniquedomains/sdk/openapi.json', import.meta.url), 'utf8'));
+    const operation = Object.values(document.paths).flatMap((item) => Object.values(item)).find((candidate) => candidate?.operationId === 'get_market_auctions');
+    const resolve = (node) => (node?.$ref ? resolve(document.components.schemas[node.$ref.replace('#/components/schemas/', '')]) : node);
+    const counts = resolve(resolve(resolve(operation.responses['200'].content['application/json'].schema).properties.data).properties.counts);
+    const tracked = outputSchemaFor(toolOf('ud_get_market_auctions'), 'hosted').properties.data.properties.trackedNames;
+    assert.equal(tracked.description, counts.description);
+    for (const [from, to] of [['today', 'closingWithin24hWithBid'], ['results', 'closedYesterdayWithResult'], ['all', 'openNow']]) assert.equal(tracked.properties[to].description, resolve(counts.properties[from]).description, to);
+});
+
+test('lane 3c: a venue\'s hosted listingTerms lists no property once checkedOn, its one declared key, is dropped', () => {
+    const terms = outputSchemaFor(toolOf('ud_get_venue'), 'hosted').properties.data.properties.listingTerms;
+    assert.equal(terms.anyOf[0].properties, undefined);
+    assert.equal(terms.anyOf[0].type, 'object');
+    assert.ok(outputSchemaFor(toolOf('ud_get_venue'), 'local').properties.data.properties.listingTerms.anyOf[0].properties.checkedOn);
+    const venue = shapeAnswer('hosted', 'get_venue', { slug: 'afternic' }, envelopeOf(recordingOf('/venues/afternic')));
+    const validate = new Ajv({ strict: false, allErrors: true }).compile(outputSchemaFor(toolOf('ud_get_venue'), 'hosted'));
+    assert.ok(validate(venue), JSON.stringify(validate.errors));
+    assert.equal(venue.data.listingTerms.checkedOn, undefined);
+});

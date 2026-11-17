@@ -310,6 +310,9 @@ const dropSchemaPaths = (node: JsonValue, path: string, dropped: ReadonlySet<str
                 if (dropped.has(at) || HOSTED_DROPPED_STAMPS.includes(name)) continue;
                 kept[name] = dropSchemaPaths(schema, at, dropped);
             }
+            // An object whose every property is dropped lists none, as it did before the document declared them:
+            // since SDK 0.2.1 a venue's `listingTerms` declares only `checkedOn`, which the hosted profile drops.
+            if (Object.keys(kept).length === 0 && Object.keys(child).length > 0) continue;
             out[key] = kept;
         } else if (key === 'items') {
             out[key] = dropSchemaPaths(child, `${path}[]`, dropped);

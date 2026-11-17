@@ -114,10 +114,12 @@ export const GUIDANCE = {
         // 2026-11-13: `organic` answered 439 endings counted (154 taken, 113 available, 172 for sale) on the hosted
         // connector; the document's `harbor` answered null counts (plan `never-where-data-comes-from`, section 3).
         examples: { word: 'organic' },
-        summary: "A word's endings: counts, the key endings and the open names per ending.",
-        // The one limit (2026-11-11, decision B; the platform's one sentence of review R-4): null is "no count", never
-        // zeros that read as "no names". No "such as harbor.ai" any more: the sample word's `.ai` is taken.
-        use: 'Use it when someone is naming a business, product or project and has a word in mind: it shows which endings, such as .com, .io or .ai, are still available or for sale for that word. A word with no count yet answers null; zeros are real.',
+        // No summary of its own since SDK 0.2.1: the document's is the sentence of plan `connector-answer-fixes-2026-11-15`
+        // (section 11), which names the two lists. The `use` sentence is that plan's too (D2 = A): one call answers which
+        // endings a word is open on, so an assistant no longer checks them one name at a time. Gaetan's "B" of 2026-11-17:
+        // without the table's last clause, which named another tool. The null sentence now lives in the document's
+        // description of `byGroup`, `openByEnding`, `availableOn` and `forSaleOn`.
+        use: 'Use it when someone is naming a business, product or project and has a word in mind: it shows which endings, such as .com, .io or .ai, are still available or for sale for that word. Its lists `availableOn` and `forSaleOn` name every ending the word is open on, so one call answers the whole question.',
     },
     list_word_names: {
         use: 'Use it when someone wants every catalog name built on one word; it answers one page at a time.',

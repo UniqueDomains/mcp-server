@@ -13,8 +13,8 @@ import { TOOLS, selectTools, toListedTool } from '../dist/index.js';
 import { readFileSync } from 'node:fs';
 
 import {
-    DESCRIBED_AHEAD_OF_SDK,
     DESCRIPTION_MAX_LENGTH,
+    DESCRIPTION_MAX_LENGTH_BY_TOOL,
     FORBIDDEN_WORDS,
     STEERING_WORDS,
     HOSTED_EXCLUDED_OPERATIONS,
@@ -90,8 +90,10 @@ test('titles are short; descriptions say what the tool reads, when to use it, th
         assert.ok(sentences.length >= 3 && sentences.length <= 5, `${tool.name}: ${sentences.length} sentences`);
         assert.match(tool.description, /\bUse it (?:when|first when|to)\b/u, tool.name);
         assert.match(tool.description, /(Pass |Every input is optional|Its one input, `fields`, is optional|Takes no input)[^]*\.$/u, tool.name);
-        assert.ok(tool.description.length <= DESCRIPTION_MAX_LENGTH, `${tool.name}: ${tool.description.length} characters`);
+        assert.ok(tool.description.length <= (DESCRIPTION_MAX_LENGTH_BY_TOOL[tool.name] ?? DESCRIPTION_MAX_LENGTH), `${tool.name}: ${tool.description.length} characters`);
     }
+    // Gaetan's "B" of 2026-11-17: one tool past the common bound, the endings tool, at 470.
+    assert.deepEqual(DESCRIPTION_MAX_LENGTH_BY_TOOL, { ud_get_word_endings: 470 });
 });
 
 // D5 = A of 2026-11-15 (plan `connector-answer-fixes-2026-11-15`, lane 1 step 4): "Takes no input." was false on the
@@ -313,20 +315,21 @@ test('the editions and providers descriptions explain the answers that read as w
     assert.match(providers, /may be one this list leaves out/u);
 });
 
-// Decision B of 2026-11-11: the API answers a word with no endings count as null, not zeros; the declared schema takes
-// it now, so a validating client accepts the answer before the SDK's document says so.
-test('the word endings tool declares null counts and says so', async () => {
+// Decision B of 2026-11-11: the API answers a word with no endings count as null, not zeros. Since SDK 0.2.1 the document
+// declares it (with the two lists of plan `connector-answer-fixes-2026-11-15`, D2 = A), so the server copies nothing
+// ahead of it: the null sentence is the document's, on each field of the output schema.
+test('the word endings tool declares null counts and lists, and names the two lists', () => {
     const tool = TOOLS.find((entry) => entry.operationId === 'get_word_endings');
-    const { byGroup, openByEnding } = tool.outputSchema.properties.data.properties;
-    for (const field of [byGroup, openByEnding]) assert.ok(field.anyOf.some((branch) => branch.type === 'null'), JSON.stringify(field));
+    const { byGroup, openByEnding, availableOn, forSaleOn } = tool.outputSchema.properties.data.properties;
+    for (const field of [byGroup, openByEnding, availableOn, forSaleOn]) assert.ok(field.anyOf.some((branch) => branch.type === 'null'), JSON.stringify(field));
     assert.equal(byGroup.anyOf[0].type, 'object');
-    // The platform's one null sentence (review R-4 of 2026-11-11), the same in the plugin skill.
-    assert.match(tool.description, /A word with no count yet answers null; zeros are real\./u);
-
-    const { widenAheadOfSdk } = await import('../scripts/lib/tools.mjs');
-    const already = { properties: { byGroup: { anyOf: [{ type: 'object' }, { type: 'null' }] }, openByEnding: { type: 'null' } } };
-    assert.deepEqual(widenAheadOfSdk('get_word_endings', already), already, 'a no-op once the document is nullable');
-    assert.throws(() => widenAheadOfSdk('get_word_endings', { properties: {} }), /no `byGroup` to widen/u);
+    for (const list of [availableOn, forSaleOn]) assert.deepEqual(list.anyOf[0], { type: 'array', items: { type: 'string' } });
+    for (const field of [byGroup, openByEnding]) assert.match(field.description, /null for a word with no count yet; zeros are real\./iu);
+    // The `use` sentence of that plan's "Public texts" table after the document's summary.
+    assert.ok(tool.description.startsWith("A word's endings: counts, the key endings, and the endings the word is available on and for sale on. "), tool.description);
+    // Gaetan's "B" of 2026-11-17: without the table's last clause, which named another tool.
+    assert.ok(tool.description.includes(' Its lists `availableOn` and `forSaleOn` name every ending the word is open on, so one call answers the whole question. Pass '), tool.description);
+    assert.equal(tool.description.length, 463);
 });
 
 // Review R-4 of 2026-11-11: the skill told an assistant that all zeros mean "not counted yet", the opposite of the
@@ -471,11 +474,14 @@ test('the tool texts of the 0.1.6 round read as the plan words them', () => {
  * The texts this server carries ahead of the SDK in the 0.1.6 round, each with the SDK 0.2.0 document's text it
  * replaces. The day the SDK's document says something else for one of them without the old words, the platform has
  * shipped its own text: if it equals the copy, `npm run generate` shows no change and the copy goes; if it differs, this
- * test fails, so the two never drift apart (plan `never-where-data-comes-from`, decision D-a).
+ * test fails, so the two never drift apart (plan `never-where-data-comes-from`, decision D-a). SDK 0.2.1 (2026-11-17)
+ * carries every field text the server copied and the endings summary, so those copies went with `DESCRIBED_AHEAD_OF_SDK`
+ * and `NULLABLE_AHEAD_OF_SDK` (plan `connector-answer-fixes-2026-11-15`, lane 3c); the summaries left are the ones whose
+ * document text now equals the copy, or still says the old words.
  *
  * Not compared, since the server words them for an assistant rather than a developer (plan, step P2): `check_name`
- * ("the full name answer"), `appraise_name` ("the value estimate"), `batch_names` (the platform's summary says
- * "resource"), and the list rows' `status`, the server's own longer sentence.
+ * ("the full name answer"), `appraise_name` ("the value estimate") and `batch_names` (the platform's summary says
+ * "resource").
  */
 const AHEAD_OF_SDK_0_1_6 = [
     { operationId: 'get_name', field: 'summary', sdk: 'The stored answer for one domain name: status, drop day, price today, registry facts, word facts and similar sales.' },
@@ -483,7 +489,6 @@ const AHEAD_OF_SDK_0_1_6 = [
     { operationId: 'get_name_registry', field: 'summary', sdk: 'The latest stored registry record of one name: dates, registrar, status codes, nameservers, DNSSEC and holder.' },
     { operationId: 'get_name_registry_history', field: 'summary', sdk: 'The stored registry record versions of one name and what moved between them.' },
     { operationId: 'get_name_dns', field: 'summary', sdk: 'The latest stored DNS reading of one name, with its parking venue.' },
-    { operationId: 'get_word_endings', field: 'summary', sdk: "A word's endings as the nightly update holds them: counts, the key endings and open names per ending." },
     // The round of the three rules (Gaetan's 17A and 20A of 2026-11-13).
     { operationId: 'get_catalog_stats', field: 'summary', sdk: 'Catalog headline totals for the latest day.' },
     { operationId: 'get_tld_stats', field: 'summary', sdk: "The ending's latest market figures, and with history its last daily rows." },
@@ -491,44 +496,11 @@ const AHEAD_OF_SDK_0_1_6 = [
     { operationId: 'get_word_notability', field: 'summary', sdk: "A word's Wikipedia and Wikidata facts." },
     { operationId: 'list_tld_application_changes', field: 'summary', sdk: 'Every recorded status or contention change of the round, newest first.' },
     { operationId: 'list_tld_applications', field: 'summary', sdk: 'The 2026 new gTLD round as ICANN publishes it, A to Z, with two simple bands.' },
-    { operationId: 'list_tld_applications', field: 'applicant', sdk: 'Applicant as ICANN names it.' },
-    { operationId: 'get_tld_application_string', field: 'applications.applicant', sdk: 'Applicant as ICANN names it.' },
-    { operationId: 'list_iana_registrars', field: 'name', sdk: 'Name as IANA publishes it.' },
-    { operationId: 'get_iana_registrar', field: 'name', sdk: 'Name as IANA publishes it.' },
-    { operationId: 'list_registrars', field: 'accredited', sdk: 'The IANA record says accredited.' },
-    { operationId: 'list_venues', field: 'accredited', sdk: 'The IANA record says accredited.' },
-    { operationId: 'get_venue', field: 'accredited', sdk: 'The IANA record says accredited.' },
-    { operationId: 'list_tlds', field: 'rdapServer', sdk: "`TLDs.rdapServer`, the registry's RDAP server." },
-    { operationId: 'list_tlds', field: 'category', sdk: "`TLDs.category`, the catalog's category word." },
-    { operationId: 'list_tlds', field: 'phases.id', sdk: '`TldLaunchPhase.id`.' },
-    { operationId: 'get_tld', field: 'phases.id', sdk: '`TldLaunchPhase.id`.' },
-    { operationId: 'list_tld_phases', field: 'id', sdk: '`TldLaunchPhase.id`.' },
-    { operationId: 'list_registrar_changes', field: 'id', sdk: '`TldPriceChange.id` as a string.' },
-    { operationId: 'list_price_changes', field: 'id', sdk: '`TldPriceChange.id` as a string.' },
-    { operationId: 'get_venue', field: 'listingTerms', sdk: 'The verified listing terms: commission bands, exclusivity, payment plans, fast transfer, payout days, the day a person checked them.' },
     { operationId: 'get_name_value', field: 'summary', sdk: 'The stored value estimate of one name and its last 20 estimates.' },
     { operationId: 'get_word_market', field: 'summary', sdk: "A word's sales and auction aggregates from the nightly update." },
     { operationId: 'list_iana_registrars', field: 'summary', sdk: 'The IANA registrar list as the registry sync stores it, by id.' },
-    { operationId: 'get_name', field: 'tracked', sdk: 'The catalog stores the name.' },
-    { operationId: 'batch_names', field: 'tracked', sdk: 'The catalog stores the name.' },
-    { operationId: 'check_name', field: 'tracked', sdk: 'The catalog stores the name.' },
-    { operationId: 'get_domain', field: 'tracked', sdk: 'The catalog stores the name.' },
-    // SDK 0.2.0 gives this field no description; the platform's text is the 0.1.5 round's, reworded in this one.
-    { operationId: 'get_name', field: 'status', sdk: null },
-    { operationId: 'check_name', field: 'checked', sdk: 'The live read answered.' },
-    { operationId: 'get_word', field: 'pos', sdk: 'Parts of speech as stored, comma-joined tags.' },
-    { operationId: 'batch_words', field: 'pos', sdk: 'Parts of speech as stored, comma-joined tags.' },
-    { operationId: 'get_word_request', field: 'scan', sdk: 'On `ready` with a word: whether the first scan of every ending ran.' },
-    { operationId: 'list_tld_changes', field: 'seenOn', sdk: 'UTC day the scanner saw the change.' },
-    { operationId: 'list_venues', field: 'footprint.names', sdk: 'Scanned names parked at the venue, rounded (to 100, to 10 under 1,000).' },
-    { operationId: 'get_venue', field: 'footprint.names', sdk: 'Scanned names parked at the venue, rounded (to 100, to 10 under 1,000).' },
-    { operationId: 'list_tld_application_changes', field: 'seenAt', sdk: 'Timestamp the import saw it.' },
-    { operationId: 'get_tld_application_string', field: 'changes.seenAt', sdk: 'Timestamp the import saw it.' },
-    // The review of 2026-11-14: B1 (lane P's B2) and M1, lane P's texts.
+    // The review of 2026-11-14: B1 (lane P's B2), lane P's text.
     { operationId: 'get_trend', field: 'summary', sdk: 'One trend: its latest row, its head words, its figures at every edition and its latest observations.' },
-    { operationId: 'list_tld_price_history', field: 'observations', sdk: 'Reads that saw it.' },
-    { operationId: 'get_word', field: 'addedAt', sdk: 'When the intake added it; null means the dictionary load.' },
-    { operationId: 'batch_words', field: 'addedAt', sdk: 'When the intake added it; null means the dictionary load.' },
     { operationId: 'list_registrar_prices', input: 'delisted', sdk: '`true`: the endings its last complete list no longer carries. Paid subscriptions only.' },
 ];
 
@@ -539,35 +511,13 @@ const operationIn = (document, operationId) =>
         .flatMap((item) => Object.values(item))
         .find((candidate) => candidate && candidate.operationId === operationId);
 
-/** The description the document gives a field of the 200 answer's `data`, by dotted path, through refs, items and branches. */
-const documentFieldText = (document, operationId, path) => {
-    const resolve = (node) => (node && typeof node.$ref === 'string' ? resolve(document.components.schemas[node.$ref.replace('#/components/schemas/', '')]) : node);
-    const find = (node, segments) => {
-        node = resolve(node);
-        if (!node || typeof node !== 'object') return null;
-        if (segments.length === 0) return node.description ?? (node.oneOf ?? node.anyOf ?? []).map(resolve).find((branch) => branch?.description)?.description ?? null;
-        const [head, ...rest] = segments;
-        if (node.properties?.[head]) return find(node.properties[head], rest);
-        if (node.items) return find(node.items, segments);
-        for (const branch of node.oneOf ?? node.anyOf ?? node.allOf ?? []) {
-            const found = find(branch, segments);
-            if (found !== null) return found;
-        }
-        return null;
-    };
-    const schema = operationIn(document, operationId).responses['200'].content['application/json'].schema;
-    return find(resolve(schema).properties.data, path.split('.'));
-};
-
 test('each copy ahead of the SDK still replaces the SDK text it names, and matches the SDK the day it ships its own', () => {
     for (const { operationId, field, input, sdk } of AHEAD_OF_SDK_0_1_6) {
-        const copy = input ? INPUTS[operationId][input] : field === 'summary' ? GUIDANCE[operationId].summary : DESCRIBED_AHEAD_OF_SDK[operationId][field];
+        const copy = input ? INPUTS[operationId][input] : GUIDANCE[operationId].summary;
         assert.ok(typeof copy === 'string' && whereDataComesFromIn(copy).length === 0, `${operationId}.${field ?? input}: the server's copy`);
         const text = input
             ? (operationIn(SDK_DOCUMENT, operationId).parameters ?? []).find((parameter) => parameter.name === input)?.description ?? null
-            : field === 'summary'
-              ? operationIn(SDK_DOCUMENT, operationId).summary
-              : documentFieldText(SDK_DOCUMENT, operationId, field);
+            : operationIn(SDK_DOCUMENT, operationId).summary;
         if (text === sdk || (text !== null && whereDataComesFromIn(text).length > 0)) continue;
         assert.equal(text, copy, `${operationId}.${field ?? input}: the SDK's document now says another text; take it here, or drop the copy when they are equal`);
     }

@@ -6,7 +6,7 @@ import type { ToolDefinition } from '../tool';
 
 /** The API document version and the SDK version the tools were generated from. */
 export const TOOLS_DOCUMENT_VERSION = "1.0.0";
-export const TOOLS_SDK_VERSION = "0.2.0";
+export const TOOLS_SDK_VERSION = "0.2.1";
 
 /** Every tool of the server, in the document order. */
 export const TOOLS: readonly ToolDefinition[] = [
@@ -28,7 +28,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                 },
                 "fields": {
                     "type": "string",
-                    "description": "Comma-separated top-level keys to keep: id, name, ending, tracked, status, lifecycle, drop, ownableNow, price, registry, parking, length, format, shape, word, rating, verdict, value, comps."
+                    "description": "Comma-separated top-level keys to keep: id, name, ending, tracked, status, lifecycle, drop, ownableNow, price, registry, parking, length, format, shape, word, crossLanguageFlag, nameLabel, rating, verdict, value, comps."
                 }
             },
             "required": [
@@ -352,7 +352,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 },
                                 "endingsSoldOn": {
                                     "type": "integer",
-                                    "description": "Endings the word sold on in 12 months."
+                                    "description": "How many endings the word sold on in 12 months."
                                 }
                             }
                         }
@@ -488,7 +488,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "fields": {
                     "type": "string",
-                    "description": "Comma-separated top-level keys to keep: id, name, ending, tracked, status, lifecycle, drop, ownableNow, price, registry, parking, length, format, shape, word, rating, verdict, value, comps, error."
+                    "description": "Comma-separated top-level keys to keep: id, name, ending, tracked, status, lifecycle, drop, ownableNow, price, registry, parking, length, format, shape, word, crossLanguageFlag, nameLabel, rating, verdict, value, comps, error."
                 },
                 "names": {
                     "type": "array",
@@ -535,7 +535,8 @@ export const TOOLS: readonly ToolDefinition[] = [
                                         "description": "The name is in the catalog."
                                     },
                                     "status": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "description": "Where the name stands for a buyer. A list row's status reads here as: `resell` is `for_sale` (`at_auction` at a drop-catch venue), `premium` is `free_premium`."
                                     },
                                     "lifecycle": {
                                         "anyOf": [
@@ -789,6 +790,38 @@ export const TOOLS: readonly ToolDefinition[] = [
                                             }
                                         ]
                                     },
+                                    "crossLanguageFlag": {
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
+                                        ]
+                                    },
+                                    "nameLabel": {
+                                        "description": "Keyed. What the name is; null when the name has no reading yet.",
+                                        "anyOf": [
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "type": {
+                                                        "type": "string"
+                                                    },
+                                                    "baseWords": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
+                                        ]
+                                    },
                                     "rating": {
                                         "type": "object",
                                         "properties": {
@@ -906,7 +939,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                             },
                                             "endingsSoldOn": {
                                                 "type": "integer",
-                                                "description": "Endings the word sold on in 12 months."
+                                                "description": "How many endings the word sold on in 12 months."
                                             }
                                         }
                                     }
@@ -1072,7 +1105,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                 },
                 "fields": {
                     "type": "string",
-                    "description": "Comma-separated top-level keys to keep: id, name, ending, tracked, status, lifecycle, drop, ownableNow, price, registry, parking, length, format, shape, word, rating, verdict, value, comps, checked."
+                    "description": "Comma-separated top-level keys to keep: id, name, ending, tracked, status, lifecycle, drop, ownableNow, price, registry, parking, length, format, shape, word, crossLanguageFlag, nameLabel, rating, verdict, value, comps, checked."
                 },
                 "blocks": {
                     "type": "array",
@@ -1123,7 +1156,8 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "The name is in the catalog."
                         },
                         "status": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Where the name stands for a buyer. A list row's status reads here as: `resell` is `for_sale` (`at_auction` at a drop-catch venue), `premium` is `free_premium`."
                         },
                         "lifecycle": {
                             "anyOf": [
@@ -1377,6 +1411,38 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 }
                             ]
                         },
+                        "crossLanguageFlag": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
+                        },
+                        "nameLabel": {
+                            "description": "Keyed. What the name is; null when the name has no reading yet.",
+                            "anyOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "type": {
+                                            "type": "string"
+                                        },
+                                        "baseWords": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
+                        },
                         "rating": {
                             "type": "object",
                             "properties": {
@@ -1494,7 +1560,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 },
                                 "endingsSoldOn": {
                                     "type": "integer",
-                                    "description": "Endings the word sold on in 12 months."
+                                    "description": "How many endings the word sold on in 12 months."
                                 }
                             }
                         },
@@ -1892,6 +1958,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "boolean"
                         },
                         "observedOn": {
+                            "description": "UTC day of the record; null with `read: false`.",
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -3486,7 +3553,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                         },
                         "endingsSoldOn": {
                             "type": "integer",
-                            "description": "Endings the word sold on in 12 months."
+                            "description": "How many endings the word sold on in 12 months."
                         }
                     }
                 },
@@ -4210,7 +4277,7 @@ export const TOOLS: readonly ToolDefinition[] = [
             "properties": {
                 "fields": {
                     "type": "string",
-                    "description": "Comma-separated top-level keys to keep: id, word, slug, shape, pos, definition, inflected, size, popularity, sentiment, brandability, style, categories, denyClass, origin, addedAt, linguistics, found."
+                    "description": "Comma-separated top-level keys to keep: id, word, slug, shape, pos, definition, inflected, size, popularity, sentiment, brandability, style, categories, denyClass, crossLanguageFlag, origin, addedAt, linguistics, found."
                 },
                 "words": {
                     "type": "array",
@@ -4368,6 +4435,16 @@ export const TOOLS: readonly ToolDefinition[] = [
                                     },
                                     "denyClass": {
                                         "description": "Why the word stays off public lists; null when none.",
+                                        "anyOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "null"
+                                            }
+                                        ]
+                                    },
+                                    "crossLanguageFlag": {
                                         "anyOf": [
                                             {
                                                 "type": "string"
@@ -5061,7 +5138,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                 },
                 "fields": {
                     "type": "string",
-                    "description": "Comma-separated top-level keys to keep: id, word, slug, shape, pos, definition, inflected, size, popularity, sentiment, brandability, style, categories, denyClass, origin, addedAt, linguistics."
+                    "description": "Comma-separated top-level keys to keep: id, word, slug, shape, pos, definition, inflected, size, popularity, sentiment, brandability, style, categories, denyClass, crossLanguageFlag, origin, addedAt, linguistics."
                 }
             },
             "required": [
@@ -5209,6 +5286,16 @@ export const TOOLS: readonly ToolDefinition[] = [
                         },
                         "denyClass": {
                             "description": "Why the word stays off public lists; null when none.",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
+                        },
+                        "crossLanguageFlag": {
                             "anyOf": [
                                 {
                                     "type": "string"
@@ -5575,7 +5662,7 @@ export const TOOLS: readonly ToolDefinition[] = [
         "name": "ud_get_word_endings",
         "operationId": "get_word_endings",
         "title": "A word's endings",
-        "description": "A word's endings: counts, the key endings and the open names per ending. Use it when someone is naming a business, product or project and has a word in mind: it shows which endings, such as .com, .io or .ai, are still available or for sale for that word. A word with no count yet answers null; zeros are real. Pass `word` (such as organic); the other inputs are optional.",
+        "description": "A word's endings: counts, the key endings, and the endings the word is available on and for sale on. Use it when someone is naming a business, product or project and has a word in mind: it shows which endings, such as .com, .io or .ai, are still available or for sale for that word. Its lists `availableOn` and `forSaleOn` name every ending the word is open on, so one call answers the whole question. Pass `word` (such as organic); the other inputs are optional.",
         "tier": "free",
         "plan": null,
         "metered": null,
@@ -5589,7 +5676,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                 },
                 "fields": {
                     "type": "string",
-                    "description": "Comma-separated top-level keys to keep: byGroup, keyEndings, openByEnding, cheapest."
+                    "description": "Comma-separated top-level keys to keep: byGroup, keyEndings, openByEnding, availableOn, forSaleOn, cheapest."
                 },
                 "include": {
                     "type": "string",
@@ -5611,6 +5698,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "byGroup": {
+                            "description": "Null for a word with no count yet; zeros are real.",
                             "anyOf": [
                                 {
                                     "type": "object",
@@ -5666,12 +5754,40 @@ export const TOOLS: readonly ToolDefinition[] = [
                             }
                         },
                         "openByEnding": {
-                            "description": "`{ ending: count }`.",
+                            "description": "`{ ending: count }`; null for a word with no count yet; zeros are real.",
                             "anyOf": [
                                 {
                                     "type": "object",
                                     "additionalProperties": {
                                         "type": "integer"
+                                    }
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
+                        },
+                        "availableOn": {
+                            "description": "`availableOn` names the endings where the word is unregistered at the standard price.",
+                            "anyOf": [
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
+                        },
+                        "forSaleOn": {
+                            "description": "`forSaleOn` names the endings where it can be bought another way: at a premium price, from a resale listing, or as a name that is expiring or expired.",
+                            "anyOf": [
+                                {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
                                     }
                                 },
                                 {
@@ -7865,7 +7981,8 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "description": "The name is in the catalog."
                         },
                         "status": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Where the name stands for a buyer. A list row's status reads here as: `resell` is `for_sale` (`at_auction` at a drop-catch venue), `premium` is `free_premium`."
                         },
                         "lifecycle": {
                             "anyOf": [
@@ -8151,7 +8268,7 @@ export const TOOLS: readonly ToolDefinition[] = [
                                 },
                                 "endingsSoldOn": {
                                     "type": "integer",
-                                    "description": "Endings the word sold on in 12 months."
+                                    "description": "How many endings the word sold on in 12 months."
                                 }
                             }
                         }
@@ -9298,7 +9415,8 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "day": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "UTC day of the figures."
                         },
                         "domains": {
                             "type": "object",
@@ -14669,7 +14787,13 @@ export const TOOLS: readonly ToolDefinition[] = [
                         "listingTerms": {
                             "anyOf": [
                                 {
-                                    "type": "object"
+                                    "type": "object",
+                                    "properties": {
+                                        "checkedOn": {
+                                            "type": "string",
+                                            "description": "UTC day the terms were verified."
+                                        }
+                                    }
                                 },
                                 {
                                     "type": "null"
@@ -16549,15 +16673,19 @@ export const TOOLS: readonly ToolDefinition[] = [
                             "type": "object",
                             "properties": {
                                 "today": {
-                                    "type": "integer"
+                                    "type": "integer",
+                                    "description": "Tracked names that close within 24 hours and have a bid."
                                 },
                                 "results": {
-                                    "type": "integer"
+                                    "type": "integer",
+                                    "description": "Tracked names that closed yesterday (UTC) with a recorded result."
                                 },
                                 "all": {
-                                    "type": "integer"
+                                    "type": "integer",
+                                    "description": "Tracked names whose auction is open."
                                 }
-                            }
+                            },
+                            "description": "The names we track at auction: one-word catalog names on the endings the catalog covers."
                         },
                         "byVenue": {
                             "type": "array",
@@ -17042,7 +17170,8 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                 "type": "string"
                                             },
                                             "verifiedOn": {
-                                                "type": "string"
+                                                "type": "string",
+                                                "description": "UTC day the rule was verified."
                                             }
                                         }
                                     },
@@ -17060,7 +17189,8 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                 "type": "string"
                                             },
                                             "verifiedOn": {
-                                                "type": "string"
+                                                "type": "string",
+                                                "description": "UTC day the rule was verified."
                                             }
                                         }
                                     },
@@ -17078,7 +17208,8 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                 "type": "string"
                                             },
                                             "verifiedOn": {
-                                                "type": "string"
+                                                "type": "string",
+                                                "description": "UTC day the rule was verified."
                                             }
                                         }
                                     },
@@ -17106,7 +17237,8 @@ export const TOOLS: readonly ToolDefinition[] = [
                                                     }
                                                 },
                                                 "verifiedOn": {
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "description": "UTC day the rule was verified."
                                                 }
                                             }
                                         },
@@ -19455,7 +19587,8 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "persona": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "The page the edition was written for. A day before 2026-11-10 with no founder edition of its own answers the investor edition, read with the founder verdicts: `persona` is then `investor`."
                         },
                         "date": {
                             "type": "string"
@@ -19933,7 +20066,8 @@ export const TOOLS: readonly ToolDefinition[] = [
                     "type": "object",
                     "properties": {
                         "persona": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "The page the edition was written for. A day before 2026-11-10 with no founder edition of its own answers the investor edition, read with the founder verdicts: `persona` is then `investor`."
                         },
                         "date": {
                             "type": "string"

@@ -409,157 +409,34 @@ const linksSchema = () => ({
 });
 
 /**
- * Answer fields the API makes nullable before the SDK's document says so, per operation: the server declares them
- * nullable now, so a validating client accepts the new answer whichever of the platform, the SDK and this server ships
- * first. `get_word_endings`: a word with no endings count yet answers `byGroup` and `openByEnding` null, not zeros
- * (2026-11-11, decision B). A field the document already makes nullable is left as it is, so the entry is a no-op once
- * the SDK ships it and can then go.
+ * Nullable fields whose document text sits on the typed branch of their `anyOf`, and which the server's output schemas
+ * describe on the field itself, as 0.1.5 to 0.1.8 did (AF-1 of the after-fix check of 2026-11-12: the field says one
+ * thing). Until SDK 0.2.1 these were entries of `DESCRIBED_AHEAD_OF_SDK`, which also replaced their text; the document
+ * now says the same words, so only the placement is kept, which leaves the output schemas of `ud_list_tlds`,
+ * `ud_list_registrars`, `ud_list_venues` and `ud_get_venue` as 0.1.8 listed them (plan
+ * `connector-answer-fixes-2026-11-15`, lane 3c). Other nullable fields keep the document's placement.
  */
-export const NULLABLE_AHEAD_OF_SDK = {
-    get_word_endings: ['byGroup', 'openByEnding'],
+export const FIELD_TEXT_ON_FIELD = {
+    list_tlds: ['rdapServer', 'category'],
+    list_registrars: ['homepageUrl', 'siteUrl'],
+    list_venues: ['homepageUrl', 'siteUrl'],
+    get_venue: ['homepageUrl', 'siteUrl', 'listingTerms'],
 };
 
-const acceptsNull = (schema) => schema?.type === 'null' || (Array.isArray(schema?.anyOf) && schema.anyOf.some(acceptsNull));
-
-const EDITION_COUNTS = {
-    trendCount: 'Trends in the whole edition. `trends` lists at most 20, the ones the public page shows, so this count can be larger.',
-    nameCount: 'Names in the whole edition; `openCount` of them are open here.',
-};
-const HOMEPAGE_LINKS = {
-    homepageUrl: 'The registrar\'s or venue\'s homepage, with no tracking query.',
-    siteUrl: 'The same homepage as `homepageUrl`.',
-};
-const ROW_STATUS = 'The status of the row. One name\'s own answer groups it for a buyer: `resell` reads `for_sale` there (`at_auction` at a drop-catch venue), `premium` reads `free_premium`.';
-const TRACKED = 'The name is in the catalog.';
-const POS = 'Parts of speech, comma-joined tags.';
-// Lane P's text (review M1 of 2026-11-14): SDK 0.2.0 says "null means the dictionary load".
-const WORD_ADDED_AT = 'When the intake added it; null for a dictionary word.';
-const VENUE_PARKED = { 'footprint.names': 'Tracked names parked at the venue, rounded (to 100, to 10 under 1,000).' };
-// Lane P's texts (plan step P1: no internal table named as where a field comes from).
-const PHASE_ID = "The phase's id.";
-const CHANGE_ID = "The change's id, as a string.";
-// Lane P's texts (Gaetan's 20A of 2026-11-13): IANA and ICANN as the things themselves, not as where the data comes from.
-const IANA_ACCREDITED = { accredited: "Listed as accredited on IANA's registrar list." };
-const IANA_NAME = { name: "The registrar's name on IANA's list." };
-// Lane P's text (Gaetan's 17A and 15B of 2026-11-13): the terms carry no day clause.
-const VENUE_TERMS = { listingTerms: 'The verified listing terms: commission bands, exclusivity, payment plans, fast transfer and payout days.' };
-
-/**
- * Field descriptions the platform's API document gains with a coming release, copied word for word so the declared
- * output schema explains the answer now. The 0.1.5 round (the directory quality audit of 2026-11-11, Gaetan's 3A): an
- * edition's counts beside its public cut, and the two status vocabularies (`for_sale` on one name, `resell` on a list
- * row). The 0.1.6 round (Gaetan's rule of 2026-11-12, plan `never-where-data-comes-from`, step M2): the field texts
- * that said where the data comes from, in the platform's new words (lane P of the plan). `test/tools.test.mjs` fails
- * the day the SDK's document carries another text for one of them.
- *
- * A key names a field of `data`, or of its items for a list; a dotted key (`footprint.names`) names a deeper field,
- * followed through `items` and `anyOf` branches. Like `NULLABLE_AHEAD_OF_SDK`, a no-op once the SDK's document carries
- * the same text, and removed with it.
- */
-export const DESCRIBED_AHEAD_OF_SDK = {
-    get_latest_edition: EDITION_COUNTS,
-    get_edition: EDITION_COUNTS,
-    get_name: {
-        tracked: TRACKED,
-        status: 'Where the name stands for a buyer. A list row\'s status reads here as: `resell` is `for_sale` (`at_auction` at a drop-catch venue), `premium` is `free_premium`.',
-    },
-    batch_names: { tracked: TRACKED },
-    check_name: { tracked: TRACKED, checked: 'The live check answered.' },
-    get_domain: { tracked: TRACKED },
-    list_domains: { status: ROW_STATUS },
-    list_domain_hacks: { status: ROW_STATUS },
-    get_word: { pos: POS, addedAt: WORD_ADDED_AT },
-    batch_words: { pos: POS, addedAt: WORD_ADDED_AT },
-    // Lane P's text (review M1 of 2026-11-14): SDK 0.2.0 says "Reads that saw it."
-    list_tld_price_history: { observations: 'How many times this price set was observed.' },
-    get_word_request: { scan: 'On `ready` with a word: whether every ending of the word has its first status yet.' },
-    list_tld_changes: { seenOn: 'UTC day the change was seen.' },
-    list_tlds: { rdapServer: "The registry's RDAP server.", category: "The catalog's category word.", 'phases.id': PHASE_ID },
-    get_tld: { 'phases.id': PHASE_ID },
-    list_tld_phases: { id: PHASE_ID },
-    list_registrar_changes: { id: CHANGE_ID },
-    list_price_changes: { id: CHANGE_ID },
-    // SDK 0.2.0: "Timestamp the import saw it." The platform's new text (plan step P2, `tlds.ts:157`).
-    list_tld_application_changes: { seenAt: 'When the change was seen.' },
-    get_tld_application_string: { 'changes.seenAt': 'When the change was seen.', 'applications.applicant': "The applicant, in ICANN's wording." },
-    list_tld_applications: { applicant: "The applicant, in ICANN's wording." },
-    list_iana_registrars: IANA_NAME,
-    get_iana_registrar: IANA_NAME,
-    // SDK 0.2.0 says these links carry "the catalog's UTM tags"; the API strips the tag since 2A of 2026-11-11 (AF-1).
-    list_registrars: { ...HOMEPAGE_LINKS, ...IANA_ACCREDITED },
-    list_venues: { ...HOMEPAGE_LINKS, ...VENUE_PARKED, ...IANA_ACCREDITED },
-    get_venue: { ...HOMEPAGE_LINKS, ...VENUE_PARKED, ...VENUE_TERMS, ...IANA_ACCREDITED },
-};
-
-/** A field given its description. A nullable field arrives as `anyOf` with the document's description on its typed
- * branch: that old sentence goes too, so the field says one thing (AF-1 of the after-fix check of 2026-11-12). */
-const withDescription = (schema, description) => {
-    const { anyOf, ...field } = schema;
-    const branches = anyOf?.map(({ description: _old, ...branch }) => branch);
-    return { ...field, ...(branches ? { anyOf: branches } : {}), description };
-};
-
-/** The document's own text for a field: its description, or its typed branch's when it is nullable. */
-const originalTextOf = (schema) => schema.description ?? schema.anyOf?.find((branch) => typeof branch.description === 'string')?.description ?? null;
-
-/** Every field `path` reaches under `node`, through `items` and `anyOf`, in order. */
-const fieldsAt = (node, path) => {
-    if (node === null || typeof node !== 'object') return [];
-    const [head, ...rest] = path;
-    if (node.properties?.[head]) return rest.length === 0 ? [node.properties[head]] : fieldsAt(node.properties[head], rest);
-    if (node.items) return fieldsAt(node.items, path);
-    if (Array.isArray(node.anyOf)) return node.anyOf.flatMap((branch) => fieldsAt(branch, path));
-    return [];
-};
-
-/**
- * Describes the fields at `path` under `node` whose document text is `original`, through `items` and `anyOf`. A path
- * that reaches two `anyOf` rows reaches two fields, and only the ones that said the same thing are the same field: the
- * batch's `tracked` reads "The name is in the catalog." on a catalog row and "Always false here." on the row of a
- * name outside it (review of 2026-11-13).
- */
-const describeAt = (node, path, description, original) => {
-    if (node === null || typeof node !== 'object') return node;
-    const [head, ...rest] = path;
-    if (node.properties?.[head]) {
-        const child = node.properties[head];
-        const next = rest.length > 0 ? describeAt(child, rest, description, original) : originalTextOf(child) === original ? withDescription(child, description) : child;
-        return { ...node, properties: { ...node.properties, [head]: next } };
-    }
-    if (node.items) return { ...node, items: describeAt(node.items, path, description, original) };
-    if (Array.isArray(node.anyOf)) return { ...node, anyOf: node.anyOf.map((branch) => describeAt(branch, path, description, original)) };
-    return node;
-};
-
-/**
- * `data`'s fields (or its items' fields, or deeper ones by path) named in `DESCRIBED_AHEAD_OF_SDK`, each given its
- * description. Where the path reaches several fields, the ones whose document text is the first one's are described.
- */
-export const describeAheadOfSdk = (operationId, data) => {
-    const notes = DESCRIBED_AHEAD_OF_SDK[operationId];
-    if (!notes) return data;
-    let described = data;
-    for (const [path, description] of Object.entries(notes)) {
-        const reached = fieldsAt(described, path.split('.'));
-        if (reached.length === 0) throw new Error(`${operationId}: no \`${path}\` to describe`);
-        described = describeAt(described, path.split('.'), description, originalTextOf(reached[0]));
-    }
-    return described;
-};
-
-/** `data`'s fields named in `NULLABLE_AHEAD_OF_SDK`, each widened to also accept null. */
-export const widenAheadOfSdk = (operationId, data) => {
-    const names = NULLABLE_AHEAD_OF_SDK[operationId] ?? [];
-    if (names.length === 0 || !data?.properties) return data;
-    const properties = { ...data.properties };
+/** `data`'s fields named in `FIELD_TEXT_ON_FIELD` (or its items' fields, for a list), each carrying its typed branch's text. */
+export const liftFieldTexts = (operationId, data) => {
+    const names = FIELD_TEXT_ON_FIELD[operationId] ?? [];
+    if (names.length === 0) return data;
+    const row = data.items ?? data;
+    const properties = { ...row.properties };
     for (const name of names) {
         const field = properties[name];
-        if (!field) throw new Error(`${operationId}: no \`${name}\` to widen`);
-        if (acceptsNull(field)) continue;
-        const { description, ...shape } = field;
-        properties[name] = { ...(description ? { description } : {}), anyOf: [shape, { type: 'null' }] };
+        const typed = field?.anyOf?.find((branch) => branch.type !== 'null' && typeof branch.description === 'string');
+        if (!typed || field.description !== undefined) throw new Error(`${operationId}: no nullable \`${name}\` with a branch text to lift`);
+        const { description, ...branch } = typed;
+        properties[name] = { ...field, anyOf: field.anyOf.map((candidate) => (candidate === typed ? branch : candidate)), description };
     }
-    return { ...data, properties };
+    return data.items ? { ...data, items: { ...row, properties } } : { ...data, properties };
 };
 
 /** The output schema of one operation, as the local profile answers it (the hosted profile drops two links at run time). */
@@ -574,7 +451,7 @@ export const outputSchemaOf = (operationId, document) => {
         return target;
     };
     const relaxed = relaxSchema(schema, resolve, { dropKeyed: operation['x-tier'] === 'free' });
-    const data = describeAheadOfSdk(operationId, widenAheadOfSdk(operationId, relaxed.properties?.data ?? {}));
+    const data = liftFieldTexts(operationId, relaxed.properties?.data ?? {});
     const links = relaxSchema(linksSchema(), resolve);
     const meta = relaxed.properties?.meta ?? { type: 'object' };
     return {
@@ -642,6 +519,14 @@ export const summaryOf = (operation) => {
  * carries the words of a founder's ask and the `not_checked` sentence a test pins.
  */
 export const DESCRIPTION_MAX_LENGTH = 380;
+
+/**
+ * The one description allowed past that bound, with its own: `ud_get_word_endings` reaches 463 with the document's
+ * summary and the `use` sentence of plan `connector-answer-fixes-2026-11-15` (section 11), both naming the two lists that
+ * answer a word's endings in one call. Gaetan's "B" of 2026-11-17: the sentence drops its clause naming another tool,
+ * and this description's bound is 470.
+ */
+export const DESCRIPTION_MAX_LENGTH_BY_TOOL = { ud_get_word_endings: 470 };
 
 /** What the tool reads, when to use it, then what to pass (fix round A1). */
 export const descriptionOf = (operation) => `${summaryOf(operation)} ${guidanceOf(operation.id).use} ${usageOf(operation)}`;
