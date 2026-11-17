@@ -24,7 +24,8 @@ export const TRANSPORT_OPERATIONS = ['get_openapi', 'get_llms_txt', 'get_health'
 /**
  * Free operations the server does not register at all, on either profile. `get_meta_freshness`: its whole answer
  * describes the passes that update the data, which words cannot fix, and an assistant has no use for it; the day of
- * every answer already sits in its `meta` (Gaetan's 3B of 2026-11-13, plan `never-where-data-comes-from`, decision 3).
+ * an answer sits in its `meta` on the local profile, and the hosted one carries none since 0.1.8 (Gaetan's 3B of
+ * 2026-11-13, plan `never-where-data-comes-from`, decision 3; D1 = B of plan `connector-answer-fixes-2026-11-15`).
  * The endpoint stays in the API until v2.
  */
 export const UNREGISTERED_OPERATIONS = ['get_meta_freshness'];

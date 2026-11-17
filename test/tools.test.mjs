@@ -186,7 +186,7 @@ test('no description or title carries internal words, outside backticked input n
             for (const word of JARGON) assert.ok(!word.test(prose), `${tool.name}: ${word} in "${text}"`);
         }
     }
-    // The title follows a replaced summary (`ud_get_word_endings` no longer reads "as the nightly update holds them").
+    // The title follows the summary (`ud_get_word_endings` no longer reads "as the nightly update holds them").
     assert.equal(TOOLS.find((tool) => tool.name === 'ud_get_word_endings').title, "A word's endings");
 });
 
@@ -317,7 +317,7 @@ test('the editions and providers descriptions explain the answers that read as w
 
 // Decision B of 2026-11-11: the API answers a word with no endings count as null, not zeros. Since SDK 0.2.1 the document
 // declares it (with the two lists of plan `connector-answer-fixes-2026-11-15`, D2 = A), so the server copies nothing
-// ahead of it: the null sentence is the document's, on each field of the output schema.
+// ahead of it: the null sentence is the document's, on `byGroup` and `openByEnding` in the output schema.
 test('the word endings tool declares null counts and lists, and names the two lists', () => {
     const tool = TOOLS.find((entry) => entry.operationId === 'get_word_endings');
     const { byGroup, openByEnding, availableOn, forSaleOn } = tool.outputSchema.properties.data.properties;
@@ -471,13 +471,13 @@ test('the tool texts of the 0.1.6 round read as the plan words them', () => {
 });
 
 /**
- * The texts this server carries ahead of the SDK in the 0.1.6 round, each with the SDK 0.2.0 document's text it
- * replaces. The day the SDK's document says something else for one of them without the old words, the platform has
- * shipped its own text: if it equals the copy, `npm run generate` shows no change and the copy goes; if it differs, this
- * test fails, so the two never drift apart (plan `never-where-data-comes-from`, decision D-a). SDK 0.2.1 (2026-11-17)
- * carries every field text the server copied and the endings summary, so those copies went with `DESCRIBED_AHEAD_OF_SDK`
- * and `NULLABLE_AHEAD_OF_SDK` (plan `connector-answer-fixes-2026-11-15`, lane 3c); the summaries left are the ones whose
- * document text now equals the copy, or still says the old words.
+ * The texts this server carried ahead of the SDK in the 0.1.6 round, each with the SDK 0.2.0 document's text it
+ * replaced. The day the SDK's document says something else for one of them without the old words, the platform has
+ * shipped its own text: it must equal the copy, or this test fails, so the two never drift apart (plan
+ * `never-where-data-comes-from`, decision D-a). SDK 0.2.1 (2026-11-17) carries every field text the server copied, so
+ * those copies went with `DESCRIBED_AHEAD_OF_SDK` and `NULLABLE_AHEAD_OF_SDK`, and the endings summary went too (plan
+ * `connector-answer-fixes-2026-11-15`, lane 3c). The summaries and the input text left here now equal the document
+ * word for word and are kept as the server's own, so a later document that rewords one fails here first.
  *
  * Not compared, since the server words them for an assistant rather than a developer (plan, step P2): `check_name`
  * ("the full name answer"), `appraise_name` ("the value estimate") and `batch_names` (the platform's summary says

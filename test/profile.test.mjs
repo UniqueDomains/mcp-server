@@ -587,7 +587,7 @@ test('2A: the hosted schemas drop the four paths, keep the history axis, and the
 const ENDINGS = (lists) => ({
     data: {
         byGroup: { scanned: 5, taken: 2, available: 2, forSale: 1 },
-        keyEndings: [{ ending: 'io', status: 'available', priceUsd: 32 }],
+        keyEndings: [{ ending: 'io', status: 'available', price: 32 }],
         openByEnding: { co: 1, io: 1, studio: 1 },
         ...lists,
     },
@@ -613,7 +613,7 @@ test('lane 3c: the hosted endings answer passes the two lists through, null befo
     assert.deepEqual([closed.data.availableOn, closed.data.forSaleOn], [[], []]);
     assert.ok(validate(closed), JSON.stringify(validate.errors));
     for (const answer of [before, after, none, closed]) assert.deepEqual(answer.meta, { cursor: null, limit: null });
-    // The text line and the two lists' schema texts on the hosted connector: the document's words, with no day in them.
+    // The two lists' schema texts on the hosted connector: the document's words, with no day in them.
     const { availableOn, forSaleOn, byGroup } = outputSchemaFor(toolOf('ud_get_word_endings'), 'hosted').properties.data.properties;
     assert.equal(availableOn.description, '`availableOn` names the endings where the word is unregistered at the standard price.');
     assert.match(forSaleOn.description, /^`forSaleOn` names the endings where it can be bought another way/u);

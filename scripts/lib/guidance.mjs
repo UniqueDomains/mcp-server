@@ -118,7 +118,7 @@ export const GUIDANCE = {
         // (section 11), which names the two lists. The `use` sentence is that plan's too (D2 = A): one call answers which
         // endings a word is open on, so an assistant no longer checks them one name at a time. Gaetan's "B" of 2026-11-17:
         // without the table's last clause, which named another tool. The null sentence now lives in the document's
-        // description of `byGroup`, `openByEnding`, `availableOn` and `forSaleOn`.
+        // descriptions of `byGroup` and `openByEnding` in the output schema.
         use: 'Use it when someone is naming a business, product or project and has a word in mind: it shows which endings, such as .com, .io or .ai, are still available or for sale for that word. Its lists `availableOn` and `forSaleOn` name every ending the word is open on, so one call answers the whole question.',
     },
     list_word_names: {
@@ -128,7 +128,7 @@ export const GUIDANCE = {
         use: 'Use it when someone asks whether a word is a registered trademark before choosing a name.',
     },
     get_word_notability: {
-        // Lane P's text ahead of the SDK (Gaetan's 20A of 2026-11-13): the page and the entry are the facts themselves.
+        // Lane P's text (Gaetan's 20A of 2026-11-13), the document's own since SDK 0.2.1: the page and the entry are the facts themselves.
         summary: "A word's Wikipedia page and Wikidata entry: title, backlinks, languages and description.",
         use: 'Use it when someone asks how widely known a word is as a public topic.',
     },
@@ -174,7 +174,7 @@ export const GUIDANCE = {
         use: 'Use it when following what changed across names since a day; it answers one page at a time.',
     },
     get_catalog_stats: {
-        // Lane P's texts ahead of the SDK for this one and the next two (Gaetan's 17A of 2026-11-13): no "latest day".
+        // Lane P's texts for this one and the next two (Gaetan's 17A of 2026-11-13), the document's own since SDK 0.2.1: no "latest day".
         summary: 'Catalog headline totals.',
         use: 'Use it when someone asks how many names the catalog tracks and how many are open.',
     },
@@ -205,12 +205,12 @@ export const GUIDANCE = {
         use: 'Use it when someone asks which words or topics an ending suits.',
     },
     list_tld_applications: {
-        // Lane P's text ahead of the SDK (Gaetan's 20A of 2026-11-13): ICANN's round is the thing itself, never the origin.
+        // Lane P's text (Gaetan's 20A of 2026-11-13), the document's own since SDK 0.2.1: ICANN's round is the thing itself, never the origin.
         summary: "ICANN's 2026 new gTLD round, A to Z, with two simple bands.",
         use: 'Use it when someone asks who applied for new endings in the 2026 round, or which strings are contested.',
     },
     list_tld_application_changes: {
-        // Lane P's text ahead of the SDK: the document says "Every recorded ...".
+        // Lane P's text, the document's own since SDK 0.2.1 (SDK 0.2.0 said "Every recorded ...").
         summary: 'Every status or contention change of the round, newest first.',
         use: 'Use it when someone asks what moved in the 2026 round lately, such as a withdrawal or a contention change.',
     },
