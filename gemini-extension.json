@@ -1,6 +1,6 @@
 {
   "name": "unique-domains",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Ask your assistant for the strongest domain names you can still buy, or to check one. No key.",
   "contextFileName": "GEMINI.md",
   "mcpServers": {

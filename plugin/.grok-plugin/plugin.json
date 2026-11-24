@@ -1,6 +1,6 @@
 {
   "name": "unique-domains",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Analyse any domain name in depth: is it taken, what nine registrars charge for it, what similar names sold for. Find the right ones to buy among 34 million one-word names. Hosted: nothing to install, no sign-in, no key.",
   "author": { "name": "Unique.domains", "url": "https://unique.domains" },
   "homepage": "https://unique.domains/api/mcp",

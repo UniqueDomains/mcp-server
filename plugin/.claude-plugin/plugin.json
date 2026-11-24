@@ -1,7 +1,7 @@
 {
   "name": "unique-domains",
   "displayName": "Unique.domains",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Ask your assistant to find the strongest domain names you can still buy, or to check any one: taken or not, what nine registrars charge for it, what similar names sold for. No account, no key.",
   "author": { "name": "Unique.domains", "url": "https://unique.domains" },
   "homepage": "https://unique.domains/api/mcp",

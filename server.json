@@ -3,7 +3,7 @@
   "name": "domains.unique/mcp-server",
   "title": "Unique.domains",
   "description": "Ask your assistant for the strongest domain names you can still buy, or to check one. No key.",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "websiteUrl": "https://unique.domains/api/mcp",
   "repository": {
     "url": "https://github.com/UniqueDomains/mcp-server",
@@ -21,7 +21,7 @@
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "@uniquedomains/mcp-server",
-      "version": "0.1.9",
+      "version": "0.1.10",
       "transport": {
         "type": "stdio"
       },
