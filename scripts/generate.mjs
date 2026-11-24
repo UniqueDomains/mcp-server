@@ -5,7 +5,7 @@
 
 /**
  * Builds `src/generated/tools.ts` and the README's tool list from the API document the installed SDK ships
- * (`@uniquedomains/sdk/openapi.json`) and its operation table, and copies that document to `openapi/v1.json` so a
+ * (`domain-name-api/openapi.json`) and its operation table, and copies that document to `openapi/v1.json` so a
  * change to the tools shows next to the change of the document behind it.
  *
  *   npm run generate              write the three files
@@ -17,12 +17,12 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
-import { OPERATIONS, API_PUBLIC_BASE } from '@uniquedomains/sdk';
+import { OPERATIONS, API_PUBLIC_BASE } from 'domain-name-api';
 
 import { buildTools } from './lib/tools.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const SDK_DOCUMENT = join(ROOT, 'node_modules', '@uniquedomains', 'sdk', 'openapi.json');
+const SDK_DOCUMENT = join(ROOT, 'node_modules', 'domain-name-api', 'openapi.json');
 const SNAPSHOT = join(ROOT, 'openapi', 'v1.json');
 const TOOLS_FILE = join(ROOT, 'src', 'generated', 'tools.ts');
 const README = join(ROOT, 'README.md');
@@ -40,7 +40,7 @@ const readText = async (path) => {
     }
 };
 
-const sdkVersion = (await readJson(join(ROOT, 'node_modules', '@uniquedomains', 'sdk', 'package.json'))).version;
+const sdkVersion = (await readJson(join(ROOT, 'node_modules', 'domain-name-api', 'package.json'))).version;
 const document = await readJson(SDK_DOCUMENT);
 
 if (args.has('--live')) {
@@ -51,7 +51,7 @@ if (args.has('--live')) {
     if (isDeepStrictEqual(live, snapshot)) {
         console.log('The live document matches openapi/v1.json.');
     } else {
-        console.error('The live document differs from openapi/v1.json: update @uniquedomains/sdk once it ships the new document, then run `npm run generate`.');
+        console.error('The live document differs from openapi/v1.json: update domain-name-api once it ships the new document, then run `npm run generate`.');
         process.exitCode = 1;
     }
     process.exit();
@@ -63,7 +63,7 @@ const tools = buildTools(OPERATIONS, document);
 
 const toolsSource = [
     '/*----------------------------------',
-    '- GENERATED: do not edit. `npm run generate` writes this file from @uniquedomains/sdk.',
+    '- GENERATED: do not edit. `npm run generate` writes this file from domain-name-api.',
     '----------------------------------*/',
     '',
     "import type { ToolDefinition } from '../tool';",
@@ -119,7 +119,7 @@ if (args.has('--check')) {
         console.error(`Out of date, run \`npm run generate\`: ${stale.join(', ')}`);
         process.exitCode = 1;
     } else {
-        console.log(`The generated files match @uniquedomains/sdk ${sdkVersion} (${tools.length} tools).`);
+        console.log(`The generated files match domain-name-api ${sdkVersion} (${tools.length} tools).`);
     }
 } else {
     await mkdir(dirname(TOOLS_FILE), { recursive: true });
@@ -127,5 +127,5 @@ if (args.has('--check')) {
     await writeFile(TOOLS_FILE, toolsSource);
     await writeFile(SNAPSHOT, snapshotText);
     if (nextReadme !== null) await writeFile(README, nextReadme);
-    console.log(`Wrote ${tools.length} tools from @uniquedomains/sdk ${sdkVersion} (${counts.local} free, ${counts.hosted} hosted, ${counts.keyed} keyed).`);
+    console.log(`Wrote ${tools.length} tools from domain-name-api ${sdkVersion} (${counts.local} free, ${counts.hosted} hosted, ${counts.keyed} keyed).`);
 }

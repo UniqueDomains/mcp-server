@@ -7,7 +7,7 @@
  * a change of the generator too.
  */
 
-import type { JsonObject } from '@uniquedomains/sdk';
+import type { JsonObject } from 'domain-name-api';
 
 /** A JSON Schema as plain JSON: the generator writes it from the API document. */
 export type JsonSchema = JsonObject;

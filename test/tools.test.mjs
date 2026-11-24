@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { OPERATIONS } from '@uniquedomains/sdk';
+import { OPERATIONS } from 'domain-name-api';
 
 import { TOOLS, selectTools, toListedTool } from '../dist/index.js';
 import { readFileSync } from 'node:fs';
@@ -504,7 +504,7 @@ const AHEAD_OF_SDK_0_1_6 = [
     { operationId: 'list_registrar_prices', input: 'delisted', sdk: '`true`: the endings its last complete list no longer carries. Paid subscriptions only.' },
 ];
 
-const SDK_DOCUMENT = JSON.parse(readFileSync(join(ROOT, 'node_modules', '@uniquedomains', 'sdk', 'openapi.json'), 'utf8'));
+const SDK_DOCUMENT = JSON.parse(readFileSync(join(ROOT, 'node_modules', 'domain-name-api', 'openapi.json'), 'utf8'));
 
 const operationIn = (document, operationId) =>
     Object.values(document.paths)

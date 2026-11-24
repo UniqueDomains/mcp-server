@@ -1,6 +1,6 @@
 {
   "name": "@uniquedomains/mcp-server",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "MCP server that lets your assistant find the strongest domain names you can still buy, and check any one: is it taken, what nine registrars charge, what similar names sold for. A daily record of 37 million names. Runs with npx or hosted, no key.",
   "license": "MIT",
   "author": "Unique.domains (https://unique.domains)",
@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",
-    "@uniquedomains/sdk": "^0.2.1"
+    "domain-name-api": "^0.3.0"
   },
   "devDependencies": {
     "@types/node": "22.20.5",

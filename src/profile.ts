@@ -21,7 +21,7 @@
  * The tool selection (which tools a profile and a key's plan register) is here too.
  */
 
-import type { JsonObject, JsonValue } from '@uniquedomains/sdk';
+import type { JsonObject, JsonValue } from 'domain-name-api';
 
 import type { Profile } from './config';
 import { detailsFor } from './details';

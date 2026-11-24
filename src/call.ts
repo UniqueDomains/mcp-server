@@ -12,7 +12,7 @@
  * The server stores nothing and adds no limiter of its own (Gaetan, 2026-11-06).
  */
 
-import { ApiProblemError, isOperationId, OPERATIONS, type JsonObject, type JsonValue, type OperationId, type UniqueDomainsClient } from '@uniquedomains/sdk';
+import { ApiProblemError, isOperationId, OPERATIONS, type JsonObject, type JsonValue, type OperationId, type UniqueDomainsClient } from 'domain-name-api';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 
 import type { Profile } from './config';

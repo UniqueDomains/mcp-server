@@ -14,7 +14,7 @@
 
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { CallToolRequestSchema, ErrorCode, ListToolsRequestSchema, McpError, type Tool } from '@modelcontextprotocol/sdk/types.js';
-import { ApiProblemError, createClient, type UniqueDomainsClient } from '@uniquedomains/sdk';
+import { ApiProblemError, createClient, type UniqueDomainsClient } from 'domain-name-api';
 
 import packageJson from '../package.json';
 import { runTool, type CallContext } from './call';

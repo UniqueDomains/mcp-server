@@ -4,7 +4,7 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { OPERATIONS } from '@uniquedomains/sdk';
+import { OPERATIONS } from 'domain-name-api';
 
 import { detailsFor, outputSchemaFor, readConfig, registrarSlug, resetPhrase, shapeAnswer, splitInput, textLine, TOOLS, DETAILS_RULES, ConfigError } from '../dist/index.js';
 
@@ -622,7 +622,7 @@ test('lane 3c: the hosted endings answer passes the two lists through, null befo
 });
 
 test('lane 3c: the hosted trackedNames carry the texts the API document now gives counts', () => {
-    const document = JSON.parse(readFileSync(new URL('../node_modules/@uniquedomains/sdk/openapi.json', import.meta.url), 'utf8'));
+    const document = JSON.parse(readFileSync(new URL('../node_modules/domain-name-api/openapi.json', import.meta.url), 'utf8'));
     const operation = Object.values(document.paths).flatMap((item) => Object.values(item)).find((candidate) => candidate?.operationId === 'get_market_auctions');
     const resolve = (node) => (node?.$ref ? resolve(document.components.schemas[node.$ref.replace('#/components/schemas/', '')]) : node);
     const counts = resolve(resolve(resolve(operation.responses['200'].content['application/json'].schema).properties.data).properties.counts);

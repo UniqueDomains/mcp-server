@@ -156,7 +156,7 @@ The hosted connector serves the free tools only and takes no key. Four free tool
 ## The same data elsewhere
 
 - The API reference: [unique.domains/api](https://unique.domains/api)
-- The SDK and the command line: [UniqueDomains/nodejs](https://github.com/UniqueDomains/nodejs) (`@uniquedomains/sdk`, `@uniquedomains/cli`)
+- The SDK and the command line: [UniqueDomains/nodejs](https://github.com/UniqueDomains/nodejs) (`domain-name-api`, `@uniquedomains/cli`)
 - The open datasets on GitHub: [one-word domains](https://github.com/uniquedomains/oneword-domains), [expiring one-word domains](https://github.com/uniquedomains/expiring-oneword-domains), [the daily editions](https://github.com/uniquedomains/trending-domains-business-ideas), [the 2026 new gTLD applications](https://github.com/uniquedomains/new-gtld-applications-2026) and [the rest of the organization](https://github.com/uniquedomains)
 
 ## Tools
@@ -297,7 +297,7 @@ npm test
 npm run smoke
 ```
 
-- `npm run generate` rebuilds `src/generated/tools.ts`, `openapi/v1.json` and the tool list above from the API document that `@uniquedomains/sdk` ships; `-- --check` fails when they are out of date, `-- --live` compares the live document.
+- `npm run generate` rebuilds `src/generated/tools.ts`, `openapi/v1.json` and the tool list above from the API document that `domain-name-api` ships; `-- --check` fails when they are out of date, `-- --live` compares the live document.
 - `npm run smoke` runs the MCP Inspector against both transports and a fixture API; `-- --live` uses the live API.
 - `npm run plugin` builds `dist/chatgpt-plugin.zip` from `directories/openai/review.json` (the review texts, the test cases, the release notes) and checks it against OpenAI's limits and categories; `npm run plugin:test` also builds a sheet marked as a placeholder.
 - `npm run plugin:devin` builds `dist/devin/plugins/unique-domains/` (the manifest Devin's validator accepts, a 256 px logo and a copy of the skill) for a pull request to Devin's marketplace.

@@ -11,7 +11,7 @@
  * A word has no page on the website: its tools answer null.
  */
 
-import type { JsonValue } from '@uniquedomains/sdk';
+import type { JsonValue } from 'domain-name-api';
 
 import { isObject } from './json';
 

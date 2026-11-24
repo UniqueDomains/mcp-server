@@ -1,7 +1,7 @@
 name: Contract
 
 # Nightly: does the live API still match the tools, and do the website pages behind links.details still answer?
-#   - the latest @uniquedomains/sdk, whatever its minor version: when it changes the tools, the `pull-request` job opens
+#   - the latest domain-name-api, whatever its minor version: when it changes the tools, the `pull-request` job opens
 #     (or refreshes) one pull request "openapi: <date>" on the branch contract/openapi;
 #   - the live document against openapi/v1.json: a drift the SDK has not shipped yet fails the run and opens no pull
 #     request, since the tools are generated from the SDK's document and the fix is an SDK release;
@@ -38,7 +38,7 @@ jobs:
           cache: npm
       - run: npm ci
       # `latest`, not `npm update`: a caret range on a 0.x version would stay inside 0.1.x and never see 0.2.0.
-      - run: npm install @uniquedomains/sdk@latest
+      - run: npm install domain-name-api@latest
       - run: npm run build
       - run: npm run generate
       - name: Hand over the diff
@@ -89,5 +89,5 @@ jobs:
           if gh pr view contract/openapi --json state --jq .state 2>/dev/null | grep -q OPEN; then
             gh pr edit contract/openapi --title "openapi: ${day}"
           else
-            gh pr create --head contract/openapi --title "openapi: ${day}" --body "The nightly contract run regenerated the tools from the latest @uniquedomains/sdk. Review the tool changes in src/generated/tools.ts and the README's tool list."
+            gh pr create --head contract/openapi --title "openapi: ${day}" --body "The nightly contract run regenerated the tools from the latest domain-name-api. Review the tool changes in src/generated/tools.ts and the README's tool list."
           fi

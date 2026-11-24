@@ -15,7 +15,7 @@
  * on its fixed-cut endpoints (`list_registrar_prices`, ...), so sending it unasked would break those calls.
  */
 
-import type { JsonObject, JsonValue, OperationDefinition, OperationParameter, BodyProperty } from '@uniquedomains/sdk';
+import type { JsonObject, JsonValue, OperationDefinition, OperationParameter, BodyProperty } from 'domain-name-api';
 
 export type SplitInput = {
     readonly path: Record<string, string | number>;
