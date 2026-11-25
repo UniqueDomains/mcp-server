@@ -51,7 +51,8 @@
     "plugin:test": "node scripts/plugin-manifest.mjs --allow-placeholder",
     "plugin:devin": "node scripts/devin-plugin.mjs",
     "smoke": "node scripts/smoke.mjs",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "prepublishOnly": "npm ls --package-lock-only --depth=0"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",
