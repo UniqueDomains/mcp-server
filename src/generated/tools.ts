@@ -6,7 +6,7 @@ import type { ToolDefinition } from '../tool';
 
 /** The API document version and the SDK version the tools were generated from. */
 export const TOOLS_DOCUMENT_VERSION = "1.0.0";
-export const TOOLS_SDK_VERSION = "0.3.0";
+export const TOOLS_SDK_VERSION = "0.4.0";
 
 /** Every tool of the server, in the document order. */
 export const TOOLS: readonly ToolDefinition[] = [
